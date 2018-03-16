@@ -94,6 +94,7 @@
     "production"
   ],
   "dependencies": {
+    "core-integration": "git+https://Mfn2bXzQtEFXHKpo12x2y78QJMR7gUZz:x-oauth-basic@bitbucket.org/superflytv/core-integration.git#develop",
     "timeline-state-resolver": "git+https://Mfn2bXzQtEFXHKpo12x2y78QJMR7gUZz:x-oauth-basic@bitbucket.org/superflytv/timeline-state-resolver.git#dev",
     "tslib": "^1.6.0",
     "underscore": "^1.8.3"

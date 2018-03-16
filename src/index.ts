@@ -1,2 +1,4 @@
+import {Gateway} from './gateway'
 
-console.log('hello world!')
+let gw = new Gateway()
+gw.init()
