@@ -1,12 +1,8 @@
-import {Conductor, DeviceType, ConductorOptions} from 'timeline-state-resolver'
+import {Conductor, DeviceType, ConductorOptions, Device} from 'timeline-state-resolver'
 import {CoreHandler} from './coreHandler'
-// import { CoreConnection,
-// 	CoreOptions,
-// 	DeviceType,
-// 	PeripheralDeviceAPI as P
-// } from 'core-integration'
 
 import * as _ from 'underscore'
+import { CoreConnection, PeripheralDeviceAPI as P } from 'core-integration'
 
 export interface TSRConfig {
 	// devices: {
@@ -36,14 +32,19 @@ export interface TSRSettings { // Runtime settings from Core
 	initializeAsClear: boolean
 	mappings: Mappings,
 }
+export interface TSRDevice {
+	coreConnection: CoreConnection
+	device: Device
+}
 /**
- * Represents a connection between mos-integration and Core
+ * Represents a connection between Gateway and TSR
  */
 export class TSRHandler {
 	tsr: Conductor
 	private _config: TSRConfig
 	private _coreHandler: CoreHandler
 	private _triggerupdateTimelineTimeout: any = null
+	private _tsrDevices: {[deviceId: string]: TSRDevice} = {}
 
 	public init (config: TSRConfig, coreHandler: CoreHandler): Promise<any> {
 
@@ -64,7 +65,7 @@ export class TSRHandler {
 			}
 			this.tsr = new Conductor(c)
 			this.tsr.mapping = settings.mappings
-			this._updateTimeline()
+			this.tsr.mapping = settings.mappings
 
 			let observer = coreHandler.core.observe('timeline')
 			observer.added = () => { this._triggerupdateTimeline() }
@@ -75,8 +76,37 @@ export class TSRHandler {
 			return this.tsr.init()
 		})
 		.then(() => {
+			console.log('tsr setting up device statuses')
+			// Setup connection statuses
+			return Promise.all(_.map(this.tsr.getDevices(), (device: Device) => {
+
+				if (!this._tsrDevices[device.deviceId]) {
+					console.log(device.deviceName)
+					let coreConn = new CoreConnection(this._coreHandler.getCoreConnectionOptions('Playout: ' + device.deviceName, 'Playout' + device.deviceId))
+
+					this._tsrDevices[device.deviceId] = {
+						device: device,
+						coreConnection: coreConn
+					}
+
+					return coreConn.init(this._coreHandler.core)
+					.then(() => {
+						coreConn.setStatus({
+							statusCode: (device.connected ? P.StatusCode.GOOD : P.StatusCode.BAD)
+						})
+						device.on('connectionChanged', (connected) => {
+							coreConn.setStatus({
+								statusCode: (connected ? P.StatusCode.GOOD : P.StatusCode.BAD)
+							})
+						})
+					})
+				} else {
+					return Promise.resolve()
+				}
+			}))
+		})
+		.then(() => {
 			console.log('tsr init done')
-			return
 		})
 
 	}
@@ -100,78 +130,4 @@ export class TSRHandler {
 			}, _.omit(timelineObj, ['_id', 'deviceId']))
 		})
 	}
-	// getCoreConnectionOptions (name: string, deviceId: string): CoreOptions {
-	// 	let credentials = CoreConnection.getCredentials(deviceId)
-	// 	return _.extend(credentials, {
-	// 		deviceType: DeviceType.MOSDEVICE,
-	// 		deviceName: name
-	// 	})
-	// }
-	// registerMosDevice (mosDevice: IMOSDevice, mosHandler: MosHandler): Promise<CoreMosDeviceHandler> {
-	// 	console.log('registerMosDevice -------------')
-	// 	let coreMos = new CoreMosDeviceHandler(this, mosDevice, mosHandler)
-
-	// 	return coreMos.init()
-	// 	.then(() => {
-	// 		return coreMos
-	// 	})
-	// }
 }
-/**
- * Represents a connection between a mos-device and Core
- */
-// export class CoreMosDeviceHandler {
-
-// 	core: CoreConnection
-// 	private _coreParentHandler: CoreHandler
-// 	private _mosDevice: IMOSDevice
-// 	private _mosHandler: MosHandler
-
-// 	constructor (parent: CoreHandler, mosDevice: IMOSDevice, mosHandler: MosHandler) {
-// 		this._coreParentHandler = parent
-// 		this._mosDevice = mosDevice
-// 		this._mosHandler = mosHandler
-
-// 		console.log('new CoreMosDeviceHandler ' + mosDevice.idPrimary)
-// 		this.core = new CoreConnection(parent.getCoreConnectionOptions('MOS: ' + mosDevice.idPrimary, mosDevice.idPrimary))
-
-// 	}
-// 	init (): Promise<void> {
-// 		return this.core.init(this._coreParentHandler.core)
-// 		.then((id: string) => {
-// 			// nothing
-// 			id = id // tsignore
-// 		})
-// 	}
-	// onMosConnectionChanged (connectionStatus: IMOSConnectionStatus) {
-
-	// 	let statusCode = P.StatusCode.UNKNOWN
-	// 	let messages: Array<string> = []
-
-	// 	if (connectionStatus.PrimaryConnected) {
-	// 		if (connectionStatus.SecondaryConnected) {
-	// 			statusCode = P.StatusCode.GOOD
-	// 		} else {
-	// 			statusCode = P.StatusCode.WARNING_MINOR
-	// 		}
-	// 	} else {
-	// 		if (connectionStatus.SecondaryConnected) {
-	// 			statusCode = P.StatusCode.WARNING_MAJOR
-	// 		} else {
-	// 			statusCode = P.StatusCode.BAD
-	// 		}
-	// 	}
-
-	// 	if (!connectionStatus.PrimaryConnected) {
-	// 		messages.push(connectionStatus.PrimaryStatus || 'Primary not connected')
-	// 	}
-	// 	if (!connectionStatus.SecondaryConnected) {
-	// 		messages.push(connectionStatus.SecondaryStatus || 'Fallback not connected')
-	// 	}
-
-	// 	this.core.setStatus({
-	// 		statusCode: statusCode,
-	// 		messages: messages
-	// 	})
-	// }
-// }

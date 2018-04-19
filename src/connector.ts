@@ -22,6 +22,7 @@ export class Connector {
 			return this.initCore()
 		})
 		.then(() => {
+			console.log('Core initialized')
 			console.log('Initializing TSR...')
 			return this.initTSR()
 		})
