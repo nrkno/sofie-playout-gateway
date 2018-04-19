@@ -1,5 +1,5 @@
 {
-  "name": "gateway",
+  "name": "playout-gateway",
   "version": "0.0.0",
   "description": "Connect to Core, play stuff",
   "main": "dist/index.js",
@@ -9,12 +9,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://bitbucket.org/superflytv/gateway"
+    "url": "git+https://github.com/nrkno/tv-automation-playout-gateway"
   },
   "bugs": {
-    "url": "https://bitbucket.org/superflytv/gateway/issues"
+    "url": "https://github.com/nrkno/tv-automation-playout-gateway/issues"
   },
-  "homepage": "https://bitbucket.org/superflytv/gateway",
+  "homepage": "https://github.com/nrkno/tv-automation-playout-gateway",
   "author": {
     "name": "Johan Nyman",
     "email": "johan@superfly.tv",
@@ -24,6 +24,7 @@
   "scripts": {
     "info": "npm-scripts-info",
     "build": "trash dist && yarn build:main",
+    "buildstart": "yarn build && yarn start",
     "build:main": "tsc -p tsconfig.json",
     "lint": "tslint --project tsconfig.jest.json --config tslint.json",
     "unit": "jest",
@@ -40,7 +41,8 @@
     "changelog": "standard-version",
     "release": "yarn reset && yarn test && yarn docs:publish && yarn changelog",
     "reset": "git clean -dfx && git reset --hard && yarn",
-    "ci": "yarn test"
+    "ci": "yarn test",
+    "start": "node dist/index.js"
   },
   "scripts-info": {
     "info": "Display information about the scripts",
@@ -63,6 +65,7 @@
   "devDependencies": {
     "@types/jest": "^22.1.3",
     "@types/node": "^8.0.4",
+    "@types/underscore": "^1.8.8",
     "codecov": "^2.2.0",
     "cpx": "^1.5.0",
     "gh-pages": "^1.0.0",
@@ -94,8 +97,8 @@
     "production"
   ],
   "dependencies": {
-    "core-integration": "git+https://Mfn2bXzQtEFXHKpo12x2y78QJMR7gUZz:x-oauth-basic@bitbucket.org/superflytv/core-integration.git#develop",
-    "timeline-state-resolver": "git+https://Mfn2bXzQtEFXHKpo12x2y78QJMR7gUZz:x-oauth-basic@bitbucket.org/superflytv/timeline-state-resolver.git#dev",
+    "core-integration": "git+https://github.com/nrkno/tv-automation-server-core-integration.git#develop",
+    "timeline-state-resolver": "git+https://github.com/nrkno/tv-automation-state-timeline-resolver.git#develop",
     "tslib": "^1.6.0",
     "underscore": "^1.8.3"
   }
