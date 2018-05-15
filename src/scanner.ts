@@ -118,7 +118,9 @@ export class ScannerHandler {
 		// Get sequence id to start at
 		// return core.call('getMySequenceNumber', someDeviceId, (sequenceNr) => {
 		{
-			const sequenceNr = 185
+			let sequenceNr: any = 185
+			if (sequenceNr < 0)
+				sequenceNr = 'now'
 
 			// Listen for changes
 			this._changes = this._db.changes<MediaObject>({
@@ -158,6 +160,29 @@ export class ScannerHandler {
 			console.log('scanner init done')
 		})
 	}
+	
+	public scrapeAll (): Promise<any> {
+		return this.scrapePage('', 100)
+	}
+
+	private scrapePage (startKey: string, limit: number): Promise<any> {
+		const someDeviceId = 'dev1'
+
+		// Note: startKey and limit are optional, and are used to page the results. Not sure if paging is necessary, but its easier to strip it out than add it in
+		return this._db.allDocs<MediaObject>({ attachments: true, include_docs: true, startkey: startKey, limit: limit }).then(docs => {
+			docs.rows.forEach(doc => {
+				if (doc.doc) {
+					const md: MediaObject = doc.doc
+					console.log('updateMediaObject', someDeviceId, md, -1)
+				}
+			});
+
+			// Note: Also drop this block if paging isnt wanted
+			if (docs.rows.length == limit)
+				return this.scrapePage(docs.rows[docs.rows.length - 1].id, limit)
+		})
+	}
+
 	destroy (): Promise<void> {
 		if (this._changes) {
 			this._changes.cancel()
