@@ -97,8 +97,8 @@
     "production"
   ],
   "dependencies": {
-    "core-integration": "git+https://github.com/nrkno/tv-automation-server-core-integration.git#develop",
-    "timeline-state-resolver": "git+https://github.com/nrkno/tv-automation-state-timeline-resolver.git#develop",
+    "core-integration": "git+https://github.com/nrkno/tv-automation-server-core-integration.git#dist",
+    "timeline-state-resolver": "git+https://github.com/nrkno/tv-automation-state-timeline-resolver.git#dist",
     "tslib": "^1.6.0",
     "underscore": "^1.8.3"
   }

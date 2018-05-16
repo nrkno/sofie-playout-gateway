@@ -3,7 +3,8 @@ import {Conductor,
 	ConductorOptions,
 	Device,
 	TimelineContentObject,
-	TriggerType
+	TriggerType,
+	TimelineTriggerTimeResult
 } from 'timeline-state-resolver'
 import {CoreHandler} from './coreHandler'
 
@@ -104,6 +105,20 @@ export class TSRHandler {
 			observer.changed = () => { this._triggerupdateTimeline() }
 			observer.removed = () => { this._triggerupdateTimeline() }
 
+			this.tsr.on('setTimelineTriggerTime', (r: TimelineTriggerTimeResult) => {
+				this._coreHandler.core.callMethod(P.methods.timelineTriggerTime, [r])
+			})
+			this.tsr.on('timelineCallback', (time, objId, callbackName, data) => {
+				console.log('callback ' + callbackName)
+				this._coreHandler.core.callMethod(P.methods.segmentLinePlaybackStarted, [{
+					roId: data.roId,
+					slId: data.slId,
+					objId: objId,
+					time: time
+				}])
+
+			})
+
 			console.log('tsr init')
 			return this.tsr.init()
 		})
@@ -173,6 +188,15 @@ export class TSRHandler {
 
 		   if (!transformedObj.content) transformedObj.content = {}
 		   if (!transformedObj.content.objects) transformedObj.content.objects = []
+
+		   if (obj['slId']) {
+			   // Will cause a callback to be called, when the object starts to play:
+			   transformedObj.content.callBack = 'segmentLinePlaybackStarted'
+			   transformedObj.content.callBackData = {
+				   roId: obj.roId,
+				   slId: obj['slId']
+			   }
+		   }
 
 		   return transformedObj
 		}
