@@ -14,9 +14,5 @@ let config: Config = {
 }
 
 console.log('Core:          ' + config.core.host + ':' + config.core.port)
-// config.mos.devices.forEach((device) => {
-// 	if (device.primary) console.log('Mos Primary:   ' + device.primary.host)
-// 	if (device.secondary) console.log('Mos Secondary: ' + device.secondary.host)
-// })
 console.log('------------------------------------------------------------------')
 c.init(config)
