@@ -7,6 +7,7 @@ import {Conductor,
 	TimelineTriggerTimeResult
 } from 'timeline-state-resolver'
 import {CoreHandler} from './coreHandler'
+let clone = require('fast-clone')
 
 import * as _ from 'underscore'
 import { CoreConnection, PeripheralDeviceAPI as P } from 'core-integration'
@@ -75,6 +76,7 @@ export class TSRHandler {
 	private _config: TSRConfig
 	private _coreHandler: CoreHandler
 	private _triggerupdateTimelineTimeout: any = null
+	private _triggerupdateMappingTimeout: any = null
 	private _tsrDevices: {[deviceId: string]: TSRDevice} = {}
 
 	public init (config: TSRConfig, coreHandler: CoreHandler): Promise<any> {
@@ -89,6 +91,7 @@ export class TSRHandler {
 		.then((peripheralDevice) => {
 			let settings: TSRSettings = peripheralDevice.settings || {}
 
+			console.log('Devices', settings.devices)
 			let c: ConductorOptions = {
 				getCurrentTime: () => {
 					return Date.now() // todo: tmp!
@@ -97,15 +100,25 @@ export class TSRHandler {
 				devices: settings.devices
 			}
 			this.tsr = new Conductor(c)
-			this.tsr.mapping = settings.mappings
-			this.tsr.mapping = settings.mappings
+			// this.tsr.mapping = settings.mappings
+			// this.tsr.mapping = settings.mappings
 
-			let observer = coreHandler.core.observe('timeline')
-			observer.added = () => { this._triggerupdateTimeline() }
-			observer.changed = () => { this._triggerupdateTimeline() }
-			observer.removed = () => { this._triggerupdateTimeline() }
+			// console.log('settings.mappings', JSON.stringify(settings.mappings, ' ', 2))
+			this._triggerupdateMapping()
+			this._triggerupdateTimeline()
+
+			let timelineObserver = coreHandler.core.observe('timeline')
+			timelineObserver.added = () => { this._triggerupdateTimeline() }
+			timelineObserver.changed = () => { this._triggerupdateTimeline() }
+			timelineObserver.removed = () => { this._triggerupdateTimeline() }
+
+			let mappingsObserver = coreHandler.core.observe('studioInstallation')
+			mappingsObserver.added = () => { this._triggerupdateMapping() }
+			mappingsObserver.changed = () => { this._triggerupdateMapping() }
+			mappingsObserver.removed = () => { this._triggerupdateMapping() }
 
 			this.tsr.on('setTimelineTriggerTime', (r: TimelineTriggerTimeResult) => {
+				console.log('setTimelineTriggerTime')
 				this._coreHandler.core.callMethod(P.methods.timelineTriggerTime, [r])
 			})
 			this.tsr.on('timelineCallback', (time, objId, callbackName, data) => {
@@ -129,7 +142,7 @@ export class TSRHandler {
 
 				if (!this._tsrDevices[device.deviceId]) {
 					console.log(device.deviceName)
-					let coreConn = new CoreConnection(this._coreHandler.getCoreConnectionOptions('Playout: ' + device.deviceName, 'Playout' + device.deviceId))
+					let coreConn = new CoreConnection(this._coreHandler.getCoreConnectionOptions('Playout: ' + device.deviceName, 'Playout' + device.deviceId, false))
 
 					this._tsrDevices[device.deviceId] = {
 						device: device,
@@ -169,10 +182,32 @@ export class TSRHandler {
 		}, 20)
 	}
 	private _updateTimeline () {
-		let transformedTimeline = this._transformTimeline(this._coreHandler.core.getCollection('timeline').find({
-			deviceId: this._coreHandler.core.deviceId
+		let transformedTimeline = this._transformTimeline(this._coreHandler.core.getCollection('timeline').find((o) => {
+			return (
+				_.isArray(o.deviceId) ?
+				o.deviceId.indexOf(this._coreHandler.core.deviceId) !== -1 :
+				o.deviceId === this._coreHandler.core.deviceId
+			)
+			// deviceId: this._coreHandler.core.deviceId
 		}) as Array<TimelineObj>)
 		this.tsr.timeline = transformedTimeline
+	}
+	private _triggerupdateMapping () {
+		if (this._triggerupdateMappingTimeout) {
+			clearTimeout(this._triggerupdateMappingTimeout)
+		}
+		this._triggerupdateMappingTimeout = setTimeout(() => {
+			this._updateMapping()
+		}, 20)
+	}
+	private _updateMapping () {
+		let peripheralDevices = this._coreHandler.core.getCollection('peripheralDevices')
+		let peripheralDevice = peripheralDevices.findOne(this._coreHandler.core.deviceId)
+
+		let studioInstallations = this._coreHandler.core.getCollection('studioInstallation')
+		let studioInstallation = studioInstallations.findOne(peripheralDevice.studioInstallationId)
+
+		this.tsr.mapping = studioInstallation.mappings
 	}
 	/**
 	 * Go through and transform timeline and generalize the Core-specific things
@@ -181,10 +216,10 @@ export class TSRHandler {
 	private _transformTimeline (timeline: Array<TimelineObj>): Array<TimelineContentObject> {
 
 		let transformObject = (obj: TimelineObj): TimelineContentObject => {
-			let transformedObj = _.extend({
+			let transformedObj = clone(_.extend({
 			   id: obj['_id'],
 			   roId: obj['roId']
-		   }, _.omit(obj, ['_id', 'deviceId', 'siId']))
+		   }, _.omit(obj, ['_id', 'deviceId', 'siId'])))
 
 		   if (!transformedObj.content) transformedObj.content = {}
 		   if (!transformedObj.content.objects) transformedObj.content.objects = []

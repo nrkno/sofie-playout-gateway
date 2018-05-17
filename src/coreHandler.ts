@@ -1,7 +1,6 @@
 
 import { CoreConnection,
 	CoreOptions,
-	DeviceType,
 	PeripheralDeviceAPI as P
 } from 'core-integration'
 
@@ -19,7 +18,7 @@ export class CoreHandler {
 
 	init (config: CoreConfig): Promise<void> {
 		console.log('========')
-		this.core = new CoreConnection(this.getCoreConnectionOptions('Playout: Parent process', 'PlayoutCoreParent'))
+		this.core = new CoreConnection(this.getCoreConnectionOptions('Playout: Parent process', 'PlayoutCoreParent', true))
 
 		this.core.onConnected(() => {
 			console.log('Core Connected!')
@@ -41,17 +40,19 @@ export class CoreHandler {
 		})
 		.then(() => {
 			console.log('Core: Setting up subscriptions..')
+			console.log('DeviceId: ' + this.core.deviceId)
 			return Promise.all([
 				this.core.subscribe('timeline', {
 					deviceId: this.core.deviceId
 				}),
 				this.core.subscribe('peripheralDevices', {
 					_id: this.core.deviceId
-				})
+				}),
+				this.core.subscribe('studioInstallationOfDevice', this.core.deviceId)
 			])
 		})
 		.then(() => {
-			// console.log('timeline:', this.core.getCollection('timeline').find({}))
+			console.log('Core: Subscriptions are set up!')
 			return
 		})
 	}
@@ -66,10 +67,10 @@ export class CoreHandler {
 			// nothing
 		})
 	}
-	getCoreConnectionOptions (name: string, deviceId: string): CoreOptions {
+	getCoreConnectionOptions (name: string, deviceId: string, parentProcess: boolean): CoreOptions {
 		let credentials = CoreConnection.getCredentials(deviceId)
 		return _.extend(credentials, {
-			deviceType: DeviceType.PLAYOUT,
+			deviceType: (parentProcess ? P.DeviceType.PLAYOUT : P.DeviceType.OTHER),
 			deviceName: name
 		})
 	}
