@@ -119,7 +119,7 @@ export class TSRHandler {
 				this._coreHandler.core.callMethod(P.methods.timelineTriggerTime, [r])
 			})
 			this.tsr.on('timelineCallback', (time, objId, callbackName, data) => {
-				console.log('callback ' + callbackName)
+				console.log('timelineCallback ' + callbackName)
 				this._coreHandler.core.callMethod(P.methods.segmentLinePlaybackStarted, [{
 					roId: data.roId,
 					slId: data.slId,
@@ -175,7 +175,7 @@ export class TSRHandler {
 			})
 			this._observers = []
 		}
-		console.log('Setting up observers..')
+		console.log('Renewing observers')
 
 		let timelineObserver = this._coreHandler.core.observe('timeline')
 		timelineObserver.added = () => { this._triggerupdateTimeline() }
