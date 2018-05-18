@@ -5,6 +5,7 @@ import { CoreConnection,
 } from 'core-integration'
 
 import * as _ from 'underscore'
+import * as Winston from 'winston'
 
 export interface CoreConfig {
 	host: string,
@@ -15,27 +16,32 @@ export interface CoreConfig {
  */
 export class CoreHandler {
 	core: CoreConnection
+	logger: Winston.LoggerInstance
 	private _onConnected?: () => any
 
+	constructor (logger: Winston.LoggerInstance) {
+		this.logger = logger
+	}
+
 	init (config: CoreConfig): Promise<void> {
-		console.log('========')
+		// this.logger.info('========')
 		this.core = new CoreConnection(this.getCoreConnectionOptions('Playout: Parent process', 'PlayoutCoreParent', true))
 
 		this.core.onConnected(() => {
-			console.log('Core Connected!')
+			this.logger.info('Core Connected!')
 			this.setupObserversAndSubscriptions()
 			if (this._onConnected) this._onConnected()
 		})
 		this.core.onDisconnected(() => {
-			console.log('Core Disconnected!')
+			this.logger.warn('Core Disconnected!')
 		})
 		this.core.onError((err) => {
-			console.log('Core Error: ' + (err.message || err.toString() || err))
+			this.logger.error('Core Error: ' + (err.message || err.toString() || err))
 		})
 
 		return this.core.init(config)
 		.then(() => {
-			console.log('Core id: ' + this.core.deviceId)
+			this.logger.info('Core id: ' + this.core.deviceId)
 			return this.setupObserversAndSubscriptions()
 		})
 		.then(() => {
@@ -49,8 +55,8 @@ export class CoreHandler {
 		})
 	}
 	setupObserversAndSubscriptions () {
-		console.log('Core: Setting up subscriptions..')
-		console.log('DeviceId: ' + this.core.deviceId)
+		this.logger.info('Core: Setting up subscriptions..')
+		this.logger.info('DeviceId: ' + this.core.deviceId)
 		return Promise.all([
 			this.core.subscribe('timeline', {
 				deviceId: this.core.deviceId
@@ -61,7 +67,7 @@ export class CoreHandler {
 			this.core.subscribe('studioInstallationOfDevice', this.core.deviceId)
 		])
 		.then(() => {
-			console.log('Core: Subscriptions are set up!')
+			this.logger.info('Core: Subscriptions are set up!')
 
 			return
 		})
