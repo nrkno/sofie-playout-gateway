@@ -4735,7 +4735,7 @@ timed-out@^3.0.0:
 
 "timeline-state-resolver@git+https://github.com/nrkno/tv-automation-state-timeline-resolver.git#dist":
   version "0.0.0"
-  resolved "git+https://github.com/nrkno/tv-automation-state-timeline-resolver.git#645d98feb209939316c496b890de6a21509241e4"
+  resolved "git+https://github.com/nrkno/tv-automation-state-timeline-resolver.git#05e1d4dfdbdbeff9038ad153bfe1d04ced548ba7"
   dependencies:
     atem-connection "git+https://github.com/nrkno/tv-automation-atem-connection#dist"
     atem-state "git+https://github.com/nrkno/tv-automation-atem-state#dist"
