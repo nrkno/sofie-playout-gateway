@@ -1,12 +1,14 @@
-import {Conductor,
+import {
+	Conductor,
 	DeviceType,
 	ConductorOptions,
 	Device,
 	TimelineContentObject,
 	TriggerType,
-	TimelineTriggerTimeResult
+	TimelineTriggerTimeResult,
+	DeviceOptions
 } from 'timeline-state-resolver'
-import {CoreHandler} from './coreHandler'
+import { CoreHandler } from './coreHandler'
 let clone = require('fast-clone')
 
 import * as _ from 'underscore'
@@ -259,10 +261,27 @@ export class TSRHandler {
 				let oldDevice = this.tsr.getDevice(deviceId)
 
 				if (!oldDevice) {
-					
-					this.tsr.addDevice(deviceId, device.options)
+					if (device.options) {
+						console.log('Initializing device: ' + deviceId)
+						this.tsr.addDevice(deviceId, device.options as DeviceOptions)
+					}
+				} else {
+					if (device.options) {
+						if (!_.isEqual(oldDevice.deviceOptions, device.options)) {
+							console.log('Re-initializing device: ' + deviceId)
+							this.tsr.removeDevice(deviceId)
+							this.tsr.addDevice(deviceId, device.options as DeviceOptions)
+						}
+					}
 				}
+			})
 
+			_.each(this.tsr.getDevices(), (oldDevice: Device) => {
+				let deviceId = oldDevice.deviceId
+				if (!devices[deviceId]) {
+					console.log('Un-initializing device: ' + deviceId)
+					this.tsr.removeDevice(deviceId)
+				}
 			})
 		}
 	}
