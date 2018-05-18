@@ -188,6 +188,13 @@ export class TSRHandler {
 		mappingsObserver.changed = () => { this._triggerupdateMapping() }
 		mappingsObserver.removed = () => { this._triggerupdateMapping() }
 		this._observers.push(mappingsObserver)
+
+		let deviceObserver = this._coreHandler.core.observe('peripheralDevices')
+		deviceObserver.added = () => { this._triggerupdateDevices() }
+		deviceObserver.changed = () => { this._triggerupdateDevices() }
+		deviceObserver.removed = () => { this._triggerupdateDevices() }
+		this._observers.push(mappingsObserver)
+
 	}
 	destroy (): Promise<void> {
 		return this.tsr.destroy()
@@ -222,11 +229,42 @@ export class TSRHandler {
 	private _updateMapping () {
 		let peripheralDevices = this._coreHandler.core.getCollection('peripheralDevices')
 		let peripheralDevice = peripheralDevices.findOne(this._coreHandler.core.deviceId)
+		if (peripheralDevice) {
+			let studioInstallations = this._coreHandler.core.getCollection('studioInstallation')
+			let studioInstallation = studioInstallations.findOne(peripheralDevice.studioInstallationId)
+			if (studioInstallation) {
+				this.tsr.mapping = studioInstallation.mappings
+			}
+		}
+	}
+	private _triggerupdateDevices () {
+		if (this._triggerupdateMappingTimeout) {
+			clearTimeout(this._triggerupdateMappingTimeout)
+		}
+		this._triggerupdateMappingTimeout = setTimeout(() => {
+			this._updateDevices()
+		}, 20)
+	}
+	private _updateDevices () {
+		let peripheralDevices = this._coreHandler.core.getCollection('peripheralDevices')
+		let peripheralDevice = peripheralDevices.findOne(this._coreHandler.core.deviceId)
 
-		let studioInstallations = this._coreHandler.core.getCollection('studioInstallation')
-		let studioInstallation = studioInstallations.findOne(peripheralDevice.studioInstallationId)
+		if (peripheralDevice) {
+			let settings: TSRSettings = peripheralDevice.settings || {}
 
-		this.tsr.mapping = studioInstallation.mappings
+			let devices = settings.devices
+
+			_.each(devices, (device, deviceId: string) => {
+
+				let oldDevice = this.tsr.getDevice(deviceId)
+
+				if (!oldDevice) {
+					
+					this.tsr.addDevice(deviceId, device.options)
+				}
+
+			})
+		}
 	}
 	/**
 	 * Go through and transform timeline and generalize the Core-specific things
