@@ -1058,7 +1058,7 @@ copy-descriptor@^0.1.0:
 
 "core-integration@git+https://github.com/nrkno/tv-automation-server-core-integration.git#dist":
   version "0.0.0"
-  resolved "git+https://github.com/nrkno/tv-automation-server-core-integration.git#4cf946f4b6c291ea7bc959f4affa275135c89b8c"
+  resolved "git+https://github.com/nrkno/tv-automation-server-core-integration.git#b892956db90d76f74c737d09e4dbbac26d38868f"
   dependencies:
     data-store "^1.0.0"
     ddp "^0.12.1"
