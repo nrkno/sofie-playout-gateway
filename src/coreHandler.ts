@@ -15,6 +15,7 @@ export interface CoreConfig {
  */
 export class CoreHandler {
 	core: CoreConnection
+	private _onConnected?: () => any
 
 	init (config: CoreConfig): Promise<void> {
 		console.log('========')
@@ -22,6 +23,8 @@ export class CoreHandler {
 
 		this.core.onConnected(() => {
 			console.log('Core Connected!')
+			this.setupObserversAndSubscriptions()
+			if (this._onConnected) this._onConnected()
 		})
 		this.core.onDisconnected(() => {
 			console.log('Core Disconnected!')
@@ -33,26 +36,33 @@ export class CoreHandler {
 		return this.core.init(config)
 		.then(() => {
 			console.log('Core id: ' + this.core.deviceId)
+			return this.setupObserversAndSubscriptions()
+		})
+		.then(() => {
 			return this.core.setStatus({
 				statusCode: P.StatusCode.GOOD
 				// messages: []
 			})
 		})
 		.then(() => {
-			console.log('Core: Setting up subscriptions..')
-			console.log('DeviceId: ' + this.core.deviceId)
-			return Promise.all([
-				this.core.subscribe('timeline', {
-					deviceId: this.core.deviceId
-				}),
-				this.core.subscribe('peripheralDevices', {
-					_id: this.core.deviceId
-				}),
-				this.core.subscribe('studioInstallationOfDevice', this.core.deviceId)
-			])
+			return
 		})
+	}
+	setupObserversAndSubscriptions () {
+		console.log('Core: Setting up subscriptions..')
+		console.log('DeviceId: ' + this.core.deviceId)
+		return Promise.all([
+			this.core.subscribe('timeline', {
+				deviceId: this.core.deviceId
+			}),
+			this.core.subscribe('peripheralDevices', {
+				_id: this.core.deviceId
+			}),
+			this.core.subscribe('studioInstallationOfDevice', this.core.deviceId)
+		])
 		.then(() => {
 			console.log('Core: Subscriptions are set up!')
+
 			return
 		})
 	}
@@ -73,6 +83,9 @@ export class CoreHandler {
 			deviceType: (parentProcess ? P.DeviceType.PLAYOUT : P.DeviceType.OTHER),
 			deviceName: name
 		})
+	}
+	onConnected (fcn: () => any) {
+		this._onConnected = fcn
 	}
 
 }

@@ -42,7 +42,6 @@ export class Connector {
 		return this.coreHandler.init(this._config.core)
 	}
 	initTSR (): Promise<void> {
-		// TODO: maybe get some config data from core here?
 		this.tsrHandler = new TSRHandler()
 		return this.tsrHandler.init(this._config.tsr, this.coreHandler)
 

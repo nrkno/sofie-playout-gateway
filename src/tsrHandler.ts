@@ -78,6 +78,7 @@ export class TSRHandler {
 	private _triggerupdateTimelineTimeout: any = null
 	private _triggerupdateMappingTimeout: any = null
 	private _tsrDevices: {[deviceId: string]: TSRDevice} = {}
+	private _observers: Array<any> = []
 
 	public init (config: TSRConfig, coreHandler: CoreHandler): Promise<any> {
 
@@ -107,15 +108,11 @@ export class TSRHandler {
 			this._triggerupdateMapping()
 			this._triggerupdateTimeline()
 
-			let timelineObserver = coreHandler.core.observe('timeline')
-			timelineObserver.added = () => { this._triggerupdateTimeline() }
-			timelineObserver.changed = () => { this._triggerupdateTimeline() }
-			timelineObserver.removed = () => { this._triggerupdateTimeline() }
-
-			let mappingsObserver = coreHandler.core.observe('studioInstallation')
-			mappingsObserver.added = () => { this._triggerupdateMapping() }
-			mappingsObserver.changed = () => { this._triggerupdateMapping() }
-			mappingsObserver.removed = () => { this._triggerupdateMapping() }
+			coreHandler.onConnected(() => {
+				// onConnected
+				this.setupObservers()
+			})
+			this.setupObservers()
 
 			this.tsr.on('setTimelineTriggerTime', (r: TimelineTriggerTimeResult) => {
 				console.log('setTimelineTriggerTime')
@@ -169,6 +166,28 @@ export class TSRHandler {
 			console.log('tsr init done')
 		})
 
+	}
+	setupObservers () {
+		if (this._observers.length) {
+			console.log('Clearing observers..')
+			this._observers.forEach((obs) => {
+				obs.stop()
+			})
+			this._observers = []
+		}
+		console.log('Setting up observers..')
+
+		let timelineObserver = this._coreHandler.core.observe('timeline')
+		timelineObserver.added = () => { this._triggerupdateTimeline() }
+		timelineObserver.changed = () => { this._triggerupdateTimeline() }
+		timelineObserver.removed = () => { this._triggerupdateTimeline() }
+		this._observers.push(timelineObserver)
+
+		let mappingsObserver = this._coreHandler.core.observe('studioInstallation')
+		mappingsObserver.added = () => { this._triggerupdateMapping() }
+		mappingsObserver.changed = () => { this._triggerupdateMapping() }
+		mappingsObserver.removed = () => { this._triggerupdateMapping() }
+		this._observers.push(mappingsObserver)
 	}
 	destroy (): Promise<void> {
 		return this.tsr.destroy()
