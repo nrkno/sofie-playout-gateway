@@ -100,6 +100,7 @@
   "dependencies": {
     "core-integration": "git+https://github.com/nrkno/tv-automation-server-core-integration.git#dist",
     "fast-clone": "^1.5.3",
+    "pouchdb-node": "^6.4.3",
     "timeline-state-resolver": "git+https://github.com/nrkno/tv-automation-state-timeline-resolver.git#dist",
     "tslib": "^1.6.0",
     "underscore": "^1.8.3",
