@@ -67,6 +67,9 @@ let config: Config = {
 	},
 	tsr: {
 		devices: {} // to be fetched from Core
+	},
+	mediaScanner: {
+		collectionId: 'default' // TODO: to be fetched from core
 	}
 }
 
