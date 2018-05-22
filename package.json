@@ -66,6 +66,7 @@
     "@types/jest": "^22.1.3",
     "@types/node": "^8.0.4",
     "@types/underscore": "^1.8.8",
+    "@types/winston": "^2.3.9",
     "codecov": "^2.2.0",
     "cpx": "^1.5.0",
     "gh-pages": "^1.0.0",
@@ -98,9 +99,10 @@
   ],
   "dependencies": {
     "core-integration": "git+https://github.com/nrkno/tv-automation-server-core-integration.git#dist",
+    "fast-clone": "^1.5.3",
     "timeline-state-resolver": "git+https://github.com/nrkno/tv-automation-state-timeline-resolver.git#dist",
     "tslib": "^1.6.0",
     "underscore": "^1.8.3",
-    "fast-clone": "^1.5.3"
+    "winston": "^2.4.2"
   }
 }
