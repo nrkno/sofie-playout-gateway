@@ -99,10 +99,10 @@
   ],
   "dependencies": {
     "core-integration": "git+https://github.com/nrkno/tv-automation-server-core-integration.git#dist",
+    "fast-clone": "^1.5.3",
     "timeline-state-resolver": "git+https://github.com/nrkno/tv-automation-state-timeline-resolver.git#dist",
     "tslib": "^1.6.0",
     "underscore": "^1.8.3",
-    "fast-clone": "^1.5.3",
     "winston": "^2.4.2"
   }
 }
