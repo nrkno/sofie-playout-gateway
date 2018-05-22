@@ -1,4 +1,4 @@
-import {Connector, Config} from './connector'
+import { Connector, Config } from './connector'
 import * as Winston from 'winston'
 
 // CLI arguments / Environment variables --------------
@@ -73,3 +73,6 @@ let config: Config = {
 logger.info('Core:          ' + config.core.host + ':' + config.core.port)
 logger.info('------------------------------------------------------------------')
 c.init(config)
+.catch(e => {
+	logger.error(e)
+})

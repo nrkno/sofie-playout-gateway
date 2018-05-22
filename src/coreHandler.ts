@@ -30,6 +30,9 @@ export class CoreHandler {
 		this.core.onConnected(() => {
 			this.logger.info('Core Connected!')
 			this.setupObserversAndSubscriptions()
+			.catch((e) => {
+				this.logger.error(e)
+			})
 			if (this._onConnected) this._onConnected()
 		})
 		this.core.onDisconnected(() => {

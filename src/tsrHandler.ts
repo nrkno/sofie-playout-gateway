@@ -281,7 +281,7 @@ export class TSRHandler {
 			console.log('Error when adding device: ' + e)
 		})
 	}
-	private _removeDevice (deviceId: string){
+	private _removeDevice (deviceId: string) {
 		delete this._tsrDevices[deviceId]
 
 		this.tsr.removeDevice(deviceId)

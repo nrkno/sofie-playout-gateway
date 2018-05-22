@@ -1,6 +1,6 @@
 import * as Winston from 'winston'
-import {TSRHandler, TSRConfig} from './tsrHandler'
-import {CoreHandler, CoreConfig} from './coreHandler'
+import { TSRHandler, TSRConfig } from './tsrHandler'
+import { CoreHandler, CoreConfig } from './coreHandler'
 // import {Conductor, DeviceType} from 'timeline-state-resolver'
 
 export interface Config {
