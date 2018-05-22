@@ -15,12 +15,6 @@ import * as _ from 'underscore'
 import { CoreConnection, PeripheralDeviceAPI as P } from 'core-integration'
 
 export interface TSRConfig {
-	// devices: {
-	// 	[deviceName: string]: {
-	// 		type: DeviceType
-	// 		options?: {}
-	// 	}
-	// }
 }
 export interface Mappings {
 	[layerName: string]: Mapping
@@ -79,6 +73,7 @@ export class TSRHandler {
 	private _coreHandler: CoreHandler
 	private _triggerupdateTimelineTimeout: any = null
 	private _triggerupdateMappingTimeout: any = null
+	private _triggerupdateDevicesTimeout: any = null
 	private _tsrDevices: {[deviceId: string]: TSRDevice} = {}
 	private _observers: Array<any> = []
 
@@ -99,19 +94,13 @@ export class TSRHandler {
 				getCurrentTime: () => {
 					return Date.now() // todo: tmp!
 				},
-				initializeAsClear: (settings.initializeAsClear !== false),
-				devices: settings.devices
+				initializeAsClear: (settings.initializeAsClear !== false)
 			}
 			this.tsr = new Conductor(c)
-			// this.tsr.mapping = settings.mappings
-			// this.tsr.mapping = settings.mappings
-
-			// console.log('settings.mappings', JSON.stringify(settings.mappings, ' ', 2))
 			this._triggerupdateMapping()
 			this._triggerupdateTimeline()
 
 			coreHandler.onConnected(() => {
-				// onConnected
 				this.setupObservers()
 			})
 			this.setupObservers()
@@ -128,6 +117,9 @@ export class TSRHandler {
 					objId: objId,
 					time: time
 				}])
+				.catch((e) => {
+					console.log('Error in timelineCallback', e)
+				})
 
 			})
 
@@ -135,36 +127,9 @@ export class TSRHandler {
 			return this.tsr.init()
 		})
 		.then(() => {
-			console.log('tsr setting up device statuses')
-			// Setup connection statuses
-			return Promise.all(_.map(this.tsr.getDevices(), (device: Device) => {
-
-				if (!this._tsrDevices[device.deviceId]) {
-					console.log(device.deviceName)
-					let coreConn = new CoreConnection(this._coreHandler.getCoreConnectionOptions('Playout: ' + device.deviceName, 'Playout' + device.deviceId, false))
-
-					this._tsrDevices[device.deviceId] = {
-						device: device,
-						coreConnection: coreConn
-					}
-
-					return coreConn.init(this._coreHandler.core)
-					.then(() => {
-						coreConn.setStatus({
-							statusCode: (device.connected ? P.StatusCode.GOOD : P.StatusCode.BAD)
-						})
-						device.on('connectionChanged', (connected) => {
-							coreConn.setStatus({
-								statusCode: (connected ? P.StatusCode.GOOD : P.StatusCode.BAD)
-							})
-						})
-					})
-				} else {
-					return Promise.resolve()
-				}
-			}))
-		})
-		.then(() => {
+			this._triggerupdateMapping()
+			this._triggerupdateTimeline()
+			this._triggerupdateDevices()
 			console.log('tsr init done')
 		})
 
@@ -216,7 +181,6 @@ export class TSRHandler {
 				o.deviceId.indexOf(this._coreHandler.core.deviceId) !== -1 :
 				o.deviceId === this._coreHandler.core.deviceId
 			)
-			// deviceId: this._coreHandler.core.deviceId
 		}) as Array<TimelineObj>)
 		this.tsr.timeline = transformedTimeline
 	}
@@ -240,10 +204,10 @@ export class TSRHandler {
 		}
 	}
 	private _triggerupdateDevices () {
-		if (this._triggerupdateMappingTimeout) {
-			clearTimeout(this._triggerupdateMappingTimeout)
+		if (this._triggerupdateDevicesTimeout) {
+			clearTimeout(this._triggerupdateDevicesTimeout)
 		}
-		this._triggerupdateMappingTimeout = setTimeout(() => {
+		this._triggerupdateDevicesTimeout = setTimeout(() => {
 			this._updateDevices()
 		}, 20)
 	}
@@ -263,14 +227,14 @@ export class TSRHandler {
 				if (!oldDevice) {
 					if (device.options) {
 						console.log('Initializing device: ' + deviceId)
-						this.tsr.addDevice(deviceId, device.options as DeviceOptions)
+						this._addDevice(deviceId, device)
 					}
 				} else {
 					if (device.options) {
 						if (!_.isEqual(oldDevice.deviceOptions, device.options)) {
 							console.log('Re-initializing device: ' + deviceId)
-							this.tsr.removeDevice(deviceId)
-							this.tsr.addDevice(deviceId, device.options as DeviceOptions)
+							this._removeDevice(deviceId)
+							this._addDevice(deviceId, device)
 						}
 					}
 				}
@@ -284,6 +248,46 @@ export class TSRHandler {
 				}
 			})
 		}
+	}
+	private _addDevice (deviceId: string, options: DeviceOptions): void {
+		console.log('Adding device ' + deviceId)
+
+		this.tsr.addDevice(deviceId, options)
+		.then((device: Device) => {
+			// sed up device status
+
+			if (!this._tsrDevices[device.deviceId]) {
+				let coreConn = new CoreConnection(this._coreHandler.getCoreConnectionOptions('Playout: ' + device.deviceName, 'Playout' + device.deviceId, false))
+
+				this._tsrDevices[device.deviceId] = {
+					device: device,
+					coreConnection: coreConn
+				}
+
+				coreConn.init(this._coreHandler.core)
+				.then(() => {
+					coreConn.setStatus({
+						statusCode: (device.connected ? P.StatusCode.GOOD : P.StatusCode.BAD)
+					})
+					device.on('connectionChanged', (connected) => {
+						coreConn.setStatus({
+							statusCode: (connected ? P.StatusCode.GOOD : P.StatusCode.BAD)
+						})
+					})
+				})
+			}
+		})
+		.catch((e) => {
+			console.log('Error when adding device: ' + e)
+		})
+	}
+	private _removeDevice (deviceId: string){
+		delete this._tsrDevices[deviceId]
+
+		this.tsr.removeDevice(deviceId)
+		.catch(() => {
+			// no device found, that's okay
+		})
 	}
 	/**
 	 * Go through and transform timeline and generalize the Core-specific things
