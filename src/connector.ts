@@ -55,7 +55,7 @@ export class Connector {
 		return this.coreHandler.init(this._config.core)
 	}
 	initTSR (): Promise<void> {
-		this.tsrHandler = new TSRHandler()
+		this.tsrHandler = new TSRHandler(this._logger)
 		return this.tsrHandler.init(this._config.tsr, this.coreHandler)
 
 	}

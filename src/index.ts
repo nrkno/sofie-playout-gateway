@@ -68,9 +68,6 @@ if (logPath) {
 	}
 }
 
-
-
-
 logger.info('------------------------------------------------------------------')
 logger.info('Starting Playout Gateway')
 let c = new Connector(logger)
