@@ -244,8 +244,17 @@ export class TSRHandler {
 					}
 				} else {
 					if (device.options) {
-						if (!_.isEqual(oldDevice.deviceOptions, device.options)) {
+						let anyChanged = false
+						let oldOptions = oldDevice.deviceOptions.options || {}
+						_.each(device.options, (val, attr) => {
+							if (!_.isEqual(oldOptions[attr], val)) {
+								anyChanged = true
+							}
+						})
+						if (anyChanged) {
 							console.log('Re-initializing device: ' + deviceId)
+							// console.log('old options', oldDevice.deviceOptions)
+							// console.log('new options', device.options)
 							this._removeDevice(deviceId)
 							this._addDevice(deviceId, device)
 						}
