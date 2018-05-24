@@ -38,22 +38,33 @@ if (logPath) {
 		json: true,
 		filename: logPath
 	})
+	// Hijack console.log:
+	// @ts-ignore
+	let orgConsoleLog = console.log
+	console.log = function (...args: any[]) {
+		// orgConsoleLog('a')
+		if (args.length >= 1) {
+			// @ts-ignore one or more arguments
+			logger.debug(...args)
+			orgConsoleLog(...args)
+		}
+	}
 } else {
 	console.log('Logging to Console')
 	// Log json to console
 	logger.add(Winston.transports.Console,{
 		handleExceptions: true,
 		json: true
-	 })
-}
-// Hijack console.log:
-// @ts-ignore
-let orgConsoleLog = console.log
-console.log = function (...args: any[]) {
-	// orgConsoleLog('a')
-	if (args.length >= 1) {
-		// @ts-ignore one or more arguments
-		logger.info(...args)
+	})
+	// Hijack console.log:
+	// @ts-ignore
+	let orgConsoleLog = console.log
+	console.log = function (...args: any[]) {
+		// orgConsoleLog('a')
+		if (args.length >= 1) {
+			// @ts-ignore one or more arguments
+			logger.debug(...args)
+		}
 	}
 }
 
@@ -67,6 +78,9 @@ let config: Config = {
 	},
 	tsr: {
 		devices: {} // to be fetched from Core
+	},
+	mediaScanner: {
+		collectionId: 'default' // TODO: to be fetched from core
 	}
 }
 

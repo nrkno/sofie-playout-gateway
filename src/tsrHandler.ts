@@ -10,6 +10,7 @@ import {
 } from 'timeline-state-resolver'
 import { CoreHandler } from './coreHandler'
 let clone = require('fast-clone')
+import * as Winston from 'winston'
 
 import * as _ from 'underscore'
 import { CoreConnection, PeripheralDeviceAPI as P } from 'core-integration'
@@ -68,6 +69,7 @@ export interface TimelineObj { // interface from Core
  * Represents a connection between Gateway and TSR
  */
 export class TSRHandler {
+	logger: Winston.LoggerInstance
 	tsr: Conductor
 	private _config: TSRConfig
 	private _coreHandler: CoreHandler
@@ -76,6 +78,10 @@ export class TSRHandler {
 	private _triggerupdateDevicesTimeout: any = null
 	private _tsrDevices: {[deviceId: string]: TSRDevice} = {}
 	private _observers: Array<any> = []
+
+	constructor (logger: Winston.LoggerInstance) {
+		this.logger = logger
+	}
 
 	public init (config: TSRConfig, coreHandler: CoreHandler): Promise<any> {
 
@@ -104,6 +110,13 @@ export class TSRHandler {
 				this.setupObservers()
 			})
 			this.setupObservers()
+
+			this.tsr.on('error', (e, ...args) => {
+				this.logger.error(e, ...args)
+			})
+			this.tsr.on('info', (msg, ...args) => {
+				this.logger.info(msg, ...args)
+			})
 
 			this.tsr.on('setTimelineTriggerTime', (r: TimelineTriggerTimeResult) => {
 				console.log('setTimelineTriggerTime')
@@ -231,8 +244,17 @@ export class TSRHandler {
 					}
 				} else {
 					if (device.options) {
-						if (!_.isEqual(oldDevice.deviceOptions, device.options)) {
+						let anyChanged = false
+						let oldOptions = oldDevice.deviceOptions.options || {}
+						_.each(device.options, (val, attr) => {
+							if (!_.isEqual(oldOptions[attr], val)) {
+								anyChanged = true
+							}
+						})
+						if (anyChanged) {
 							console.log('Re-initializing device: ' + deviceId)
+							// console.log('old options', oldDevice.deviceOptions)
+							// console.log('new options', device.options)
 							this._removeDevice(deviceId)
 							this._addDevice(deviceId, device)
 						}
