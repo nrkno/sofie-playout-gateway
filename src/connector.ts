@@ -5,9 +5,14 @@ import { MediaScanner, MediaScannerConfig } from './mediaScanner'
 // import {Conductor, DeviceType} from 'timeline-state-resolver'
 
 export interface Config {
+	device: DeviceConfig
 	core: CoreConfig
 	tsr: TSRConfig
 	mediaScanner: MediaScannerConfig
+}
+export interface DeviceConfig {
+	deviceId: string
+	deviceToken: string
 }
 export class Connector {
 
@@ -51,7 +56,7 @@ export class Connector {
 		})
 	}
 	initCore () {
-		this.coreHandler = new CoreHandler(this._logger)
+		this.coreHandler = new CoreHandler(this._logger, this._config.device)
 		return this.coreHandler.init(this._config.core)
 	}
 	initTSR (): Promise<void> {

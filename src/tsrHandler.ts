@@ -97,8 +97,10 @@ export class TSRHandler {
 
 			console.log('Devices', settings.devices)
 			let c: ConductorOptions = {
-				getCurrentTime: () => {
-					return Date.now() // todo: tmp!
+				getCurrentTime: (): number => {
+					// console.log('getCurrentTime', new Date(this._coreHandler.core.getCurrentTime()).toISOString() )
+					return this._coreHandler.core.getCurrentTime()
+					// return Date.now() // todo: tmp!
 				},
 				initializeAsClear: (settings.initializeAsClear !== false)
 			}
@@ -123,7 +125,7 @@ export class TSRHandler {
 				this._coreHandler.core.callMethod(P.methods.timelineTriggerTime, [r])
 			})
 			this.tsr.on('timelineCallback', (time, objId, callbackName, data) => {
-				console.log('timelineCallback ' + callbackName)
+				console.log('timelineCallback ' + callbackName, new Date(time).toISOString() )
 				this._coreHandler.core.callMethod(P.methods.segmentLinePlaybackStarted, [{
 					roId: data.roId,
 					slId: data.slId,
