@@ -278,7 +278,7 @@ export class TSRHandler {
 
 		this.tsr.addDevice(deviceId, options)
 		.then((device: Device) => {
-			// sed up device status
+			// set up device status
 
 			if (!this._tsrDevices[device.deviceId]) {
 				let coreConn = new CoreConnection(this._coreHandler.getCoreConnectionOptions('Playout: ' + device.deviceName, 'Playout' + device.deviceId, false))
