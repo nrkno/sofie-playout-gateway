@@ -175,7 +175,7 @@ export class TSRHandler {
 		deviceObserver.added = () => { this._triggerupdateDevices() }
 		deviceObserver.changed = () => { this._triggerupdateDevices() }
 		deviceObserver.removed = () => { this._triggerupdateDevices() }
-		this._observers.push(mappingsObserver)
+		this._observers.push(deviceObserver)
 
 	}
 	destroy (): Promise<void> {
@@ -268,7 +268,8 @@ export class TSRHandler {
 				let deviceId = oldDevice.deviceId
 				if (!devices[deviceId]) {
 					console.log('Un-initializing device: ' + deviceId)
-					this.tsr.removeDevice(deviceId)
+					// this.tsr.removeDevice(deviceId)
+					this._removeDevice(deviceId)
 				}
 			})
 		}
