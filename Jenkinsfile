@@ -5,13 +5,22 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-          dockerBuild('sofie/tv-automation-playout-gateway')
+        sofieSlackSendBuildStarted()
+        dockerBuild('sofie/tv-automation-playout-gateway')
       }
     }
     stage('Deploy') {
       steps {
-          playoutDeploy()
+        playoutDeploy()
       }
+    }
+  }
+  post {
+    failure {
+      sofieSlackSendBuildFailure()
+    }
+    success {
+      sofieSlackSendBuildSuccess()
     }
   }
 }
