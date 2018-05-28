@@ -310,7 +310,7 @@ export class MediaScanner {
 			if (docs.rows.length === limit) {
 				return this.scrapePage(docs.rows[docs.rows.length - 1].id, limit)
 			}
-			return // TODO: what does this function do? /Nyman
+			return 'N/A' // TODO: what does this function do? /Nyman
 		})
 	}
 }
