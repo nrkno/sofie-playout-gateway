@@ -123,6 +123,9 @@ export class TSRHandler {
 			this.tsr.on('setTimelineTriggerTime', (r: TimelineTriggerTimeResult) => {
 				console.log('setTimelineTriggerTime')
 				this._coreHandler.core.callMethod(P.methods.timelineTriggerTime, [r])
+				.catch((e) => {
+					this.logger.error('Error in setTimelineTriggerTime', e)
+				})
 			})
 			this.tsr.on('timelineCallback', (time, objId, callbackName, data) => {
 				console.log('timelineCallback ' + callbackName, new Date(time).toISOString() )
@@ -133,7 +136,7 @@ export class TSRHandler {
 					time: time
 				}])
 				.catch((e) => {
-					console.log('Error in timelineCallback', e)
+					this.logger.error('Error in timelineCallback', e)
 				})
 
 			})

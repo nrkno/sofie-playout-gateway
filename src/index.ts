@@ -74,6 +74,11 @@ if (logPath) {
 	}
 }
 
+// Because the default NodeJS-handler sucks and wont display error properly
+process.on('unhandledRejection', e => {
+	logger.error('Unhandled Promise rejection:', e, e.reason, e.stack)
+})
+
 logger.info('------------------------------------------------------------------')
 logger.info('Starting Playout Gateway')
 let c = new Connector(logger)
