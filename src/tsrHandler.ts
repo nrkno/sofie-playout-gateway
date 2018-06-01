@@ -123,6 +123,9 @@ export class TSRHandler {
 			this.tsr.on('setTimelineTriggerTime', (r: TimelineTriggerTimeResult) => {
 				console.log('setTimelineTriggerTime')
 				this._coreHandler.core.callMethod(P.methods.timelineTriggerTime, [r])
+				.catch((e) => {
+					this.logger.error('Error in setTimelineTriggerTime', e)
+				})
 			})
 			this.tsr.on('timelineCallback', (time, objId, callbackName, data) => {
 				console.log('timelineCallback ' + callbackName, new Date(time).toISOString() )
@@ -133,7 +136,7 @@ export class TSRHandler {
 					time: time
 				}])
 				.catch((e) => {
-					console.log('Error in timelineCallback', e)
+					this.logger.error('Error in timelineCallback', e)
 				})
 
 			})
@@ -175,7 +178,7 @@ export class TSRHandler {
 		deviceObserver.added = () => { this._triggerupdateDevices() }
 		deviceObserver.changed = () => { this._triggerupdateDevices() }
 		deviceObserver.removed = () => { this._triggerupdateDevices() }
-		this._observers.push(mappingsObserver)
+		this._observers.push(deviceObserver)
 
 	}
 	destroy (): Promise<void> {
@@ -268,7 +271,8 @@ export class TSRHandler {
 				let deviceId = oldDevice.deviceId
 				if (!devices[deviceId]) {
 					console.log('Un-initializing device: ' + deviceId)
-					this.tsr.removeDevice(deviceId)
+					// this.tsr.removeDevice(deviceId)
+					this._removeDevice(deviceId)
 				}
 			})
 		}
