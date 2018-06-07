@@ -436,7 +436,7 @@ asynckit@^0.4.0:
 
 "atem-state@git+https://github.com/nrkno/tv-automation-atem-state#dist":
   version "0.0.0"
-  resolved "git+https://github.com/nrkno/tv-automation-atem-state#98b5318cb5fbccfc1dabbca8ae89cc3a515eaf2e"
+  resolved "git+https://github.com/nrkno/tv-automation-atem-state#904d379fe50029ff54578179be1bcfcff28a860e"
   dependencies:
     atem-connection "git+https://github.com/nrkno/tv-automation-atem-connection#dist"
     tslib "^1.9.0"
@@ -5390,7 +5390,7 @@ timed-out@^3.0.0:
 
 "timeline-state-resolver@git+https://github.com/nrkno/tv-automation-state-timeline-resolver.git#dist":
   version "0.0.0"
-  resolved "git+https://github.com/nrkno/tv-automation-state-timeline-resolver.git#60fa491f386f43301f6a542bfd5c2fae5a47d58f"
+  resolved "git+https://github.com/nrkno/tv-automation-state-timeline-resolver.git#8ce49639d197873feb678f8e6ec5da6e53a6c739"
   dependencies:
     "@types/request" "^2.47.0"
     atem-connection "git+https://github.com/nrkno/tv-automation-atem-connection#dist"
