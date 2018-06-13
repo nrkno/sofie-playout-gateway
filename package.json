@@ -25,6 +25,7 @@
     "info": "npm-scripts-info",
     "build": "trash dist && yarn build:main",
     "buildstart": "yarn build && yarn start",
+    "buildinspect": "yarn build && yarn inspect",
     "build:main": "tsc -p tsconfig.json",
     "lint": "tslint --project tsconfig.jest.json --config tslint.json",
     "unit": "jest",
@@ -42,6 +43,7 @@
     "release": "yarn reset && yarn test && yarn docs:publish && yarn changelog",
     "reset": "git clean -dfx && git reset --hard && yarn",
     "ci": "yarn test",
+    "inspect": "node --inspect dist/index.js",
     "start": "node dist/index.js"
   },
   "scripts-info": {
