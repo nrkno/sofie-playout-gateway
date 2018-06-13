@@ -60,7 +60,8 @@ if (logPath) {
 	// Log json to console
 	logger.add(Winston.transports.Console,{
 		handleExceptions: true,
-		json: true
+		json: true,
+		stringify: (obj) => JSON.stringify(obj) // make single line
 	})
 	// Hijack console.log:
 	// @ts-ignore
