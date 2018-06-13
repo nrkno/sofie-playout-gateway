@@ -128,7 +128,8 @@ export class TSRHandler {
 				})
 			})
 			this.tsr.on('timelineCallback', (time, objId, callbackName, data) => {
-				console.log('timelineCallback ' + callbackName, new Date(time).toISOString() )
+				// console.log('timelineCallback ' + callbackName, objId, new Date(time).toISOString() )
+				callbackName = callbackName
 				this._coreHandler.core.callMethod(P.methods.segmentLinePlaybackStarted, [{
 					roId: data.roId,
 					slId: data.slId,
@@ -185,6 +186,7 @@ export class TSRHandler {
 		return this.tsr.destroy()
 	}
 	private _triggerupdateTimeline () {
+		console.log('got data')
 		if (this._triggerupdateTimelineTimeout) {
 			clearTimeout(this._triggerupdateTimelineTimeout)
 		}
@@ -193,6 +195,7 @@ export class TSRHandler {
 		}, 20)
 	}
 	private _updateTimeline () {
+		console.log('_updateTimeline')
 		let transformedTimeline = this._transformTimeline(this._coreHandler.core.getCollection('timeline').find((o) => {
 			return (
 				_.isArray(o.deviceId) ?
@@ -200,7 +203,11 @@ export class TSRHandler {
 				o.deviceId === this._coreHandler.core.deviceId
 			)
 		}) as Array<TimelineObj>)
-		this.tsr.timeline = transformedTimeline
+		if (transformedTimeline) {
+			this.tsr.timeline = transformedTimeline
+		} else {
+			this.logger.warn('Did NOT update Timeline due to an error')
+		}
 	}
 	private _triggerupdateMapping () {
 		if (this._triggerupdateMappingTimeout) {
@@ -321,7 +328,7 @@ export class TSRHandler {
 	 * Go through and transform timeline and generalize the Core-specific things
 	 * @param timeline
 	 */
-	private _transformTimeline (timeline: Array<TimelineObj>): Array<TimelineContentObject> {
+	private _transformTimeline (timeline: Array<TimelineObj>): Array<TimelineContentObject> | null {
 
 		let transformObject = (obj: TimelineObj): TimelineContentObject => {
 			let transformedObj = clone(_.extend({
@@ -344,18 +351,23 @@ export class TSRHandler {
 		   return transformedObj
 		}
 
+		// let doTransform = (objs: Array<TimelineObj>) => {
+		// }
 		let groupObjects: {[id: string]: TimelineContentObject} = {}
 		let transformedTimeline: Array<TimelineContentObject> = []
-		let doTransform = (objs: Array<TimelineObj>) => {
+		let objs = timeline
+		let i
+		let startTime = Date.now()
+		for (i = 0; i < 1000; i++) {
 			let objsLeft: Array<TimelineObj> = []
-			let changedSomething: boolean = false
+			let changedObjects: number = 0
 			_.each(objs, (obj: TimelineObj) => {
 
 				let transformedObj = transformObject(obj)
 
 				if (obj.isGroup) {
 					groupObjects[transformedObj.id] = transformedObj
-					changedSomething = true
+					changedObjects++
 				}
 				if (obj.inGroup) {
 					let groupObj = groupObjects[obj.inGroup]
@@ -363,7 +375,7 @@ export class TSRHandler {
 						// Add object into group:
 						if (groupObj.content.objects) {
 							groupObj.content.objects.push(transformedObj)
-							changedSomething = true
+							changedObjects++
 						}
 					} else {
 						// referenced group not found, try again later:
@@ -372,15 +384,31 @@ export class TSRHandler {
 				} else {
 					// Add object to timeline
 					transformedTimeline.push(transformedObj)
-					changedSomething = true
+					changedObjects++
 				}
 			})
 			// Iterate again?
-			if (objsLeft.length && changedSomething) {
-				doTransform(objsLeft)
+			if (!objsLeft.length || !changedObjects) {
+				// dont iterate again
+				break
+			} else {
+				console.log('iterate again', changedObjects, i)
+
+				if (Date.now() - startTime > 5000) {
+					this.logger.error('Timeline transform timeout!')
+					// timeout
+					return null
+				}
 			}
 		}
-		doTransform(timeline)
+		if (i >= 1000) {
+			this.logger.error('Timeline transform reached it\'s maximum number of iterations!')
+			return null
+		} else if (Date.now() - startTime > 1000) {
+			this.logger.warn('Timeline resolve was slow (' + timeline.length + ' objects in ' + (Date.now() - startTime) + 'ms)')
+		} else if (i >= 900) {
+			this.logger.warn('Timeline transform did more than 900 iterations (' + timeline.length + ' objects')
+		}
 		return transformedTimeline
 
 	}
