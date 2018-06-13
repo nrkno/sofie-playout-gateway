@@ -60,7 +60,8 @@ if (logPath) {
 	// Log json to console
 	logger.add(Winston.transports.Console,{
 		handleExceptions: true,
-		json: true
+		json: true,
+		stringify: (obj) => JSON.stringify(obj) // make single line
 	})
 	// Hijack console.log:
 	// @ts-ignore
@@ -75,8 +76,11 @@ if (logPath) {
 }
 
 // Because the default NodeJS-handler sucks and wont display error properly
-process.on('unhandledRejection', e => {
-	logger.error('Unhandled Promise rejection:', e, e.reason, e.stack)
+process.on('unhandledRejection', (e: any) => {
+	logger.error('Unhandled Promise rejection:', e, e.reason || e.message, e.stack)
+})
+process.on('warning', (e: any) => {
+	logger.warn('Unhandled warning:', e, e.reason || e.message, e.stack)
 })
 
 logger.info('------------------------------------------------------------------')
