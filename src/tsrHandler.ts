@@ -186,13 +186,84 @@ export class TSRHandler {
 		return this.tsr.destroy()
 	}
 	private _triggerupdateTimeline () {
-		console.log('got data')
+		// console.log('got data')
 		if (this._triggerupdateTimelineTimeout) {
 			clearTimeout(this._triggerupdateTimelineTimeout)
 		}
-		this._triggerupdateTimelineTimeout = setTimeout(() => {
-			this._updateTimeline()
-		}, 20)
+
+		let experimentalMessageWaiting = true
+		if (experimentalMessageWaiting) {
+			/**
+			 * In this mode, we're trying a more aggressive strategy to figure out if messages
+			 * are still arriving from Core (because we don't want to resolve a partial timeline).
+			 * Instead of just waiting a "safe" time, we hijack into the websocket parser to determine
+			 * if data is currently arriving.
+			 */
+
+			try {
+
+				// @ts-ignore
+				let socket: any = this._coreHandler.core._ddp.ddpClient.socket
+
+				if (!socket.setupFakeDriver) {
+					socket.setupFakeDriver = true
+					socket.receivingMessage = false
+					try {
+
+						// @ts-ignore
+						let driver = socket._driver
+
+						let orgParse = driver.parse
+						driver.parse = function (...args) {
+							// console.log('---------------Parse')
+
+							// This is called when data starts arriving (?)
+							socket.receivingMessage = true
+							orgParse.call(driver, ...args)
+						}
+
+						socket.on('message', () => {
+							// console.log('---------------Message')
+
+							// The message has been recieved and emitted
+							socket.receivingMessage = false
+						})
+						// console.log('driver', driver)
+						// console.log('driver.parse', driver.parse)
+					} catch (e) {
+						this.logger.warn(e)
+					}
+				}
+
+				let time = 0
+				let checkIfNotSending = () => {
+					if (!socket.receivingMessage) {
+						if (time > 2) {
+							// console.log('updating timeline after ' + time)
+							this._updateTimeline()
+							return
+						}
+					}
+					// check again later
+					time++
+					this._triggerupdateTimelineTimeout = setTimeout(checkIfNotSending, 1)
+				}
+				this._triggerupdateTimelineTimeout = setTimeout(checkIfNotSending, 1)
+				time++
+			} catch (e) {
+				this.logger.warn(e)
+
+				// Fallback to old way:
+				this._triggerupdateTimelineTimeout = setTimeout(() => {
+					this._updateTimeline()
+				}, 20)
+			}
+		} else {
+
+			this._triggerupdateTimelineTimeout = setTimeout(() => {
+				this._updateTimeline()
+			}, 20)
+		}
 	}
 	private _updateTimeline () {
 		console.log('_updateTimeline')
@@ -358,6 +429,8 @@ export class TSRHandler {
 		let objs = timeline
 		let i
 		let startTime = Date.now()
+		let prevChangedObjects: number = -1
+		let changedObjectsHasBeenSame = 0
 		for (i = 0; i < 1000; i++) {
 			let objsLeft: Array<TimelineObj> = []
 			let changedObjects: number = 0
@@ -392,6 +465,19 @@ export class TSRHandler {
 				// dont iterate again
 				break
 			} else {
+				// check if changeObjects has been the same for a while, if so, it's probably a recursive loop
+				if (i > 20) {
+					if (prevChangedObjects === changedObjects) {
+						changedObjectsHasBeenSame++
+					} else {
+						changedObjectsHasBeenSame = 0
+					}
+					if (changedObjectsHasBeenSame > 20) {
+						this.logger.error('Timeline transform has gone into an infinite loop!')
+						return null
+					}
+				}
+				prevChangedObjects = changedObjects
 				console.log('iterate again', changedObjects, i)
 
 				if (Date.now() - startTime > 5000) {
@@ -400,6 +486,7 @@ export class TSRHandler {
 					return null
 				}
 			}
+			objs = objsLeft
 		}
 		if (i >= 1000) {
 			this.logger.error('Timeline transform reached it\'s maximum number of iterations!')
