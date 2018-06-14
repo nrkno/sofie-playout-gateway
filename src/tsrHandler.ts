@@ -358,6 +358,8 @@ export class TSRHandler {
 		let objs = timeline
 		let i
 		let startTime = Date.now()
+		let prevChangedObjects: number = -1
+		let changedObjectsHasBeenSame = 0
 		for (i = 0; i < 1000; i++) {
 			let objsLeft: Array<TimelineObj> = []
 			let changedObjects: number = 0
@@ -392,6 +394,19 @@ export class TSRHandler {
 				// dont iterate again
 				break
 			} else {
+				// check if changeObjects has been the same for a while, if so, it's probably a recursive loop
+				if (i > 20) {
+					if (prevChangedObjects === changedObjects) {
+						changedObjectsHasBeenSame++
+					} else {
+						changedObjectsHasBeenSame = 0
+					}
+					if (changedObjectsHasBeenSame > 20) {
+						this.logger.error('Timeline transform has gone into an infinite loop!')
+						return null
+					}
+				}
+				prevChangedObjects = changedObjects
 				console.log('iterate again', changedObjects, i)
 
 				if (Date.now() - startTime > 5000) {
@@ -400,6 +415,7 @@ export class TSRHandler {
 					return null
 				}
 			}
+			objs = objsLeft
 		}
 		if (i >= 1000) {
 			this.logger.error('Timeline transform reached it\'s maximum number of iterations!')
