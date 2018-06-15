@@ -34,7 +34,7 @@ export class CoreHandler {
 			this.logger.info('Core Connected!')
 			this.setupObserversAndSubscriptions()
 			.catch((e) => {
-				this.logger.error(e)
+				this.logger.error('Core Error:', e)
 			})
 			if (this._onConnected) this._onConnected()
 		})
