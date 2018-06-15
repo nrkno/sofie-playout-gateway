@@ -65,26 +65,26 @@
     "node": ">=4.5"
   },
   "devDependencies": {
-    "@types/jest": "^22.1.3",
+    "@types/jest": "^23.1.0",
     "@types/node": "^8.0.4",
     "@types/underscore": "^1.8.8",
     "@types/winston": "^2.3.9",
-    "codecov": "^2.2.0",
+    "codecov": "^3.0.2",
     "cpx": "^1.5.0",
-    "gh-pages": "^1.0.0",
-    "jest": "^22.4.2",
+    "gh-pages": "^1.2.0",
+    "jest": "^23.1.0",
     "mkdirp": "^0.5.1",
-    "npm-scripts-info": "^0.3.6",
-    "nyc": "^11.0.3",
+    "npm-scripts-info": "^0.3.7",
+    "nyc": "^12.0.2",
     "opn-cli": "^3.1.0",
     "sleep-ms": "^2.0.1",
-    "standard-version": "^4.0.0",
+    "standard-version": "^4.4.0",
     "trash-cli": "^1.4.0",
-    "ts-jest": "^22.0.4",
-    "tslint": "^5.4.3",
-    "tslint-config-standard": "^6.0.1",
-    "typedoc": "^0.8.0",
-    "typescript": "^2.4.1"
+    "ts-jest": "^22.4.6",
+    "tslint": "^5.10.0",
+    "tslint-config-standard": "^7.0.0",
+    "typedoc": "^0.11.1",
+    "typescript": "^2.9.2"
   },
   "keywords": [
     "broadcast",
@@ -101,13 +101,13 @@
   ],
   "dependencies": {
     "@types/pouchdb-node": "^6.1.2",
-    "core-integration": "git+https://github.com/nrkno/tv-automation-server-core-integration.git#dist",
+    "tv-automation-server-core-integration": "0.1.1",
     "fast-clone": "^1.5.3",
     "pouchdb-node": "^6.4.3",
     "promise-sequence": "^0.3.1",
-    "timeline-state-resolver": "git+https://github.com/nrkno/tv-automation-state-timeline-resolver.git#dist",
-    "tslib": "^1.6.0",
-    "underscore": "^1.8.3",
+    "timeline-state-resolver": "^0.2.0",
+    "tslib": "^1.9.2",
+    "underscore": "^1.9.1",
     "winston": "^2.4.2"
   }
 }

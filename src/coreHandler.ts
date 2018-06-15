@@ -2,7 +2,7 @@
 import { CoreConnection,
 	CoreOptions,
 	PeripheralDeviceAPI as P
-} from 'core-integration'
+} from 'tv-automation-server-core-integration'
 
 import * as _ from 'underscore'
 import * as Winston from 'winston'

@@ -13,7 +13,7 @@ let clone = require('fast-clone')
 import * as Winston from 'winston'
 
 import * as _ from 'underscore'
-import { CoreConnection, PeripheralDeviceAPI as P } from 'core-integration'
+import { CoreConnection, PeripheralDeviceAPI as P } from 'tv-automation-server-core-integration'
 
 export interface TSRConfig {
 }
