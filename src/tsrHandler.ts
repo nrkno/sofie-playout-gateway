@@ -13,7 +13,7 @@ let clone = require('fast-clone')
 import * as Winston from 'winston'
 
 import * as _ from 'underscore'
-import { CoreConnection, PeripheralDeviceAPI as P } from 'core-integration'
+import { CoreConnection, PeripheralDeviceAPI as P } from 'tv-automation-server-core-integration'
 
 export interface TSRConfig {
 }
@@ -114,10 +114,10 @@ export class TSRHandler {
 			this.setupObservers()
 
 			this.tsr.on('error', (e, ...args) => {
-				this.logger.error(e, ...args)
+				this.logger.error('TSR', e, ...args)
 			})
 			this.tsr.on('info', (msg, ...args) => {
-				this.logger.info(msg, ...args)
+				this.logger.info('TSR',msg, ...args)
 			})
 
 			this.tsr.on('setTimelineTriggerTime', (r: TimelineTriggerTimeResult) => {
@@ -308,6 +308,7 @@ export class TSRHandler {
 		}, 20)
 	}
 	private _updateDevices () {
+		// TODO: rewrite so _addDevice & _removeDevice uses promises
 		let peripheralDevices = this._coreHandler.core.getCollection('peripheralDevices')
 		let peripheralDevice = peripheralDevices.findOne(this._coreHandler.core.deviceId)
 

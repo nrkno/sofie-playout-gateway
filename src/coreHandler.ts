@@ -2,7 +2,7 @@
 import { CoreConnection,
 	CoreOptions,
 	PeripheralDeviceAPI as P
-} from 'core-integration'
+} from 'tv-automation-server-core-integration'
 
 import * as _ from 'underscore'
 import * as Winston from 'winston'
@@ -34,7 +34,7 @@ export class CoreHandler {
 			this.logger.info('Core Connected!')
 			this.setupObserversAndSubscriptions()
 			.catch((e) => {
-				this.logger.error(e)
+				this.logger.error('Core Error:', e)
 			})
 			if (this._onConnected) this._onConnected()
 		})

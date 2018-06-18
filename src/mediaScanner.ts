@@ -1,7 +1,7 @@
 import * as PouchDB from 'pouchdb-node'
 import * as _ from 'underscore'
 import * as PromiseSequence from 'promise-sequence'
-import { PeripheralDeviceAPI } from 'core-integration'
+import { PeripheralDeviceAPI } from 'tv-automation-server-core-integration'
 import { CoreHandler } from './coreHandler'
 
 export interface MediaScannerConfig {
