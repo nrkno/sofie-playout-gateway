@@ -477,6 +477,7 @@ export class TSRHandler {
 					}
 					if (changedObjectsHasBeenSame > 20) {
 						this.logger.error('Timeline transform has gone into an infinite loop!')
+						this.logger.warn(JSON.stringify(timeline))
 						return null
 					}
 				}
@@ -485,6 +486,7 @@ export class TSRHandler {
 
 				if (Date.now() - startTime > 5000) {
 					this.logger.error('Timeline transform timeout!')
+					this.logger.warn(JSON.stringify(timeline))
 					// timeout
 					return null
 				}
@@ -493,6 +495,7 @@ export class TSRHandler {
 		}
 		if (i >= 1000) {
 			this.logger.error('Timeline transform reached it\'s maximum number of iterations!')
+			this.logger.warn(JSON.stringify(timeline))
 			return null
 		} else if (Date.now() - startTime > 1000) {
 			this.logger.warn('Timeline resolve was slow (' + timeline.length + ' objects in ' + (Date.now() - startTime) + 'ms)')
