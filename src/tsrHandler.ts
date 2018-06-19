@@ -88,6 +88,8 @@ export class TSRHandler {
 		this._config = config
 		this._coreHandler = coreHandler
 
+		this._coreHandler.setTSR(this)
+
 		this._config = this._config // ts-lint: not used fix
 		console.log('========')
 
