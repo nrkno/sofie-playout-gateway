@@ -65,6 +65,9 @@ export interface TimelineObj { // interface from Core
 	priority?: number
 	externalFunction?: string
 }
+export interface TimelineContentObjectTmp extends TimelineContentObject {
+	inGroup?: string
+}
 /**
  * Represents a connection between Gateway and TSR
  */
@@ -403,106 +406,64 @@ export class TSRHandler {
 	 * @param timeline
 	 */
 	private _transformTimeline (timeline: Array<TimelineObj>): Array<TimelineContentObject> | null {
+		// _transformTimeline (timeline: Array<TimelineObj>): Array<TimelineContentObject> | null {
 
-		let transformObject = (obj: TimelineObj): TimelineContentObject => {
+		let transformObject = (obj: TimelineObj): TimelineContentObjectTmp => {
 			let transformedObj = clone(_.extend({
-			   id: obj['_id'],
-			   roId: obj['roId']
-		   }, _.omit(obj, ['_id', 'deviceId', 'siId'])))
+				id: obj['_id'],
+				roId: obj['roId']
+			}, _.omit(obj, ['_id', 'deviceId', 'siId'])))
 
-		   if (!transformedObj.content) transformedObj.content = {}
-		   if (!transformedObj.content.objects) transformedObj.content.objects = []
+			if (!transformedObj.content) transformedObj.content = {}
+			if (transformedObj.isGroup) {
+				if (!transformedObj.content.objects) transformedObj.content.objects = []
+			}
 
-		   if (obj['slId']) {
-			   // Will cause a callback to be called, when the object starts to play:
-			   transformedObj.content.callBack = 'segmentLinePlaybackStarted'
-			   transformedObj.content.callBackData = {
-				   roId: obj.roId,
-				   slId: obj['slId']
-			   }
-		   }
-
-		   return transformedObj
-		}
-
-		// let doTransform = (objs: Array<TimelineObj>) => {
-		// }
-		let groupObjects: {[id: string]: TimelineContentObject} = {}
-		let transformedTimeline: Array<TimelineContentObject> = []
-		let objs = timeline
-		let i
-		let startTime = Date.now()
-		let prevChangedObjects: number = -1
-		let changedObjectsHasBeenSame = 0
-		for (i = 0; i < 1000; i++) {
-			let objsLeft: Array<TimelineObj> = []
-			let changedObjects: number = 0
-			_.each(objs, (obj: TimelineObj) => {
-
-				let transformedObj = transformObject(obj)
-
-				if (obj.isGroup) {
-					groupObjects[transformedObj.id] = transformedObj
-					changedObjects++
-				}
-				if (obj.inGroup) {
-					let groupObj = groupObjects[obj.inGroup]
-					if (groupObj) {
-						// Add object into group:
-						if (groupObj.content.objects) {
-							groupObj.content.objects.push(transformedObj)
-							changedObjects++
-						}
-					} else {
-						// referenced group not found, try again later:
-						objsLeft.push(obj)
-					}
-				} else {
-					// Add object to timeline
-					transformedTimeline.push(transformedObj)
-					changedObjects++
-				}
-			})
-			// Iterate again?
-			if (!objsLeft.length || !changedObjects) {
-				// dont iterate again
-				break
-			} else {
-				// check if changeObjects has been the same for a while, if so, it's probably a recursive loop
-				if (i > 20) {
-					if (prevChangedObjects === changedObjects) {
-						changedObjectsHasBeenSame++
-					} else {
-						changedObjectsHasBeenSame = 0
-					}
-					if (changedObjectsHasBeenSame > 20) {
-						this.logger.error('Timeline transform has gone into an infinite loop!')
-						this.logger.warn(JSON.stringify(timeline))
-						return null
-					}
-				}
-				prevChangedObjects = changedObjects
-				console.log('iterate again', changedObjects, i)
-
-				if (Date.now() - startTime > 5000) {
-					this.logger.error('Timeline transform timeout!')
-					this.logger.warn(JSON.stringify(timeline))
-					// timeout
-					return null
+			if (obj['slId']) {
+				// Will cause a callback to be called, when the object starts to play:
+				transformedObj.content.callBack = 'segmentLinePlaybackStarted'
+				transformedObj.content.callBackData = {
+					roId: obj.roId,
+					slId: obj['slId']
 				}
 			}
-			objs = objsLeft
-		}
-		if (i >= 1000) {
-			this.logger.error('Timeline transform reached it\'s maximum number of iterations!')
-			this.logger.warn(JSON.stringify(timeline))
-			return null
-		} else if (Date.now() - startTime > 1000) {
-			this.logger.warn('Timeline resolve was slow (' + timeline.length + ' objects in ' + (Date.now() - startTime) + 'ms)')
-		} else if (i >= 900) {
-			this.logger.warn('Timeline transform did more than 900 iterations (' + timeline.length + ' objects')
-		}
-		return transformedTimeline
 
+			return transformedObj
+		}
+
+		// let doTransform = (objs: Array<any>) => {
+		// }
+
+		let objs = timeline
+		// First, transform and convert timeline to a key-value store, for fast referencing:
+		let objects: {[id: string]: TimelineContentObjectTmp} = {}
+		_.each(objs, (obj: TimelineObj) => {
+			let transformedObj: TimelineContentObjectTmp = transformObject(obj)
+			objects[transformedObj.id] = transformedObj
+		})
+
+		// Go through all objects:
+		let transformedTimeline: Array<TimelineContentObject> = []
+		_.each(objects, (obj: TimelineContentObjectTmp) => {
+			if (obj.inGroup) {
+				let groupObj = objects[obj.inGroup]
+				if (groupObj) {
+					// Add object into group:
+					if (!groupObj.content.objects) groupObj.content.objects = []
+					if (groupObj.content.objects) {
+						delete obj.inGroup
+						groupObj.content.objects.push(obj)
+					}
+				} else {
+					// referenced group not found
+					this.logger.warn('Referenced group "' + obj.inGroup + '" not found! Referenced by "' + obj.id + '"')
+				}
+			} else {
+				// Add object to timeline
+				delete obj.inGroup
+				transformedTimeline.push(obj)
+			}
+		})
+		return transformedTimeline
 	}
 }
