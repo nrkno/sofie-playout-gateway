@@ -139,7 +139,8 @@ export class CoreHandler {
 		}
 		return _.extend(credentials, {
 			deviceType: (parentProcess ? P.DeviceType.PLAYOUT : P.DeviceType.OTHER),
-			deviceName: name
+			deviceName: name,
+			watchDog: true
 		})
 	}
 	onConnected (fcn: () => any) {
@@ -241,6 +242,10 @@ export class CoreHandler {
 		} else {
 			throw Error('TSR not set up!')
 		}
+	}
+	pingResponse (message: string) {
+		this.core.setPingResponse(message)
+		return true
 	}
 
 }

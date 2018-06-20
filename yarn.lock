@@ -5562,9 +5562,9 @@ tunnel-agent@^0.6.0:
   dependencies:
     safe-buffer "^5.0.1"
 
-tv-automation-server-core-integration@0.1.2:
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/tv-automation-server-core-integration/-/tv-automation-server-core-integration-0.1.2.tgz#a719fbc1595b718df2e4f554291882e3a12bf8e3"
+tv-automation-server-core-integration@0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/tv-automation-server-core-integration/-/tv-automation-server-core-integration-0.2.0.tgz#f1c34d39466ab6ef323bbe9df003b2bfc700d0d1"
   dependencies:
     data-store "^3.0.1"
     ddp "git+http://github.com/nytamin/node-ddp-client.git#dev"
