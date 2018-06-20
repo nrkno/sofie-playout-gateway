@@ -96,6 +96,13 @@ export class CoreHandler {
 		.then(() => {
 			this.logger.info('Core: Subscriptions are set up!')
 
+			if (this._observers.length) {
+				this.logger.info('CoreMos: Clearing observers..')
+				this._observers.forEach((obs) => {
+					obs.stop()
+				})
+				this._observers = []
+			}
 			// setup observers
 			this.setupObserverForPeripheralDeviceCommands(this)
 
