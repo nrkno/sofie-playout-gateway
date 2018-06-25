@@ -1338,9 +1338,9 @@ dashdash@^1.12.0:
   dependencies:
     assert-plus "^1.0.0"
 
-data-store@^3.0.1:
+"data-store@git+http://github.com/nytamin/data-store.git":
   version "3.0.1"
-  resolved "https://registry.yarnpkg.com/data-store/-/data-store-3.0.1.tgz#bf96dfac67b1c5153ef43592f3c74cbe185b9636"
+  resolved "git+http://github.com/nytamin/data-store.git#8d4779223a182666e0d80ba19d3a5b7b81fbce17"
 
 data-urls@^1.0.0:
   version "1.0.0"
@@ -5562,11 +5562,11 @@ tunnel-agent@^0.6.0:
   dependencies:
     safe-buffer "^5.0.1"
 
-tv-automation-server-core-integration@0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/tv-automation-server-core-integration/-/tv-automation-server-core-integration-0.2.0.tgz#f1c34d39466ab6ef323bbe9df003b2bfc700d0d1"
+tv-automation-server-core-integration@0.3.1:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/tv-automation-server-core-integration/-/tv-automation-server-core-integration-0.3.1.tgz#765121e118a7e0f00a7eeb26e7170bf27fa3475f"
   dependencies:
-    data-store "^3.0.1"
+    data-store "git+http://github.com/nytamin/data-store.git"
     ddp "git+http://github.com/nytamin/node-ddp-client.git#dev"
     ddp-ejson "~0.8.1-3"
     ddp-random "~0.8.1-1"

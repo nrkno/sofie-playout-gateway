@@ -84,14 +84,14 @@ export class CoreHandler {
 		this.logger.info('Core: Setting up subscriptions..')
 		this.logger.info('DeviceId: ' + this.core.deviceId)
 		return Promise.all([
-			this.core.subscribe('timeline', {
+			this.core.autoSubscribe('timeline', {
 				deviceId: this.core.deviceId
 			}),
-			this.core.subscribe('peripheralDevices', {
+			this.core.autoSubscribe('peripheralDevices', {
 				_id: this.core.deviceId
 			}),
-			this.core.subscribe('studioInstallationOfDevice', this.core.deviceId),
-			this.core.subscribe('peripheralDeviceCommands', this.core.deviceId)
+			this.core.autoSubscribe('studioInstallationOfDevice', this.core.deviceId),
+			this.core.autoSubscribe('peripheralDeviceCommands', this.core.deviceId)
 		])
 		.then(() => {
 			this.logger.info('Core: Subscriptions are set up!')
