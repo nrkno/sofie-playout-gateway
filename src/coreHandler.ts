@@ -11,7 +11,8 @@ import { TSRHandler } from './tsrHandler'
 
 export interface CoreConfig {
 	host: string,
-	port: number
+	port: number,
+	watchdog: boolean
 }
 export interface PeripheralDeviceCommand {
 	_id: string
@@ -37,6 +38,7 @@ export class CoreHandler {
 	private _executedFunctions: {[id: string]: boolean} = {}
 	private _observers: Array<any> = []
 	private _tsrHandler?: TSRHandler
+	private _coreConfig?: CoreConfig
 
 	constructor (logger: Winston.LoggerInstance, deviceOptions: DeviceConfig) {
 		this.logger = logger
@@ -45,6 +47,7 @@ export class CoreHandler {
 
 	init (config: CoreConfig): Promise<void> {
 		// this.logger.info('========')
+		this._coreConfig = config
 		this.core = new CoreConnection(this.getCoreConnectionOptions('Playout: Parent process', 'PlayoutCoreParent', true))
 
 		this.core.onConnected(() => {
@@ -140,7 +143,7 @@ export class CoreHandler {
 		return _.extend(credentials, {
 			deviceType: (parentProcess ? P.DeviceType.PLAYOUT : P.DeviceType.OTHER),
 			deviceName: name,
-			watchDog: true
+			watchDog: (this._coreConfig ? this._coreConfig.watchdog : true)
 		})
 	}
 	onConnected (fcn: () => any) {
