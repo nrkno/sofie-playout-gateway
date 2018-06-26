@@ -11,7 +11,8 @@ import { TSRHandler } from './tsrHandler'
 
 export interface CoreConfig {
 	host: string,
-	port: number
+	port: number,
+	watchdog: boolean
 }
 export interface PeripheralDeviceCommand {
 	_id: string
@@ -37,6 +38,7 @@ export class CoreHandler {
 	private _executedFunctions: {[id: string]: boolean} = {}
 	private _observers: Array<any> = []
 	private _tsrHandler?: TSRHandler
+	private _coreConfig?: CoreConfig
 
 	constructor (logger: Winston.LoggerInstance, deviceOptions: DeviceConfig) {
 		this.logger = logger
@@ -45,6 +47,7 @@ export class CoreHandler {
 
 	init (config: CoreConfig): Promise<void> {
 		// this.logger.info('========')
+		this._coreConfig = config
 		this.core = new CoreConnection(this.getCoreConnectionOptions('Playout: Parent process', 'PlayoutCoreParent', true))
 
 		this.core.onConnected(() => {
@@ -84,14 +87,14 @@ export class CoreHandler {
 		this.logger.info('Core: Setting up subscriptions..')
 		this.logger.info('DeviceId: ' + this.core.deviceId)
 		return Promise.all([
-			this.core.subscribe('timeline', {
+			this.core.autoSubscribe('timeline', {
 				deviceId: this.core.deviceId
 			}),
-			this.core.subscribe('peripheralDevices', {
+			this.core.autoSubscribe('peripheralDevices', {
 				_id: this.core.deviceId
 			}),
-			this.core.subscribe('studioInstallationOfDevice', this.core.deviceId),
-			this.core.subscribe('peripheralDeviceCommands', this.core.deviceId)
+			this.core.autoSubscribe('studioInstallationOfDevice', this.core.deviceId),
+			this.core.autoSubscribe('peripheralDeviceCommands', this.core.deviceId)
 		])
 		.then(() => {
 			this.logger.info('Core: Subscriptions are set up!')
@@ -139,7 +142,8 @@ export class CoreHandler {
 		}
 		return _.extend(credentials, {
 			deviceType: (parentProcess ? P.DeviceType.PLAYOUT : P.DeviceType.OTHER),
-			deviceName: name
+			deviceName: name,
+			watchDog: (this._coreConfig ? this._coreConfig.watchdog : true)
 		})
 	}
 	onConnected (fcn: () => any) {
@@ -241,6 +245,10 @@ export class CoreHandler {
 		} else {
 			throw Error('TSR not set up!')
 		}
+	}
+	pingResponse (message: string) {
+		this.core.setPingResponse(message)
+		return true
 	}
 
 }

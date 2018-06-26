@@ -7,11 +7,13 @@ let port: number 		= parseInt(process.env.CORE_PORT + '', 10) 	|| 3000
 let logPath: string 	= process.env.CORE_LOG						|| ''
 let deviceId: string 	= process.env.DEVICE_ID						|| ''
 let deviceToken: string 	= process.env.DEVICE_TOKEN 				|| ''
+let disableWatchdog: boolean = (process.env.DISABLE_WATCHDOG === '1') 		|| false
 
 logPath = logPath
 
 let prevProcessArg = ''
 process.argv.forEach((val) => {
+	val = val + ''
 	if (prevProcessArg.match(/-host/i)) {
 		host = val
 	} else if (prevProcessArg.match(/-port/i)) {
@@ -22,6 +24,8 @@ process.argv.forEach((val) => {
 		deviceId = val
 	} else if (prevProcessArg.match(/-token/i)) {
 		deviceToken = val
+	} else if (val.match(/-disableWatchdog/i)) {
+		disableWatchdog = true
 	}
 	prevProcessArg = val + ''
 })
@@ -85,6 +89,7 @@ process.on('warning', (e: any) => {
 
 logger.info('------------------------------------------------------------------')
 logger.info('Starting Playout Gateway')
+if (disableWatchdog) logger.info('Watchdog is disabled!')
 let c = new Connector(logger)
 let config: Config = {
 	device: {
@@ -93,7 +98,8 @@ let config: Config = {
 	},
 	core: {
 		host: host,
-		port: port
+		port: port,
+		watchdog: !disableWatchdog
 	},
 	tsr: {
 		devices: {} // to be fetched from Core
