@@ -101,12 +101,12 @@
   ],
   "dependencies": {
     "@types/pouchdb-node": "^6.1.2",
-    "tv-automation-server-core-integration": "0.3.2",
     "fast-clone": "^1.5.3",
     "pouchdb-node": "^6.4.3",
     "promise-sequence": "^0.3.1",
-    "timeline-state-resolver": "^0.6.2",
+    "timeline-state-resolver": "^0.6.3",
     "tslib": "^1.9.2",
+    "tv-automation-server-core-integration": "0.3.2",
     "underscore": "^1.9.1",
     "winston": "^2.4.2"
   }
