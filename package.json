@@ -104,7 +104,7 @@
     "fast-clone": "^1.5.3",
     "pouchdb-node": "^6.4.3",
     "promise-sequence": "^0.3.1",
-    "timeline-state-resolver": "^0.6.4",
+    "timeline-state-resolver": "^0.6.5",
     "tslib": "^1.9.2",
     "tv-automation-server-core-integration": "0.3.2",
     "underscore": "^1.9.1",
