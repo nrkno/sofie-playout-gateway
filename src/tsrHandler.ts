@@ -134,13 +134,10 @@ export class TSRHandler {
 			})
 			this.tsr.on('timelineCallback', (time, objId, callbackName, data) => {
 				// console.log('timelineCallback ' + callbackName, objId, new Date(time).toISOString() )
-				callbackName = callbackName
-				this._coreHandler.core.callMethod(P.methods.segmentLinePlaybackStarted, [{
-					roId: data.roId,
-					slId: data.slId,
+				this._coreHandler.core.callMethod(P.methods[callbackName], [Object.assign({}, data, {
 					objId: objId,
 					time: time
-				}])
+				})])
 				.catch((e) => {
 					this.logger.error('Error in timelineCallback', e)
 				})
@@ -425,6 +422,14 @@ export class TSRHandler {
 				transformedObj.content.callBackData = {
 					roId: obj.roId,
 					slId: obj['slId']
+				}
+			}
+			if (obj['sliId']) {
+				// Will cause a callback to be called, when the object starts to play:
+				transformedObj.content.callBack = 'segmentLineItemPlaybackStarted'
+				transformedObj.content.callBackData = {
+					roId: obj.roId,
+					sliId: obj['sliId']
 				}
 			}
 
