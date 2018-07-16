@@ -43,7 +43,8 @@ export interface TSRDevice {
 }
 export interface TimelineObj { // interface from Core
 	_id: string
-	siId: string
+	siId?: string
+	sliId?: string
 	roId: string
 	deviceId: string
 
