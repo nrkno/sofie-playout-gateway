@@ -52,7 +52,7 @@ export interface TimelineObj { // interface from Core
 		type: TriggerType
 		value: number | string
 	}
-	duration: number
+	duration: number | string
 	LLayer: string | number
 	content: {
 		type: string // TimelineContentType
