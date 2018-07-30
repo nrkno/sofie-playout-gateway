@@ -101,6 +101,7 @@
   ],
   "dependencies": {
     "@types/pouchdb-node": "^6.1.2",
+    "axios": "^0.18.0",
     "fast-clone": "^1.5.3",
     "pouchdb-node": "^6.4.3",
     "promise-sequence": "^0.3.1",
