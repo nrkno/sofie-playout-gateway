@@ -1,6 +1,5 @@
 import * as Winston from 'winston'
 import axios from 'axios'
-import * as http from 'http'
 import { CoreHandler } from './coreHandler'
 
 export interface LauncherConfig {
