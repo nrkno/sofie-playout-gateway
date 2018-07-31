@@ -233,16 +233,16 @@ export class CoreHandler {
 		}
 		return 0
 	}
-	devicesMakeReady (okToDestoryStuff?: boolean): Promise<any> {
+	devicesMakeReady (okToDestroyStuff?: boolean): Promise<any> {
 		if (this._tsrHandler) {
-			return this._tsrHandler.tsr.devicesMakeReady(okToDestoryStuff)
+			return this._tsrHandler.tsr.devicesMakeReady(okToDestroyStuff)
 		} else {
 			throw Error('TSR not set up!')
 		}
 	}
-	devicesStandDown (okToDestoryStuff?: boolean): Promise<any> {
+	devicesStandDown (okToDestroyStuff?: boolean): Promise<any> {
 		if (this._tsrHandler) {
-			return this._tsrHandler.tsr.devicesStandDown(okToDestoryStuff)
+			return this._tsrHandler.tsr.devicesStandDown(okToDestroyStuff)
 		} else {
 			throw Error('TSR not set up!')
 		}
