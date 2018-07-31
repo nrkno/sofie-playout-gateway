@@ -19,16 +19,12 @@ export class Launcher {
 
 	restartCasparCG () {
 		this.logger.info('Restarting CasparCG')
-		return new Promise<void>((resolve, reject) => {
-			axios.post(`http://${this.config.httpApiHost}:${this.config.httpApiPort}/processes/casparcg/restart`).then(res => {
-				if (res.status === 200) {
-					this.logger.info('Http request to launcher succesfull')
-					resolve()
-				} else {
-					this.logger.info('Http request to launcher rejected', res.status, res.statusText)
-					reject(res.status)
-				}
-			})
+		return axios.post(`http://${this.config.httpApiHost}:${this.config.httpApiPort}/processes/casparcg/restart`).then(res => {
+			this.logger.info('Http request to launcher succesfull')
+		}, (e) => {
+			this.logger.error('Http request to launcher rejected', e + '')
+		}).catch((e) => {
+			throw Error(e)
 		})
 	}
 }
