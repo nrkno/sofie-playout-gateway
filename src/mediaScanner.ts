@@ -109,10 +109,12 @@ export class MediaScanner {
 		collectionId: string
 	}
 	private _db: PouchDB.Database
+	private _remote: PouchDB.Database
 	private _coreHandler: CoreHandler
 	private _changes: PouchDB.Core.Changes<MediaObject>
+	private _replication: PouchDB.Replication.Replication<{}>
 
-	public init (config: MediaScannerConfig, coreHandler: CoreHandler): Promise<void> {
+	public async init (config: MediaScannerConfig, coreHandler: CoreHandler): Promise<void> {
 
 		this._config = {
 			host: config.host || '127.0.0.1',
@@ -121,11 +123,19 @@ export class MediaScanner {
 		}
 		this._coreHandler = coreHandler
 
-		console.log('========')
+		await this._coreHandler.core.getPeripheralDevice().then((device) => {
+			this._coreHandler.logger.info('device', device)
+			this._config.host = device.settings.mediaScanner.host || this._config.host
+			this._config.port = device.settings.mediaScanner.port || this._config.port
+		})
+
+		this._coreHandler.logger.info('========')
 
 		const baseUrl = 'http://' + this._config.host + ':' + this._config.port
 
-		this._db = new PouchDB(`${baseUrl}/db/_media`)
+		this._db = new PouchDB('local')
+		this._remote = new PouchDB(`${baseUrl}/db/_media`)
+		this._replication = this._remote.replicate.to(this._db, { live: true, retry: true })
 
 		// Get sequence id to start at
 		// return core.call('getMySequenceNumber', someDeviceId, (sequenceNr) => {
@@ -140,14 +150,14 @@ export class MediaScanner {
 			const newSequenceNr = changes.seq
 
 			if (changes.deleted) {
-				console.log('deleteMediaObject', changes.id, newSequenceNr)
+				this._coreHandler.logger.info('deleteMediaObject', changes.id, newSequenceNr)
 				this._sendRemoved(changes.id)
 				.catch((e) => {
 					this._coreHandler.logger.error('Error sending deledet doc', e)
 				})
 			} else if (changes.doc) {
 				const md: MediaObject = changes.doc
-				console.log('updateMediaObject', newSequenceNr, md._id)
+				this._coreHandler.logger.info('updateMediaObject', newSequenceNr, md._id)
 
 				this._sendChanged(md)
 				.catch((e) => {
@@ -160,12 +170,12 @@ export class MediaScanner {
 		}).on('error', (err) => {
 			if (err.code === 'ECONNREFUSED') {
 				// TODO: try to reconnect
-				console.log('Connection refused')
+				this._coreHandler.logger.info('Connection refused')
 			} else if (err instanceof SyntaxError) {
-				console.log('Connection terminated') // most likely
+				this._coreHandler.logger.info('Connection terminated') // most likely
 				// TODO: try to reconnect
 			} else {
-				console.log('Error', err)
+				this._coreHandler.logger.info('Error', err)
 			}
 
 			this._changes.cancel()
@@ -251,6 +261,12 @@ export class MediaScanner {
 		if (this._changes) {
 			this._changes.cancel()
 		}
+		if (this._replication) {
+			this._replication.cancel()
+		}
+		if (this._remote) {
+			this._remote.close()
+		}
 
 		return this._db.close()
 	}
@@ -302,7 +318,7 @@ export class MediaScanner {
 			docs.rows.forEach(doc => {
 				if (doc.doc) {
 					const md: MediaObject = doc.doc
-					console.log('updateMediaObject', someDeviceId, md, -1)
+					this._coreHandler.logger.info('updateMediaObject', someDeviceId, md, -1)
 				}
 			})
 
