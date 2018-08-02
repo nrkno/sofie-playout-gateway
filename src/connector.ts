@@ -97,8 +97,9 @@ export class Connector {
 		return this.mediaScanner.init(this._config.mediaScanner, this.coreHandler)
 
 	}
-	initLauncher (): Promise<Launcher> {
-		this.launcher = new Launcher(this._logger, this._config.launcher, this.coreHandler)
-		return Promise.resolve().then(() => this.launcher = this.launcher)
+	initLauncher (): Promise<void> {
+		this.launcher = new Launcher(this._logger)
+
+		return this.launcher.init(this._config.launcher, this.coreHandler)
 	}
 }

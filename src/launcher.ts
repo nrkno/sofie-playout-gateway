@@ -11,14 +11,18 @@ export class Launcher {
 	config: LauncherConfig
 	logger: Winston.LoggerInstance
 
-	constructor (logger: Winston.LoggerInstance, config: LauncherConfig, coreHandler: CoreHandler) {
+	constructor (logger: Winston.LoggerInstance) {
 		this.logger = logger
+	}
+
+	public async init (config: LauncherConfig, coreHandler: CoreHandler): Promise<void> {
 		this.config = config
 		coreHandler.restartCasparCGProcess = () => this.restartCasparCG()
-		coreHandler.core.getPeripheralDevice().then((device) => {
-			this.config.httpApiHost = device.settings.casparcgLauncher.host || this.config.httpApiHost
-			this.config.httpApiPort = device.settings.casparcgLauncher.port || this.config.httpApiPort
-		})
+
+		let device = await coreHandler.core.getPeripheralDevice()
+		let casparcgLauncherSettings = (device.settings || {}).casparcgLauncher || {}
+		this.config.httpApiHost = casparcgLauncherSettings.host || this.config.httpApiHost
+		this.config.httpApiPort = casparcgLauncherSettings.port || this.config.httpApiPort
 	}
 
 	restartCasparCG () {

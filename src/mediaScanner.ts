@@ -128,13 +128,12 @@ export class MediaScanner {
 		}
 		this._coreHandler = coreHandler
 
-		await this._coreHandler.core.getPeripheralDevice().then((device) => {
-			// this.logger.info('device', device)
+		let device = await this._coreHandler.core.getPeripheralDevice()
+		// this.logger.info('device', device)
 
-			let mediaScanner = (device.settings || {}).mediaScanner || {}
-			this._config.host = mediaScanner.host || this._config.host
-			this._config.port = mediaScanner.port || this._config.port
-		})
+		let mediaScannerSettings = (device.settings || {}).mediaScanner || {}
+		this._config.host = mediaScannerSettings.host || this._config.host
+		this._config.port = mediaScannerSettings.port || this._config.port
 
 		this.logger.info('MediaScanner init')
 
