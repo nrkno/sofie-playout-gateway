@@ -8,7 +8,6 @@ let logger = new (Winston.Logger)({
 
 if (logPath) {
 	// Log json to file, human-readable to console
-	console.log('Logging to', logPath)
 	logger.add(Winston.transports.Console, {
 		level: 'verbose',
 		handleExceptions: true,
@@ -20,6 +19,7 @@ if (logPath) {
 		json: true,
 		filename: logPath
 	})
+	logger.info('Logging to', logPath)
 	// Hijack console.log:
 	// @ts-ignore
 	let orgConsoleLog = console.log
@@ -32,13 +32,13 @@ if (logPath) {
 		}
 	}
 } else {
-	console.log('Logging to Console')
 	// Log json to console
 	logger.add(Winston.transports.Console,{
 		handleExceptions: true,
 		json: true,
 		stringify: (obj) => JSON.stringify(obj) // make single line
 	})
+	logger.info('Logging to Console')
 	// Hijack console.log:
 	// @ts-ignore
 	let orgConsoleLog = console.log

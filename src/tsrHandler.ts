@@ -95,13 +95,13 @@ export class TSRHandler {
 		this._coreHandler.setTSR(this)
 
 		this._config = this._config // ts-lint: not used fix
-		console.log('========')
+		this.logger.info('TSRHandler init')
 
 		return coreHandler.core.getPeripheralDevice()
 		.then((peripheralDevice) => {
 			let settings: TSRSettings = peripheralDevice.settings || {}
 
-			console.log('Devices', settings.devices)
+			this.logger.info('Devices', settings.devices)
 			let c: ConductorOptions = {
 				getCurrentTime: (): number => {
 					// console.log('getCurrentTime', new Date(this._coreHandler.core.getCurrentTime()).toISOString() )
@@ -127,7 +127,7 @@ export class TSRHandler {
 			})
 
 			this.tsr.on('setTimelineTriggerTime', (r: TimelineTriggerTimeResult) => {
-				console.log('setTimelineTriggerTime')
+				this.logger.debug('setTimelineTriggerTime')
 				this._coreHandler.core.callMethod(P.methods.timelineTriggerTime, [r])
 				.catch((e) => {
 					this.logger.error('Error in setTimelineTriggerTime', e)
@@ -145,26 +145,26 @@ export class TSRHandler {
 
 			})
 
-			console.log('tsr init')
+			this.logger.debug('tsr init')
 			return this.tsr.init()
 		})
 		.then(() => {
 			this._triggerupdateMapping()
 			this._triggerupdateTimeline()
 			this._triggerupdateDevices()
-			console.log('tsr init done')
+			this.logger.debug('tsr init done')
 		})
 
 	}
 	setupObservers () {
 		if (this._observers.length) {
-			console.log('Clearing observers..')
+			this.logger.debug('Clearing observers..')
 			this._observers.forEach((obs) => {
 				obs.stop()
 			})
 			this._observers = []
 		}
-		console.log('Renewing observers')
+		this.logger.debug('Renewing observers')
 
 		let timelineObserver = this._coreHandler.core.observe('timeline')
 		timelineObserver.added = () => { this._triggerupdateTimeline() }
@@ -269,7 +269,7 @@ export class TSRHandler {
 		}
 	}
 	private _updateTimeline () {
-		console.log('_updateTimeline')
+		this.logger.debug('_updateTimeline')
 		let transformedTimeline = this._transformTimeline(this._coreHandler.core.getCollection('timeline').find((o) => {
 			return (
 				_.isArray(o.deviceId) ?
@@ -326,7 +326,7 @@ export class TSRHandler {
 
 				if (!oldDevice) {
 					if (device.options) {
-						console.log('Initializing device: ' + deviceId)
+						this.logger.debug('Initializing device: ' + deviceId)
 						this._addDevice(deviceId, device)
 					}
 				} else {
@@ -339,7 +339,7 @@ export class TSRHandler {
 							}
 						})
 						if (anyChanged) {
-							console.log('Re-initializing device: ' + deviceId)
+							this.logger.debug('Re-initializing device: ' + deviceId)
 							// console.log('old options', oldDevice.deviceOptions)
 							// console.log('new options', device.options)
 							this._removeDevice(deviceId)
@@ -352,7 +352,7 @@ export class TSRHandler {
 			_.each(this.tsr.getDevices(), (oldDevice: Device) => {
 				let deviceId = oldDevice.deviceId
 				if (!devices[deviceId]) {
-					console.log('Un-initializing device: ' + deviceId)
+					this.logger.debug('Un-initializing device: ' + deviceId)
 					// this.tsr.removeDevice(deviceId)
 					this._removeDevice(deviceId)
 				}
@@ -360,7 +360,7 @@ export class TSRHandler {
 		}
 	}
 	private _addDevice (deviceId: string, options: DeviceOptions): void {
-		console.log('Adding device ' + deviceId)
+		this.logger.debug('Adding device ' + deviceId)
 
 		this.tsr.addDevice(deviceId, options)
 		.then((device: Device) => {
@@ -377,7 +377,11 @@ export class TSRHandler {
 				coreConn.init(this._coreHandler.core)
 				.then(() => {
 					coreConn.setStatus({
-						statusCode: (device.connected ? P.StatusCode.GOOD : P.StatusCode.BAD)
+						statusCode: (
+							device.canConnect ?
+							(device.connected ? P.StatusCode.GOOD : P.StatusCode.BAD) :
+							P.StatusCode.GOOD
+						)
 					})
 					device.on('connectionChanged', (connected) => {
 						coreConn.setStatus({
@@ -388,7 +392,7 @@ export class TSRHandler {
 			}
 		})
 		.catch((e) => {
-			console.log('Error when adding device: ' + e)
+			this.logger.error('Error when adding device: ' + e)
 		})
 	}
 	private _removeDevice (deviceId: string) {

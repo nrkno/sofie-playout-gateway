@@ -3,6 +3,7 @@ import * as _ from 'underscore'
 import * as PromiseSequence from 'promise-sequence'
 import { PeripheralDeviceAPI } from 'tv-automation-server-core-integration'
 import { CoreHandler } from './coreHandler'
+import * as Winston from 'winston'
 
 export interface MediaScannerConfig {
 	host?: string,
@@ -103,6 +104,7 @@ export interface MediaObject {
  * Represents a connection between Gateway and Media-Scanner
  */
 export class MediaScanner {
+	logger: Winston.LoggerInstance
 	private _config: {
 		host: string,
 		port: number,
@@ -112,8 +114,11 @@ export class MediaScanner {
 	private _remote: PouchDB.Database
 	private _coreHandler: CoreHandler
 	private _changes: PouchDB.Core.Changes<MediaObject>
-	private _replication: PouchDB.Replication.Replication<{}>
 
+	private _replication: PouchDB.Replication.Replication<{}>
+	constructor (logger: Winston.LoggerInstance) {
+		this.logger = logger
+	}
 	public async init (config: MediaScannerConfig, coreHandler: CoreHandler): Promise<void> {
 
 		this._config = {
@@ -124,14 +129,14 @@ export class MediaScanner {
 		this._coreHandler = coreHandler
 
 		await this._coreHandler.core.getPeripheralDevice().then((device) => {
-			this._coreHandler.logger.info('device', device)
+			// this.logger.info('device', device)
 
-			let mediaScanner = device.settings.mediaScanner || {}
+			let mediaScanner = (device.settings || {}).mediaScanner || {}
 			this._config.host = mediaScanner.host || this._config.host
 			this._config.port = mediaScanner.port || this._config.port
 		})
 
-		this._coreHandler.logger.info('========')
+		this.logger.info('MediaScanner init')
 
 		const baseUrl = 'http://' + this._config.host + ':' + this._config.port
 
@@ -152,14 +157,14 @@ export class MediaScanner {
 			const newSequenceNr = changes.seq
 
 			if (changes.deleted) {
-				this._coreHandler.logger.info('deleteMediaObject', changes.id, newSequenceNr)
+				this.logger.debug('deleteMediaObject', changes.id, newSequenceNr)
 				this._sendRemoved(changes.id)
 				.catch((e) => {
 					this._coreHandler.logger.error('Error sending deledet doc', e)
 				})
 			} else if (changes.doc) {
 				const md: MediaObject = changes.doc
-				this._coreHandler.logger.info('updateMediaObject', newSequenceNr, md._id)
+				this.logger.debug('updateMediaObject', newSequenceNr, md._id)
 
 				this._sendChanged(md)
 				.catch((e) => {
@@ -172,12 +177,12 @@ export class MediaScanner {
 		}).on('error', (err) => {
 			if (err.code === 'ECONNREFUSED') {
 				// TODO: try to reconnect
-				this._coreHandler.logger.info('Connection refused')
+				this.logger.warn('Connection refused')
 			} else if (err instanceof SyntaxError) {
-				this._coreHandler.logger.info('Connection terminated') // most likely
+				this.logger.warn('Connection terminated') // most likely
 				// TODO: try to reconnect
 			} else {
-				this._coreHandler.logger.info('Error', err)
+				this.logger.error('Error', err)
 			}
 
 			this._changes.cancel()
@@ -320,7 +325,7 @@ export class MediaScanner {
 			docs.rows.forEach(doc => {
 				if (doc.doc) {
 					const md: MediaObject = doc.doc
-					this._coreHandler.logger.info('updateMediaObject', someDeviceId, md, -1)
+					this.logger.debug('updateMediaObject', someDeviceId, md, -1)
 				}
 			})
 

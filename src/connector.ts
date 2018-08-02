@@ -92,7 +92,7 @@ export class Connector {
 
 	}
 	initMediaScanner (): Promise<void> {
-		this.mediaScanner = new MediaScanner()
+		this.mediaScanner = new MediaScanner(this._logger)
 
 		return this.mediaScanner.init(this._config.mediaScanner, this.coreHandler)
 
