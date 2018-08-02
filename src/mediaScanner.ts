@@ -125,8 +125,10 @@ export class MediaScanner {
 
 		await this._coreHandler.core.getPeripheralDevice().then((device) => {
 			this._coreHandler.logger.info('device', device)
-			this._config.host = device.settings.mediaScanner.host || this._config.host
-			this._config.port = device.settings.mediaScanner.port || this._config.port
+
+			let mediaScanner = device.settings.mediaScanner || {}
+			this._config.host = mediaScanner.host || this._config.host
+			this._config.port = mediaScanner.port || this._config.port
 		})
 
 		this._coreHandler.logger.info('========')
