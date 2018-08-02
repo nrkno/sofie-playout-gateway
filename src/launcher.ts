@@ -15,10 +15,15 @@ export class Launcher {
 		this.logger = logger
 		this.config = config
 		coreHandler.restartCasparCGProcess = () => this.restartCasparCG()
+		coreHandler.core.getPeripheralDevice().then((device) => {
+			this.config.httpApiHost = device.settings.casparcgLauncher.host || this.config.httpApiHost
+			this.config.httpApiPort = device.settings.casparcgLauncher.port || this.config.httpApiPort
+		})
 	}
 
 	restartCasparCG () {
 		this.logger.info('Restarting CasparCG')
+
 		return axios.post(`http://${this.config.httpApiHost}:${this.config.httpApiPort}/processes/casparcg/restart`).then(response => {
 			this.logger.info('Http request to launcher successful, response ' + response.status)
 		}, (e) => {

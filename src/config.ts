@@ -10,7 +10,7 @@ let disableWatchdog: boolean = (process.env.DISABLE_WATCHDOG === '1') 		|| false
 let httpApiPort: number = parseInt(process.env.LAUNCHER_API_PORT + '', 10) || 8005
 let httpApiHost: string = process.env.LAUNCHER_API_HOST || '127.0.0.1'
 let mediaScannerHost: string = process.env.MEDIA_SCANNER_HOST || '127.0.0.1'
-let mediaScannerPort: number = parseInt(process.env.MEDIA_SCANNER_PORT + '', 10) || 8005
+let mediaScannerPort: number = parseInt(process.env.MEDIA_SCANNER_PORT + '', 10) || 8000
 
 logPath = logPath
 
