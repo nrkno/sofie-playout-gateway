@@ -8,6 +8,8 @@ let logPath: string 	= process.env.CORE_LOG						|| ''
 let deviceId: string 	= process.env.DEVICE_ID						|| ''
 let deviceToken: string 	= process.env.DEVICE_TOKEN 				|| ''
 let disableWatchdog: boolean = (process.env.DISABLE_WATCHDOG === '1') 		|| false
+let httpApiPort: number = parseInt(process.env.LAUNCHER_API_PORT + '', 10) || 8005
+let httpApiHost: string = process.env.LAUNCHER_API_HOST || '127.0.0.1'
 
 logPath = logPath
 
@@ -106,6 +108,10 @@ let config: Config = {
 	},
 	mediaScanner: {
 		collectionId: 'default' // TODO: to be fetched from core
+	},
+	launcher: {
+		httpApiPort,
+		httpApiHost
 	}
 }
 
@@ -115,3 +121,5 @@ c.init(config)
 .catch(e => {
 	logger.error(e)
 })
+
+// @todo: remove this line of comment

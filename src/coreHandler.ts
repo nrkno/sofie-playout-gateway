@@ -33,6 +33,7 @@ export interface PeripheralDeviceCommand {
 export class CoreHandler {
 	core: CoreConnection
 	logger: Winston.LoggerInstance
+	restartCasparCGProcess: () => Promise<void>
 	private _deviceOptions: DeviceConfig
 	private _onConnected?: () => any
 	private _executedFunctions: {[id: string]: boolean} = {}

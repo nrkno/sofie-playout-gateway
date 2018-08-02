@@ -43,7 +43,8 @@ export interface TSRDevice {
 }
 export interface TimelineObj { // interface from Core
 	_id: string
-	siId: string
+	siId?: string
+	sliId?: string
 	roId: string
 	deviceId: string
 
@@ -51,7 +52,7 @@ export interface TimelineObj { // interface from Core
 		type: TriggerType
 		value: number | string
 	}
-	duration: number
+	duration: number | string
 	LLayer: string | number
 	content: {
 		type: string // TimelineContentType
