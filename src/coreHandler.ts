@@ -142,12 +142,13 @@ export class CoreHandler {
 		} else {
 			credentials = CoreConnection.getCredentials(subDeviceId)
 		}
-		return _.extend(credentials, {
+		let options: CoreOptions = _.extend(credentials, {
 			deviceType: (parentProcess ? P.DeviceType.PLAYOUT : P.DeviceType.OTHER),
 			deviceName: name,
-			watchDog: (this._coreConfig ? this._coreConfig.watchdog : true),
-			versions: parentProcess ? this._getVersions() : null
+			watchDog: (this._coreConfig ? this._coreConfig.watchdog : true)
 		})
+		if (parentProcess) options.versions = this._getVersions()
+		return options
 	}
 	onConnected (fcn: () => any) {
 		this._onConnected = fcn
