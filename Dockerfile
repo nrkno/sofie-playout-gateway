@@ -2,8 +2,7 @@
 FROM node:8.11.1 AS build
 WORKDIR /opt/playout-gateway
 COPY . .
-RUN rm yarn.lock
-RUN yarn install --check-files
+RUN yarn install
 RUN yarn build
 
 # DEPLOY IMAGE
