@@ -11,6 +11,7 @@ import {
 import { CoreHandler } from './coreHandler'
 let clone = require('fast-clone')
 import * as Winston from 'winston'
+import * as crypto from 'crypto'
 
 import * as _ from 'underscore'
 import { CoreConnection, PeripheralDeviceAPI as P } from 'tv-automation-server-core-integration'
@@ -82,6 +83,7 @@ export class TSRHandler {
 	private _triggerupdateDevicesTimeout: any = null
 	private _tsrDevices: {[deviceId: string]: TSRDevice} = {}
 	private _observers: Array<any> = []
+	private _cachedStudioInstallationId: string = ''
 
 	constructor (logger: Winston.LoggerInstance) {
 		this.logger = logger
@@ -269,18 +271,24 @@ export class TSRHandler {
 		}
 	}
 	private _updateTimeline () {
-		this.logger.debug('_updateTimeline')
-		let transformedTimeline = this._transformTimeline(this._coreHandler.core.getCollection('timeline').find((o) => {
-			return (
-				_.isArray(o.deviceId) ?
-				o.deviceId.indexOf(this._coreHandler.core.deviceId) !== -1 :
-				o.deviceId === this._coreHandler.core.deviceId
-			)
-		}) as Array<TimelineObj>)
-		if (transformedTimeline) {
-			this.tsr.timeline = transformedTimeline
+		// console.log('_updateTimeline')
+		if (this._determineIfTimelineShouldUpdate()) {
+			// this.logger.debug('_updateTimeline')
+			let transformedTimeline = this._transformTimeline(this._coreHandler.core.getCollection('timeline').find((o) => {
+				if (o.statObject === true) return false
+				return (
+					_.isArray(o.deviceId) ?
+					o.deviceId.indexOf(this._coreHandler.core.deviceId) !== -1 :
+					o.deviceId === this._coreHandler.core.deviceId
+				)
+			}) as Array<TimelineObj>)
+			if (transformedTimeline) {
+				this.tsr.timeline = transformedTimeline
+			} else {
+				this.logger.warn('Did NOT update Timeline due to an error')
+			}
 		} else {
-			this.logger.warn('Did NOT update Timeline due to an error')
+			this.logger.debug('_updateTimeline deferring update')
 		}
 	}
 	private _triggerupdateMapping () {
@@ -292,15 +300,32 @@ export class TSRHandler {
 		}, 20)
 	}
 	private _updateMapping () {
+		let studioInstallation = this._getStudioInstallation()
+		if (studioInstallation) {
+			this.tsr.mapping = studioInstallation.mappings
+		}
+	}
+	private _getPeripheralDevice () {
 		let peripheralDevices = this._coreHandler.core.getCollection('peripheralDevices')
-		let peripheralDevice = peripheralDevices.findOne(this._coreHandler.core.deviceId)
+		return peripheralDevices.findOne(this._coreHandler.core.deviceId)
+	}
+	private _getStudioInstallation (): any | null {
+		let peripheralDevice = this._getPeripheralDevice()
 		if (peripheralDevice) {
 			let studioInstallations = this._coreHandler.core.getCollection('studioInstallation')
-			let studioInstallation = studioInstallations.findOne(peripheralDevice.studioInstallationId)
-			if (studioInstallation) {
-				this.tsr.mapping = studioInstallation.mappings
-			}
+			return studioInstallations.findOne(peripheralDevice.studioInstallationId)
 		}
+		return null
+	}
+	private _getStudioInstallationId (): string | null {
+		if (this._cachedStudioInstallationId) return this._cachedStudioInstallationId
+
+		let studioInstallation = this._getStudioInstallation()
+		if (studioInstallation) {
+			this._cachedStudioInstallationId = studioInstallation._id
+			return studioInstallation._id
+		}
+		return null
 	}
 	private _triggerupdateDevices () {
 		if (this._triggerupdateDevicesTimeout) {
@@ -476,4 +501,91 @@ export class TSRHandler {
 		})
 		return transformedTimeline
 	}
+	private _determineIfTimelineShouldUpdate (): boolean {
+		// console.log('_determineIfTimelineShouldUpdate')
+
+		let requireStatObject: boolean = true // set to false for backwards compability
+
+		let pd = this._getPeripheralDevice()
+		if (pd && (pd.settings || {}).enableBackwardsCompability) {
+			requireStatObject = false
+		}
+
+		let siId = this._getStudioInstallationId()
+		if (!siId) {
+			this.logger.warn('no studioInstallationId')
+			return false
+		}
+
+		let statObject = this._coreHandler.core.getCollection('timeline').find(siId + '_statObj')[0]
+
+		if (!statObject) {
+			if (requireStatObject) {
+				this.logger.warn('no statObject')
+				return false
+			} else {
+				return true
+			}
+		}
+
+		let statObjCount 	= (statObject.content || {}).objCount || 0
+		let statObjHash 	= (statObject.content || {}).objHash || ''
+
+		// collect statistics
+		// console.log('a', this._coreHandler.core.getCollection('timeline').find)
+
+		let objs = this._coreHandler.core.getCollection('timeline').find((o) => {
+			// console.log('o', o)
+			return (
+				o.siId === siId &&
+				o.statObject !== true
+			)
+		})
+
+		// console.log(_.pluck(objs, '_id'))
+
+		// Number of objects
+		let objCount = objs.length
+		// Hash of all objects
+		objs = objs.sort((a, b) => {
+			if (a._id < b._id) return 1
+			if (a._id > b._id) return -1
+			return 0
+		})
+		let objHash = getHash(stringifyObjects(objs))
+
+		console.log('stat', objCount, objHash)
+
+		if (objCount !== statObjCount) {
+			this.logger.info('Delaying timeline update, objcount differ (' + objCount + ',' + statObjCount + ') ')
+			return false
+		}
+		if (objHash !== statObjHash) {
+			this.logger.info('Delaying timeline update, hash differ (' + objHash + ',' + statObjHash + ') ')
+			return false
+		}
+		return true
+	}
+}
+function stringifyObjects (objs) {
+	if (_.isArray(objs)) {
+		return _.map(objs, (obj) => {
+			return stringifyObjects(obj)
+		}).join(',')
+	} else if (_.isFunction(objs)) {
+		return ''
+	} else if (_.isObject(objs)) {
+		let keys = _.sortBy(_.keys(objs), (k) => k)
+
+		return _.map(keys, (key) => {
+			return key + '=' + stringifyObjects(objs[key])
+		}).join(',')
+	} else {
+		return objs + ''
+	}
+}
+
+export function getHash (str: string): string {
+	const hash = crypto.createHash('sha1')
+	return hash.update(str).digest('base64').replace(/[\+\/\=]/g, '_') // remove +/= from strings, because they cause troubles
 }
