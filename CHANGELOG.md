@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.2.0"></a>
+# [0.2.0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v0.1.0...v0.2.0) (2018-08-03)
+
+
+### Bug Fixes
+
+* **media scanner:** catch http request errors ([9628e4a](https://github.com/nrkno/tv-automation-playout-gateway/commit/9628e4a))
+* catch promises ([22db4bc](https://github.com/nrkno/tv-automation-playout-gateway/commit/22db4bc))
+* crash when missing mediascanner setting ([76fbf1c](https://github.com/nrkno/tv-automation-playout-gateway/commit/76fbf1c))
+* logging ([e3cb0d8](https://github.com/nrkno/tv-automation-playout-gateway/commit/e3cb0d8))
+* updated dependencies ([97f1852](https://github.com/nrkno/tv-automation-playout-gateway/commit/97f1852))
+* versions of non-parent processes ([0d08e9e](https://github.com/nrkno/tv-automation-playout-gateway/commit/0d08e9e))
+
+
+### Features
+
+* addded versions to init data ([6641bf1](https://github.com/nrkno/tv-automation-playout-gateway/commit/6641bf1))
+* added statObj support, an attempt to avoid playing incomplete timelines ([cf48e16](https://github.com/nrkno/tv-automation-playout-gateway/commit/cf48e16))
+* configurable media scanner host / port ([d142996](https://github.com/nrkno/tv-automation-playout-gateway/commit/d142996))
+* take mediascanner host + port from core, replicate pouchdb ([e5fa674](https://github.com/nrkno/tv-automation-playout-gateway/commit/e5fa674))
+
+
+
 <a name="0.1.0"></a>
 # 0.1.0 (2018-08-02)
 
