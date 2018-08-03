@@ -44,11 +44,11 @@ export class Connector {
 		})
 		.then(() => {
 			this._logger.info('TSR initialized')
-			this._logger.info('Initializing Media Scanner...')
-			return this.initMediaScanner()
-		})
-		.then(() => {
-			this._logger.info('Media scanner initialized')
+			// this._logger.info('Initializing Media Scanner...')
+			// return this.initMediaScanner()
+		// })
+		// .then(() => {
+			// this._logger.info('Media scanner initialized')
 			this._logger.info('Initializing Launcher')
 			return this.initLauncher()
 		})
