@@ -17,6 +17,7 @@ npm run start
 | -host  | Hostname or IP of Core  | CORE_HOST  |
 | -port  | Port of Core   |  CORE_PORT |
 | -log  | Path to output log |  CORE_LOG |
+| -id   | Device ID to use | DEVICE_ID |
 
 ## Installation for dev
 
