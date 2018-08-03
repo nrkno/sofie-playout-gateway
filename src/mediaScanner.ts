@@ -114,6 +114,7 @@ export class MediaScanner {
 	private _remote: PouchDB.Database
 	private _coreHandler: CoreHandler
 	private _changes: PouchDB.Core.Changes<MediaObject>
+	private _doReplication: boolean = false
 
 	private _replication: PouchDB.Replication.Replication<{}>
 	constructor (logger: Winston.LoggerInstance) {
@@ -139,9 +140,13 @@ export class MediaScanner {
 
 		const baseUrl = 'http://' + this._config.host + ':' + this._config.port
 
-		this._db = new PouchDB('local')
-		this._remote = new PouchDB(`${baseUrl}/db/_media`)
-		this._replication = this._remote.replicate.to(this._db, { live: true, retry: true })
+		if (this._doReplication) {
+			this._db = new PouchDB('local')
+			this._remote = new PouchDB(`${baseUrl}/db/_media`)
+			this._replication = this._remote.replicate.to(this._db, { live: true, retry: true })
+		} else {
+			this._db = new PouchDB(`${baseUrl}/db/_media`)
+		}
 
 		// Get sequence id to start at
 		// return core.call('getMySequenceNumber', someDeviceId, (sequenceNr) => {
