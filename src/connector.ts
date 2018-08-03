@@ -62,8 +62,14 @@ export class Connector {
 			this._logger.error(e.stack)
 
 			try {
-				if (this.coreHandler) this.coreHandler.destroy()
-				if (this.tsrHandler) this.tsrHandler.destroy()
+				if (this.coreHandler) {
+					this.coreHandler.destroy()
+					.catch(this._logger.error)
+				}
+				if (this.tsrHandler) {
+					this.tsrHandler.destroy()
+					.catch(this._logger.error)
+				}
 			} catch (e) {
 				this._logger.error(e)
 			}
@@ -86,13 +92,14 @@ export class Connector {
 
 	}
 	initMediaScanner (): Promise<void> {
-		this.mediaScanner = new MediaScanner()
+		this.mediaScanner = new MediaScanner(this._logger)
 
 		return this.mediaScanner.init(this._config.mediaScanner, this.coreHandler)
 
 	}
-	initLauncher (): Promise<Launcher> {
-		this.launcher = new Launcher(this._logger, this._config.launcher, this.coreHandler)
-		return Promise.resolve().then(() => this.launcher = this.launcher)
+	initLauncher (): Promise<void> {
+		this.launcher = new Launcher(this._logger)
+
+		return this.launcher.init(this._config.launcher, this.coreHandler)
 	}
 }

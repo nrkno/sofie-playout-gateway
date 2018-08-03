@@ -1,36 +1,6 @@
-import { Connector, Config } from './connector'
+import { Connector } from './connector'
+import { config, logPath, disableWatchdog } from './config'
 import * as Winston from 'winston'
-
-// CLI arguments / Environment variables --------------
-let host: string 		= process.env.CORE_HOST 					|| '127.0.0.1'
-let port: number 		= parseInt(process.env.CORE_PORT + '', 10) 	|| 3000
-let logPath: string 	= process.env.CORE_LOG						|| ''
-let deviceId: string 	= process.env.DEVICE_ID						|| ''
-let deviceToken: string 	= process.env.DEVICE_TOKEN 				|| ''
-let disableWatchdog: boolean = (process.env.DISABLE_WATCHDOG === '1') 		|| false
-let httpApiPort: number = parseInt(process.env.LAUNCHER_API_PORT + '', 10) || 8005
-let httpApiHost: string = process.env.LAUNCHER_API_HOST || '127.0.0.1'
-
-logPath = logPath
-
-let prevProcessArg = ''
-process.argv.forEach((val) => {
-	val = val + ''
-	if (prevProcessArg.match(/-host/i)) {
-		host = val
-	} else if (prevProcessArg.match(/-port/i)) {
-		port = parseInt(val, 10)
-	} else if (prevProcessArg.match(/-log/i)) {
-		logPath = val
-	} else if (prevProcessArg.match(/-id/i)) {
-		deviceId = val
-	} else if (prevProcessArg.match(/-token/i)) {
-		deviceToken = val
-	} else if (val.match(/-disableWatchdog/i)) {
-		disableWatchdog = true
-	}
-	prevProcessArg = val + ''
-})
 
 // Setup logging --------------------------------------
 let logger = new (Winston.Logger)({
@@ -38,7 +8,6 @@ let logger = new (Winston.Logger)({
 
 if (logPath) {
 	// Log json to file, human-readable to console
-	console.log('Logging to', logPath)
 	logger.add(Winston.transports.Console, {
 		level: 'verbose',
 		handleExceptions: true,
@@ -50,6 +19,7 @@ if (logPath) {
 		json: true,
 		filename: logPath
 	})
+	logger.info('Logging to', logPath)
 	// Hijack console.log:
 	// @ts-ignore
 	let orgConsoleLog = console.log
@@ -62,13 +32,13 @@ if (logPath) {
 		}
 	}
 } else {
-	console.log('Logging to Console')
 	// Log json to console
 	logger.add(Winston.transports.Console,{
 		handleExceptions: true,
 		json: true,
 		stringify: (obj) => JSON.stringify(obj) // make single line
 	})
+	logger.info('Logging to Console')
 	// Hijack console.log:
 	// @ts-ignore
 	let orgConsoleLog = console.log
@@ -93,27 +63,6 @@ logger.info('------------------------------------------------------------------'
 logger.info('Starting Playout Gateway')
 if (disableWatchdog) logger.info('Watchdog is disabled!')
 let c = new Connector(logger)
-let config: Config = {
-	device: {
-		deviceId: deviceId,
-		deviceToken: deviceToken
-	},
-	core: {
-		host: host,
-		port: port,
-		watchdog: !disableWatchdog
-	},
-	tsr: {
-		devices: {} // to be fetched from Core
-	},
-	mediaScanner: {
-		collectionId: 'default' // TODO: to be fetched from core
-	},
-	launcher: {
-		httpApiPort,
-		httpApiHost
-	}
-}
 
 logger.info('Core:          ' + config.core.host + ':' + config.core.port)
 logger.info('------------------------------------------------------------------')

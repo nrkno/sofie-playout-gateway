@@ -8,6 +8,7 @@ import * as _ from 'underscore'
 import * as Winston from 'winston'
 import { DeviceConfig } from './connector'
 import { TSRHandler } from './tsrHandler'
+import * as fs from 'fs'
 
 export interface CoreConfig {
 	host: string,
@@ -141,11 +142,13 @@ export class CoreHandler {
 		} else {
 			credentials = CoreConnection.getCredentials(subDeviceId)
 		}
-		return _.extend(credentials, {
+		let options: CoreOptions = _.extend(credentials, {
 			deviceType: (parentProcess ? P.DeviceType.PLAYOUT : P.DeviceType.OTHER),
 			deviceName: name,
 			watchDog: (this._coreConfig ? this._coreConfig.watchdog : true)
 		})
+		if (parentProcess) options.versions = this._getVersions()
+		return options
 	}
 	onConnected (fcn: () => any) {
 		this._onConnected = fcn
@@ -233,16 +236,16 @@ export class CoreHandler {
 		}
 		return 0
 	}
-	devicesMakeReady (okToDestoryStuff?: boolean): Promise<any> {
+	devicesMakeReady (okToDestroyStuff?: boolean): Promise<any> {
 		if (this._tsrHandler) {
-			return this._tsrHandler.tsr.devicesMakeReady(okToDestoryStuff)
+			return this._tsrHandler.tsr.devicesMakeReady(okToDestroyStuff)
 		} else {
 			throw Error('TSR not set up!')
 		}
 	}
-	devicesStandDown (okToDestoryStuff?: boolean): Promise<any> {
+	devicesStandDown (okToDestroyStuff?: boolean): Promise<any> {
 		if (this._tsrHandler) {
-			return this._tsrHandler.tsr.devicesStandDown(okToDestoryStuff)
+			return this._tsrHandler.tsr.devicesStandDown(okToDestroyStuff)
 		} else {
 			throw Error('TSR not set up!')
 		}
@@ -250,6 +253,42 @@ export class CoreHandler {
 	pingResponse (message: string) {
 		this.core.setPingResponse(message)
 		return true
+	}
+	private _getVersions () {
+		let versions: {[packageName: string]: string} = {}
+
+		if (process.env.npm_package_version) {
+			versions['_process'] = process.env.npm_package_version
+		}
+
+		let dirNames = [
+			'tv-automation-server-core-integration',
+			'timeline-state-resolver',
+			'atem-connection',
+			'atem-state',
+			'casparcg-connection',
+			'casparcg-state',
+			'emberplus',
+			'superfly-timeline'
+		]
+		try {
+			let nodeModulesDirectories = fs.readdirSync('node_modules')
+			_.each(nodeModulesDirectories, (dir) => {
+				try {
+					if (dirNames.indexOf(dir) !== -1) {
+						let file = 'node_modules/' + dir + '/package.json'
+						file = fs.readFileSync(file, 'utf8')
+						let json = JSON.parse(file)
+						versions[dir] = json.version || 'N/A'
+					}
+				} catch (e) {
+					this.logger.error(e)
+				}
+			})
+		} catch (e) {
+			this.logger.error(e)
+		}
+		return versions
 	}
 
 }
