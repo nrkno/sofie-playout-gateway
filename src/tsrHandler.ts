@@ -517,7 +517,11 @@ export class TSRHandler {
 			return false
 		}
 
+		this.logger.debug('Jesper 1 ' + siId + ' :: ' + siId + '_statObj')
+
 		let statObject = this._coreHandler.core.getCollection('timeline').find(siId + '_statObj')[0]
+
+		this.logger.debug('Jesper 2 ' + JSON.stringify(statObject))
 
 		if (!statObject) {
 			if (requireStatObject) {
