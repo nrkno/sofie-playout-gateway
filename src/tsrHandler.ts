@@ -517,7 +517,7 @@ export class TSRHandler {
 			return false
 		}
 
-		let statObject = this._coreHandler.core.getCollection('timeline').find(siId + '_statObj')[0]
+		let statObject = this._coreHandler.core.getCollection('timeline').find({ _id: siId + '_statObj' })[0]
 
 		if (!statObject) {
 			if (requireStatObject) {
