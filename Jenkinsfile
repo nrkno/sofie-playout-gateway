@@ -18,7 +18,7 @@ pipeline {
       }
     }
     stage('Deploy') {
-			when {		
+      when {		
         branch 'stage'		
       }
       steps {
