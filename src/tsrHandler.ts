@@ -521,12 +521,14 @@ export class TSRHandler {
 
 		if (!statObject) {
 			if (requireStatObject) {
-				this.logger.warn('no statObject')
+				this.logger.info('no statObject')
 				return false
 			} else {
 				return true
 			}
 		}
+
+		this.logger.info('statObject found')
 
 		let statObjCount 	= (statObject.content || {}).objCount || 0
 		let statObjHash 	= (statObject.content || {}).objHash || ''
