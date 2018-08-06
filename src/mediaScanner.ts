@@ -150,14 +150,7 @@ export class MediaScanner {
 
 		// Get sequence id to start at
 		// return core.call('getMySequenceNumber', someDeviceId, (sequenceNr) => {
-
-		// Listen for changes
-		this._changes = this._db.changes<MediaObject>({
-			since: 'now',
-			include_docs: true,
-			live: true,
-			attachments: true
-		}).on('change', (changes) => {
+		const changeHandler = (changes) => {
 			const newSequenceNr = changes.seq
 
 			if (changes.deleted) {
@@ -178,7 +171,8 @@ export class MediaScanner {
 				// const previewUrl = `${baseUrl}/media/preview/${md._id}`
 				// Note: it only exists if there is a previewTime or previewSize set in the doc
 			}
-		}).on('error', (err) => {
+		}
+		const errHandler = (err) => {
 			if (err.code === 'ECONNREFUSED') {
 				// TODO: try to reconnect
 				this.logger.warn('Connection refused')
@@ -190,8 +184,24 @@ export class MediaScanner {
 			}
 
 			this._changes.cancel()
-			// TODO - restart the changes stream
-		})
+			// restart the changes stream
+			setTimeout(() => {
+				this._changes = this._db.changes<MediaObject>(changesOptions)
+					.on('change', changeHandler)
+					.on('error', errHandler)
+			}, 2500)
+		}
+		const changesOptions = {
+			since: 'now',
+			include_docs: true,
+			live: true,
+			attachments: true
+		}
+
+		// Listen for changes
+		this._changes = this._db.changes<MediaObject>(changesOptions)
+			.on('change', changeHandler)
+			.on('error', errHandler)
 
 		this._coreHandler.logger.info('Start syncing media files')
 
