@@ -150,14 +150,7 @@ export class MediaScanner {
 
 		// Get sequence id to start at
 		// return core.call('getMySequenceNumber', someDeviceId, (sequenceNr) => {
-
-		// Listen for changes
-		this._changes = this._db.changes<MediaObject>({
-			since: 'now',
-			include_docs: true,
-			live: true,
-			attachments: true
-		}).on('change', (changes) => {
+		const changeHandler = (changes) => {
 			const newSequenceNr = changes.seq
 
 			if (changes.deleted) {
@@ -178,7 +171,8 @@ export class MediaScanner {
 				// const previewUrl = `${baseUrl}/media/preview/${md._id}`
 				// Note: it only exists if there is a previewTime or previewSize set in the doc
 			}
-		}).on('error', (err) => {
+		}
+		const errHandler = (err) => {
 			if (err.code === 'ECONNREFUSED') {
 				// TODO: try to reconnect
 				this.logger.warn('Connection refused')
@@ -190,8 +184,24 @@ export class MediaScanner {
 			}
 
 			this._changes.cancel()
-			// TODO - restart the changes stream
-		})
+			// restart the changes stream
+			setTimeout(() => {
+				this._changes = this._db.changes<MediaObject>(changesOptions)
+					.on('change', changeHandler)
+					.on('error', errHandler)
+			}, 2500)
+		}
+		const changesOptions = {
+			since: 'now',
+			include_docs: true,
+			live: true,
+			attachments: true
+		}
+
+		// Listen for changes
+		this._changes = this._db.changes<MediaObject>(changesOptions)
+			.on('change', changeHandler)
+			.on('error', errHandler)
 
 		this._coreHandler.logger.info('Start syncing media files')
 
@@ -265,9 +275,6 @@ export class MediaScanner {
 		})
 	}
 
-	public scrapeAll (): Promise<any> {
-		return this.scrapePage('', 100)
-	}
 	public destroy (): Promise<void> {
 		if (this._changes) {
 			this._changes.cancel()
@@ -312,32 +319,6 @@ export class MediaScanner {
 		})
 		.catch((e) => {
 			this._coreHandler.logger.error('Error while updating deleted Media object', e)
-		})
-	}
-
-	private scrapePage (startKey: string, limit: number): Promise<any> {
-		const someDeviceId = 'dev1'
-
-		// Note: startKey and limit are optional, and are used to page the results. Not sure if paging is necessary, but its easier to strip it out than add it in
-		return this._db.allDocs<MediaObject>({
-			attachments: true,
-			include_docs: true,
-			startkey: startKey,
-			limit: limit
-		})
-		.then(docs => {
-			docs.rows.forEach(doc => {
-				if (doc.doc) {
-					const md: MediaObject = doc.doc
-					this.logger.debug('updateMediaObject', someDeviceId, md, -1)
-				}
-			})
-
-			// Note: Also drop this block if paging isnt wanted
-			if (docs.rows.length === limit) {
-				return this.scrapePage(docs.rows[docs.rows.length - 1].id, limit)
-			}
-			return 'N/A' // TODO: what does this function do? /Nyman
 		})
 	}
 }

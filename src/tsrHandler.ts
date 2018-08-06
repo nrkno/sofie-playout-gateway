@@ -505,11 +505,17 @@ export class TSRHandler {
 		// console.log('_determineIfTimelineShouldUpdate')
 
 		let requireStatObject: boolean = true // set to false for backwards compability
+		let disableStatObject: boolean = false // set to true to disable the statobject check completely
 
 		let pd = this._getPeripheralDevice()
 		if (pd && (pd.settings || {}).enableBackwardsCompability) {
 			requireStatObject = false
 		}
+		if (pd && (pd.settings || {}).disableStatObj) {
+			disableStatObject = true
+		}
+
+		if (disableStatObject) return true
 
 		let siId = this._getStudioInstallationId()
 		if (!siId) {
