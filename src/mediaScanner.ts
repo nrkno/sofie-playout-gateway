@@ -265,9 +265,6 @@ export class MediaScanner {
 		})
 	}
 
-	public scrapeAll (): Promise<any> {
-		return this.scrapePage('', 100)
-	}
 	public destroy (): Promise<void> {
 		if (this._changes) {
 			this._changes.cancel()
@@ -312,32 +309,6 @@ export class MediaScanner {
 		})
 		.catch((e) => {
 			this._coreHandler.logger.error('Error while updating deleted Media object', e)
-		})
-	}
-
-	private scrapePage (startKey: string, limit: number): Promise<any> {
-		const someDeviceId = 'dev1'
-
-		// Note: startKey and limit are optional, and are used to page the results. Not sure if paging is necessary, but its easier to strip it out than add it in
-		return this._db.allDocs<MediaObject>({
-			attachments: true,
-			include_docs: true,
-			startkey: startKey,
-			limit: limit
-		})
-		.then(docs => {
-			docs.rows.forEach(doc => {
-				if (doc.doc) {
-					const md: MediaObject = doc.doc
-					this.logger.debug('updateMediaObject', someDeviceId, md, -1)
-				}
-			})
-
-			// Note: Also drop this block if paging isnt wanted
-			if (docs.rows.length === limit) {
-				return this.scrapePage(docs.rows[docs.rows.length - 1].id, limit)
-			}
-			return 'N/A' // TODO: what does this function do? /Nyman
 		})
 	}
 }
