@@ -114,7 +114,7 @@ export class MediaScanner {
 	private _remote: PouchDB.Database
 	private _coreHandler: CoreHandler
 	private _changes: PouchDB.Core.Changes<MediaObject>
-	private _doReplication: boolean = false
+	private _doReplication: boolean = true
 
 	private _replication: PouchDB.Replication.Replication<{}>
 	constructor (logger: Winston.LoggerInstance) {
