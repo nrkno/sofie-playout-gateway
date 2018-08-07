@@ -150,6 +150,12 @@ export class MediaScanner {
 
 		// Get sequence id to start at
 		// return core.call('getMySequenceNumber', someDeviceId, (sequenceNr) => {
+		const changesOptions = {
+			since: 'now',
+			include_docs: true,
+			live: true,
+			attachments: true
+		}
 		const changeHandler = (changes) => {
 			const newSequenceNr = changes.seq
 
@@ -190,12 +196,6 @@ export class MediaScanner {
 					.on('change', changeHandler)
 					.on('error', errHandler)
 			}, 2500)
-		}
-		const changesOptions = {
-			since: 'now',
-			include_docs: true,
-			live: true,
-			attachments: true
 		}
 
 		// Listen for changes
@@ -282,11 +282,13 @@ export class MediaScanner {
 		if (this._replication) {
 			this._replication.cancel()
 		}
+		let p = this._db.close()
+
 		if (this._remote) {
-			this._remote.close()
+			p = p.then(() => this._remote.close())
 		}
 
-		return this._db.close()
+		return p
 	}
 	private _sendChanged (doc: MediaObject): Promise<void> {
 		// Added or changed
