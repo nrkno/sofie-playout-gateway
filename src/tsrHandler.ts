@@ -564,7 +564,7 @@ export class TSRHandler {
 		})
 		let objHash = getHash(stringifyObjects(objs))
 
-		console.log('stat', objCount, objHash)
+		// console.log('stat', objCount, objHash)
 
 		if (objCount !== statObjCount) {
 			this.logger.info('Delaying timeline update, objcount differ (' + objCount + ',' + statObjCount + ') ')
