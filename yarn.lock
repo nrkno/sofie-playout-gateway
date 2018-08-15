@@ -487,18 +487,18 @@ asynckit@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/asynckit/-/asynckit-0.4.0.tgz#c79ed97f7f34cb8f2ba1bc9790bcc366474b4b79"
 
-atem-connection@^0.3.1:
-  version "0.3.1"
-  resolved "https://registry.yarnpkg.com/atem-connection/-/atem-connection-0.3.1.tgz#bdfe2cc8864e87dc2defec2f63e9f210d12f480b"
+atem-connection@^0.3.2:
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/atem-connection/-/atem-connection-0.3.2.tgz#526b51c7332b59ba77c6bdc53c21866e6b2b7300"
   dependencies:
     pngjs "^3.3.2"
     tslib "^1.9.0"
 
-atem-state@^0.3.2:
-  version "0.3.2"
-  resolved "https://registry.yarnpkg.com/atem-state/-/atem-state-0.3.2.tgz#aa6fb221cf28abd46ffe04402ddd8aa7d9ee94e4"
+atem-state@^0.3.3:
+  version "0.3.4"
+  resolved "https://registry.yarnpkg.com/atem-state/-/atem-state-0.3.4.tgz#03ba6faf49650010c981a455a82cda626b6613d9"
   dependencies:
-    atem-connection "^0.3.1"
+    atem-connection "^0.3.2"
     tslib "^1.9.2"
 
 atob@^2.1.1:
@@ -1345,9 +1345,9 @@ dashdash@^1.12.0:
   dependencies:
     assert-plus "^1.0.0"
 
-"data-store@git+http://github.com/nytamin/data-store.git":
-  version "3.0.1"
-  resolved "git+http://github.com/nytamin/data-store.git#8d4779223a182666e0d80ba19d3a5b7b81fbce17"
+data-store@3.0.3:
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/data-store/-/data-store-3.0.3.tgz#0adbbd40516678e2fd93a8875d9f3fd0e50cc717"
 
 data-urls@^1.0.0:
   version "1.0.0"
@@ -1375,9 +1375,9 @@ ddp-underscore-patched@0.8.1-2:
   version "0.8.1-2"
   resolved "https://registry.yarnpkg.com/ddp-underscore-patched/-/ddp-underscore-patched-0.8.1-2.tgz#65a414e9f22ec5a82aa16386e34366b48fcecf1d"
 
-"ddp@git+http://github.com/nytamin/node-ddp-client.git#dev":
+"ddp@git+http://github.com/nytamin/node-ddp-client.git#0.12.2-next1":
   version "0.12.2"
-  resolved "git+http://github.com/nytamin/node-ddp-client.git#a79e92bf31608d03dad4702797f0d17c5c606ead"
+  resolved "git+http://github.com/nytamin/node-ddp-client.git#447fbf31fdcc26df75d9c7de4ef39852507d7e9e"
   dependencies:
     ddp-ejson "0.8.1-3"
     ddp-underscore-patched "0.8.1-2"
@@ -5302,13 +5302,13 @@ timed-out@^3.0.0:
   version "3.1.3"
   resolved "https://registry.yarnpkg.com/timed-out/-/timed-out-3.1.3.tgz#95860bfcc5c76c277f8f8326fd0f5b2e20eba217"
 
-timeline-state-resolver@^0.10.0:
-  version "0.10.0"
-  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-0.10.0.tgz#b1ba6c6a98c50ab8c44fa4f2382d51e9dc078cc6"
+timeline-state-resolver@^0.10.1:
+  version "0.10.1"
+  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-0.10.1.tgz#86a868cdd71486378be2276da40d1dde3523040b"
   dependencies:
     "@types/request" "^2.47.0"
-    atem-connection "^0.3.1"
-    atem-state "^0.3.2"
+    atem-connection "^0.3.2"
+    atem-state "^0.3.3"
     casparcg-connection "^4.4.0"
     casparcg-state "^1.1.5"
     emberplus "git+https://github.com/nrkno/tv-automation-emberplus-connection.git#dist"
@@ -5575,12 +5575,12 @@ tunnel-agent@^0.6.0:
   dependencies:
     safe-buffer "^5.0.1"
 
-tv-automation-server-core-integration@0.4.1:
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/tv-automation-server-core-integration/-/tv-automation-server-core-integration-0.4.1.tgz#8a7561135ee8267ed225043a2e822fc3f2156fd5"
+tv-automation-server-core-integration@0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/tv-automation-server-core-integration/-/tv-automation-server-core-integration-0.5.0.tgz#47b939c83c1e41f6513a563bede71d8c0002f6db"
   dependencies:
-    data-store "git+http://github.com/nytamin/data-store.git"
-    ddp "git+http://github.com/nytamin/node-ddp-client.git#dev"
+    data-store "3.0.3"
+    ddp "git+http://github.com/nytamin/node-ddp-client.git#0.12.2-next1"
     ddp-ejson "~0.8.1-3"
     ddp-random "~0.8.1-1"
     request "^2.87.0"
