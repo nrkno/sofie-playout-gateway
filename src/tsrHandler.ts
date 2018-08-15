@@ -393,7 +393,9 @@ export class TSRHandler {
 
 			if (!this._tsrDevices[device.deviceId]) {
 				let coreConn = new CoreConnection(this._coreHandler.getCoreConnectionOptions('Playout: ' + device.deviceName, 'Playout' + device.deviceId, false))
-
+				coreConn.onError((err) => {
+					this.logger.error('Core Error: ' + (err.message || err.toString() || err))
+				})
 				this._tsrDevices[device.deviceId] = {
 					device: device,
 					coreConnection: coreConn
