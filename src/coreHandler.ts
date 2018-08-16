@@ -9,6 +9,8 @@ import * as Winston from 'winston'
 import { DeviceConfig } from './connector'
 import { TSRHandler } from './tsrHandler'
 import * as fs from 'fs'
+import * as cp from 'child_process'
+import { DeviceType } from 'timeline-state-resolver';
 
 export interface CoreConfig {
 	host: string,
@@ -51,6 +53,8 @@ export class CoreHandler {
 		// this.logger.info('========')
 		this._coreConfig = config
 		this.core = new CoreConnection(this.getCoreConnectionOptions('Playout: Parent process', 'PlayoutCoreParent', true))
+
+		setTimeout(() => this.uploadFileToAtem({ value: './testframe.rgba' }), 5000)
 
 		this.core.onConnected(() => {
 			this.logger.info('Core Connected!')
@@ -253,6 +257,30 @@ export class CoreHandler {
 	pingResponse (message: string) {
 		this.core.setPingResponse(message)
 		return true
+	}
+	uploadFileToAtem (url: any) {
+		this.logger.info('try to load ' + JSON.stringify(url) + ' to atem')
+		if (this._tsrHandler) {
+			this._tsrHandler.tsr.getDevices().forEach((device) => {
+				if (device.deviceType === DeviceType.ATEM) {
+					const options = device.deviceOptions.options
+					this.logger.info('options ' + JSON.stringify(options))
+					if (options && (options as any).host) {
+						this.logger.info('uploading ' + url.value + ' to ' + (options as any).host)
+						const process = cp.spawn(`node`, [`./dist/atemUploader.js`, (options as any).host, url.value])
+						process.stdout.on('data', (data) => this.logger.info(data.toString()))
+						process.stderr.on('data', (data) => this.logger.info(data.toString()))
+						process.on('close', () => {
+							process.removeAllListeners()
+						})
+					} else {
+						throw Error('ATEM host option not set')
+					}
+				}
+			})
+		} else {
+			throw Error('TSR not set up!')
+		}
 	}
 	private _getVersions () {
 		let versions: {[packageName: string]: string} = {}
