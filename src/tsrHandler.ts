@@ -423,7 +423,6 @@ export class TSRHandler {
 								try {
 									this._coreHandler.uploadFileToAtem(ssrcBg)
 								} catch (e) {
-									e = e
 									// don't worry about it.
 								}
 							}
