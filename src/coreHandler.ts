@@ -256,12 +256,12 @@ export class CoreHandler {
 		this.core.setPingResponse(message)
 		return true
 	}
-	uploadFileToAtem (url: any) {
+	uploadFileToAtem (url: { _key: string, value: any }) {
 		this.logger.info('try to load ' + JSON.stringify(url) + ' to atem')
 		if (this._tsrHandler) {
 			this._tsrHandler.tsr.getDevices().forEach((device) => {
 				if (device.deviceType === DeviceType.ATEM) {
-					const options = device.deviceOptions.options
+					const options = device.deviceOptions.options as { host: string }
 					this.logger.info('options ' + JSON.stringify(options))
 					if (options && options.host) {
 						this.logger.info('uploading ' + url.value + ' to ' + options.host)
