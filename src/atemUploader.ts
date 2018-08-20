@@ -16,12 +16,12 @@ export class AtemUploadScript {
 	}
 
 	loadFile (url: string) {
-		return new Promise(resolve => {
+		return new Promise((resolve, reject) => {
 			this.fileName = url
 			fs.readFile(url, (e, data) => {
 				this.file = data
 				console.log('got file')
-				if (e) resolve()
+				if (e) reject(e)
 				else resolve()
 			})
 		})
@@ -74,7 +74,10 @@ export class AtemUploadScript {
 const singleton = new AtemUploadScript()
 singleton.connect(process.argv[2]).then(async () => {
 	console.log('connected')
-	await singleton.loadFile(process.argv[3])
+	await singleton.loadFile(process.argv[3]).catch((e) => {
+		console.error(e)
+		process.exit(-1)
+	})
 	singleton.uploadToAtem().then(() => {
 		console.log('uploaded media')
 		process.exit(0)
