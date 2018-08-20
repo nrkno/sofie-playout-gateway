@@ -414,20 +414,6 @@ export class TSRHandler {
 						coreConn.setStatus({
 							statusCode: (connected ? P.StatusCode.GOOD : P.StatusCode.BAD)
 						})
-
-						// hack to make sure atem has media after restart
-						const studioInstallation = this._getStudioInstallation()
-						if (device.deviceType === DeviceType.ATEM && studioInstallation) {
-							const ssrcBg = studioInstallation.config.find((o) => o._id === 'atemSSrcBackground')
-							if (ssrcBg) {
-								try {
-									this._coreHandler.uploadFileToAtem(ssrcBg)
-								} catch (e) {
-									e = e
-									// don't worry about it.
-								}
-							}
-						}
 					})
 				})
 			}
