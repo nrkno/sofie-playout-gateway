@@ -5198,9 +5198,9 @@ subarg@^1.0.0:
   dependencies:
     minimist "^1.1.0"
 
-superfly-timeline@^4.0.2:
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/superfly-timeline/-/superfly-timeline-4.0.2.tgz#06afddd87892fa3b2f22aafd7113a94d9a76cd52"
+superfly-timeline@^5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/superfly-timeline/-/superfly-timeline-5.0.1.tgz#bf7d4a304a6ffde90ac216c6924b4aa5ee38eb79"
   dependencies:
     "@types/underscore" "^1.8.8"
     underscore "^1.9.1"
@@ -5302,9 +5302,9 @@ timed-out@^3.0.0:
   version "3.1.3"
   resolved "https://registry.yarnpkg.com/timed-out/-/timed-out-3.1.3.tgz#95860bfcc5c76c277f8f8326fd0f5b2e20eba217"
 
-timeline-state-resolver@^0.11.0:
-  version "0.11.0"
-  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-0.11.0.tgz#cc1713fda92fe786c371fb4b5661bba9d1716021"
+timeline-state-resolver@^0.12.0:
+  version "0.12.0"
+  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-0.12.0.tgz#36b3ef84e02dace5826e85895230eb18cf6daf31"
   dependencies:
     "@types/request" "^2.47.0"
     atem-connection "^0.5.0"
@@ -5314,7 +5314,7 @@ timeline-state-resolver@^0.11.0:
     emberplus "git+https://github.com/nrkno/tv-automation-emberplus-connection.git#dist"
     fast-clone "^1.5.3"
     request "^2.87.0"
-    superfly-timeline "^4.0.2"
+    superfly-timeline "^5.0.1"
     underscore "^1.9.1"
     underscore-deep-extend "^1.1.5"
 
