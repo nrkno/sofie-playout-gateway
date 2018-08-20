@@ -401,22 +401,29 @@ export class TSRHandler {
 					coreConnection: coreConn
 				}
 
-				coreConn.init(this._coreHandler.core)
+				return coreConn.init(this._coreHandler.core)
 				.then(() => {
-					coreConn.setStatus({
+					device.on('connectionChanged', (connected) => {
+						coreConn.setStatus({
+							statusCode: (connected ? P.StatusCode.GOOD : P.StatusCode.BAD)
+						})
+						.catch(e => this.logger.warn('Error when setting status: ' + e))
+					})
+				})
+				.then(() => {
+					return coreConn.setStatus({
 						statusCode: (
 							device.canConnect ?
 							(device.connected ? P.StatusCode.GOOD : P.StatusCode.BAD) :
 							P.StatusCode.GOOD
 						)
 					})
-					device.on('connectionChanged', (connected) => {
-						coreConn.setStatus({
-							statusCode: (connected ? P.StatusCode.GOOD : P.StatusCode.BAD)
-						})
-					})
+				})
+				.then(() => {
+					return Promise.resolve()
 				})
 			}
+			return Promise.resolve()
 		})
 		.catch((e) => {
 			this.logger.error('Error when adding device: ' + e)

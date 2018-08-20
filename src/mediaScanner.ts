@@ -160,18 +160,18 @@ export class MediaScanner {
 			const newSequenceNr = changes.seq
 
 			if (changes.deleted) {
-				this.logger.debug('deleteMediaObject', changes.id, newSequenceNr)
+				this.logger.debug('MediaScanner: deleteMediaObject', changes.id, newSequenceNr)
 				this._sendRemoved(changes.id)
 				.catch((e) => {
-					this._coreHandler.logger.error('Error sending deledet doc', e)
+					this._coreHandler.logger.error('MediaScanner: Error sending deleted doc', e)
 				})
 			} else if (changes.doc) {
 				const md: MediaObject = changes.doc
-				this.logger.debug('updateMediaObject', newSequenceNr, md._id)
+				this.logger.debug('MediaScanner: updateMediaObject', newSequenceNr, md._id)
 
 				this._sendChanged(md)
 				.catch((e) => {
-					this._coreHandler.logger.error('Error sending changed doc', e)
+					this._coreHandler.logger.error('MediaScanner: Error sending changed doc', e)
 				})
 
 				// const previewUrl = `${baseUrl}/media/preview/${md._id}`
@@ -181,12 +181,12 @@ export class MediaScanner {
 		const errHandler = (err) => {
 			if (err.code === 'ECONNREFUSED') {
 				// TODO: try to reconnect
-				this.logger.warn('Connection refused')
+				this.logger.warn('MediaScanner: Connection refused')
 			} else if (err instanceof SyntaxError) {
-				this.logger.warn('Connection terminated') // most likely
+				this.logger.warn('MediaScanner: Connection terminated (' + err.message + ')') // most likely
 				// TODO: try to reconnect
 			} else {
-				this.logger.error('Error', err)
+				this.logger.error('MediaScanner: Error', err)
 			}
 
 			this._changes.cancel()
@@ -203,7 +203,7 @@ export class MediaScanner {
 			.on('change', changeHandler)
 			.on('error', errHandler)
 
-		this._coreHandler.logger.info('Start syncing media files')
+		this._coreHandler.logger.info('MediaScanner: Start syncing media files')
 
 		return Promise.all([
 			this._coreHandler.core.callMethod(PeripheralDeviceAPI.methods.getMediaObjectRevisions, [
@@ -216,7 +216,7 @@ export class MediaScanner {
 		])
 		.then(([coreObjects, allDocsResponse]) => {
 
-			this._coreHandler.logger.info('synk objectlists', coreObjects.length, allDocsResponse.total_rows)
+			this._coreHandler.logger.info('MediaScanner: synk objectlists', coreObjects.length, allDocsResponse.total_rows)
 
 			let tasks: Array<() => Promise<any>> = []
 
@@ -267,11 +267,11 @@ export class MediaScanner {
 			return PromiseSequence(tasks)
 		})
 		.then(() => {
-			this._coreHandler.logger.info('Done file sync init')
+			this._coreHandler.logger.info('MediaScanner: Done file sync init')
 			return
 		})
 		.catch((e) => {
-			this._coreHandler.logger.error('Error initializing MediaScanner', e)
+			this._coreHandler.logger.error('MediaScanner: Error initializing MediaScanner', e)
 		})
 	}
 
@@ -295,7 +295,7 @@ export class MediaScanner {
 
 		let sendDoc = _.omit(doc, ['_attachments'])
 		// @ts-ignore
-		// this._coreHandler.logger.info('_sendChanged', JSON.stringify(sendDoc, ' ', 2))
+		// this._coreHandler.logger.info('MediaScanner: _sendChanged', JSON.stringify(sendDoc, ' ', 2))
 		return this._coreHandler.core.callMethod(PeripheralDeviceAPI.methods.updateMediaObject, [
 			this._config.collectionId,
 			doc._id,
@@ -306,8 +306,8 @@ export class MediaScanner {
 		})
 		.catch((e) => {
 			// @ts-ignore
-			this._coreHandler.logger.info('_sendChanged', JSON.stringify(sendDoc, ' ', 2))
-			this._coreHandler.logger.error('Error while updating changed Media object', e)
+			this._coreHandler.logger.info('MediaScanner: _sendChanged', JSON.stringify(sendDoc, ' ', 2))
+			this._coreHandler.logger.error('MediaScanner: Error while updating changed Media object', e)
 		})
 	}
 	private _sendRemoved (docId: string): Promise<void> {
@@ -320,7 +320,7 @@ export class MediaScanner {
 			return
 		})
 		.catch((e) => {
-			this._coreHandler.logger.error('Error while updating deleted Media object', e)
+			this._coreHandler.logger.error('MediaScanner: Error while updating deleted Media object', e)
 		})
 	}
 }
