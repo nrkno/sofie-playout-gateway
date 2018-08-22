@@ -494,6 +494,12 @@ atem-connection@^0.5.0:
     pngjs "^3.3.2"
     tslib "^1.9.0"
 
+"atem-connection@git+https://github.com/nrkno/tv-automation-atem-connection#upload_dist":
+  version "0.2.2"
+  resolved "git+https://github.com/nrkno/tv-automation-atem-connection#c69e60919c930408f0611a9ab6e1ad8a29cc503e"
+  dependencies:
+    tslib "^1.9.0"
+
 atem-state@^0.3.6:
   version "0.3.6"
   resolved "https://registry.yarnpkg.com/atem-state/-/atem-state-0.3.6.tgz#5b8d88d6037b78b26b31e77462dc592023f6be46"

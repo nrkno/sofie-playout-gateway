@@ -9,6 +9,8 @@ import * as Winston from 'winston'
 import { DeviceConfig } from './connector'
 import { TSRHandler } from './tsrHandler'
 import * as fs from 'fs'
+import * as cp from 'child_process'
+import { DeviceType } from 'timeline-state-resolver'
 
 export interface CoreConfig {
 	host: string,
@@ -253,6 +255,36 @@ export class CoreHandler {
 	pingResponse (message: string) {
 		this.core.setPingResponse(message)
 		return true
+	}
+	/**
+	 * This function is a quick and dirty solution to load a still to the atem mixers.
+	 * This does not serve as a proper implementation! And need to be refactor
+	 * // @todo: proper atem media management
+	 * /Balte - 22-08
+	 */
+	uploadFileToAtem (url: { _key: string, value: any }) {
+		this.logger.info('try to load ' + JSON.stringify(url) + ' to atem')
+		if (this._tsrHandler) {
+			this._tsrHandler.tsr.getDevices().forEach((device) => {
+				if (device.deviceType === DeviceType.ATEM) {
+					const options = device.deviceOptions.options as { host: string }
+					this.logger.info('options ' + JSON.stringify(options))
+					if (options && options.host) {
+						this.logger.info('uploading ' + url.value + ' to ' + options.host)
+						const process = cp.spawn(`node`, [`./dist/atemUploader.js`, options.host, url.value])
+						process.stdout.on('data', (data) => this.logger.info(data.toString()))
+						process.stderr.on('data', (data) => this.logger.info(data.toString()))
+						process.on('close', () => {
+							process.removeAllListeners()
+						})
+					} else {
+						throw Error('ATEM host option not set')
+					}
+				}
+			})
+		} else {
+			throw Error('TSR not set up!')
+		}
 	}
 	private _getVersions () {
 		let versions: {[packageName: string]: string} = {}
