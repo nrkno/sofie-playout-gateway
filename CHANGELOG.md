@@ -2,6 +2,41 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.3.0"></a>
+# [0.3.0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v0.2.1...v0.3.0) (2018-08-23)
+
+
+### Bug Fixes
+
+* updated tsr & core-integration dependency ([7cc9386](https://github.com/nrkno/tv-automation-playout-gateway/commit/7cc9386))
+* **logging:** More reasonable logging of the statObj evaluation ([422cd4f](https://github.com/nrkno/tv-automation-playout-gateway/commit/422cd4f))
+* added missing core onError handler ([d5b0f01](https://github.com/nrkno/tv-automation-playout-gateway/commit/d5b0f01))
+* added option to fully disable statObj ([c9794bb](https://github.com/nrkno/tv-automation-playout-gateway/commit/c9794bb))
+* build-script: yarn.lock file should not be removed and if updates are needed, that shoud fail the build process. ([d83584d](https://github.com/nrkno/tv-automation-playout-gateway/commit/d83584d))
+* changed statobj id ([1920020](https://github.com/nrkno/tv-automation-playout-gateway/commit/1920020))
+* error logging ([76f3749](https://github.com/nrkno/tv-automation-playout-gateway/commit/76f3749))
+* handle promises appropriately ([d06635c](https://github.com/nrkno/tv-automation-playout-gateway/commit/d06635c))
+* lint & build ([8824435](https://github.com/nrkno/tv-automation-playout-gateway/commit/8824435))
+* persist media through a restart ([627bd94](https://github.com/nrkno/tv-automation-playout-gateway/commit/627bd94))
+* persist media through a restart ([3558c8a](https://github.com/nrkno/tv-automation-playout-gateway/commit/3558c8a))
+* remove unused methods ([1711b9d](https://github.com/nrkno/tv-automation-playout-gateway/commit/1711b9d))
+* removed console.log ([2be9ff8](https://github.com/nrkno/tv-automation-playout-gateway/commit/2be9ff8))
+* removed console.log ([05fdf46](https://github.com/nrkno/tv-automation-playout-gateway/commit/05fdf46))
+* updated tsr & core-integration dependency ([0b04237](https://github.com/nrkno/tv-automation-playout-gateway/commit/0b04237))
+
+
+### Features
+
+* **media scanner:** basic reconnection logic without replication ([d3ccd86](https://github.com/nrkno/tv-automation-playout-gateway/commit/d3ccd86))
+* log successful commands ([86f6f8a](https://github.com/nrkno/tv-automation-playout-gateway/commit/86f6f8a))
+* script + function to upload a still to the atem ([18446f5](https://github.com/nrkno/tv-automation-playout-gateway/commit/18446f5))
+* script + function to upload a still to the atem ([e39762a](https://github.com/nrkno/tv-automation-playout-gateway/commit/e39762a))
+* updated TSR dep (containing the big timeline refactoring) ([74ef284](https://github.com/nrkno/tv-automation-playout-gateway/commit/74ef284))
+* updated tsr dependency ([0820f05](https://github.com/nrkno/tv-automation-playout-gateway/commit/0820f05))
+* updated tsr dependency ([be0e7dc](https://github.com/nrkno/tv-automation-playout-gateway/commit/be0e7dc))
+
+
+
 <a name="0.2.1"></a>
 ## [0.2.1](https://github.com/nrkno/tv-automation-playout-gateway/compare/v0.2.0...v0.2.1) (2018-08-03)
 
