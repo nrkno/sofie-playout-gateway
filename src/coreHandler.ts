@@ -287,6 +287,23 @@ export class CoreHandler {
 			throw Error('TSR not set up!')
 		}
 	}
+	getSnapshot (): any {
+		console.log('getSnapshot')
+		let timeline = (
+			this._tsrHandler ?
+			this._tsrHandler.getTimeline(false) :
+			[]
+		)
+		let mappings = (
+			this._tsrHandler ?
+			this._tsrHandler.getMapping() :
+			[]
+		)
+		return {
+			timeline: timeline,
+			mappings: mappings
+		}
+	}
 	private _getVersions () {
 		let versions: {[packageName: string]: string} = {}
 

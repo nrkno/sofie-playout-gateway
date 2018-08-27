@@ -14,7 +14,7 @@ import * as Winston from 'winston'
 import * as crypto from 'crypto'
 
 import * as _ from 'underscore'
-import { CoreConnection, PeripheralDeviceAPI as P } from 'tv-automation-server-core-integration'
+import { CoreConnection, PeripheralDeviceAPI as P, CollectionObj } from 'tv-automation-server-core-integration'
 
 export interface TSRConfig {
 }
@@ -193,6 +193,37 @@ export class TSRHandler {
 	destroy (): Promise<void> {
 		return this.tsr.destroy()
 	}
+	getTimeline (excludeStatObj?: boolean): Array<CollectionObj> | null {
+		let siId = this._getStudioInstallationId()
+		if (!siId) {
+			this.logger.warn('no studioInstallationId')
+			return null
+		}
+
+		let objs = this._coreHandler.core.getCollection('timeline').find((o) => {
+			// console.log('o', o)
+			if (excludeStatObj) {
+				if (o.statObject) return false
+			}
+			return (
+				o.siId === siId &&
+				(
+					_.isArray(o.deviceId) ?
+					o.deviceId.indexOf(this._coreHandler.core.deviceId) !== -1 :
+					o.deviceId === this._coreHandler.core.deviceId
+				)
+			)
+		})
+
+		return objs
+	}
+	getMapping () {
+		let studioInstallation = this._getStudioInstallation()
+		if (studioInstallation) {
+			return studioInstallation.mappings
+		}
+		return null
+	}
 	private _triggerupdateTimeline () {
 		// console.log('got data')
 		if (this._triggerupdateTimelineTimeout) {
@@ -277,14 +308,9 @@ export class TSRHandler {
 		// console.log('_updateTimeline')
 		if (this._determineIfTimelineShouldUpdate()) {
 			// this.logger.debug('_updateTimeline')
-			let transformedTimeline = this._transformTimeline(this._coreHandler.core.getCollection('timeline').find((o) => {
-				if (o.statObject === true) return false
-				return (
-					_.isArray(o.deviceId) ?
-					o.deviceId.indexOf(this._coreHandler.core.deviceId) !== -1 :
-					o.deviceId === this._coreHandler.core.deviceId
-				)
-			}) as Array<TimelineObj>)
+			let transformedTimeline = this._transformTimeline(
+				this.getTimeline(true) as Array<TimelineObj>
+			)
 			if (transformedTimeline) {
 				this.tsr.timeline = transformedTimeline
 			} else {
@@ -303,9 +329,9 @@ export class TSRHandler {
 		}, 20)
 	}
 	private _updateMapping () {
-		let studioInstallation = this._getStudioInstallation()
-		if (studioInstallation) {
-			this.tsr.mapping = studioInstallation.mappings
+		let mapping = this.getMapping()
+		if (mapping) {
+			this.tsr.mapping = mapping
 		}
 	}
 	private _getPeripheralDevice () {
@@ -568,15 +594,8 @@ export class TSRHandler {
 		let statObjHash 	= (statObject.content || {}).objHash || ''
 
 		// collect statistics
-		// console.log('a', this._coreHandler.core.getCollection('timeline').find)
-
-		let objs = this._coreHandler.core.getCollection('timeline').find((o) => {
-			// console.log('o', o)
-			return (
-				o.siId === siId &&
-				o.statObject !== true
-			)
-		})
+		let objs = this.getTimeline(true)
+		if (!objs) return false
 
 		// console.log(_.pluck(objs, '_id'))
 
