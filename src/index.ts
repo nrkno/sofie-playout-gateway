@@ -2,6 +2,7 @@ import { Connector } from './connector'
 import { config, logPath, disableWatchdog } from './config'
 import * as Winston from 'winston'
 
+let c: Connector
 // Setup logging --------------------------------------
 let logger = new (Winston.Logger)({
 })
@@ -36,7 +37,10 @@ if (logPath) {
 	logger.add(Winston.transports.Console,{
 		handleExceptions: true,
 		json: true,
-		stringify: (obj) => JSON.stringify(obj) // make single line
+		stringify: (obj) => {
+			obj.localTimestamp = getCurrentTime()
+			return JSON.stringify(obj) // make single line
+		}
 	})
 	logger.info('Logging to Console')
 	// Hijack console.log:
@@ -50,6 +54,13 @@ if (logPath) {
 		}
 	}
 }
+function getCurrentTime () {
+	let v = Date.now()
+	// if (c && c.coreHandler && c.coreHandler.core) {
+	// 	v = c.coreHandler.core.getCurrentTime()
+	// }
+	return new Date(v).toISOString()
+}
 
 // Because the default NodeJS-handler sucks and wont display error properly
 process.on('unhandledRejection', (e: any) => {
@@ -62,7 +73,7 @@ process.on('warning', (e: any) => {
 logger.info('------------------------------------------------------------------')
 logger.info('Starting Playout Gateway')
 if (disableWatchdog) logger.info('Watchdog is disabled!')
-let c = new Connector(logger)
+c = new Connector(logger)
 
 logger.info('Core:          ' + config.core.host + ':' + config.core.port)
 logger.info('------------------------------------------------------------------')
