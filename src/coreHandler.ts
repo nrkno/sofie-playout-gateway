@@ -4,6 +4,9 @@ import { CoreConnection,
 	PeripheralDeviceAPI as P
 } from 'tv-automation-server-core-integration'
 
+import * as cp from 'child_process'
+import { DeviceType } from 'timeline-state-resolver'
+
 import * as _ from 'underscore'
 import * as Winston from 'winston'
 import { DeviceConfig } from './connector'
