@@ -102,6 +102,7 @@
   ],
   "dependencies": {
     "@types/pouchdb-node": "^6.1.2",
+    "atem-connection": "https://github.com/nrkno/tv-automation-atem-connection#upload-270818",
     "axios": "^0.18.0",
     "fast-clone": "^1.5.3",
     "pouchdb-node": "^6.4.3",
