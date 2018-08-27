@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.4.0"></a>
+# [0.4.0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v0.3.1...v0.4.0) (2018-08-27)
+
+
+### Bug Fixes
+
+* add localTimestamp to logger output ([8ae2c01](https://github.com/nrkno/tv-automation-playout-gateway/commit/8ae2c01))
+
+
+### Features
+
+* refactored getting of timeline, added getSnapshot, for debugging ([6df71de](https://github.com/nrkno/tv-automation-playout-gateway/commit/6df71de))
+
+
+
 <a name="0.3.1"></a>
 ## [0.3.1](https://github.com/nrkno/tv-automation-playout-gateway/compare/v0.3.0...v0.3.1) (2018-08-27)
 
