@@ -288,7 +288,7 @@ export class CoreHandler {
 		}
 	}
 	getSnapshot (): any {
-		console.log('getSnapshot')
+		this.logger.info('getSnapshot')
 		let timeline = (
 			this._tsrHandler ?
 			this._tsrHandler.getTimeline(false) :
