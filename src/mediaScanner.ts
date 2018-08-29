@@ -4,6 +4,7 @@ import * as PromiseSequence from 'promise-sequence'
 import { PeripheralDeviceAPI } from 'tv-automation-server-core-integration'
 import { CoreHandler } from './coreHandler'
 import * as Winston from 'winston'
+import * as crypto from 'crypto'
 
 export interface MediaScannerConfig {
 	host?: string,
@@ -133,6 +134,7 @@ export class MediaScanner {
 		// this.logger.info('device', device)
 
 		let mediaScannerSettings = (device.settings || {}).mediaScanner || {}
+		let lastSeq
 		this._config.host = mediaScannerSettings.host || this._config.host
 		this._config.port = mediaScannerSettings.port || this._config.port
 
@@ -151,25 +153,28 @@ export class MediaScanner {
 		// Get sequence id to start at
 		// return core.call('getMySequenceNumber', someDeviceId, (sequenceNr) => {
 		const changesOptions = {
-			since: 'now',
+			since: lastSeq || 'now',
 			include_docs: true,
 			live: true,
 			attachments: true
 		}
 		const changeHandler = (changes) => {
 			const newSequenceNr = changes.seq
+			lastSeq = newSequenceNr
 
 			if (changes.deleted) {
 				this.logger.debug('MediaScanner: deleteMediaObject', changes.id, newSequenceNr)
-				this._sendRemoved(changes.id)
+				const docId = crypto.createHash('md5').update(changes.id).digest('hex')
+				this._sendRemoved(docId)
 				.catch((e) => {
 					this._coreHandler.logger.error('MediaScanner: Error sending deleted doc', e)
 				})
 			} else if (changes.doc) {
 				const md: MediaObject = changes.doc
+				const docId = crypto.createHash('md5').update(changes.id).digest('hex')
 				this.logger.debug('MediaScanner: updateMediaObject', newSequenceNr, md._id)
 
-				this._sendChanged(md)
+				this._sendChanged(md, docId)
 				.catch((e) => {
 					this._coreHandler.logger.error('MediaScanner: Error sending changed doc', e)
 				})
@@ -225,23 +230,24 @@ export class MediaScanner {
 				coreObjRevisions[obj.id] = obj.rev
 			})
 			tasks = tasks.concat(_.compact(_.map(allDocsResponse.rows, (doc) => {
+				const docId = crypto.createHash('md5').update(doc.id).digest('hex')
 
 				if (doc.value.deleted) {
-					if (coreObjRevisions[doc.id]) {
+					if (coreObjRevisions[docId]) {
 						// deleted
 					}
 					return null // handled later
 				} else if (
-					!coreObjRevisions[doc.id] ||				// created
-					coreObjRevisions[doc.id] !== doc.value.rev	// changed
+					!coreObjRevisions[docId] ||				// created
+					coreObjRevisions[docId] !== doc.value.rev	// changed
 				) {
 					// emit created / changed
-					delete coreObjRevisions[doc.id]
+					delete coreObjRevisions[docId]
 					return () => {
 						return this._db.get<MediaObject>(doc.id, {
 							attachments: true
 						}).then((doc) => {
-							return this._sendChanged(doc)
+							return this._sendChanged(doc, docId)
 						})
 						.then(() => {
 							return new Promise(resolve => {
@@ -290,7 +296,7 @@ export class MediaScanner {
 
 		return p
 	}
-	private _sendChanged (doc: MediaObject): Promise<void> {
+	private _sendChanged (doc: MediaObject, id: string): Promise<void> {
 		// Added or changed
 
 		let sendDoc = _.omit(doc, ['_attachments'])
@@ -298,7 +304,7 @@ export class MediaScanner {
 		// this._coreHandler.logger.info('MediaScanner: _sendChanged', JSON.stringify(sendDoc, ' ', 2))
 		return this._coreHandler.core.callMethod(PeripheralDeviceAPI.methods.updateMediaObject, [
 			this._config.collectionId,
-			doc._id,
+			id,
 			sendDoc
 		])
 		.then(() => {
