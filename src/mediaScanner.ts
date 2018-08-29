@@ -133,6 +133,7 @@ export class MediaScanner {
 		// this.logger.info('device', device)
 
 		let mediaScannerSettings = (device.settings || {}).mediaScanner || {}
+		let lastSeq
 		this._config.host = mediaScannerSettings.host || this._config.host
 		this._config.port = mediaScannerSettings.port || this._config.port
 
@@ -151,13 +152,14 @@ export class MediaScanner {
 		// Get sequence id to start at
 		// return core.call('getMySequenceNumber', someDeviceId, (sequenceNr) => {
 		const changesOptions = {
-			since: 'now',
+			since: lastSeq || 'now',
 			include_docs: true,
 			live: true,
 			attachments: true
 		}
 		const changeHandler = (changes) => {
 			const newSequenceNr = changes.seq
+			lastSeq = newSequenceNr
 
 			if (changes.deleted) {
 				this.logger.debug('MediaScanner: deleteMediaObject', changes.id, newSequenceNr)
