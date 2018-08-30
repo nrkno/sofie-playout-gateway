@@ -81,6 +81,7 @@ export interface MediaAttachment {
 }
 
 export interface MediaObject {
+	mediaId: string
 	mediaPath: string
 	mediaSize: number
 	mediaTime: number
@@ -171,8 +172,9 @@ export class MediaScanner {
 				})
 			} else if (changes.doc) {
 				const md: MediaObject = changes.doc
+				md.mediaId = changes.id
 				const docId = crypto.createHash('md5').update(changes.id).digest('hex')
-				this.logger.debug('MediaScanner: updateMediaObject', newSequenceNr, md._id)
+				this.logger.debug('MediaScanner: updateMediaObject', newSequenceNr, md._id, md.mediaId)
 
 				this._sendChanged(md, docId)
 				.catch((e) => {
