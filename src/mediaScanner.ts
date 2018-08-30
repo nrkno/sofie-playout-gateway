@@ -175,7 +175,6 @@ export class MediaScanner {
 				md.mediaId = changes.id
 				const docId = crypto.createHash('md5').update(changes.id).digest('hex')
 				this.logger.debug('MediaScanner: updateMediaObject', newSequenceNr, md._id, md.mediaId)
-
 				this._sendChanged(md, docId)
 				.catch((e) => {
 					this._coreHandler.logger.error('MediaScanner: Error sending changed doc', e)
@@ -249,6 +248,7 @@ export class MediaScanner {
 						return this._db.get<MediaObject>(doc.id, {
 							attachments: true
 						}).then((doc) => {
+							doc.mediaId = doc._id
 							return this._sendChanged(doc, docId)
 						})
 						.then(() => {
