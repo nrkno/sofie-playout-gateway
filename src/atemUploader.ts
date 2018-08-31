@@ -10,6 +10,7 @@ export class AtemUploadScript {
 	connection = new Atem()
 	fileName: string
 	file: Buffer
+	mediaPool = 0
 
 	connect (ip: string): Promise<null> {
 		return new Promise((resolve) => {
@@ -35,11 +36,11 @@ export class AtemUploadScript {
 	checkIfFileExistsOnAtem (): boolean {
 		if (!this.file) throw Error('Load a file locally before checking if it needs uploading')
 		console.log('got a file')
-		if (this.connection.state.media.stillPool[0]) {
+		if (this.connection.state.media.stillPool[this.mediaPool]) {
 			console.log('has stills')
-			if (this.connection.state.media.stillPool[0].isUsed) {
+			if (this.connection.state.media.stillPool[this.mediaPool].isUsed) {
 				console.log('still is used')
-				if (this.connection.state.media.stillPool[0].fileName === this.fileName) {
+				if (this.connection.state.media.stillPool[this.mediaPool].fileName === this.fileName) {
 					console.log('name equals')
 					return true
 				} else {
@@ -58,7 +59,7 @@ export class AtemUploadScript {
 		if (!this.checkIfFileExistsOnAtem()) {
 			console.log('does not exist on atme')
 			return this.connection.clearMediaPoolStill(0).then(() =>
-				this.connection.uploadStill(0, this.file, this.fileName, '')
+				this.connection.uploadStill(this.mediaPool, this.file, this.fileName, '')
 			).then(() =>
 				this.setMediaPlayerToStill()
 			)
@@ -83,8 +84,13 @@ singleton.connect(process.argv[2]).then(async () => {
 		console.error(e)
 		process.exit(-1)
 	})
+
+	if (process.argv[4] !== undefined) {
+		singleton.mediaPool = parseInt(process.argv[4], 10)
+	}
+
 	singleton.uploadToAtem().then(() => {
-		console.log('uploaded media')
+		console.log('uploaded media to pool ' + singleton.mediaPool)
 		process.exit(0)
 	}, () => process.exit(-1))
 }, () => process.exit(-1))
