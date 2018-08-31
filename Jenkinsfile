@@ -14,7 +14,7 @@ pipeline {
     stage('Build') {
       steps {
         sofieSlackSendBuildStarted()
-        git url: 'https://github.com/AtlasBID/Combination.git'
+        git url: 'git@github.com:nrkno/tv-automation-static-assets.git'
         dockerBuild('sofie/tv-automation-playout-gateway')
       }
     }
