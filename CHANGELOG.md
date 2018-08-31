@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.7.0"></a>
+# [0.7.0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v0.5.2...v0.7.0) (2018-08-31)
+
+
+### Bug Fixes
+
+* also save the original media id ([9939db4](https://github.com/nrkno/tv-automation-playout-gateway/commit/9939db4))
+* also save the original media id ([c0f6c0b](https://github.com/nrkno/tv-automation-playout-gateway/commit/c0f6c0b))
+* temporary test: added random id to all log outputs, to verify if logs are logged twice ([e72cbc1](https://github.com/nrkno/tv-automation-playout-gateway/commit/e72cbc1))
+* temporary test: added random id to all log outputs, to verify if logs are logged twice ([f7deb7a](https://github.com/nrkno/tv-automation-playout-gateway/commit/f7deb7a))
+* tsr dep ([18eda01](https://github.com/nrkno/tv-automation-playout-gateway/commit/18eda01))
+* tsr dep ([4f0dd2b](https://github.com/nrkno/tv-automation-playout-gateway/commit/4f0dd2b))
+
+
+### Features
+
+* **atemUpload:** multiple files ([1efa683](https://github.com/nrkno/tv-automation-playout-gateway/commit/1efa683))
+* **atemUpload:** multiple files ([ca0ce62](https://github.com/nrkno/tv-automation-playout-gateway/commit/ca0ce62))
+
+
+
 <a name="0.6.0"></a>
 # 0.6.0 (2018-08-31)
 
