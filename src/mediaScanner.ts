@@ -165,17 +165,14 @@ export class MediaScanner {
 
 			if (changes.deleted) {
 				this.logger.debug('MediaScanner: deleteMediaObject', changes.id, newSequenceNr)
-				const docId = crypto.createHash('md5').update(changes.id).digest('hex')
-				this._sendRemoved(docId)
+				this._sendRemoved(changes.id)
 				.catch((e) => {
 					this._coreHandler.logger.error('MediaScanner: Error sending deleted doc', e)
 				})
 			} else if (changes.doc) {
 				const md: MediaObject = changes.doc
-				md.mediaId = changes.id
-				const docId = crypto.createHash('md5').update(changes.id).digest('hex')
 				this.logger.debug('MediaScanner: updateMediaObject', newSequenceNr, md._id, md.mediaId)
-				this._sendChanged(md, docId)
+				this._sendChanged(md)
 				.catch((e) => {
 					this._coreHandler.logger.error('MediaScanner: Error sending changed doc', e)
 				})
@@ -197,6 +194,7 @@ export class MediaScanner {
 
 			this._changes.cancel()
 			// restart the changes stream
+			changesOptions.since = lastSeq
 			setTimeout(() => {
 				this._changes = this._db.changes<MediaObject>(changesOptions)
 					.on('change', changeHandler)
@@ -231,7 +229,7 @@ export class MediaScanner {
 				coreObjRevisions[obj.id] = obj.rev
 			})
 			tasks = tasks.concat(_.compact(_.map(allDocsResponse.rows, (doc) => {
-				const docId = crypto.createHash('md5').update(doc.id).digest('hex')
+				const docId = this.hashId(doc.id)
 
 				if (doc.value.deleted) {
 					if (coreObjRevisions[docId]) {
@@ -248,8 +246,7 @@ export class MediaScanner {
 						return this._db.get<MediaObject>(doc.id, {
 							attachments: true
 						}).then((doc) => {
-							doc.mediaId = doc._id
-							return this._sendChanged(doc, docId)
+							return this._sendChanged(doc)
 						})
 						.then(() => {
 							return new Promise(resolve => {
@@ -298,15 +295,16 @@ export class MediaScanner {
 
 		return p
 	}
-	private _sendChanged (doc: MediaObject, id: string): Promise<void> {
+	private _sendChanged (doc: MediaObject): Promise<void> {
 		// Added or changed
 
 		let sendDoc = _.omit(doc, ['_attachments'])
+		doc.mediaId = doc._id
 		// @ts-ignore
 		// this._coreHandler.logger.info('MediaScanner: _sendChanged', JSON.stringify(sendDoc, ' ', 2))
 		return this._coreHandler.core.callMethod(PeripheralDeviceAPI.methods.updateMediaObject, [
 			this._config.collectionId,
-			id,
+			this.hashId(doc._id),
 			sendDoc
 		])
 		.then(() => {
@@ -321,7 +319,7 @@ export class MediaScanner {
 	private _sendRemoved (docId: string): Promise<void> {
 		return this._coreHandler.core.callMethod(PeripheralDeviceAPI.methods.updateMediaObject, [
 			this._config.collectionId,
-			docId,
+			this.hashId(docId),
 			null
 		])
 		.then(() => {
@@ -330,5 +328,8 @@ export class MediaScanner {
 		.catch((e) => {
 			this._coreHandler.logger.error('MediaScanner: Error while updating deleted Media object', e)
 		})
+	}
+	private hashId (id: string): string {
+		return crypto.createHash('md5').update(id).digest('hex')
 	}
 }
