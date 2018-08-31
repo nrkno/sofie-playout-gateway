@@ -263,29 +263,37 @@ export class CoreHandler {
 	 * // @todo: proper atem media management
 	 * /Balte - 22-08
 	 */
-	uploadFileToAtem (url: { _key: string, value: any }) {
-		this.logger.info('try to load ' + JSON.stringify(url) + ' to atem')
-		if (this._tsrHandler) {
-			this._tsrHandler.tsr.getDevices().forEach((device) => {
-				if (device.deviceType === DeviceType.ATEM) {
-					const options = device.deviceOptions.options as { host: string }
-					this.logger.info('options ' + JSON.stringify(options))
-					if (options && options.host) {
-						this.logger.info('uploading ' + url.value + ' to ' + options.host)
-						const process = cp.spawn(`node`, [`./dist/atemUploader.js`, options.host, url.value])
-						process.stdout.on('data', (data) => this.logger.info(data.toString()))
-						process.stderr.on('data', (data) => this.logger.info(data.toString()))
-						process.on('close', () => {
-							process.removeAllListeners()
-						})
-					} else {
-						throw Error('ATEM host option not set')
-					}
-				}
-			})
+	uploadFileToAtem (urls: [{ _key: string, value: any }] | { _key: string, value: any }) {
+		if (_.isArray(urls)) {
+			urls = urls.slice(0, 2) as [{ _key: string, value: any }]
 		} else {
-			throw Error('TSR not set up!')
+			urls = [ urls ]
 		}
+
+		urls.forEach((url, index) => {
+			this.logger.info('try to load ' + JSON.stringify(url) + ' to atem')
+			if (this._tsrHandler) {
+				this._tsrHandler.tsr.getDevices().forEach((device) => {
+					if (device.deviceType === DeviceType.ATEM) {
+						const options = device.deviceOptions.options as { host: string }
+						this.logger.info('options ' + JSON.stringify(options))
+						if (options && options.host) {
+							this.logger.info('uploading ' + url.value + ' to ' + options.host + ' in MP' + index)
+							const process = cp.spawn(`node`, [`./dist/atemUploader.js`, options.host, url.value, index])
+							process.stdout.on('data', (data) => this.logger.info(data.toString()))
+							process.stderr.on('data', (data) => this.logger.info(data.toString()))
+							process.on('close', () => {
+								process.removeAllListeners()
+							})
+						} else {
+							throw Error('ATEM host option not set')
+						}
+					}
+				})
+			} else {
+				throw Error('TSR not set up!')
+			}
+		})
 	}
 	getSnapshot (): any {
 		this.logger.info('getSnapshot')

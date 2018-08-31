@@ -442,10 +442,10 @@ export class TSRHandler {
 						// @todo: proper atem media management
 						const studioInstallation = this._getStudioInstallation()
 						if (device.deviceType === DeviceType.ATEM && studioInstallation) {
-							const ssrcBg = studioInstallation.config.find((o) => o._id === 'atemSSrcBackground')
-							if (ssrcBg) {
+							const ssrcBgs = studioInstallation.config.filter((o) => o._id.substr(0, 18) === 'atemSSrcBackground')
+							if (ssrcBgs) {
 								try {
-									this._coreHandler.uploadFileToAtem(ssrcBg)
+									this._coreHandler.uploadFileToAtem(ssrcBgs)
 								} catch (e) {
 									// don't worry about it.
 								}
