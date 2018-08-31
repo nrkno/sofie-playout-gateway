@@ -14,7 +14,9 @@ pipeline {
     stage('Build') {
       steps {
         sofieSlackSendBuildStarted()
-        git url: 'git@github.com:nrkno/tv-automation-static-assets.git'
+        dir('static') {
+          git url: 'git@github.com:nrkno/tv-automation-static-assets.git'
+        }
         dockerBuild('sofie/tv-automation-playout-gateway')
       }
     }
