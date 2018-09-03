@@ -919,9 +919,9 @@ casparcg-connection@^4.5.0:
     xml2js "^0.4.19"
     xmlbuilder "^9.0.7"
 
-casparcg-state@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/casparcg-state/-/casparcg-state-1.2.0.tgz#bedb868f6417b8f2c55c82db56c0e774502eddd3"
+casparcg-state@^1.3.1:
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/casparcg-state/-/casparcg-state-1.3.1.tgz#5fc41402e9c4edce65357d3fcb895a2852f79600"
   dependencies:
     casparcg-connection "^4.5.0"
     fast-clone "^1.5.3"
@@ -5308,15 +5308,15 @@ timed-out@^3.0.0:
   version "3.1.3"
   resolved "https://registry.yarnpkg.com/timed-out/-/timed-out-3.1.3.tgz#95860bfcc5c76c277f8f8326fd0f5b2e20eba217"
 
-timeline-state-resolver@^0.13.4:
-  version "0.13.4"
-  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-0.13.4.tgz#b4638f36f9e90e8a649c4a600575eabdeeee1378"
+timeline-state-resolver@^0.13.5:
+  version "0.13.5"
+  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-0.13.5.tgz#d17b52c7e6c6a1e25aebc2cca261042e0a9d482c"
   dependencies:
     "@types/request" "^2.47.0"
     atem-connection "^0.5.0"
     atem-state "^0.3.6"
     casparcg-connection "^4.5.0"
-    casparcg-state "^1.2.0"
+    casparcg-state "^1.3.1"
     emberplus "git+https://github.com/nrkno/tv-automation-emberplus-connection.git#dist"
     fast-clone "^1.5.3"
     request "^2.87.0"
