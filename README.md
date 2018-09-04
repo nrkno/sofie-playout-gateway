@@ -1,6 +1,6 @@
 
-# Playout-gateway
-An application for piping data between Core (in the Sofie-project) and playout devices (such as CasparCG, Atem, Lawo etc..)
+# Sofie: The Modern TV News Studio Automation System (Playout-Gateway)
+An application for piping data between Core (in the Sofie-project) and playout devices (such as CasparCG, ATEM, Lawo etc..)
 
 ## Usage
 ```
@@ -32,7 +32,6 @@ yarn test
 
 * yarn
 	https://yarnpkg.com
-	This is like npm, but better
 
 * jest
 	yarn global add jest
