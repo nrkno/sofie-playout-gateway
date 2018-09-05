@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.7.4"></a>
+## [0.7.4](https://github.com/nrkno/tv-automation-playout-gateway/compare/v0.7.3...v0.7.4) (2018-09-05)
+
+
+### Bug Fixes
+
+* set correct atem media player for second still ([c2b4cca](https://github.com/nrkno/tv-automation-playout-gateway/commit/c2b4cca))
+
+
+
 <a name="0.7.3"></a>
 ## [0.7.3](https://github.com/nrkno/tv-automation-playout-gateway/compare/v0.7.2...v0.7.3) (2018-09-05)
 
