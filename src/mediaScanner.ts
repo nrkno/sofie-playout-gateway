@@ -299,7 +299,7 @@ export class MediaScanner {
 		// Added or changed
 
 		let sendDoc = _.omit(doc, ['_attachments'])
-		doc.mediaId = doc._id
+		sendDoc.mediaId = doc._id
 		// @ts-ignore
 		// this._coreHandler.logger.info('MediaScanner: _sendChanged', JSON.stringify(sendDoc, ' ', 2))
 		return this._coreHandler.core.callMethod(PeripheralDeviceAPI.methods.updateMediaObject, [
