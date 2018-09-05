@@ -70,8 +70,8 @@ export class AtemUploadScript {
 	}
 
 	setMediaPlayerToStill () {
-		if (this.connection.state.media.players[0] && (this.connection.state.media.players[0].stillIndex !== 0 || this.connection.state.media.players[0].sourceType !== 0)) {
-			return this.connection.setMediaPlayerSource({ sourceType: 0, stillIndex: 0 }, 0)
+		if (this.connection.state.media.players[this.mediaPool] && (this.connection.state.media.players[this.mediaPool].stillIndex !== this.mediaPool || this.connection.state.media.players[this.mediaPool].sourceType !== 0)) {
+			return this.connection.setMediaPlayerSource({ sourceType: 0, stillIndex: this.mediaPool }, this.mediaPool)
 		}
 		return Promise.resolve()
 	}
