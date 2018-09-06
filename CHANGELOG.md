@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.8.0"></a>
+# [0.8.0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v0.7.4...v0.8.0) (2018-09-06)
+
+
+### Bug Fixes
+
+* media info missing mediaId property ([981f788](https://github.com/nrkno/tv-automation-playout-gateway/commit/981f788))
+
+
+### Features
+
+* tsr dependency: using internal command-queue instead of scheduler ([32dc692](https://github.com/nrkno/tv-automation-playout-gateway/commit/32dc692))
+
+
+
 <a name="0.7.4"></a>
 ## [0.7.4](https://github.com/nrkno/tv-automation-playout-gateway/compare/v0.7.3...v0.7.4) (2018-09-05)
 
