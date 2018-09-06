@@ -5308,9 +5308,9 @@ timed-out@^3.0.0:
   version "3.1.3"
   resolved "https://registry.yarnpkg.com/timed-out/-/timed-out-3.1.3.tgz#95860bfcc5c76c277f8f8326fd0f5b2e20eba217"
 
-timeline-state-resolver@^0.13.8:
-  version "0.13.8"
-  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-0.13.8.tgz#4f82d1ef5023e91bda93d5e853e2de95a8a4b1f2"
+timeline-state-resolver@^0.14.0:
+  version "0.14.0"
+  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-0.14.0.tgz#da7c91cdf58080bfb231276e040de9f17062f14f"
   dependencies:
     "@types/request" "^2.47.0"
     atem-connection "^0.5.0"
