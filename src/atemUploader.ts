@@ -44,6 +44,7 @@ export class AtemUploadScript {
 					console.log('name equals')
 					return true
 				} else {
+					console.log('name differs: ' + this.connection.state.media.stillPool[this.mediaPool].fileName + ' vs ' + this.fileName)
 					return false
 				}
 			} else {
