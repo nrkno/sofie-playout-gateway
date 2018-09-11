@@ -278,9 +278,10 @@ export class CoreHandler {
 					if (device.deviceType === DeviceType.ATEM) {
 						const options = device.deviceOptions.options as { host: string }
 						this.logger.info('options ' + JSON.stringify(options))
+						url.value = path.basename(url.value)
 						if (options && options.host) {
 							this.logger.info('uploading ' + url.value + ' to ' + options.host + ' in MP' + index)
-							const process = cp.spawn(`node`, [`./dist/atemUploader.js`, options.host, path.basename(url.value), index])
+							const process = cp.spawn(`node`, [`./dist/atemUploader.js`, options.host, url.value, index])
 							process.stdout.on('data', (data) => this.logger.info(data.toString()))
 							process.stderr.on('data', (data) => this.logger.info(data.toString()))
 							process.on('close', () => {
