@@ -12,6 +12,7 @@ import * as Winston from 'winston'
 import { DeviceConfig } from './connector'
 import { TSRHandler } from './tsrHandler'
 import * as fs from 'fs'
+import * as path from 'path'
 
 export interface CoreConfig {
 	host: string,
@@ -279,7 +280,7 @@ export class CoreHandler {
 						this.logger.info('options ' + JSON.stringify(options))
 						if (options && options.host) {
 							this.logger.info('uploading ' + url.value + ' to ' + options.host + ' in MP' + index)
-							const process = cp.spawn(`node`, [`./dist/atemUploader.js`, options.host, url.value, index])
+							const process = cp.spawn(`node`, [`./dist/atemUploader.js`, options.host, path.basename(url.value), index])
 							process.stdout.on('data', (data) => this.logger.info(data.toString()))
 							process.stderr.on('data', (data) => this.logger.info(data.toString()))
 							process.on('close', () => {
