@@ -1,6 +1,6 @@
 
-# Sofie: The Modern TV News Studio Automation System (Playout-Gateway)
-An application for piping data between Core (in the Sofie-project) and playout devices (such as CasparCG, ATEM, Lawo etc..)
+# Sofie: The Modern TV News Studio Automation System (Playout Gateway)
+An application for piping data between [Server Core](https://github.com/nrkno/tv-automation-server-core) and play-out devices (such as CasparCG, ATEM, Lawo, etc..)
 
 ## Usage
 ```
