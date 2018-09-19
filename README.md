@@ -38,4 +38,4 @@ yarn test
 
 * jest
 	yarn global add jest
-	This is our resting framework
+
