@@ -1,6 +1,6 @@
 
 # Sofie: The Modern TV News Studio Automation System (Playout Gateway)
-An application for piping data between [Server Core](https://github.com/nrkno/tv-automation-server-core) and play-out devices (such as CasparCG, ATEM, Lawo, etc..)
+An application for piping data between the [Sofie Server Core](https://github.com/nrkno/tv-automation-server-core) and play-out devices (such as CasparCG Server, ATEM, Lawo, etc..)
 
 ## Usage
 ```
