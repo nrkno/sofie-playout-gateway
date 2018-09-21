@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.11.0"></a>
+# [0.11.0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v0.10.0...v0.11.0) (2018-09-21)
+
+
+### Bug Fixes
+
+* Removed Launcher dependency (moving the functionality into TSR) ([45088b4](https://github.com/nrkno/tv-automation-playout-gateway/commit/45088b4))
+
+
+### Features
+
+* adding CoreTSRDeviceHandler: unifying with mos-connection, the CoreTSRDeviceHandler manages the subscriptions for sub-devices ([9f49951](https://github.com/nrkno/tv-automation-playout-gateway/commit/9f49951))
+* update TSR dep: restart casparcg using launcher-http endpoint ([b0fdca6](https://github.com/nrkno/tv-automation-playout-gateway/commit/b0fdca6))
+
+
+
 <a name="0.10.0"></a>
 # [0.10.0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v0.9.0...v0.10.0) (2018-09-20)
 
