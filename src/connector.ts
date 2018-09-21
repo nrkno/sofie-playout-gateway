@@ -2,7 +2,6 @@ import * as Winston from 'winston'
 import { TSRHandler, TSRConfig } from './tsrHandler'
 import { CoreHandler, CoreConfig } from './coreHandler'
 import { MediaScanner, MediaScannerConfig } from './mediaScanner'
-import { LauncherConfig, Launcher } from './launcher'
 // import {Conductor, DeviceType} from 'timeline-state-resolver'
 
 export interface Config {
@@ -10,7 +9,6 @@ export interface Config {
 	core: CoreConfig
 	tsr: TSRConfig
 	mediaScanner: MediaScannerConfig
-	launcher: LauncherConfig
 }
 export interface DeviceConfig {
 	deviceId: string
@@ -21,7 +19,6 @@ export class Connector {
 	private tsrHandler: TSRHandler
 	private coreHandler: CoreHandler
 	private mediaScanner: MediaScanner
-	private launcher: Launcher
 	private _config: Config
 	private _logger: Winston.LoggerInstance
 
@@ -49,10 +46,6 @@ export class Connector {
 		})
 		.then(() => {
 			this._logger.info('Media scanner initialized')
-			this._logger.info('Initializing Launcher')
-			return this.initLauncher()
-		})
-		.then(() => {
 			this._logger.info('Initialization done')
 			return
 		})
@@ -96,10 +89,5 @@ export class Connector {
 
 		return this.mediaScanner.init(this._config.mediaScanner, this.coreHandler)
 
-	}
-	initLauncher (): Promise<void> {
-		this.launcher = new Launcher(this._logger)
-
-		return this.launcher.init(this._config.launcher, this.coreHandler)
 	}
 }

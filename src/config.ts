@@ -7,8 +7,6 @@ let logPath: string 	= process.env.CORE_LOG						|| ''
 let deviceId: string 	= process.env.DEVICE_ID						|| ''
 let deviceToken: string 	= process.env.DEVICE_TOKEN 				|| ''
 let disableWatchdog: boolean = (process.env.DISABLE_WATCHDOG === '1') 		|| false
-let httpApiPort: number = parseInt(process.env.LAUNCHER_API_PORT + '', 10) || 8005
-let httpApiHost: string = process.env.LAUNCHER_API_HOST || '127.0.0.1'
 let mediaScannerHost: string = process.env.MEDIA_SCANNER_HOST || '127.0.0.1'
 let mediaScannerPort: number = parseInt(process.env.MEDIA_SCANNER_PORT + '', 10) || 8000
 
@@ -29,10 +27,6 @@ process.argv.forEach((val) => {
 		deviceToken = val
 	} else if (val.match(/-disableWatchdog/i)) {
 		disableWatchdog = true
-	} else if (prevProcessArg.match(/-httpApiPort/i)) {
-		httpApiPort = parseInt(val, 10)
-	} else if (prevProcessArg.match(/-httpApiHost/i)) {
-		httpApiHost = val
 	} else if (prevProcessArg.match(/-mediaScannerHost/i)) {
 		mediaScannerHost = val
 	} else if (prevProcessArg.match(/-mediaScannerPort/i)) {
@@ -58,10 +52,6 @@ const config: Config = {
 		collectionId: 'default', // TODO: to be fetched from core
 		host: mediaScannerHost,
 		port: mediaScannerPort
-	},
-	launcher: {
-		httpApiPort,
-		httpApiHost
 	}
 }
 

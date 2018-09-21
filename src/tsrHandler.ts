@@ -8,7 +8,7 @@ import {
 	TimelineTriggerTimeResult,
 	DeviceOptions
 } from 'timeline-state-resolver'
-import { CoreHandler } from './coreHandler'
+import { CoreHandler, CoreTSRDeviceHandler } from './coreHandler'
 let clone = require('fast-clone')
 import * as Winston from 'winston'
 import * as crypto from 'crypto'
@@ -81,7 +81,7 @@ export class TSRHandler {
 	private _triggerupdateTimelineTimeout: any = null
 	private _triggerupdateMappingTimeout: any = null
 	private _triggerupdateDevicesTimeout: any = null
-	private _tsrDevices: {[deviceId: string]: TSRDevice} = {}
+	private _coreTsrHandlers: {[deviceId: string]: CoreTSRDeviceHandler} = {}
 	private _observers: Array<any> = []
 	private _cachedStudioInstallationId: string = ''
 
@@ -420,48 +420,35 @@ export class TSRHandler {
 		.then((device: Device) => {
 			// set up device status
 
-			if (!this._tsrDevices[device.deviceId]) {
-				let coreConn = new CoreConnection(this._coreHandler.getCoreConnectionOptions('Playout: ' + device.deviceName, 'Playout' + device.deviceId, false))
-				coreConn.onError((err) => {
-					this.logger.error('Core Error: ' + (err.message || err.toString() || err))
-				})
-				this._tsrDevices[device.deviceId] = {
-					device: device,
-					coreConnection: coreConn
-				}
+			if (!this._coreTsrHandlers[device.deviceId]) {
 
-				return coreConn.init(this._coreHandler.core)
-				.then(() => {
-					device.on('connectionChanged', (connected) => {
-						coreConn.setStatus({
-							statusCode: (connected ? P.StatusCode.GOOD : P.StatusCode.BAD)
-						})
-						.catch(e => this.logger.warn('Error when setting status: ' + e))
+				let coreTsrHandler = new CoreTSRDeviceHandler(this._coreHandler, device, this)
 
-						// hack to make sure atem has media after restart
-						// @todo: proper atem media management
-						const studioInstallation = this._getStudioInstallation()
-						if (device.deviceType === DeviceType.ATEM && studioInstallation) {
-							const ssrcBgs = studioInstallation.config.filter((o) => o._id.substr(0, 18) === 'atemSSrcBackground')
-							if (ssrcBgs) {
-								try {
-									this._coreHandler.uploadFileToAtem(ssrcBgs)
-								} catch (e) {
-									// don't worry about it.
-								}
+				this._coreTsrHandlers[device.deviceId] = coreTsrHandler
+				// this._tsrDevices[device.deviceId] = {
+				// 	device: device,
+				// 	coreConnection: coreConn
+				// }
+
+				device.on('connectionChanged', (connected) => {
+
+					coreTsrHandler.onConnectionChanged(connected)
+					// hack to make sure atem has media after restart
+					// @todo: proper atem media management
+					const studioInstallation = this._getStudioInstallation()
+					if (device.deviceType === DeviceType.ATEM && studioInstallation) {
+						const ssrcBgs = studioInstallation.config.filter((o) => o._id.substr(0, 18) === 'atemSSrcBackground')
+						if (ssrcBgs) {
+							try {
+								this._coreHandler.uploadFileToAtem(ssrcBgs)
+							} catch (e) {
+								// don't worry about it.
 							}
 						}
-					})
+					}
 				})
-				.then(() => {
-					return coreConn.setStatus({
-						statusCode: (
-							device.canConnect ?
-							(device.connected ? P.StatusCode.GOOD : P.StatusCode.BAD) :
-							P.StatusCode.GOOD
-						)
-					})
-				})
+
+				return coreTsrHandler.init()
 				.then(() => {
 					return Promise.resolve()
 				})
@@ -473,12 +460,10 @@ export class TSRHandler {
 		})
 	}
 	private _removeDevice (deviceId: string) {
-		delete this._tsrDevices[deviceId]
-
-		this.tsr.removeDevice(deviceId)
-		.catch(() => {
-			// no device found, that's okay
-		})
+		if (this._coreTsrHandlers[deviceId]) {
+			this._coreTsrHandlers[deviceId].dispose()
+		}
+		delete this._coreTsrHandlers[deviceId]
 	}
 	/**
 	 * Go through and transform timeline and generalize the Core-specific things
