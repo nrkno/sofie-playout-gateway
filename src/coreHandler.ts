@@ -5,7 +5,7 @@ import { CoreConnection,
 } from 'tv-automation-server-core-integration'
 
 import * as cp from 'child_process'
-import { DeviceType } from 'timeline-state-resolver'
+import { DeviceType, CasparCGDevice, Device } from 'timeline-state-resolver'
 
 import * as _ from 'underscore'
 import * as Winston from 'winston'
@@ -37,11 +37,10 @@ export interface PeripheralDeviceCommand {
 export class CoreHandler {
 	core: CoreConnection
 	logger: Winston.LoggerInstance
-	restartCasparCGProcess: () => Promise<void>
+	public _observers: Array<any> = []
 	private _deviceOptions: DeviceConfig
 	private _onConnected?: () => any
 	private _executedFunctions: {[id: string]: boolean} = {}
-	private _observers: Array<any> = []
 	private _tsrHandler?: TSRHandler
 	private _coreConfig?: CoreConfig
 
@@ -196,7 +195,7 @@ export class CoreHandler {
 	retireExecuteFunction (cmdId: string) {
 		delete this._executedFunctions[cmdId]
 	}
-	setupObserverForPeripheralDeviceCommands (functionObject: CoreHandler) {
+	setupObserverForPeripheralDeviceCommands (functionObject: CoreTSRDeviceHandler | CoreHandler) {
 		let observer = functionObject.core.observe('peripheralDeviceCommands')
 		functionObject.killProcess(0)
 		functionObject._observers.push(observer)
@@ -312,6 +311,14 @@ export class CoreHandler {
 			mappings: mappings
 		}
 	}
+	restartCasparCG (deviceId: string): Promise<any> {
+		if (!this._tsrHandler) throw new Error('TSRHandler is not initialized')
+
+		let device = this._tsrHandler.tsr.getDevice(deviceId) as CasparCGDevice
+		if (!device) throw new Error(`TSR Device "${deviceId}" not found!`)
+
+		return device.restartCasparCG()
+	}
 	private _getVersions () {
 		let versions: {[packageName: string]: string} = {}
 
@@ -349,4 +356,123 @@ export class CoreHandler {
 		return versions
 	}
 
+}
+
+export class CoreTSRDeviceHandler {
+	core: CoreConnection
+	public _observers: Array<any> = []
+	public _device: Device
+	private _coreParentHandler: CoreHandler
+	private _tsrHandler: TSRHandler
+	private _subscriptions: Array<any> = []
+
+	constructor (parent: CoreHandler, device: Device, tsrHandler: TSRHandler) {
+		this._coreParentHandler = parent
+		this._device = device
+		this._tsrHandler = tsrHandler
+
+		this._device = this._device
+
+		this._coreParentHandler.logger.info('new CoreMosDeviceHandler ' + device.deviceName)
+
+		// this.core = new CoreConnection(parent.getCoreConnectionOptions('MOS: ' + device.idPrimary, device.idPrimary, false))
+		// this.core.onError((err) => {
+		// 	this._coreParentHandler.logger.error('Core Error: ' + (err.message || err.toString() || err))
+		// })
+
+		this.core = new CoreConnection(this._coreParentHandler.getCoreConnectionOptions('Playout: ' + device.deviceName, 'Playout' + device.deviceId, false))
+		this.core.onError((err) => {
+			this._coreParentHandler.logger.error('Core Error: ' + (err.message || err.toString() || err))
+		})
+
+	}
+	init (): Promise<void> {
+
+		return this.core.init(this._coreParentHandler.core)
+		.then(() => {
+			return this.core.setStatus({
+				statusCode: (
+					this._device.canConnect ?
+					(this._device.connected ? P.StatusCode.GOOD : P.StatusCode.BAD) :
+					P.StatusCode.GOOD
+				)
+			})
+		})
+		.then(() => {
+			return this.setupSubscriptionsAndObservers()
+		})
+		.then(() => {
+			return Promise.resolve()
+		})
+		// return this.core.init(this._coreParentHandler.core)
+		// .then(() => {
+		// 	return this.setupSubscriptionsAndObservers()
+		// })
+		// .then(() => {
+		// 	return
+		// })
+	}
+	setupSubscriptionsAndObservers (): void {
+		// console.log('setupObservers', this.core.deviceId)
+		if (this._observers.length) {
+			this._coreParentHandler.logger.info('CoreTSRDevice: Clearing observers..')
+			this._observers.forEach((obs) => {
+				obs.stop()
+			})
+			this._observers = []
+		}
+		this._coreParentHandler.logger.info('CoreTSRDevice: Setting up subscriptions for ' + this.core.deviceId + ' for device ' + this._device.deviceId + ' ..')
+		this._subscriptions = []
+		Promise.all([
+			this.core.autoSubscribe('peripheralDeviceCommands', this.core.deviceId)
+		])
+		.then((subs) => {
+			this._subscriptions = this._subscriptions.concat(subs)
+		})
+		.then(() => {
+			return
+		})
+		.catch(e => {
+			this._coreParentHandler.logger.error(e)
+		})
+
+		this._coreParentHandler.logger.info('CoreTSRDevice: Setting up observers..')
+
+		// setup observers
+		this._coreParentHandler.setupObserverForPeripheralDeviceCommands(this)
+	}
+	onConnectionChanged (connected: boolean) {
+		this.core.setStatus({
+			statusCode: (connected ? P.StatusCode.GOOD : P.StatusCode.BAD)
+		})
+		.catch(e => this._coreParentHandler.logger.warn('Error when setting status: ' + e))
+	}
+
+	dispose (): Promise<void> {
+		this._observers.forEach((obs) => {
+			obs.stop()
+		})
+
+		return this._tsrHandler.tsr.removeDevice(this._device.deviceId)
+		.then(() => {
+			return this.core.setStatus({
+				statusCode: P.StatusCode.BAD,
+				messages: ['Uninitialized']
+			})
+		})
+		.then(() => {
+			return
+		})
+	}
+	killProcess (actually: number) {
+		return this._coreParentHandler.killProcess(actually)
+	}
+	restartCasparCG (): Promise<any> {
+		let device = this._device as CasparCGDevice
+		if (device.restartCasparCG) {
+			return device.restartCasparCG()
+		} else {
+			return Promise.reject('device.restartCasparCG not set')
+		}
+	}
 }
