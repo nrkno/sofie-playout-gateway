@@ -122,10 +122,15 @@ export class TSRHandler {
 			this.setupObservers()
 
 			this.tsr.on('error', (e, ...args) => {
-				this.logger.error('TSR', e, ...args)
+				// CasparCG play and load 404 errors should be warnings
+				if (e.cmdName && (e.cmdName === 'PlayCommand' || e.cmdName === 'LoadbgCommand') && e.cmd && e.cmd.response && e.cmd.response.code === 404) {
+					this.logger.warn('TSR', e, ...args)
+				} else {
+					this.logger.error('TSR', e, ...args)
+				}
 			})
 			this.tsr.on('info', (msg, ...args) => {
-				this.logger.info('TSR',msg, ...args)
+				this.logger.info('TSR', msg, ...args)
 			})
 			this.tsr.on('command', (id: string, cmd: any) => {
 				this.logger.info('TSR: Command', { device: id, cmdName: cmd.constructor ? cmd.constructor.name : undefined, cmd: JSON.parse(JSON.stringify(cmd)) })
