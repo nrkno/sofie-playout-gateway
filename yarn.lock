@@ -585,6 +585,12 @@ atem-connection@^0.5.0:
     pngjs "^3.3.2"
     tslib "^1.9.0"
 
+"atem-connection@https://github.com/nrkno/tv-automation-atem-connection#upload-26092018":
+  version "0.2.2"
+  resolved "https://github.com/nrkno/tv-automation-atem-connection#f96d128fa7ebf00c609ae4c18b016af0d402f74c"
+  dependencies:
+    tslib "^1.9.0"
+
 "atem-connection@https://github.com/nrkno/tv-automation-atem-connection#upload-270818b":
   version "0.2.2"
   resolved "https://github.com/nrkno/tv-automation-atem-connection#7b1c31b7d8c48bb0dd0c97ad76b6e133e8e0b62d"
