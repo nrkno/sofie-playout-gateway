@@ -38,6 +38,7 @@ export class CoreHandler {
 	core: CoreConnection
 	logger: Winston.LoggerInstance
 	public _observers: Array<any> = []
+	public deviceSettings: {[key: string]: any} = {}
 	private _deviceOptions: DeviceConfig
 	private _onConnected?: () => any
 	private _executedFunctions: {[id: string]: boolean} = {}
@@ -111,6 +112,14 @@ export class CoreHandler {
 				this._observers = []
 			}
 			// setup observers
+			let observer = this.core.observe('peripheralDevices')
+			observer.added = (id: string) => {
+				this.onDeviceChanged(id)
+			}
+			observer.changed = (id: string) => {
+				this.onDeviceChanged(id)
+			}
+
 			this.setupObserverForPeripheralDeviceCommands(this)
 
 			return
@@ -154,6 +163,25 @@ export class CoreHandler {
 	}
 	onConnected (fcn: () => any) {
 		this._onConnected = fcn
+	}
+	onDeviceChanged (id: string) {
+		if (id === this.core.deviceId) {
+			let col = this.core.getCollection('peripheralDevices')
+			if (!col) throw new Error('collection "peripheralDevices" not found!')
+
+			let device = col.findOne(id)
+			if (device) {
+				this.deviceSettings = device.settings || {}
+			} else {
+				this.deviceSettings = {}
+			}
+			if (this._tsrHandler) {
+				this._tsrHandler.onSettingsChanged()
+			}
+		}
+	}
+	logDebug (): boolean {
+		return !!this.deviceSettings['debugLogging']
 	}
 
 	executeFunction (cmd: PeripheralDeviceCommand, fcnObject: any) {

@@ -132,8 +132,19 @@ export class TSRHandler {
 			this.tsr.on('info', (msg, ...args) => {
 				this.logger.info('TSR', msg, ...args)
 			})
-			this.tsr.on('command', (id: string, cmd: any) => {
-				this.logger.info('TSR: Command', { device: id, cmdName: cmd.constructor ? cmd.constructor.name : undefined, cmd: JSON.parse(JSON.stringify(cmd)) })
+			this.tsr.on('warning', (msg, ...args) => {
+				this.logger.warn('TSR', msg, ...args)
+			})
+			this.tsr.on('debug', (id: string, cmd: any) => {
+				if (this._coreHandler.logDebug()) {
+					this.logger.debug('TSR: Command', { device: id, cmdName: cmd.constructor ? cmd.constructor.name : undefined, cmd: JSON.parse(JSON.stringify(cmd)) })
+				}
+			})
+
+			this.tsr.on('command', (id: string, cmd: any) => { // This is an deprecated event emitter, to be removed soon
+				if (this._coreHandler.logDebug()) {
+					this.logger.info('TSR: Command', { device: id, cmdName: cmd.constructor ? cmd.constructor.name : undefined, cmd: JSON.parse(JSON.stringify(cmd)) })
+				}
 			})
 
 			this.tsr.on('setTimelineTriggerTime', (r: TimelineTriggerTimeResult) => {
@@ -228,6 +239,9 @@ export class TSRHandler {
 			return studioInstallation.mappings
 		}
 		return null
+	}
+	onSettingsChanged () {
+		this.tsr.logDebug = this._coreHandler.logDebug()
 	}
 	private _triggerupdateTimeline () {
 		// console.log('got data')
