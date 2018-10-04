@@ -175,12 +175,19 @@ export class CoreHandler {
 			} else {
 				this.deviceSettings = {}
 			}
+
+			if (this.deviceSettings['debugLogging']) {
+				this.logger.level = 'debug'
+			} else {
+				this.logger.level = 'info'
+			}
+
 			if (this._tsrHandler) {
 				this._tsrHandler.onSettingsChanged()
 			}
 		}
 	}
-	logDebug (): boolean {
+	get logDebug (): boolean {
 		return !!this.deviceSettings['debugLogging']
 	}
 
