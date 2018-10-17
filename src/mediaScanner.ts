@@ -240,8 +240,8 @@ export class MediaScanner {
 					!coreObjRevisions[docId] ||				// created
 					coreObjRevisions[docId] !== doc.value.rev	// changed
 				) {
-					// emit created / changed
 					delete coreObjRevisions[docId]
+
 					return () => {
 						return this._db.get<MediaObject>(doc.id, {
 							attachments: true
@@ -260,10 +260,10 @@ export class MediaScanner {
 					return null
 				}
 			})))
-			_.each(coreObjRevisions, (rev, id) => {
+			// The ones left in coreObjRevisions have not been touched, ie they should be deleted
+			_.each(coreObjRevisions, (_rev, id) => {
 				// deleted
-				rev = rev
-				// emit deleted
+
 				tasks.push(
 					() => {
 						return this._sendRemoved(id)

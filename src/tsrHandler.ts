@@ -488,6 +488,9 @@ export class TSRHandler {
 	private _removeDevice (deviceId: string) {
 		if (this._coreTsrHandlers[deviceId]) {
 			this._coreTsrHandlers[deviceId].dispose()
+			.catch(e => {
+				this.logger.error('Error when removing device: ' + e)
+			})
 		}
 		delete this._coreTsrHandlers[deviceId]
 	}
