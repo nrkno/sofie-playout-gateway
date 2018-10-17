@@ -255,6 +255,7 @@ export class MediaScanner {
 						})
 					}
 				} else {
+					delete coreObjRevisions[docId]
 					// identical
 					return null
 				}
