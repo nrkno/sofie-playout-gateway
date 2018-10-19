@@ -26,7 +26,6 @@ export interface Mapping {
 	deviceId: string
 	channel?: number
 	layer?: number
-	// [key: string]: any
 }
 export interface TSRSettings { // Runtime settings from Core
 	devices: {
@@ -106,9 +105,7 @@ export class TSRHandler {
 			this.logger.info('Devices', settings.devices)
 			let c: ConductorOptions = {
 				getCurrentTime: (): number => {
-					// console.log('getCurrentTime', new Date(this._coreHandler.core.getCurrentTime()).toISOString() )
 					return this._coreHandler.core.getCurrentTime()
-					// return Date.now() // todo: tmp!
 				},
 				initializeAsClear: (settings.initializeAsClear !== false)
 			}
@@ -132,8 +129,22 @@ export class TSRHandler {
 			this.tsr.on('info', (msg, ...args) => {
 				this.logger.info('TSR', msg, ...args)
 			})
-			this.tsr.on('command', (id: string, cmd: any) => {
-				this.logger.info('TSR: Command', { device: id, cmdName: cmd.constructor ? cmd.constructor.name : undefined, cmd: JSON.parse(JSON.stringify(cmd)) })
+			this.tsr.on('warning', (msg, ...args) => {
+				this.logger.warn('TSR', msg, ...args)
+			})
+			this.tsr.on('debug', (...args: any[]) => {
+				if (this._coreHandler.logDebug) {
+					if (args.length) {
+						// @ts-ignore 1 or more args
+						this.logger.debug(...args)
+					}
+				}
+			})
+
+			this.tsr.on('command', (id: string, cmd: any) => { // This is an deprecated event emitter, to be removed soon
+				if (this._coreHandler.logDebug) {
+					this.logger.info('TSR: Command', { device: id, cmdName: cmd.constructor ? cmd.constructor.name : undefined, cmd: JSON.parse(JSON.stringify(cmd)) })
+				}
 			})
 
 			this.tsr.on('setTimelineTriggerTime', (r: TimelineTriggerTimeResult) => {
@@ -144,7 +155,6 @@ export class TSRHandler {
 				})
 			})
 			this.tsr.on('timelineCallback', (time, objId, callbackName, data) => {
-				// console.log('timelineCallback ' + callbackName, objId, new Date(time).toISOString() )
 				this._coreHandler.core.callMethod(P.methods[callbackName], [Object.assign({}, data, {
 					objId: objId,
 					time: time
@@ -206,7 +216,6 @@ export class TSRHandler {
 		}
 
 		let objs = this._coreHandler.core.getCollection('timeline').find((o) => {
-			// console.log('o', o)
 			if (excludeStatObj) {
 				if (o.statObject) return false
 			}
@@ -229,8 +238,14 @@ export class TSRHandler {
 		}
 		return null
 	}
+	onSettingsChanged () {
+		if (this.tsr.logDebug !== this._coreHandler.logDebug) {
+
+			this.logger.info(`Log settings: ${this._coreHandler.logDebug}`)
+			this.tsr.logDebug = this._coreHandler.logDebug
+		}
+	}
 	private _triggerupdateTimeline () {
-		// console.log('got data')
 		if (this._triggerupdateTimelineTimeout) {
 			clearTimeout(this._triggerupdateTimelineTimeout)
 		}
@@ -259,7 +274,6 @@ export class TSRHandler {
 
 						let orgParse = driver.parse
 						driver.parse = function (...args) {
-							// console.log('---------------Parse')
 
 							// This is called when data starts arriving (?)
 							socket.receivingMessage = true
@@ -267,13 +281,10 @@ export class TSRHandler {
 						}
 
 						socket.on('message', () => {
-							// console.log('---------------Message')
 
 							// The message has been recieved and emitted
 							socket.receivingMessage = false
 						})
-						// console.log('driver', driver)
-						// console.log('driver.parse', driver.parse)
 					} catch (e) {
 						this.logger.warn(e)
 					}
@@ -283,7 +294,6 @@ export class TSRHandler {
 				let checkIfNotSending = () => {
 					if (!socket.receivingMessage) {
 						if (time > 2) {
-							// console.log('updating timeline after ' + time)
 							this._updateTimeline()
 							return
 						}
@@ -310,9 +320,7 @@ export class TSRHandler {
 		}
 	}
 	private _updateTimeline () {
-		// console.log('_updateTimeline')
 		if (this._determineIfTimelineShouldUpdate()) {
-			// this.logger.debug('_updateTimeline')
 			let transformedTimeline = this._transformTimeline(
 				this.getTimeline(true) as Array<TimelineObj>
 			)
@@ -399,8 +407,6 @@ export class TSRHandler {
 						})
 						if (anyChanged) {
 							this.logger.debug('Re-initializing device: ' + deviceId)
-							// console.log('old options', oldDevice.deviceOptions)
-							// console.log('new options', device.options)
 							this._removeDevice(deviceId)
 							this._addDevice(deviceId, device)
 						}
@@ -412,7 +418,6 @@ export class TSRHandler {
 				let deviceId = oldDevice.deviceId
 				if (!devices[deviceId]) {
 					this.logger.debug('Un-initializing device: ' + deviceId)
-					// this.tsr.removeDevice(deviceId)
 					this._removeDevice(deviceId)
 				}
 			})
@@ -430,31 +435,30 @@ export class TSRHandler {
 				let coreTsrHandler = new CoreTSRDeviceHandler(this._coreHandler, device, this)
 
 				this._coreTsrHandlers[device.deviceId] = coreTsrHandler
-				// this._tsrDevices[device.deviceId] = {
-				// 	device: device,
-				// 	coreConnection: coreConn
-				// }
-
-				device.on('connectionChanged', (connected) => {
-
-					coreTsrHandler.onConnectionChanged(connected)
-					// hack to make sure atem has media after restart
-					// @todo: proper atem media management
-					const studioInstallation = this._getStudioInstallation()
-					if (device.deviceType === DeviceType.ATEM && studioInstallation) {
-						const ssrcBgs = studioInstallation.config.filter((o) => o._id.substr(0, 18) === 'atemSSrcBackground')
-						if (ssrcBgs) {
-							try {
-								this._coreHandler.uploadFileToAtem(ssrcBgs)
-							} catch (e) {
-								// don't worry about it.
-							}
-						}
-					}
-				})
 
 				return coreTsrHandler.init()
 				.then(() => {
+					device.on('connectionChanged', (connected) => {
+						coreTsrHandler.onConnectionChanged(connected)
+						// hack to make sure atem has media after restart
+						if (connected) {
+							// @todo: proper atem media management
+							const studioInstallation = this._getStudioInstallation()
+							if (device.deviceType === DeviceType.ATEM && studioInstallation) {
+								const ssrcBgs = studioInstallation.config.filter((o) => o._id.substr(0, 18) === 'atemSSrcBackground')
+								if (ssrcBgs) {
+									try {
+										this._coreHandler.uploadFileToAtem(ssrcBgs)
+									} catch (e) {
+										// don't worry about it.
+									}
+								}
+							}
+						}
+					})
+					// ask for the status, and update:
+					coreTsrHandler.onConnectionChanged(device.getStatus())
+
 					return Promise.resolve()
 				})
 			}
@@ -467,6 +471,9 @@ export class TSRHandler {
 	private _removeDevice (deviceId: string) {
 		if (this._coreTsrHandlers[deviceId]) {
 			this._coreTsrHandlers[deviceId].dispose()
+			.catch(e => {
+				this.logger.error('Error when removing device: ' + e)
+			})
 		}
 		delete this._coreTsrHandlers[deviceId]
 	}
@@ -508,9 +515,6 @@ export class TSRHandler {
 			return transformedObj
 		}
 
-		// let doTransform = (objs: Array<any>) => {
-		// }
-
 		let objs = timeline
 		// First, transform and convert timeline to a key-value store, for fast referencing:
 		let objects: {[id: string]: TimelineContentObjectTmp} = {}
@@ -544,7 +548,6 @@ export class TSRHandler {
 		return transformedTimeline
 	}
 	private _determineIfTimelineShouldUpdate (): boolean {
-		// console.log('_determineIfTimelineShouldUpdate')
 
 		let requireStatObject: boolean = true // set to false for backwards compability
 		let disableStatObject: boolean = false // set to true to disable the statobject check completely
@@ -587,8 +590,6 @@ export class TSRHandler {
 		let objs = this.getTimeline(true)
 		if (!objs) return false
 
-		// console.log(_.pluck(objs, '_id'))
-
 		// Number of objects
 		let objCount = objs.length
 		// Hash of all objects
@@ -598,8 +599,6 @@ export class TSRHandler {
 			return 0
 		})
 		let objHash = getHash(stringifyObjects(objs))
-
-		// console.log('stat', objCount, objHash)
 
 		if (objCount !== statObjCount) {
 			this.logger.info('Delaying timeline update, objcount differ (' + objCount + ',' + statObjCount + ') ')

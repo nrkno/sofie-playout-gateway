@@ -260,6 +260,11 @@
     "@types/glob" "*"
     "@types/node" "*"
 
+"@types/sprintf-js@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@types/sprintf-js/-/sprintf-js-1.1.0.tgz#6850a98382b517c4a4d0401c63f2b0be76cee092"
+  integrity sha512-AQSq0X2Pj+2UbLIAxRmnj7Tll4btd1fj3hFf0XxB3/ZT7qjQ2WA3/JKtehu8UXEbkNCcysG6ZnYs58F1e/FboA==
+
 "@types/tough-cookie@*":
   version "2.3.3"
   resolved "https://registry.yarnpkg.com/@types/tough-cookie/-/tough-cookie-2.3.3.tgz#7f226d67d654ec9070e755f46daebf014628e9d9"
@@ -585,9 +590,19 @@ atem-connection@^0.5.0:
     pngjs "^3.3.2"
     tslib "^1.9.0"
 
-"atem-connection@https://github.com/nrkno/tv-automation-atem-connection#upload-26092018":
+atem-connection@^0.6.0:
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/atem-connection/-/atem-connection-0.6.0.tgz#82b456bd0167f45735791f84a2e52c6cf337a67f"
+  integrity sha512-4hh0H7bmkWRNR6K2QvJ5BEyqNYiGgY9KdyTSa4get9rbgJ5VmeMjeveORisQr30elitt3nOy1lfX4nAX7/jDoA==
+  dependencies:
+    exit-hook "^2.0.0"
+    p-retry "^2.0.0"
+    pngjs "^3.3.2"
+    tslib "^1.9.0"
+
+"atem-connection@https://github.com/nrkno/tv-automation-atem-connection#upload-270818b":
   version "0.2.2"
-  resolved "https://github.com/nrkno/tv-automation-atem-connection#f96d128fa7ebf00c609ae4c18b016af0d402f74c"
+  resolved "https://github.com/nrkno/tv-automation-atem-connection#7b1c31b7d8c48bb0dd0c97ad76b6e133e8e0b62d"
   dependencies:
     tslib "^1.9.0"
 
@@ -1565,7 +1580,7 @@ dashdash@^1.12.0:
   dependencies:
     assert-plus "^1.0.0"
 
-data-store@3.0.3:
+"data-store@git+http://github.com/nytamin/data-store#3.0.3.1":
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/data-store/-/data-store-3.0.3.tgz#0adbbd40516678e2fd93a8875d9f3fd0e50cc717"
   integrity sha512-iQTz99tl30PwpU09dq7m7fvCFXCAlH8AgKQDwAqt+O4pjQ+cTNCLyhPSsv+IpSdlnaqDu71W3rg/ZNCHpavdEA==
@@ -1974,6 +1989,11 @@ execa@^0.8.0:
     p-finally "^1.0.0"
     signal-exit "^3.0.0"
     strip-eof "^1.0.0"
+
+exit-hook@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/exit-hook/-/exit-hook-2.0.0.tgz#b89f6f69b7d080efc2807c66a85957722637db92"
+  integrity sha512-usCR1VCwZTqwnGjf2tZ4RlkM+E8W7sss2DXjXEBLpd5A9gOY9z/iJhVr2mFkk0o816tZqpuXCkcSTVzAdVXAXw==
 
 exit@^0.1.2:
   version "0.1.2"
@@ -2724,6 +2744,14 @@ humanize-url@^1.0.0:
   dependencies:
     normalize-url "^1.0.0"
     strip-url-auth "^1.0.0"
+
+hyperdeck-connection@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/hyperdeck-connection/-/hyperdeck-connection-0.1.2.tgz#f95f2c6179f60fe46011185c8c242688aa6d1561"
+  integrity sha512-C5aiTo8x6YW13B6d6HnlHWR0/0bj4iyFgLW/vr0/nNJTvG+f6MiC6cPWjQqocedGhsT5r3IfTkK6nl8vgy39OQ==
+  dependencies:
+    underscore "^1.9.1"
+    underscore-deep-extend "^1.1.5"
 
 iconv-lite@0.4.19:
   version "0.4.19"
@@ -4812,6 +4840,13 @@ p-map@^1.2.0:
   resolved "https://registry.yarnpkg.com/p-map/-/p-map-1.2.0.tgz#e4e94f311eabbc8633a1e79908165fca26241b6b"
   integrity sha512-r6zKACMNhjPJMTl8KcFH4li//gkrXWfbD6feV8l6doRHlzljFWGJ2AP6iKaCJXyZmAUMOPtvbW7EXkbWO/pLEA==
 
+p-retry@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/p-retry/-/p-retry-2.0.0.tgz#b97f1f4d6d81a3c065b2b40107b811e995c1bfba"
+  integrity sha512-ZbCuzAmiwJ45q4evp/IG9D+5MUllGSUeCWwPt3j/tdYSi1KPkSD+46uqmAA1LhccDhOXv8kYZKNb8x78VflzfA==
+  dependencies:
+    retry "^0.12.0"
+
 p-try@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/p-try/-/p-try-1.0.0.tgz#cbc79cdbaf8fd4228e13f621f2b1a237c1b207b3"
@@ -5498,6 +5533,11 @@ ret@~0.1.10:
   resolved "https://registry.yarnpkg.com/ret/-/ret-0.1.15.tgz#b8a4825d5bdb1fc3f6f53c2bc33f81388681c7bc"
   integrity sha512-TTlYpa+OL+vMMNG24xSlQGEJ3B/RzEfUlLct7b5G/ytav+wPrplCpVMFuwzXbkecJrb6IYo1iFb0S9v37754mg==
 
+retry@^0.12.0:
+  version "0.12.0"
+  resolved "https://registry.yarnpkg.com/retry/-/retry-0.12.0.tgz#1b42a6266a21f07421d1b0b54b7dc167b01c013b"
+  integrity sha1-G0KmJmoh8HQh0bC1S33BZ7AcATs=
+
 right-align@^0.1.1:
   version "0.1.3"
   resolved "https://registry.yarnpkg.com/right-align/-/right-align-0.1.3.tgz#61339b722fe6a3515689210d24e14c96148613ef"
@@ -5832,6 +5872,11 @@ split@^1.0.0:
   dependencies:
     through "2"
 
+sprintf-js@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/sprintf-js/-/sprintf-js-1.1.1.tgz#36be78320afe5801f6cea3ee78b6e5aab940ea0c"
+  integrity sha1-Nr54Mgr+WAH2zqPueLblqrlA6gw=
+
 sprintf-js@~1.0.2:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/sprintf-js/-/sprintf-js-1.0.3.tgz#04e6926f662895354f3dd015203633b857297e2c"
@@ -6122,19 +6167,22 @@ timed-out@^3.0.0:
   resolved "https://registry.yarnpkg.com/timed-out/-/timed-out-3.1.3.tgz#95860bfcc5c76c277f8f8326fd0f5b2e20eba217"
   integrity sha1-lYYL/MXHbCd/j4Mm/Q9bLiDrohc=
 
-timeline-state-resolver@^0.17.4:
-  version "0.17.4"
-  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-0.17.4.tgz#f6aee2ca31bd38588566c10d9715bba9836057ff"
-  integrity sha512-grDj3U5K9s38oXXTw/P7CXI50eaGLXtf9ephbVIPGBfCSfmiHjzVIvizPGjbGMEOcVgTzjZ3kWMRJZohliuyHg==
+timeline-state-resolver@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-1.0.0.tgz#fd90cb24533c578dce6437d86135164e848c9c93"
+  integrity sha512-b6oCKHoNAvh9VMEOPJkxdLgiJcP6cue/fB5sdkl6FQvvNDFLYoc5iHpwcyXou/rhzFvTqseRcZIZmNnr85NjEw==
   dependencies:
     "@types/request" "^2.47.0"
-    atem-connection "^0.5.0"
+    "@types/sprintf-js" "^1.1.0"
+    atem-connection "^0.6.0"
     atem-state "^0.3.6"
     casparcg-connection "^4.5.3"
     casparcg-state "^1.3.3"
     emberplus "git+https://github.com/nrkno/tv-automation-emberplus-connection#dist10102018"
     fast-clone "^1.5.3"
+    hyperdeck-connection "^0.1.2"
     request "^2.87.0"
+    sprintf-js "^1.1.1"
     superfly-timeline "^6.0.1"
     underscore "^1.9.1"
     underscore-deep-extend "^1.1.5"
@@ -6432,12 +6480,12 @@ tunnel-agent@^0.6.0:
   dependencies:
     safe-buffer "^5.0.1"
 
-tv-automation-server-core-integration@0.5.0:
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/tv-automation-server-core-integration/-/tv-automation-server-core-integration-0.5.0.tgz#47b939c83c1e41f6513a563bede71d8c0002f6db"
-  integrity sha512-6WqvidLEoaP9NZEtnCI5V8jwhbGv3Dl547c2XtIwzzGtGO5hsaY/Uv+hTS2WbMQjFvdSQ0Lq7UwkGk8gcSI+Fw==
+tv-automation-server-core-integration@0.6.0:
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/tv-automation-server-core-integration/-/tv-automation-server-core-integration-0.6.0.tgz#8e4551442b633f884c504dde857f611981f4f0ec"
+  integrity sha512-AYX0XF5odR8O6h2Nkj7PNy1vZ+zJTSxfG/z6H3klqhSV/bb9dPjpmbB0k0FhLXgq2lQgT0Sor9n7t4to/3xkKw==
   dependencies:
-    data-store "3.0.3"
+    data-store "git+http://github.com/nytamin/data-store#3.0.3.1"
     ddp "git+http://github.com/nytamin/node-ddp-client.git#0.12.2-next1"
     ddp-ejson "~0.8.1-3"
     ddp-random "~0.8.1-1"

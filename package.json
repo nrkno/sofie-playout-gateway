@@ -1,6 +1,6 @@
 {
   "name": "playout-gateway",
-  "version": "0.11.2",
+  "version": "0.0.0-develop",
   "description": "Connect to Core, play stuff",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -102,13 +102,13 @@
   ],
   "dependencies": {
     "@types/pouchdb-node": "^6.1.2",
-    "atem-connection": "https://github.com/nrkno/tv-automation-atem-connection#upload-26092018",
+    "atem-connection": "https://github.com/nrkno/tv-automation-atem-connection#upload-270818b",
     "fast-clone": "^1.5.3",
     "pouchdb-node": "^6.4.3",
     "promise-sequence": "^0.3.1",
-    "timeline-state-resolver": "^0.17.4",
+    "timeline-state-resolver": "^1.0.0",
     "tslib": "^1.9.2",
-    "tv-automation-server-core-integration": "0.5.0",
+    "tv-automation-server-core-integration": "0.6.0",
     "underscore": "^1.9.1",
     "winston": "^2.4.2"
   }

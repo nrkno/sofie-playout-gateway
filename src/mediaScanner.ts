@@ -210,7 +210,7 @@ export class MediaScanner {
 		this._coreHandler.logger.info('MediaScanner: Start syncing media files')
 
 		return Promise.all([
-			this._coreHandler.core.callMethod(PeripheralDeviceAPI.methods.getMediaObjectRevisions, [
+			this._coreHandler.core.callMethodLowPrio(PeripheralDeviceAPI.methods.getMediaObjectRevisions, [
 				this._config.collectionId
 			]),
 			this._db.allDocs({
@@ -240,8 +240,8 @@ export class MediaScanner {
 					!coreObjRevisions[docId] ||				// created
 					coreObjRevisions[docId] !== doc.value.rev	// changed
 				) {
-					// emit created / changed
 					delete coreObjRevisions[docId]
+
 					return () => {
 						return this._db.get<MediaObject>(doc.id, {
 							attachments: true
@@ -260,10 +260,10 @@ export class MediaScanner {
 					return null
 				}
 			})))
-			_.each(coreObjRevisions, (rev, id) => {
+			// The ones left in coreObjRevisions have not been touched, ie they should be deleted
+			_.each(coreObjRevisions, (_rev, id) => {
 				// deleted
-				rev = rev
-				// emit deleted
+
 				tasks.push(
 					() => {
 						return this._sendRemoved(id)
@@ -303,7 +303,7 @@ export class MediaScanner {
 		sendDoc.mediaId = doc._id
 		// @ts-ignore
 		// this._coreHandler.logger.info('MediaScanner: _sendChanged', JSON.stringify(sendDoc, ' ', 2))
-		return this._coreHandler.core.callMethod(PeripheralDeviceAPI.methods.updateMediaObject, [
+		return this._coreHandler.core.callMethodLowPrio(PeripheralDeviceAPI.methods.updateMediaObject, [
 			this._config.collectionId,
 			this.hashId(doc._id),
 			sendDoc
@@ -318,7 +318,7 @@ export class MediaScanner {
 		})
 	}
 	private _sendRemoved (docId: string): Promise<void> {
-		return this._coreHandler.core.callMethod(PeripheralDeviceAPI.methods.updateMediaObject, [
+		return this._coreHandler.core.callMethodLowPrio(PeripheralDeviceAPI.methods.updateMediaObject, [
 			this._config.collectionId,
 			this.hashId(docId),
 			null

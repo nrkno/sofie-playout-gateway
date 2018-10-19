@@ -38,6 +38,7 @@ export class CoreHandler {
 	core: CoreConnection
 	logger: Winston.LoggerInstance
 	public _observers: Array<any> = []
+	public deviceSettings: {[key: string]: any} = {}
 	private _deviceOptions: DeviceConfig
 	private _onConnected?: () => any
 	private _executedFunctions: {[id: string]: boolean} = {}
@@ -111,6 +112,14 @@ export class CoreHandler {
 				this._observers = []
 			}
 			// setup observers
+			let observer = this.core.observe('peripheralDevices')
+			observer.added = (id: string) => {
+				this.onDeviceChanged(id)
+			}
+			observer.changed = (id: string) => {
+				this.onDeviceChanged(id)
+			}
+
 			this.setupObserverForPeripheralDeviceCommands(this)
 
 			return
@@ -154,6 +163,32 @@ export class CoreHandler {
 	}
 	onConnected (fcn: () => any) {
 		this._onConnected = fcn
+	}
+	onDeviceChanged (id: string) {
+		if (id === this.core.deviceId) {
+			let col = this.core.getCollection('peripheralDevices')
+			if (!col) throw new Error('collection "peripheralDevices" not found!')
+
+			let device = col.findOne(id)
+			if (device) {
+				this.deviceSettings = device.settings || {}
+			} else {
+				this.deviceSettings = {}
+			}
+
+			if (this.deviceSettings['debugLogging']) {
+				this.logger.level = 'debug'
+			} else {
+				this.logger.level = 'info'
+			}
+
+			if (this._tsrHandler) {
+				this._tsrHandler.onSettingsChanged()
+			}
+		}
+	}
+	get logDebug (): boolean {
+		return !!this.deviceSettings['debugLogging']
 	}
 
 	executeFunction (cmd: PeripheralDeviceCommand, fcnObject: any) {
@@ -365,6 +400,7 @@ export class CoreTSRDeviceHandler {
 	private _coreParentHandler: CoreHandler
 	private _tsrHandler: TSRHandler
 	private _subscriptions: Array<any> = []
+	private _hasGottenStatusChange: boolean = false
 
 	constructor (parent: CoreHandler, device: Device, tsrHandler: TSRHandler) {
 		this._coreParentHandler = parent
@@ -390,13 +426,20 @@ export class CoreTSRDeviceHandler {
 
 		return this.core.init(this._coreParentHandler.core)
 		.then(() => {
-			return this.core.setStatus({
-				statusCode: (
-					this._device.canConnect ?
-					(this._device.connected ? P.StatusCode.GOOD : P.StatusCode.BAD) :
-					P.StatusCode.GOOD
-				)
-			})
+			if (!this._hasGottenStatusChange) {
+				return this.core.setStatus({
+					statusCode: (
+						this._device.canConnect ?
+						(this._device.connected ? P.StatusCode.GOOD : P.StatusCode.BAD) :
+						P.StatusCode.GOOD
+					)
+				})
+				.then(() => {
+					return
+				})
+			} else {
+				return Promise.resolve()
+			}
 		})
 		.then(() => {
 			return this.setupSubscriptionsAndObservers()
@@ -441,11 +484,27 @@ export class CoreTSRDeviceHandler {
 		// setup observers
 		this._coreParentHandler.setupObserverForPeripheralDeviceCommands(this)
 	}
-	onConnectionChanged (connected: boolean) {
-		this.core.setStatus({
-			statusCode: (connected ? P.StatusCode.GOOD : P.StatusCode.BAD)
-		})
-		.catch(e => this._coreParentHandler.logger.warn('Error when setting status: ' + e))
+	onConnectionChanged (connectedOrStatus: boolean | P.StatusObject) {
+		this._hasGottenStatusChange = true
+
+		let deviceStatus: P.StatusObject
+		if (_.isBoolean(connectedOrStatus)) { // for backwards compability, to be removed
+			if (connectedOrStatus) {
+				deviceStatus = {
+					statusCode: P.StatusCode.GOOD
+				}
+			} else {
+				deviceStatus = {
+					statusCode: P.StatusCode.BAD,
+					messages: ['Disconnected']
+				}
+			}
+		} else {
+			deviceStatus = connectedOrStatus
+		}
+
+		this.core.setStatus(deviceStatus)
+		.catch(e => this._coreParentHandler.logger.error('Error when setting status: ' + e, e.stack))
 	}
 
 	dispose (): Promise<void> {
