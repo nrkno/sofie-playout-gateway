@@ -26,7 +26,6 @@ export interface Mapping {
 	deviceId: string
 	channel?: number
 	layer?: number
-	// [key: string]: any
 }
 export interface TSRSettings { // Runtime settings from Core
 	devices: {
@@ -106,9 +105,7 @@ export class TSRHandler {
 			this.logger.info('Devices', settings.devices)
 			let c: ConductorOptions = {
 				getCurrentTime: (): number => {
-					// console.log('getCurrentTime', new Date(this._coreHandler.core.getCurrentTime()).toISOString() )
 					return this._coreHandler.core.getCurrentTime()
-					// return Date.now() // todo: tmp!
 				},
 				initializeAsClear: (settings.initializeAsClear !== false)
 			}
@@ -158,7 +155,6 @@ export class TSRHandler {
 				})
 			})
 			this.tsr.on('timelineCallback', (time, objId, callbackName, data) => {
-				// console.log('timelineCallback ' + callbackName, objId, new Date(time).toISOString() )
 				this._coreHandler.core.callMethod(P.methods[callbackName], [Object.assign({}, data, {
 					objId: objId,
 					time: time
@@ -220,7 +216,6 @@ export class TSRHandler {
 		}
 
 		let objs = this._coreHandler.core.getCollection('timeline').find((o) => {
-			// console.log('o', o)
 			if (excludeStatObj) {
 				if (o.statObject) return false
 			}
@@ -251,7 +246,6 @@ export class TSRHandler {
 		}
 	}
 	private _triggerupdateTimeline () {
-		// console.log('got data')
 		if (this._triggerupdateTimelineTimeout) {
 			clearTimeout(this._triggerupdateTimelineTimeout)
 		}
@@ -280,7 +274,6 @@ export class TSRHandler {
 
 						let orgParse = driver.parse
 						driver.parse = function (...args) {
-							// console.log('---------------Parse')
 
 							// This is called when data starts arriving (?)
 							socket.receivingMessage = true
@@ -288,13 +281,10 @@ export class TSRHandler {
 						}
 
 						socket.on('message', () => {
-							// console.log('---------------Message')
 
 							// The message has been recieved and emitted
 							socket.receivingMessage = false
 						})
-						// console.log('driver', driver)
-						// console.log('driver.parse', driver.parse)
 					} catch (e) {
 						this.logger.warn(e)
 					}
@@ -304,7 +294,6 @@ export class TSRHandler {
 				let checkIfNotSending = () => {
 					if (!socket.receivingMessage) {
 						if (time > 2) {
-							// console.log('updating timeline after ' + time)
 							this._updateTimeline()
 							return
 						}
@@ -331,9 +320,7 @@ export class TSRHandler {
 		}
 	}
 	private _updateTimeline () {
-		// console.log('_updateTimeline')
 		if (this._determineIfTimelineShouldUpdate()) {
-			// this.logger.debug('_updateTimeline')
 			let transformedTimeline = this._transformTimeline(
 				this.getTimeline(true) as Array<TimelineObj>
 			)
@@ -420,8 +407,6 @@ export class TSRHandler {
 						})
 						if (anyChanged) {
 							this.logger.debug('Re-initializing device: ' + deviceId)
-							// console.log('old options', oldDevice.deviceOptions)
-							// console.log('new options', device.options)
 							this._removeDevice(deviceId)
 							this._addDevice(deviceId, device)
 						}
@@ -433,7 +418,6 @@ export class TSRHandler {
 				let deviceId = oldDevice.deviceId
 				if (!devices[deviceId]) {
 					this.logger.debug('Un-initializing device: ' + deviceId)
-					// this.tsr.removeDevice(deviceId)
 					this._removeDevice(deviceId)
 				}
 			})
@@ -532,9 +516,6 @@ export class TSRHandler {
 			return transformedObj
 		}
 
-		// let doTransform = (objs: Array<any>) => {
-		// }
-
 		let objs = timeline
 		// First, transform and convert timeline to a key-value store, for fast referencing:
 		let objects: {[id: string]: TimelineContentObjectTmp} = {}
@@ -568,7 +549,6 @@ export class TSRHandler {
 		return transformedTimeline
 	}
 	private _determineIfTimelineShouldUpdate (): boolean {
-		// console.log('_determineIfTimelineShouldUpdate')
 
 		let requireStatObject: boolean = true // set to false for backwards compability
 		let disableStatObject: boolean = false // set to true to disable the statobject check completely
@@ -611,8 +591,6 @@ export class TSRHandler {
 		let objs = this.getTimeline(true)
 		if (!objs) return false
 
-		// console.log(_.pluck(objs, '_id'))
-
 		// Number of objects
 		let objCount = objs.length
 		// Hash of all objects
@@ -622,8 +600,6 @@ export class TSRHandler {
 			return 0
 		})
 		let objHash = getHash(stringifyObjects(objs))
-
-		// console.log('stat', objCount, objHash)
 
 		if (objCount !== statObjCount) {
 			this.logger.info('Delaying timeline update, objcount differ (' + objCount + ',' + statObjCount + ') ')
