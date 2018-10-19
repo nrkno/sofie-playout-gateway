@@ -435,31 +435,30 @@ export class TSRHandler {
 				let coreTsrHandler = new CoreTSRDeviceHandler(this._coreHandler, device, this)
 
 				this._coreTsrHandlers[device.deviceId] = coreTsrHandler
-				// this._tsrDevices[device.deviceId] = {
-				// 	device: device,
-				// 	coreConnection: coreConn
-				// }
-
-				device.on('connectionChanged', (connected) => {
-
-					coreTsrHandler.onConnectionChanged(connected)
-					// hack to make sure atem has media after restart
-					// @todo: proper atem media management
-					const studioInstallation = this._getStudioInstallation()
-					if (device.deviceType === DeviceType.ATEM && studioInstallation) {
-						const ssrcBgs = studioInstallation.config.filter((o) => o._id.substr(0, 18) === 'atemSSrcBackground')
-						if (ssrcBgs) {
-							try {
-								this._coreHandler.uploadFileToAtem(ssrcBgs)
-							} catch (e) {
-								// don't worry about it.
-							}
-						}
-					}
-				})
 
 				return coreTsrHandler.init()
 				.then(() => {
+					device.on('connectionChanged', (connected) => {
+						coreTsrHandler.onConnectionChanged(connected)
+						// hack to make sure atem has media after restart
+						if (connected) {
+							// @todo: proper atem media management
+							const studioInstallation = this._getStudioInstallation()
+							if (device.deviceType === DeviceType.ATEM && studioInstallation) {
+								const ssrcBgs = studioInstallation.config.filter((o) => o._id.substr(0, 18) === 'atemSSrcBackground')
+								if (ssrcBgs) {
+									try {
+										this._coreHandler.uploadFileToAtem(ssrcBgs)
+									} catch (e) {
+										// don't worry about it.
+									}
+								}
+							}
+						}
+					})
+					// ask for the status, and update:
+					coreTsrHandler.onConnectionChanged(device.getStatus())
+
 					return Promise.resolve()
 				})
 			}
