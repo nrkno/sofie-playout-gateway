@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.0.0"></a>
+# [0.0.0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v0.11.2...v0.0.0) (2018-10-19)
+
+
+### Bug Fixes
+
+* adjust debug levels ([897c57e](https://github.com/nrkno/tv-automation-playout-gateway/commit/897c57e))
+* bugfix: all mediaObjects are deleted upon startup ([9f02191](https://github.com/nrkno/tv-automation-playout-gateway/commit/9f02191))
+* changed callMethod to callMethodLowPrio, to avoid throttling Core ([684e271](https://github.com/nrkno/tv-automation-playout-gateway/commit/684e271))
+
+
+### Features
+
+* listen to setting debugLogging, to turn on/off debug logging. Also support of new TSR logging emitters. ([25b0a9e](https://github.com/nrkno/tv-automation-playout-gateway/commit/25b0a9e))
+* update core-integration dependency ([218f4cb](https://github.com/nrkno/tv-automation-playout-gateway/commit/218f4cb))
+* update TSR dependency: adding support for Hyperdeck ([de25c5f](https://github.com/nrkno/tv-automation-playout-gateway/commit/de25c5f))
+* updated TSR-device-status handling ([11af163](https://github.com/nrkno/tv-automation-playout-gateway/commit/11af163))
+
+
+
 <a name="0.11.2"></a>
 ## [0.11.2](https://github.com/nrkno/tv-automation-playout-gateway/compare/v0.11.1...v0.11.2) (2018-10-17)
 
