@@ -260,6 +260,11 @@
     "@types/glob" "*"
     "@types/node" "*"
 
+"@types/sprintf-js@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@types/sprintf-js/-/sprintf-js-1.1.0.tgz#6850a98382b517c4a4d0401c63f2b0be76cee092"
+  integrity sha512-AQSq0X2Pj+2UbLIAxRmnj7Tll4btd1fj3hFf0XxB3/ZT7qjQ2WA3/JKtehu8UXEbkNCcysG6ZnYs58F1e/FboA==
+
 "@types/tough-cookie@*":
   version "2.3.3"
   resolved "https://registry.yarnpkg.com/@types/tough-cookie/-/tough-cookie-2.3.3.tgz#7f226d67d654ec9070e755f46daebf014628e9d9"
@@ -582,6 +587,16 @@ atem-connection@^0.5.0:
   resolved "https://registry.yarnpkg.com/atem-connection/-/atem-connection-0.5.0.tgz#aaa7f702839593cc3d057617c3a392dc5a46e310"
   integrity sha512-bU2kFvIwfM8yLe0sLnssf4IAj97tqMQK3F6bgmcwGzn4ewFJmZOTSfhhxXG3XfMCMTOPbOY2JZSWgSVFpUd9HQ==
   dependencies:
+    pngjs "^3.3.2"
+    tslib "^1.9.0"
+
+atem-connection@^0.6.0:
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/atem-connection/-/atem-connection-0.6.0.tgz#82b456bd0167f45735791f84a2e52c6cf337a67f"
+  integrity sha512-4hh0H7bmkWRNR6K2QvJ5BEyqNYiGgY9KdyTSa4get9rbgJ5VmeMjeveORisQr30elitt3nOy1lfX4nAX7/jDoA==
+  dependencies:
+    exit-hook "^2.0.0"
+    p-retry "^2.0.0"
     pngjs "^3.3.2"
     tslib "^1.9.0"
 
@@ -1062,10 +1077,19 @@ casparcg-connection@^4.5.1:
     xml2js "^0.4.19"
     xmlbuilder "^9.0.7"
 
-casparcg-state@^1.3.2:
-  version "1.3.2"
-  resolved "https://registry.yarnpkg.com/casparcg-state/-/casparcg-state-1.3.2.tgz#f86864fd690ef1374bb6d6d7ae5acfc0167483c1"
-  integrity sha512-ahTJKTLF4ZEToTlmOpBH1LbXjL/5Ti+l95xLyBLn7eUzv9CRbeixh2kKWHD7Ho/bSoaK7rV3A0hfDX9P+T28PQ==
+casparcg-connection@^4.5.3:
+  version "4.5.3"
+  resolved "https://registry.yarnpkg.com/casparcg-connection/-/casparcg-connection-4.5.3.tgz#851d230fada996a7845057aa3a7b9ac89f7b4210"
+  integrity sha512-PqOTfW0VXTslRlLkCPp0lPYiXFiHTUHcqG9ckoE0tWjiG6R4xjwrE1Ky+jOtfmMlfzp8PdWqd88/e4Amhg2+VA==
+  dependencies:
+    highland "^3.0.0-beta.6"
+    xml2js "^0.4.19"
+    xmlbuilder "^9.0.7"
+
+casparcg-state@^1.3.3:
+  version "1.3.3"
+  resolved "https://registry.yarnpkg.com/casparcg-state/-/casparcg-state-1.3.3.tgz#2d4ade537c165d541e5d00093b5c6d1fd9d2bd46"
+  integrity sha512-OWUpSkKhSyvM6Gnhgfac6zbAdOfi40e7zu6XBOx4a9TUdkf+BZdDDpcdJ+mMVk73W0V3gKv8knjoZNTc4bB0Mg==
   dependencies:
     casparcg-connection "^4.5.1"
     fast-clone "^1.5.3"
@@ -1799,9 +1823,9 @@ ecc-jsbn@~0.1.1:
   dependencies:
     jsbn "~0.1.0"
 
-"emberplus@git+https://github.com/nrkno/tv-automation-emberplus-connection.git#dist":
-  version "1.7.8"
-  resolved "git+https://github.com/nrkno/tv-automation-emberplus-connection.git#1fbb5142356912f90fce6e993fc6c277ba733246"
+"emberplus@git+https://github.com/nrkno/tv-automation-emberplus-connection#dist10102018":
+  version "1.7.10"
+  resolved "git+https://github.com/nrkno/tv-automation-emberplus-connection#7c8abd9459f376117963023d82f4bc01100b0c24"
   dependencies:
     asn1 evs-broadcast/node-asn1
     enum "^2.4.0"
@@ -1964,6 +1988,11 @@ execa@^0.8.0:
     p-finally "^1.0.0"
     signal-exit "^3.0.0"
     strip-eof "^1.0.0"
+
+exit-hook@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/exit-hook/-/exit-hook-2.0.0.tgz#b89f6f69b7d080efc2807c66a85957722637db92"
+  integrity sha512-usCR1VCwZTqwnGjf2tZ4RlkM+E8W7sss2DXjXEBLpd5A9gOY9z/iJhVr2mFkk0o816tZqpuXCkcSTVzAdVXAXw==
 
 exit@^0.1.2:
   version "0.1.2"
@@ -2714,6 +2743,14 @@ humanize-url@^1.0.0:
   dependencies:
     normalize-url "^1.0.0"
     strip-url-auth "^1.0.0"
+
+hyperdeck-connection@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/hyperdeck-connection/-/hyperdeck-connection-0.1.2.tgz#f95f2c6179f60fe46011185c8c242688aa6d1561"
+  integrity sha512-C5aiTo8x6YW13B6d6HnlHWR0/0bj4iyFgLW/vr0/nNJTvG+f6MiC6cPWjQqocedGhsT5r3IfTkK6nl8vgy39OQ==
+  dependencies:
+    underscore "^1.9.1"
+    underscore-deep-extend "^1.1.5"
 
 iconv-lite@0.4.19:
   version "0.4.19"
@@ -4802,6 +4839,13 @@ p-map@^1.2.0:
   resolved "https://registry.yarnpkg.com/p-map/-/p-map-1.2.0.tgz#e4e94f311eabbc8633a1e79908165fca26241b6b"
   integrity sha512-r6zKACMNhjPJMTl8KcFH4li//gkrXWfbD6feV8l6doRHlzljFWGJ2AP6iKaCJXyZmAUMOPtvbW7EXkbWO/pLEA==
 
+p-retry@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/p-retry/-/p-retry-2.0.0.tgz#b97f1f4d6d81a3c065b2b40107b811e995c1bfba"
+  integrity sha512-ZbCuzAmiwJ45q4evp/IG9D+5MUllGSUeCWwPt3j/tdYSi1KPkSD+46uqmAA1LhccDhOXv8kYZKNb8x78VflzfA==
+  dependencies:
+    retry "^0.12.0"
+
 p-try@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/p-try/-/p-try-1.0.0.tgz#cbc79cdbaf8fd4228e13f621f2b1a237c1b207b3"
@@ -5488,6 +5532,11 @@ ret@~0.1.10:
   resolved "https://registry.yarnpkg.com/ret/-/ret-0.1.15.tgz#b8a4825d5bdb1fc3f6f53c2bc33f81388681c7bc"
   integrity sha512-TTlYpa+OL+vMMNG24xSlQGEJ3B/RzEfUlLct7b5G/ytav+wPrplCpVMFuwzXbkecJrb6IYo1iFb0S9v37754mg==
 
+retry@^0.12.0:
+  version "0.12.0"
+  resolved "https://registry.yarnpkg.com/retry/-/retry-0.12.0.tgz#1b42a6266a21f07421d1b0b54b7dc167b01c013b"
+  integrity sha1-G0KmJmoh8HQh0bC1S33BZ7AcATs=
+
 right-align@^0.1.1:
   version "0.1.3"
   resolved "https://registry.yarnpkg.com/right-align/-/right-align-0.1.3.tgz#61339b722fe6a3515689210d24e14c96148613ef"
@@ -5822,6 +5871,11 @@ split@^1.0.0:
   dependencies:
     through "2"
 
+sprintf-js@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/sprintf-js/-/sprintf-js-1.1.1.tgz#36be78320afe5801f6cea3ee78b6e5aab940ea0c"
+  integrity sha1-Nr54Mgr+WAH2zqPueLblqrlA6gw=
+
 sprintf-js@~1.0.2:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/sprintf-js/-/sprintf-js-1.0.3.tgz#04e6926f662895354f3dd015203633b857297e2c"
@@ -6112,19 +6166,22 @@ timed-out@^3.0.0:
   resolved "https://registry.yarnpkg.com/timed-out/-/timed-out-3.1.3.tgz#95860bfcc5c76c277f8f8326fd0f5b2e20eba217"
   integrity sha1-lYYL/MXHbCd/j4Mm/Q9bLiDrohc=
 
-timeline-state-resolver@^0.17.0:
-  version "0.17.0"
-  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-0.17.0.tgz#10f3695c0e194965ecf6f9d7e823947579236b6f"
-  integrity sha512-rlIyWLYcWH5bbdDeWGDwDHNDTypg+ez75iaUAHfQR3MYbrATXpMLBuwyq1ZBo6ANDb8+3BQ6cf7sngU+Y16LNA==
+timeline-state-resolver@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-1.0.0.tgz#fd90cb24533c578dce6437d86135164e848c9c93"
+  integrity sha512-b6oCKHoNAvh9VMEOPJkxdLgiJcP6cue/fB5sdkl6FQvvNDFLYoc5iHpwcyXou/rhzFvTqseRcZIZmNnr85NjEw==
   dependencies:
     "@types/request" "^2.47.0"
-    atem-connection "^0.5.0"
+    "@types/sprintf-js" "^1.1.0"
+    atem-connection "^0.6.0"
     atem-state "^0.3.6"
-    casparcg-connection "^4.5.1"
-    casparcg-state "^1.3.2"
-    emberplus "git+https://github.com/nrkno/tv-automation-emberplus-connection.git#dist"
+    casparcg-connection "^4.5.3"
+    casparcg-state "^1.3.3"
+    emberplus "git+https://github.com/nrkno/tv-automation-emberplus-connection#dist10102018"
     fast-clone "^1.5.3"
+    hyperdeck-connection "^0.1.2"
     request "^2.87.0"
+    sprintf-js "^1.1.1"
     superfly-timeline "^6.0.1"
     underscore "^1.9.1"
     underscore-deep-extend "^1.1.5"
