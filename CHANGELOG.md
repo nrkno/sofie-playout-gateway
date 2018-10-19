@@ -2,6 +2,67 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.11.2"></a>
+## [0.11.2](https://github.com/nrkno/tv-automation-playout-gateway/compare/v0.11.1...v0.11.2) (2018-10-17)
+
+
+### Bug Fixes
+
+* bugfix: all mediaObjects are deleted upon startup ([e0624b0](https://github.com/nrkno/tv-automation-playout-gateway/commit/e0624b0))
+
+
+
+<a name="0.11.1"></a>
+## [0.11.1](https://github.com/nrkno/tv-automation-playout-gateway/compare/v0.11.0...v0.11.1) (2018-10-16)
+
+
+### Bug Fixes
+
+* CasparCG LOADBG and PLAY command 404 errors are handled as warnings not errors ([54ceebb](https://github.com/nrkno/tv-automation-playout-gateway/commit/54ceebb))
+
+
+
+<a name="0.11.0"></a>
+# [0.11.0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v0.10.0...v0.11.0) (2018-09-21)
+
+
+### Bug Fixes
+
+* Removed Launcher dependency (moving the functionality into TSR) ([45088b4](https://github.com/nrkno/tv-automation-playout-gateway/commit/45088b4))
+
+
+### Features
+
+* adding CoreTSRDeviceHandler: unifying with mos-connection, the CoreTSRDeviceHandler manages the subscriptions for sub-devices ([9f49951](https://github.com/nrkno/tv-automation-playout-gateway/commit/9f49951))
+* update TSR dep: restart casparcg using launcher-http endpoint ([b0fdca6](https://github.com/nrkno/tv-automation-playout-gateway/commit/b0fdca6))
+
+
+
+<a name="0.10.0"></a>
+# [0.10.0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v0.9.0...v0.10.0) (2018-09-20)
+
+
+### Features
+
+* update timeline dep ([bcc34f7](https://github.com/nrkno/tv-automation-playout-gateway/commit/bcc34f7))
+
+
+
+<a name="0.9.0"></a>
+# [0.9.0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v0.8.0...v0.9.0) (2018-09-10)
+
+
+### Bug Fixes
+
+* media info missing mediaId property ([fb7f390](https://github.com/nrkno/tv-automation-playout-gateway/commit/fb7f390))
+
+
+### Features
+
+* tsr dependency: using internal command-queue instead of scheduler ([da95b46](https://github.com/nrkno/tv-automation-playout-gateway/commit/da95b46))
+
+
+
 <a name="0.8.0"></a>
 # [0.8.0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v0.7.4...v0.8.0) (2018-09-06)
 

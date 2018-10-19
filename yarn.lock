@@ -1582,7 +1582,8 @@ dashdash@^1.12.0:
 
 "data-store@git+http://github.com/nytamin/data-store#3.0.3.1":
   version "3.0.3"
-  resolved "git+http://github.com/nytamin/data-store#88c0d6fd4a57912a33f5f901750aa8e2ce75b656"
+  resolved "https://registry.yarnpkg.com/data-store/-/data-store-3.0.3.tgz#0adbbd40516678e2fd93a8875d9f3fd0e50cc717"
+  integrity sha512-iQTz99tl30PwpU09dq7m7fvCFXCAlH8AgKQDwAqt+O4pjQ+cTNCLyhPSsv+IpSdlnaqDu71W3rg/ZNCHpavdEA==
 
 data-urls@^1.0.0:
   version "1.0.0"
