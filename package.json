@@ -108,7 +108,7 @@
     "promise-sequence": "^0.3.1",
     "timeline-state-resolver": "^1.0.1",
     "tslib": "^1.9.2",
-    "tv-automation-server-core-integration": "0.6.0",
+    "tv-automation-server-core-integration": "0.6.1",
     "underscore": "^1.9.1",
     "winston": "^2.4.2"
   }

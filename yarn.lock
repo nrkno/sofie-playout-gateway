@@ -1580,10 +1580,10 @@ dashdash@^1.12.0:
   dependencies:
     assert-plus "^1.0.0"
 
-"data-store@git+http://github.com/nytamin/data-store#3.0.3.1":
-  version "3.0.3"
-  resolved "https://registry.yarnpkg.com/data-store/-/data-store-3.0.3.tgz#0adbbd40516678e2fd93a8875d9f3fd0e50cc717"
-  integrity sha512-iQTz99tl30PwpU09dq7m7fvCFXCAlH8AgKQDwAqt+O4pjQ+cTNCLyhPSsv+IpSdlnaqDu71W3rg/ZNCHpavdEA==
+data-store@3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/data-store/-/data-store-3.1.0.tgz#9464f2c8ac8cad5cd0ebb6992eaf354d7ea8c35c"
+  integrity sha512-MjbLiqz5IJFD/NZLztrrxc2LZ8KMc42kHWAUSxD/kp2ekzHE8EZfkYP4nQy15aPMwV5vac2dW21Ni72okNAwTQ==
 
 data-urls@^1.0.0:
   version "1.0.0"
@@ -6480,12 +6480,12 @@ tunnel-agent@^0.6.0:
   dependencies:
     safe-buffer "^5.0.1"
 
-tv-automation-server-core-integration@0.6.0:
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/tv-automation-server-core-integration/-/tv-automation-server-core-integration-0.6.0.tgz#8e4551442b633f884c504dde857f611981f4f0ec"
-  integrity sha512-AYX0XF5odR8O6h2Nkj7PNy1vZ+zJTSxfG/z6H3klqhSV/bb9dPjpmbB0k0FhLXgq2lQgT0Sor9n7t4to/3xkKw==
+tv-automation-server-core-integration@0.6.1:
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/tv-automation-server-core-integration/-/tv-automation-server-core-integration-0.6.1.tgz#c7509fb3a07b65bc134099392fec5062db28af25"
+  integrity sha512-qc5/IhuIrPDLMgIFGnmyd6YkQ7ta2CUY8k9Y099glpbYC6krhXhg3q690mVPlgstTYMKwxOCTGHPVx8DWrhx+A==
   dependencies:
-    data-store "git+http://github.com/nytamin/data-store#3.0.3.1"
+    data-store "3.1.0"
     ddp "git+http://github.com/nytamin/node-ddp-client.git#0.12.2-next1"
     ddp-ejson "~0.8.1-3"
     ddp-random "~0.8.1-1"
