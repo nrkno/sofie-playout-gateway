@@ -24,11 +24,9 @@ npm run start
 
 ## Installation for dev
 
-yarn
-
-yarn build
-
-yarn test
+* yarn
+* yarn build
+* yarn test
 
 
 ### Dev dependencies:
