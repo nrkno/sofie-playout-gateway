@@ -35,4 +35,3 @@ npm run start
 
 * jest
 	yarn global add jest
-
