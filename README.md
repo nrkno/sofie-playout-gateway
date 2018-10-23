@@ -28,7 +28,6 @@ npm run start
 * yarn build
 * yarn test
 
-
 ### Dev dependencies:
 
 * yarn
