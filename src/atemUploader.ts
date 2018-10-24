@@ -13,10 +13,16 @@ function consoleError (...args: any[]) {
 	console.error('AtemUpload:', ...args)
 }
 export class AtemUploadScript {
-	connection = new Atem()
+	connection: Atem
 	fileName: string
 	file: Buffer
 	mediaPool = 0
+
+	constructor () {
+		this.connection = new Atem()
+
+		this.connection.on('error', consoleError)
+	}
 
 	connect (ip: string): Promise<null> {
 		return new Promise((resolve) => {
@@ -63,14 +69,14 @@ export class AtemUploadScript {
 
 	uploadToAtem () {
 		if (!this.checkIfFileExistsOnAtem()) {
-			consoleLog('does not exist on atme')
+			consoleLog('does not exist on ATEM')
 			return this.connection.clearMediaPoolStill(0).then(() =>
 				this.connection.uploadStill(this.mediaPool, this.file, this.fileName, '')
 			).then(() =>
 				this.setMediaPlayerToStill()
 			)
 		} else {
-			consoleLog('does exist on atme')
+			consoleLog('does exist on ATEM')
 			return this.setMediaPlayerToStill()
 		}
 	}
