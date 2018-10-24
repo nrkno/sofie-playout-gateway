@@ -38,4 +38,3 @@ yarn test
 
 * jest
 	yarn global add jest
-
