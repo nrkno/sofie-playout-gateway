@@ -484,24 +484,8 @@ export class CoreTSRDeviceHandler {
 		// setup observers
 		this._coreParentHandler.setupObserverForPeripheralDeviceCommands(this)
 	}
-	onConnectionChanged (connectedOrStatus: boolean | P.StatusObject) {
+	onConnectionChanged (deviceStatus: P.StatusObject) {
 		this._hasGottenStatusChange = true
-
-		let deviceStatus: P.StatusObject
-		if (_.isBoolean(connectedOrStatus)) { // for backwards compability, to be removed
-			if (connectedOrStatus) {
-				deviceStatus = {
-					statusCode: P.StatusCode.GOOD
-				}
-			} else {
-				deviceStatus = {
-					statusCode: P.StatusCode.BAD,
-					messages: ['Disconnected']
-				}
-			}
-		} else {
-			deviceStatus = connectedOrStatus
-		}
 
 		this.core.setStatus(deviceStatus)
 		.catch(e => this._coreParentHandler.logger.error('Error when setting status: ' + e, e.stack))
