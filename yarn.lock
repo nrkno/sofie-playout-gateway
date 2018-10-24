@@ -595,7 +595,7 @@ asynckit@^0.4.0:
   resolved "https://registry.yarnpkg.com/asynckit/-/asynckit-0.4.0.tgz#c79ed97f7f34cb8f2ba1bc9790bcc366474b4b79"
   integrity sha1-x57Zf380y48robyXkLzDZkdLS3k=
 
-atem-connection@^0.7.0:
+atem-connection@0.7.0, atem-connection@^0.7.0:
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/atem-connection/-/atem-connection-0.7.0.tgz#823c0d561d1478acbde984b6a5e8be2672d78772"
   integrity sha512-hvxzJ0i/1DJqEh70gAaSljcRlpVSk9GY+QloQ/gL/oCza+sV2vpfhs5JTBWNVpIpMnMnYdYhOjUJYpsRrXoPiQ==
@@ -605,12 +605,6 @@ atem-connection@^0.7.0:
     p-retry "^2.0.0"
     tslib "^1.9.0"
     wavefile "^8.4.4"
-
-"atem-connection@https://github.com/nrkno/tv-automation-atem-connection#upload-270818b":
-  version "0.2.2"
-  resolved "https://github.com/nrkno/tv-automation-atem-connection#7b1c31b7d8c48bb0dd0c97ad76b6e133e8e0b62d"
-  dependencies:
-    tslib "^1.9.0"
 
 atem-state@^0.3.8:
   version "0.3.8"
