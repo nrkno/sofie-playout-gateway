@@ -140,6 +140,7 @@ export class TSRHandler {
 							if (_.isObject(arg)) {
 								// @ts-ignore
 								this.logger.debug({ message: arg })
+								this.logger.debug('arg: ' + JSON.stringify(arg))
 							} else {
 								this.logger.debug(arg)
 							}
