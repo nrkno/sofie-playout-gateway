@@ -176,10 +176,25 @@ export class CoreHandler {
 				this.deviceSettings = {}
 			}
 
-			if (this.deviceSettings['debugLogging']) {
-				this.logger.level = 'debug'
-			} else {
-				this.logger.level = 'info'
+			let logLevel = (
+				this.deviceSettings['debugLogging'] ?
+				'debug' :
+				'info'
+			)
+			if (logLevel !== this.logger.level) {
+				this.logger.level = logLevel
+
+				this.logger.info('Loglevel: ' + this.logger.level)
+
+				this.logger.debug('Test debug logging')
+				// @ts-ignore
+				this.logger.debug({ msg: 'test msg' })
+				// @ts-ignore
+				this.logger.debug({ message: 'test message' })
+				// @ts-ignore
+				this.logger.debug({ command: 'test command', context: 'test context' })
+
+				this.logger.debug('End test debug logging')
 			}
 
 			if (this._tsrHandler) {
