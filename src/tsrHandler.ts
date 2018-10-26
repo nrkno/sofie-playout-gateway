@@ -134,10 +134,23 @@ export class TSRHandler {
 			})
 			this.tsr.on('debug', (...args: any[]) => {
 				if (this._coreHandler.logDebug) {
-					if (args.length) {
-						// @ts-ignore 1 or more args
-						this.logger.debug(...args)
+					let msg: any = {
+						message: 'TSR debug message (' + args.length + ')',
+						data: []
 					}
+					if (args.length) {
+						_.each(args, (arg) => {
+							if (_.isObject(arg)) {
+								msg.data.push(JSON.stringify(arg))
+							} else {
+								msg.data.push(arg)
+							}
+						})
+					} else {
+						msg.data.push('>empty message<')
+					}
+
+					this.logger.debug(msg)
 				}
 			})
 
