@@ -371,5 +371,8 @@ export class MediaScanner {
 				})
 			}
 		})
+		.catch((e) => {
+			this.logger.debug('It appears as if media-scanner does not support disk usage stats.', e)
+		})
 	}
 }
