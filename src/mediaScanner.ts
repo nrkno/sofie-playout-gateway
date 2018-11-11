@@ -314,22 +314,31 @@ export class MediaScanner {
 	public _updateFsStats (): void {
 		axios.get(`http://${this._config.host}:${this._config.port}/stat/fs`)
 		.then(res => res.data)
-		.then((res: Array<DiskInfo>) => {
-			let warned = false
-			for (const disk of res) {
-				if (disk.use > 70) {
-					// @todo: we temporarily report under playout-gateway, until we can handle multiple media-scanners
-					this._coreHandler.core.setStatus({
-						'statusCode': PeripheralDeviceAPI.StatusCode.WARNING_MAJOR,
-						messages: [`Disk usage for ${disk.fs} is at ${disk.use}%, this may cause degraded performance.`]
-					})
-					warned = true
+		.then((disks: Array<DiskInfo>) => {
+			// @todo: we temporarily report under playout-gateway, until we can handle multiple media-scanners
+			let messages: Array<string> = []
+			let status = PeripheralDeviceAPI.StatusCode.GOOD
+			_.each(disks, (disk) => {
+
+				let diskStatus = PeripheralDeviceAPI.StatusCode.GOOD
+
+				if (disk.use > 90) {
+					diskStatus = PeripheralDeviceAPI.StatusCode.WARNING_MAJOR
+					messages.push(`Disk usage for ${disk.fs} is at ${disk.use}%, this may cause degraded performance.`)
+				} else if (disk.use > 70) {
+					diskStatus = PeripheralDeviceAPI.StatusCode.WARNING_MINOR
+					messages.push(`Disk usage for ${disk.fs} is at ${disk.use}%, this may cause degraded performance.`)
 				}
-			}
-			if (!warned) {
-				this._coreHandler.core.setStatus({
-					'statusCode': PeripheralDeviceAPI.StatusCode.GOOD
-				})
+
+				if (diskStatus > status) {
+					status = diskStatus
+				}
+			})
+			if (this._coreHandler.mediaScannerStatus !== status) {
+				this._coreHandler.mediaScannerStatus = status
+				this._coreHandler.mediaScannerMessages = messages
+				this._coreHandler.updateCoreStatus()
+				.catch(this.logger.error)
 			}
 		})
 		.catch((e) => {

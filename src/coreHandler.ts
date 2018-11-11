@@ -39,11 +39,19 @@ export class CoreHandler {
 	logger: Winston.LoggerInstance
 	public _observers: Array<any> = []
 	public deviceSettings: {[key: string]: any} = {}
+
+	// Mediascanner statuses: temporary implementation, to be moved into casparcg device later:
+	public mediaScannerStatus: P.StatusCode = P.StatusCode.GOOD
+	public mediaScannerMessages: Array<string> = []
+
 	private _deviceOptions: DeviceConfig
 	private _onConnected?: () => any
 	private _executedFunctions: {[id: string]: boolean} = {}
 	private _tsrHandler?: TSRHandler
 	private _coreConfig?: CoreConfig
+
+	private _statusInitialized: boolean = false
+	private _statusDestroyed: boolean = false
 
 	constructor (logger: Winston.LoggerInstance, deviceOptions: DeviceConfig) {
 		this.logger = logger
@@ -52,6 +60,7 @@ export class CoreHandler {
 
 	init (config: CoreConfig): Promise<void> {
 		// this.logger.info('========')
+		this._statusInitialized = false
 		this._coreConfig = config
 		this.core = new CoreConnection(this.getCoreConnectionOptions('Playout: Parent process', 'PlayoutCoreParent', true))
 
@@ -76,10 +85,8 @@ export class CoreHandler {
 			return this.setupObserversAndSubscriptions()
 		})
 		.then(() => {
-			return this.core.setStatus({
-				statusCode: P.StatusCode.GOOD
-				// messages: []
-			})
+			this._statusInitialized = true
+			return this.updateCoreStatus()
 		})
 		.then(() => {
 			return
@@ -126,10 +133,9 @@ export class CoreHandler {
 		})
 	}
 	destroy (): Promise<void> {
-		return this.core.setStatus({
-			statusCode: P.StatusCode.FATAL,
-			messages: ['Shutting down']
-		}).then(() => {
+		this._statusDestroyed = true
+		return this.updateCoreStatus()
+		.then(() => {
 			return this.core.destroy()
 		})
 		.then(() => {
@@ -368,6 +374,32 @@ export class CoreHandler {
 		if (!device) throw new Error(`TSR Device "${deviceId}" not found!`)
 
 		return device.restartCasparCG()
+	}
+	updateCoreStatus (): Promise<any> {
+		let statusCode = P.StatusCode.GOOD
+		let messages: Array<string> = []
+
+		if (this.mediaScannerStatus !== P.StatusCode.GOOD) {
+			statusCode = this.mediaScannerStatus
+			if (this.mediaScannerMessages) {
+				_.each(this.mediaScannerMessages, (msg) => {
+					messages.push(msg)
+				})
+			}
+		}
+		if (!this._statusInitialized) {
+			statusCode = P.StatusCode.BAD
+			messages.push('Starting up...')
+		}
+		if (this._statusDestroyed) {
+			statusCode = P.StatusCode.BAD
+			messages.push('Shut down')
+		}
+
+		return this.core.setStatus({
+			statusCode: statusCode,
+			messages: messages
+		})
 	}
 	private _getVersions () {
 		let versions: {[packageName: string]: string} = {}
