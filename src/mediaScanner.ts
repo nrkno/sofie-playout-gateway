@@ -6,7 +6,6 @@ import { CoreHandler } from './coreHandler'
 import * as Winston from 'winston'
 import * as crypto from 'crypto'
 import axios from 'axios'
-import { PeripheralDeviceAPI as P } from 'tv-automation-server-core-integration'
 
 export interface MediaScannerConfig {
 	host?: string,
@@ -312,6 +311,31 @@ export class MediaScanner {
 
 		return p
 	}
+	public _updateFsStats (): void {
+		axios.get(`http://${this._config.host}:${this._config.port}/stat/fs`)
+		.then(res => res.data)
+		.then((res: Array<DiskInfo>) => {
+			let warned = false
+			for (const disk of res) {
+				if (disk.use > 70) {
+					// @todo: we temporarily report under playout-gateway, until we can handle multiple media-scanners
+					this._coreHandler.core.setStatus({
+						'statusCode': PeripheralDeviceAPI.StatusCode.WARNING_MAJOR,
+						messages: [`Disk usage for ${disk.fs} is at ${disk.use}%, this may cause degraded performance.`]
+					})
+					warned = true
+				}
+			}
+			if (!warned) {
+				this._coreHandler.core.setStatus({
+					'statusCode': PeripheralDeviceAPI.StatusCode.GOOD
+				})
+			}
+		})
+		.catch((e) => {
+			this.logger.debug('It appears as if media-scanner does not support disk usage stats.', e)
+		})
+	}
 	private _sendChanged (doc: MediaObject): Promise<void> {
 		// Added or changed
 
@@ -348,31 +372,5 @@ export class MediaScanner {
 	}
 	private hashId (id: string): string {
 		return crypto.createHash('md5').update(id).digest('hex')
-	}
-
-	public _updateFsStats (): void {
-		axios.get(`http://${this._config.host}:${this._config.port}/stat/fs`)
-		.then(res => res.data)
-		.then((res: Array<DiskInfo>) => {
-			let warned = false
-			for (const disk of res) {
-				if (disk.use > 70) {
-					// @todo: we temporarily report under playout-gateway, until we can handle multiple media-scanners
-					this._coreHandler.core.setStatus({
-						'statusCode': P.StatusCode.WARNING_MAJOR,
-						messages: [`Disk usage for ${disk.fs} is at ${disk.use}%, this may cause degraded performance.`]
-					})
-					warned = true
-				}
-			}
-			if (!warned) {
-				this._coreHandler.core.setStatus({
-					'statusCode': P.StatusCode.GOOD
-				})
-			}
-		})
-		.catch((e) => {
-			this.logger.debug('It appears as if media-scanner does not support disk usage stats.', e)
-		})
 	}
 }
