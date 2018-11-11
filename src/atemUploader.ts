@@ -25,11 +25,15 @@ export class AtemUploadScript {
 	}
 
 	connect (ip: string): Promise<null> {
-		return new Promise((resolve) => {
-			this.connection.connect(ip)
+		return new Promise((resolve, reject) => {
 			this.connection.once('connected', () => {
 				resolve()
 			})
+			this.connection.connect(ip)
+			.catch((err) => {
+				reject(err)
+			})
+
 		})
 	}
 
@@ -96,8 +100,12 @@ singleton.connect(process.argv[2]).then(async () => {
 		consoleError(e)
 		process.exit(-1)
 	})
-	if (process.argv[4] !== undefined) {
-		singleton.mediaPool = parseInt(process.argv[4], 10)
+	let mediaPool: string | undefined
+	if (process.argv.length >= 5) {
+		mediaPool = process.argv[4]
+	}
+	if (mediaPool !== undefined) {
+		singleton.mediaPool = parseInt(mediaPool, 10)
 	}
 
 	singleton.uploadToAtem().then(() => {
