@@ -106,10 +106,10 @@ export interface MediaObject {
 
 export interface DiskInfo {
 	fs: string
-	type: string
-	size: number
-	used: number
-	use: number
+	type?: string
+	size: number | null
+	used: number | null
+	use: number | null
 	mount: boolean | string
 }
 /**
@@ -321,13 +321,14 @@ export class MediaScanner {
 			_.each(disks, (disk) => {
 
 				let diskStatus = PeripheralDeviceAPI.StatusCode.GOOD
-
-				if (disk.use > 90) {
-					diskStatus = PeripheralDeviceAPI.StatusCode.WARNING_MAJOR
-					messages.push(`Disk usage for ${disk.fs} is at ${disk.use}%, this may cause degraded performance.`)
-				} else if (disk.use > 70) {
-					diskStatus = PeripheralDeviceAPI.StatusCode.WARNING_MINOR
-					messages.push(`Disk usage for ${disk.fs} is at ${disk.use}%, this may cause degraded performance.`)
+				if (disk.use) {
+					if (disk.use > 90) {
+						diskStatus = PeripheralDeviceAPI.StatusCode.WARNING_MAJOR
+						messages.push(`Disk usage for ${disk.fs} is at ${disk.use}%, this may cause degraded performance.`)
+					} else if (disk.use > 70) {
+						diskStatus = PeripheralDeviceAPI.StatusCode.WARNING_MINOR
+						messages.push(`Disk usage for ${disk.fs} is at ${disk.use}%, this may cause degraded performance.`)
+					}
 				}
 
 				if (diskStatus > status) {
@@ -342,7 +343,12 @@ export class MediaScanner {
 			}
 		})
 		.catch((e) => {
-			this.logger.debug('It appears as if media-scanner does not support disk usage stats.', e)
+			this.logger.warning('It appears as if media-scanner does not support disk usage stats.', e)
+
+			this._coreHandler.mediaScannerStatus = PeripheralDeviceAPI.StatusCode.WARNING_MINOR
+			this._coreHandler.mediaScannerMessages = [`Unable to fetch disk status from media-scanner`]
+			this._coreHandler.updateCoreStatus()
+			.catch(this.logger.error)
 		})
 	}
 	private _sendChanged (doc: MediaObject): Promise<void> {
