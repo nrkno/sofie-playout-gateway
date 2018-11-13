@@ -40,6 +40,7 @@
     "docs:json": "typedoc --mode file --json docs/typedoc.json src/index.ts",
     "docs:publish": "yarn docs:html && gh-pages -d docs",
     "changelog": "standard-version",
+    "version-time": "node versiontime.js",
     "release": "yarn reset && yarn test && yarn docs:publish && yarn changelog",
     "reset": "git clean -dfx && git reset --hard && yarn",
     "ci": "yarn test",
@@ -111,5 +112,10 @@
     "tv-automation-server-core-integration": "0.6.2",
     "underscore": "^1.9.1",
     "winston": "^2.4.2"
+  },
+  "standard-version": {
+    "scripts": {
+      "postbump": "yarn version-time"
+    }
   }
 }
