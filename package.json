@@ -114,7 +114,7 @@
   },
   "standard-version": {
     "scripts": {
-      "postbump": "node versiontime.js"
+      "postbump": "node ./versiontime.js"
     }
   }
 }
