@@ -2,6 +2,36 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.13.0"></a>
+# [0.13.0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v0.12.0...v0.13.0) (2018-11-14)
+
+
+### Bug Fixes
+
+* atemUpload: bugfix: didn't upload on init ([76b3802](https://github.com/nrkno/tv-automation-playout-gateway/commit/76b3802))
+* atemUpload: handle errors & typo ([01bc8da](https://github.com/nrkno/tv-automation-playout-gateway/commit/01bc8da))
+* bump tsr version ([3fb51c1](https://github.com/nrkno/tv-automation-playout-gateway/commit/3fb51c1))
+* catch disk usage http errors ([635db9c](https://github.com/nrkno/tv-automation-playout-gateway/commit/635db9c))
+* media-scanner linting ([f7480cf](https://github.com/nrkno/tv-automation-playout-gateway/commit/f7480cf))
+* media-scanner status reporting ([b80c0a5](https://github.com/nrkno/tv-automation-playout-gateway/commit/b80c0a5))
+* revert: remove baltes debug file ([7e37598](https://github.com/nrkno/tv-automation-playout-gateway/commit/7e37598))
+* temporary fix to log debug-messages ([40e0921](https://github.com/nrkno/tv-automation-playout-gateway/commit/40e0921))
+* tsrHandler: dont run functions before init() ([b1ff246](https://github.com/nrkno/tv-automation-playout-gateway/commit/b1ff246))
+* update core-integration dep (clean up old sockets) ([80bd1ad](https://github.com/nrkno/tv-automation-playout-gateway/commit/80bd1ad))
+* update core-integration dependency ([66383b1](https://github.com/nrkno/tv-automation-playout-gateway/commit/66383b1))
+* update lint & fix lint errors ([bfa94ba](https://github.com/nrkno/tv-automation-playout-gateway/commit/bfa94ba))
+* update media-scanner Diskinfo typings & warning message ([de624bd](https://github.com/nrkno/tv-automation-playout-gateway/commit/de624bd))
+
+
+### Features
+
+* report disk usage from media-scanner to core ([886548f](https://github.com/nrkno/tv-automation-playout-gateway/commit/886548f))
+* update atem-connection dep, fixing media upload ([d675cb9](https://github.com/nrkno/tv-automation-playout-gateway/commit/d675cb9))
+* update dependencies ([e1cc767](https://github.com/nrkno/tv-automation-playout-gateway/commit/e1cc767))
+* update TSR dep, add Pharos device ([9f52ee3](https://github.com/nrkno/tv-automation-playout-gateway/commit/9f52ee3))
+
+
+
 <a name="0.12.0"></a>
 # [0.12.0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v0.11.10...v0.12.0) (2018-11-13)
 
