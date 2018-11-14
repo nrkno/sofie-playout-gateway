@@ -84,6 +84,8 @@ export class TSRHandler {
 	private _observers: Array<any> = []
 	private _cachedStudioInstallationId: string = ''
 
+	private _initialized: boolean = false
+
 	constructor (logger: Winston.LoggerInstance) {
 		this.logger = logger
 	}
@@ -182,10 +184,13 @@ export class TSRHandler {
 			return this.tsr.init()
 		})
 		.then(() => {
+			this._initialized = true
 			this._triggerupdateMapping()
 			this._triggerupdateTimeline()
 			this._triggerupdateDevices()
+			this.onSettingsChanged()
 			this.logger.debug('tsr init done')
+
 		})
 
 	}
@@ -251,14 +256,18 @@ export class TSRHandler {
 		}
 		return null
 	}
-	onSettingsChanged () {
-		if (this.tsr.logDebug !== this._coreHandler.logDebug) {
+	onSettingsChanged (): void {
+		if (!this._initialized) return
 
+		if (this.tsr.logDebug !== this._coreHandler.logDebug) {
 			this.logger.info(`Log settings: ${this._coreHandler.logDebug}`)
 			this.tsr.logDebug = this._coreHandler.logDebug
 		}
+
 	}
 	private _triggerupdateTimeline () {
+		if (!this._initialized) return
+
 		if (this._triggerupdateTimelineTimeout) {
 			clearTimeout(this._triggerupdateTimelineTimeout)
 		}
@@ -347,6 +356,7 @@ export class TSRHandler {
 		}
 	}
 	private _triggerupdateMapping () {
+		if (!this._initialized) return
 		if (this._triggerupdateMappingTimeout) {
 			clearTimeout(this._triggerupdateMappingTimeout)
 		}
@@ -383,6 +393,7 @@ export class TSRHandler {
 		return null
 	}
 	private _triggerupdateDevices () {
+		if (!this._initialized) return
 		if (this._triggerupdateDevicesTimeout) {
 			clearTimeout(this._triggerupdateDevicesTimeout)
 		}
