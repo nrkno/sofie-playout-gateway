@@ -5,6 +5,7 @@ import { PeripheralDeviceAPI } from 'tv-automation-server-core-integration'
 import { CoreHandler } from './coreHandler'
 import * as Winston from 'winston'
 import * as crypto from 'crypto'
+import axios from 'axios'
 
 export interface MediaScannerConfig {
 	host?: string,
@@ -102,6 +103,15 @@ export interface MediaObject {
 	_id: string
 	_rev: string
 }
+
+export interface DiskInfo {
+	fs: string
+	type?: string
+	size: number | null
+	used: number | null
+	use: number | null
+	mount: boolean | string
+}
 /**
  * Represents a connection between Gateway and Media-Scanner
  */
@@ -180,6 +190,9 @@ export class MediaScanner {
 				// const previewUrl = `${baseUrl}/media/preview/${md._id}`
 				// Note: it only exists if there is a previewTime or previewSize set in the doc
 			}
+
+			// Check disk usage
+			this._updateFsStats()
 		}
 		const errHandler = (err) => {
 			if (err.code === 'ECONNREFUSED') {
@@ -208,6 +221,8 @@ export class MediaScanner {
 			.on('error', errHandler)
 
 		this._coreHandler.logger.info('MediaScanner: Start syncing media files')
+
+		this._updateFsStats()
 
 		return Promise.all([
 			this._coreHandler.core.callMethodLowPrio(PeripheralDeviceAPI.methods.getMediaObjectRevisions, [
@@ -295,6 +310,46 @@ export class MediaScanner {
 		}
 
 		return p
+	}
+	public _updateFsStats (): void {
+		axios.get(`http://${this._config.host}:${this._config.port}/stat/fs`)
+		.then(res => res.data)
+		.then((disks: Array<DiskInfo>) => {
+			// @todo: we temporarily report under playout-gateway, until we can handle multiple media-scanners
+			let messages: Array<string> = []
+			let status = PeripheralDeviceAPI.StatusCode.GOOD
+			_.each(disks, (disk) => {
+
+				let diskStatus = PeripheralDeviceAPI.StatusCode.GOOD
+				if (disk.use) {
+					if (disk.use > 90) {
+						diskStatus = PeripheralDeviceAPI.StatusCode.WARNING_MAJOR
+						messages.push(`Disk usage for ${disk.fs} is at ${disk.use}%, this may cause degraded performance.`)
+					} else if (disk.use > 70) {
+						diskStatus = PeripheralDeviceAPI.StatusCode.WARNING_MINOR
+						messages.push(`Disk usage for ${disk.fs} is at ${disk.use}%, this may cause degraded performance.`)
+					}
+				}
+
+				if (diskStatus > status) {
+					status = diskStatus
+				}
+			})
+			if (this._coreHandler.mediaScannerStatus !== status) {
+				this._coreHandler.mediaScannerStatus = status
+				this._coreHandler.mediaScannerMessages = messages
+				this._coreHandler.updateCoreStatus()
+				.catch(this.logger.error)
+			}
+		})
+		.catch((e) => {
+			this.logger.warning('It appears as if media-scanner does not support disk usage stats.', e)
+
+			this._coreHandler.mediaScannerStatus = PeripheralDeviceAPI.StatusCode.WARNING_MINOR
+			this._coreHandler.mediaScannerMessages = [`Unable to fetch disk status from media-scanner`]
+			this._coreHandler.updateCoreStatus()
+			.catch(this.logger.error)
+		})
 	}
 	private _sendChanged (doc: MediaObject): Promise<void> {
 		// Added or changed

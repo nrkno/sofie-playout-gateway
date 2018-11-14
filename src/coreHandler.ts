@@ -39,11 +39,19 @@ export class CoreHandler {
 	logger: Winston.LoggerInstance
 	public _observers: Array<any> = []
 	public deviceSettings: {[key: string]: any} = {}
+
+	// Mediascanner statuses: temporary implementation, to be moved into casparcg device later:
+	public mediaScannerStatus: P.StatusCode = P.StatusCode.GOOD
+	public mediaScannerMessages: Array<string> = []
+
 	private _deviceOptions: DeviceConfig
 	private _onConnected?: () => any
 	private _executedFunctions: {[id: string]: boolean} = {}
 	private _tsrHandler?: TSRHandler
 	private _coreConfig?: CoreConfig
+
+	private _statusInitialized: boolean = false
+	private _statusDestroyed: boolean = false
 
 	constructor (logger: Winston.LoggerInstance, deviceOptions: DeviceConfig) {
 		this.logger = logger
@@ -52,6 +60,7 @@ export class CoreHandler {
 
 	init (config: CoreConfig): Promise<void> {
 		// this.logger.info('========')
+		this._statusInitialized = false
 		this._coreConfig = config
 		this.core = new CoreConnection(this.getCoreConnectionOptions('Playout: Parent process', 'PlayoutCoreParent', true))
 
@@ -76,10 +85,8 @@ export class CoreHandler {
 			return this.setupObserversAndSubscriptions()
 		})
 		.then(() => {
-			return this.core.setStatus({
-				statusCode: P.StatusCode.GOOD
-				// messages: []
-			})
+			this._statusInitialized = true
+			return this.updateCoreStatus()
 		})
 		.then(() => {
 			return
@@ -126,10 +133,9 @@ export class CoreHandler {
 		})
 	}
 	destroy (): Promise<void> {
-		return this.core.setStatus({
-			statusCode: P.StatusCode.FATAL,
-			messages: ['Shutting down']
-		}).then(() => {
+		this._statusDestroyed = true
+		return this.updateCoreStatus()
+		.then(() => {
 			return this.core.destroy()
 		})
 		.then(() => {
@@ -176,10 +182,25 @@ export class CoreHandler {
 				this.deviceSettings = {}
 			}
 
-			if (this.deviceSettings['debugLogging']) {
-				this.logger.level = 'debug'
-			} else {
-				this.logger.level = 'info'
+			let logLevel = (
+				this.deviceSettings['debugLogging'] ?
+				'debug' :
+				'info'
+			)
+			if (logLevel !== this.logger.level) {
+				this.logger.level = logLevel
+
+				this.logger.info('Loglevel: ' + this.logger.level)
+
+				this.logger.debug('Test debug logging')
+				// @ts-ignore
+				this.logger.debug({ msg: 'test msg' })
+				// @ts-ignore
+				this.logger.debug({ message: 'test message' })
+				// @ts-ignore
+				this.logger.debug({ command: 'test command', context: 'test context' })
+
+				this.logger.debug('End test debug logging')
 			}
 
 			if (this._tsrHandler) {
@@ -354,6 +375,32 @@ export class CoreHandler {
 
 		return device.restartCasparCG()
 	}
+	updateCoreStatus (): Promise<any> {
+		let statusCode = P.StatusCode.GOOD
+		let messages: Array<string> = []
+
+		if (this.mediaScannerStatus !== P.StatusCode.GOOD) {
+			statusCode = this.mediaScannerStatus
+			if (this.mediaScannerMessages) {
+				_.each(this.mediaScannerMessages, (msg) => {
+					messages.push(msg)
+				})
+			}
+		}
+		if (!this._statusInitialized) {
+			statusCode = P.StatusCode.BAD
+			messages.push('Starting up...')
+		}
+		if (this._statusDestroyed) {
+			statusCode = P.StatusCode.BAD
+			messages.push('Shut down')
+		}
+
+		return this.core.setStatus({
+			statusCode: statusCode,
+			messages: messages
+		})
+	}
 	private _getVersions () {
 		let versions: {[packageName: string]: string} = {}
 
@@ -484,24 +531,8 @@ export class CoreTSRDeviceHandler {
 		// setup observers
 		this._coreParentHandler.setupObserverForPeripheralDeviceCommands(this)
 	}
-	onConnectionChanged (connectedOrStatus: boolean | P.StatusObject) {
+	onConnectionChanged (deviceStatus: P.StatusObject) {
 		this._hasGottenStatusChange = true
-
-		let deviceStatus: P.StatusObject
-		if (_.isBoolean(connectedOrStatus)) { // for backwards compability, to be removed
-			if (connectedOrStatus) {
-				deviceStatus = {
-					statusCode: P.StatusCode.GOOD
-				}
-			} else {
-				deviceStatus = {
-					statusCode: P.StatusCode.BAD,
-					messages: ['Disconnected']
-				}
-			}
-		} else {
-			deviceStatus = connectedOrStatus
-		}
 
 		this.core.setStatus(deviceStatus)
 		.catch(e => this._coreParentHandler.logger.error('Error when setting status: ' + e, e.stack))

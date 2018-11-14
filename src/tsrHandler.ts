@@ -84,6 +84,8 @@ export class TSRHandler {
 	private _observers: Array<any> = []
 	private _cachedStudioInstallationId: string = ''
 
+	private _initialized: boolean = false
+
 	constructor (logger: Winston.LoggerInstance) {
 		this.logger = logger
 	}
@@ -182,10 +184,13 @@ export class TSRHandler {
 			return this.tsr.init()
 		})
 		.then(() => {
+			this._initialized = true
 			this._triggerupdateMapping()
 			this._triggerupdateTimeline()
 			this._triggerupdateDevices()
+			this.onSettingsChanged()
 			this.logger.debug('tsr init done')
+
 		})
 
 	}
@@ -251,14 +256,18 @@ export class TSRHandler {
 		}
 		return null
 	}
-	onSettingsChanged () {
-		if (this.tsr.logDebug !== this._coreHandler.logDebug) {
+	onSettingsChanged (): void {
+		if (!this._initialized) return
 
+		if (this.tsr.logDebug !== this._coreHandler.logDebug) {
 			this.logger.info(`Log settings: ${this._coreHandler.logDebug}`)
 			this.tsr.logDebug = this._coreHandler.logDebug
 		}
+
 	}
 	private _triggerupdateTimeline () {
+		if (!this._initialized) return
+
 		if (this._triggerupdateTimelineTimeout) {
 			clearTimeout(this._triggerupdateTimelineTimeout)
 		}
@@ -347,6 +356,7 @@ export class TSRHandler {
 		}
 	}
 	private _triggerupdateMapping () {
+		if (!this._initialized) return
 		if (this._triggerupdateMappingTimeout) {
 			clearTimeout(this._triggerupdateMappingTimeout)
 		}
@@ -383,6 +393,7 @@ export class TSRHandler {
 		return null
 	}
 	private _triggerupdateDevices () {
+		if (!this._initialized) return
 		if (this._triggerupdateDevicesTimeout) {
 			clearTimeout(this._triggerupdateDevicesTimeout)
 		}
@@ -449,28 +460,44 @@ export class TSRHandler {
 
 				this._coreTsrHandlers[device.deviceId] = coreTsrHandler
 
-				return coreTsrHandler.init()
-				.then(() => {
-					device.on('connectionChanged', (connected) => {
-						coreTsrHandler.onConnectionChanged(connected)
-						// hack to make sure atem has media after restart
-						if (connected) {
-							// @todo: proper atem media management
-							const studioInstallation = this._getStudioInstallation()
-							if (device.deviceType === DeviceType.ATEM && studioInstallation) {
-								const ssrcBgs = studioInstallation.config.filter((o) => o._id.substr(0, 18) === 'atemSSrcBackground')
-								if (ssrcBgs) {
-									try {
-										this._coreHandler.uploadFileToAtem(ssrcBgs)
-									} catch (e) {
-										// don't worry about it.
-									}
+				let onConnectionChanged = (connectedOrStatus: boolean | P.StatusObject) => {
+					let deviceStatus: P.StatusObject
+					if (_.isBoolean(connectedOrStatus)) { // for backwards compability, to be removed later
+						if (connectedOrStatus) {
+							deviceStatus = {
+								statusCode: P.StatusCode.GOOD
+							}
+						} else {
+							deviceStatus = {
+								statusCode: P.StatusCode.BAD,
+								messages: ['Disconnected']
+							}
+						}
+					} else {
+						deviceStatus = connectedOrStatus
+					}
+					coreTsrHandler.onConnectionChanged(deviceStatus)
+					// hack to make sure atem has media after restart
+					if (deviceStatus.statusCode === P.StatusCode.GOOD) {
+						// @todo: proper atem media management
+						const studioInstallation = this._getStudioInstallation()
+						if (device.deviceType === DeviceType.ATEM && studioInstallation) {
+							const ssrcBgs = studioInstallation.config.filter((o) => o._id.substr(0, 18) === 'atemSSrcBackground')
+							if (ssrcBgs) {
+								try {
+									this._coreHandler.uploadFileToAtem(ssrcBgs)
+								} catch (e) {
+									// don't worry about it.
 								}
 							}
 						}
-					})
-					// ask for the status, and update:
-					coreTsrHandler.onConnectionChanged(device.getStatus())
+					}
+				}
+				return coreTsrHandler.init()
+				.then(() => {
+					device.on('connectionChanged', onConnectionChanged)
+					// also ask for the status now, and update:
+					onConnectionChanged(device.getStatus())
 
 					return Promise.resolve()
 				})

@@ -6,7 +6,6 @@ let c: Connector
 // Setup logging --------------------------------------
 let logger = new (Winston.Logger)({
 })
-
 if (logPath) {
 	// Log json to file, human-readable to console
 	logger.add(Winston.transports.Console, {
