@@ -62,7 +62,7 @@ export class CoreHandler {
 		// this.logger.info('========')
 		this._statusInitialized = false
 		this._coreConfig = config
-		this.core = new CoreConnection(this.getCoreConnectionOptions('Playout: Parent process', 'PlayoutCoreParent', true))
+		this.core = new CoreConnection(this.getCoreConnectionOptions('Playout gateway', 'PlayoutCoreParent', true))
 
 		this.core.onConnected(() => {
 			this.logger.info('Core Connected!')
@@ -463,7 +463,7 @@ export class CoreTSRDeviceHandler {
 		// 	this._coreParentHandler.logger.error('Core Error: ' + (err.message || err.toString() || err))
 		// })
 
-		this.core = new CoreConnection(this._coreParentHandler.getCoreConnectionOptions('Playout: ' + device.deviceName, 'Playout' + device.deviceId, false))
+		this.core = new CoreConnection(this._coreParentHandler.getCoreConnectionOptions(device.deviceName, 'Playout' + device.deviceId, false))
 		this.core.onError((err) => {
 			this._coreParentHandler.logger.error('Core Error: ' + (err.message || err.toString() || err))
 		})
