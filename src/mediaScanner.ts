@@ -127,6 +127,8 @@ export class MediaScanner {
 	private _coreHandler: CoreHandler
 	private _changes: PouchDB.Core.Changes<MediaObject>
 	private _doReplication: boolean = false
+	private _triggerupdateFsStatsTimeout?: NodeJS.Timer
+	private _checkFsStatsInterval?: NodeJS.Timer
 
 	private _replication: PouchDB.Replication.Replication<{}>
 	constructor (logger: Winston.LoggerInstance) {
@@ -191,8 +193,7 @@ export class MediaScanner {
 				// Note: it only exists if there is a previewTime or previewSize set in the doc
 			}
 
-			// Check disk usage
-			this._updateFsStats()
+			this._triggerupdateFsStats()
 		}
 		const errHandler = (err) => {
 			if (err.code === 'ECONNREFUSED') {
@@ -222,7 +223,11 @@ export class MediaScanner {
 
 		this._coreHandler.logger.info('MediaScanner: Start syncing media files')
 
+		// Check disk usage now
 		this._updateFsStats()
+		this._checkFsStatsInterval = setInterval(() => {
+			this._triggerupdateFsStats()
+		}, 30 * 1000) // Run a check every 30 seconds
 
 		return Promise.all([
 			this._coreHandler.core.callMethodLowPrio(PeripheralDeviceAPI.methods.getMediaObjectRevisions, [
@@ -297,6 +302,10 @@ export class MediaScanner {
 	}
 
 	public destroy (): Promise<void> {
+		if (this._checkFsStatsInterval) {
+			clearInterval(this._checkFsStatsInterval)
+			this._checkFsStatsInterval = undefined
+		}
 		if (this._changes) {
 			this._changes.cancel()
 		}
@@ -311,6 +320,14 @@ export class MediaScanner {
 
 		return p
 	}
+	public _triggerupdateFsStats (): void {
+		if (!this._triggerupdateFsStatsTimeout) {
+			this._triggerupdateFsStatsTimeout = setTimeout(() => {
+				this._triggerupdateFsStatsTimeout = undefined
+				this._updateFsStats()
+			}, 5000)
+		}
+	}
 	public _updateFsStats (): void {
 		axios.get(`http://${this._config.host}:${this._config.port}/stat/fs`)
 		.then(res => res.data)
@@ -322,10 +339,10 @@ export class MediaScanner {
 
 				let diskStatus = PeripheralDeviceAPI.StatusCode.GOOD
 				if (disk.use) {
-					if (disk.use > 90) {
+					if (disk.use > 75) {
 						diskStatus = PeripheralDeviceAPI.StatusCode.WARNING_MAJOR
 						messages.push(`Disk usage for ${disk.fs} is at ${disk.use}%, this may cause degraded performance.`)
-					} else if (disk.use > 70) {
+					} else if (disk.use > 60) {
 						diskStatus = PeripheralDeviceAPI.StatusCode.WARNING_MINOR
 						messages.push(`Disk usage for ${disk.fs} is at ${disk.use}%, this may cause degraded performance.`)
 					}
@@ -335,7 +352,10 @@ export class MediaScanner {
 					status = diskStatus
 				}
 			})
-			if (this._coreHandler.mediaScannerStatus !== status) {
+			if (
+				this._coreHandler.mediaScannerStatus !== status ||
+				!_.isEqual(this._coreHandler.mediaScannerMessages, messages)
+			) {
 				this._coreHandler.mediaScannerStatus = status
 				this._coreHandler.mediaScannerMessages = messages
 				this._coreHandler.updateCoreStatus()
