@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.14.0"></a>
+# [0.14.0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v0.13.0...v0.14.0) (2018-11-21)
+
+
+### Bug Fixes
+
+* **peripheralDevices:** creates more user-friendly names of devices and sub devices. Seen in combination with ongoing work in core and mos-gw to clean up the user interface. ([6b9efaa](https://github.com/nrkno/tv-automation-playout-gateway/commit/6b9efaa))
+* update disk usage limits ([e646543](https://github.com/nrkno/tv-automation-playout-gateway/commit/e646543))
+
+
+### Features
+
+* **disk-usage:** limit rate of disk usage check, and do it at an interval ([f5db8fb](https://github.com/nrkno/tv-automation-playout-gateway/commit/f5db8fb))
+
+
+
 <a name="0.13.0"></a>
 # [0.13.0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v0.12.0...v0.13.0) (2018-11-14)
 
