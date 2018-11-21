@@ -322,10 +322,10 @@ export class MediaScanner {
 
 				let diskStatus = PeripheralDeviceAPI.StatusCode.GOOD
 				if (disk.use) {
-					if (disk.use > 90) {
+					if (disk.use > 75) {
 						diskStatus = PeripheralDeviceAPI.StatusCode.WARNING_MAJOR
 						messages.push(`Disk usage for ${disk.fs} is at ${disk.use}%, this may cause degraded performance.`)
-					} else if (disk.use > 70) {
+					} else if (disk.use > 60) {
 						diskStatus = PeripheralDeviceAPI.StatusCode.WARNING_MINOR
 						messages.push(`Disk usage for ${disk.fs} is at ${disk.use}%, this may cause degraded performance.`)
 					}
