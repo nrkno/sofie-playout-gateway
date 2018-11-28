@@ -595,10 +595,10 @@ asynckit@^0.4.0:
   resolved "https://registry.yarnpkg.com/asynckit/-/asynckit-0.4.0.tgz#c79ed97f7f34cb8f2ba1bc9790bcc366474b4b79"
   integrity sha1-x57Zf380y48robyXkLzDZkdLS3k=
 
-atem-connection@0.8.0, atem-connection@^0.8.0:
-  version "0.8.0"
-  resolved "https://registry.yarnpkg.com/atem-connection/-/atem-connection-0.8.0.tgz#f52a46f55f8df2129563ee6bb92730381b96f8ef"
-  integrity sha512-CUs26cik58XGuJfKFXUsAsF6Mt6yEkCI5y6Bbc5McTdWOime+SHkZlLsA8LwzGRRciVVYdxTRZKAERMzzvHeHw==
+atem-connection@0.8.1, atem-connection@^0.8.0:
+  version "0.8.1"
+  resolved "https://registry.yarnpkg.com/atem-connection/-/atem-connection-0.8.1.tgz#e7fadeab3a33ff5d15db157c8c8f1c2ca2ce23b8"
+  integrity sha512-LHCJ1Cy/WIVakZ/PcXxJyHTF17nbQQVa4FgJsNhi+dBrbm5mzcMO06p3KPl/e/kwQlpli+Letk60u/MvDvpoeQ==
   dependencies:
     exit-hook "^2.0.0"
     nanotimer "^0.3.15"
