@@ -99,9 +99,7 @@ export class CoreHandler {
 		this.logger.info('Core: Setting up subscriptions..')
 		this.logger.info('DeviceId: ' + this.core.deviceId)
 		return Promise.all([
-			this.core.autoSubscribe('timeline', {
-				deviceId: this.core.deviceId
-			}),
+			this.core.autoSubscribe('timeline', {}),
 			this.core.autoSubscribe('peripheralDevices', {
 				_id: this.core.deviceId
 			}),
@@ -456,7 +454,7 @@ export class CoreTSRDeviceHandler {
 
 		this._device = this._device
 
-		this._coreParentHandler.logger.info('new CoreMosDeviceHandler ' + device.deviceName)
+		this._coreParentHandler.logger.info('new CoreTSRDeviceHandler ' + device.deviceName)
 
 		// this.core = new CoreConnection(parent.getCoreConnectionOptions('MOS: ' + device.idPrimary, device.idPrimary, false))
 		// this.core.onError((err) => {

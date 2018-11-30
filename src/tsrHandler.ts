@@ -6,7 +6,8 @@ import {
 	TimelineContentObject,
 	TriggerType,
 	TimelineTriggerTimeResult,
-	DeviceOptions
+	DeviceOptions,
+	Mappings
 } from 'timeline-state-resolver'
 import { CoreHandler, CoreTSRDeviceHandler } from './coreHandler'
 let clone = require('fast-clone')
@@ -17,15 +18,6 @@ import * as _ from 'underscore'
 import { CoreConnection, PeripheralDeviceAPI as P, CollectionObj } from 'tv-automation-server-core-integration'
 
 export interface TSRConfig {
-}
-export interface Mappings {
-	[layerName: string]: Mapping
-}
-export interface Mapping {
-	device: DeviceType
-	deviceId: string
-	channel?: number
-	layer?: number
 }
 export interface TSRSettings { // Runtime settings from Core
 	devices: {
@@ -46,7 +38,6 @@ export interface TimelineObj { // interface from Core
 	siId?: string
 	sliId?: string
 	roId: string
-	deviceId: string
 
 	trigger: {
 		type: TriggerType
@@ -65,6 +56,11 @@ export interface TimelineObj { // interface from Core
 	repeating?: boolean
 	priority?: number
 	externalFunction?: string
+
+	/** Only set to true for the "magic" statistic objects, used to trigger playout */
+	statObject?: boolean
+	/** Only set to true for the test recording objects, to persist outside of a rundown */
+	recordingObject?: boolean
 }
 export interface TimelineContentObjectTmp extends TimelineContentObject {
 	inGroup?: string
@@ -233,18 +229,11 @@ export class TSRHandler {
 			return null
 		}
 
-		let objs = this._coreHandler.core.getCollection('timeline').find((o) => {
+		let objs = this._coreHandler.core.getCollection('timeline').find((o: TimelineObj) => {
 			if (excludeStatObj) {
 				if (o.statObject) return false
 			}
-			return (
-				o.siId === siId &&
-				(
-					_.isArray(o.deviceId) ?
-					o.deviceId.indexOf(this._coreHandler.core.deviceId) !== -1 :
-					o.deviceId === this._coreHandler.core.deviceId
-				)
-			)
+			return o.siId === siId
 		})
 
 		return objs
@@ -608,7 +597,7 @@ export class TSRHandler {
 			return false
 		}
 
-		let statObjId = siId + '_' + pd._id + '_statObj'
+		let statObjId = siId + '_statObj'
 
 		let statObject = this._coreHandler.core.getCollection('timeline').find(statObjId)[0]
 
