@@ -1,6 +1,6 @@
 {
   "name": "playout-gateway",
-  "version": "0.0.0-develop",
+  "version": "0.14.1",
   "description": "Connect to Core, play stuff",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -102,7 +102,7 @@
   ],
   "dependencies": {
     "@types/pouchdb-node": "^6.1.2",
-    "atem-connection": "0.8.0",
+    "atem-connection": "0.8.1",
     "axios": "^0.18.0",
     "fast-clone": "^1.5.3",
     "pouchdb-node": "^6.4.3",
