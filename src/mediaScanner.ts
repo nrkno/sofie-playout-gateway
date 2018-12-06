@@ -363,7 +363,7 @@ export class MediaScanner {
 			}
 		})
 		.catch((e) => {
-			this.logger.warning('It appears as if media-scanner does not support disk usage stats.', e)
+			this.logger.warn('It appears as if media-scanner does not support disk usage stats.', e)
 
 			this._coreHandler.mediaScannerStatus = PeripheralDeviceAPI.StatusCode.WARNING_MINOR
 			this._coreHandler.mediaScannerMessages = [`Unable to fetch disk status from media-scanner`]
