@@ -3,9 +3,9 @@ import * as _ from 'underscore'
 import * as PromiseSequence from 'promise-sequence'
 import { PeripheralDeviceAPI } from 'tv-automation-server-core-integration'
 import { CoreHandler } from './coreHandler'
-import * as Winston from 'winston'
 import * as crypto from 'crypto'
 import axios from 'axios'
+import { LoggerInstance } from './index'
 
 export interface MediaScannerConfig {
 	host?: string,
@@ -116,7 +116,7 @@ export interface DiskInfo {
  * Represents a connection between Gateway and Media-Scanner
  */
 export class MediaScanner {
-	logger: Winston.LoggerInstance
+	logger: LoggerInstance
 	private _config: {
 		host: string,
 		port: number,
@@ -131,7 +131,7 @@ export class MediaScanner {
 	private _checkFsStatsInterval?: NodeJS.Timer
 
 	private _replication: PouchDB.Replication.Replication<{}>
-	constructor (logger: Winston.LoggerInstance) {
+	constructor (logger: LoggerInstance) {
 		this.logger = logger
 	}
 	public async init (config: MediaScannerConfig, coreHandler: CoreHandler): Promise<void> {

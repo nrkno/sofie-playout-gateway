@@ -8,10 +8,10 @@ import * as cp from 'child_process'
 import { DeviceType, CasparCGDevice, Device } from 'timeline-state-resolver'
 
 import * as _ from 'underscore'
-import * as Winston from 'winston'
 import { DeviceConfig } from './connector'
 import { TSRHandler } from './tsrHandler'
 import * as fs from 'fs'
+import { LoggerInstance } from './index'
 
 export interface CoreConfig {
 	host: string,
@@ -36,7 +36,7 @@ export interface PeripheralDeviceCommand {
  */
 export class CoreHandler {
 	core: CoreConnection
-	logger: Winston.LoggerInstance
+	logger: LoggerInstance
 	public _observers: Array<any> = []
 	public deviceSettings: {[key: string]: any} = {}
 
@@ -56,7 +56,7 @@ export class CoreHandler {
 	private _statusInitialized: boolean = false
 	private _statusDestroyed: boolean = false
 
-	constructor (logger: Winston.LoggerInstance, deviceOptions: DeviceConfig) {
+	constructor (logger: LoggerInstance, deviceOptions: DeviceConfig) {
 		this.logger = logger
 		this._deviceOptions = deviceOptions
 	}

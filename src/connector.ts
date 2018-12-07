@@ -1,7 +1,7 @@
-import * as Winston from 'winston'
 import { TSRHandler, TSRConfig } from './tsrHandler'
 import { CoreHandler, CoreConfig } from './coreHandler'
 import { MediaScanner, MediaScannerConfig } from './mediaScanner'
+import { LoggerInstance } from './index'
 // import {Conductor, DeviceType} from 'timeline-state-resolver'
 
 export interface Config {
@@ -20,9 +20,9 @@ export class Connector {
 	private coreHandler: CoreHandler
 	private mediaScanner: MediaScanner
 	private _config: Config
-	private _logger: Winston.LoggerInstance
+	private _logger: LoggerInstance
 
-	constructor (logger: Winston.LoggerInstance) {
+	constructor (logger: LoggerInstance) {
 		this._logger = logger
 	}
 

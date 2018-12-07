@@ -11,11 +11,11 @@ import {
 } from 'timeline-state-resolver'
 import { CoreHandler, CoreTSRDeviceHandler } from './coreHandler'
 let clone = require('fast-clone')
-import * as Winston from 'winston'
 import * as crypto from 'crypto'
 
 import * as _ from 'underscore'
 import { CoreConnection, PeripheralDeviceAPI as P, CollectionObj } from 'tv-automation-server-core-integration'
+import { LoggerInstance } from './index'
 
 export interface TSRConfig {
 }
@@ -69,7 +69,7 @@ export interface TimelineContentObjectTmp extends TimelineContentObject {
  * Represents a connection between Gateway and TSR
  */
 export class TSRHandler {
-	logger: Winston.LoggerInstance
+	logger: LoggerInstance
 	tsr: Conductor
 	private _config: TSRConfig
 	private _coreHandler: CoreHandler
@@ -82,7 +82,7 @@ export class TSRHandler {
 
 	private _initialized: boolean = false
 
-	constructor (logger: Winston.LoggerInstance) {
+	constructor (logger: LoggerInstance) {
 		this.logger = logger
 	}
 
@@ -336,6 +336,7 @@ export class TSRHandler {
 				this.getTimeline(true) as Array<TimelineObj>
 			)
 			if (transformedTimeline) {
+				console.log('transformedTimeline', transformedTimeline.length)
 				this.tsr.timeline = transformedTimeline
 			} else {
 				this.logger.warn('Did NOT update Timeline due to an error')
