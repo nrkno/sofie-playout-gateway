@@ -130,7 +130,19 @@ export class MediaScanner {
 	private _triggerupdateFsStatsTimeout?: NodeJS.Timer
 	private _checkFsStatsInterval?: NodeJS.Timer
 
+	private _lastSequenceNr: number = 0
+
+	private _monitorConnectionTimeout: NodeJS.Timer | null = null
+
+	private _statusDisk: PeripheralDeviceAPI.StatusObject = {
+		statusCode: PeripheralDeviceAPI.StatusCode.UNKNOWN
+	}
+	private _statusConnection: PeripheralDeviceAPI.StatusObject = {
+		statusCode: PeripheralDeviceAPI.StatusCode.UNKNOWN
+	}
+
 	private _replication: PouchDB.Replication.Replication<{}>
+	private _isDestroyed: boolean = false
 	constructor (logger: LoggerInstance) {
 		this.logger = logger
 	}
@@ -147,7 +159,6 @@ export class MediaScanner {
 		// this.logger.info('device', device)
 
 		let mediaScannerSettings = (device.settings || {}).mediaScanner || {}
-		let lastSeq
 		this._config.host = mediaScannerSettings.host || this._config.host
 		this._config.port = mediaScannerSettings.port || this._config.port
 
@@ -163,63 +174,7 @@ export class MediaScanner {
 			this._db = new PouchDB(`${baseUrl}/db/_media`)
 		}
 
-		// Get sequence id to start at
-		// return core.call('getMySequenceNumber', someDeviceId, (sequenceNr) => {
-		const changesOptions = {
-			since: lastSeq || 'now',
-			include_docs: true,
-			live: true,
-			attachments: true
-		}
-		const changeHandler = (changes) => {
-			const newSequenceNr = changes.seq
-			lastSeq = newSequenceNr
-
-			if (changes.deleted) {
-				this.logger.debug('MediaScanner: deleteMediaObject', changes.id, newSequenceNr)
-				this._sendRemoved(changes.id)
-				.catch((e) => {
-					this._coreHandler.logger.error('MediaScanner: Error sending deleted doc', e)
-				})
-			} else if (changes.doc) {
-				const md: MediaObject = changes.doc
-				this.logger.debug('MediaScanner: updateMediaObject', newSequenceNr, md._id, md.mediaId)
-				this._sendChanged(md)
-				.catch((e) => {
-					this._coreHandler.logger.error('MediaScanner: Error sending changed doc', e)
-				})
-
-				// const previewUrl = `${baseUrl}/media/preview/${md._id}`
-				// Note: it only exists if there is a previewTime or previewSize set in the doc
-			}
-
-			this._triggerupdateFsStats()
-		}
-		const errHandler = (err) => {
-			if (err.code === 'ECONNREFUSED') {
-				// TODO: try to reconnect
-				this.logger.warn('MediaScanner: Connection refused')
-			} else if (err instanceof SyntaxError) {
-				this.logger.warn('MediaScanner: Connection terminated (' + err.message + ')') // most likely
-				// TODO: try to reconnect
-			} else {
-				this.logger.error('MediaScanner: Error', err)
-			}
-
-			this._changes.cancel()
-			// restart the changes stream
-			changesOptions.since = lastSeq
-			setTimeout(() => {
-				this._changes = this._db.changes<MediaObject>(changesOptions)
-					.on('change', changeHandler)
-					.on('error', errHandler)
-			}, 2500)
-		}
-
-		// Listen for changes
-		this._changes = this._db.changes<MediaObject>(changesOptions)
-			.on('change', changeHandler)
-			.on('error', errHandler)
+		this._restartChangesStream()
 
 		this._coreHandler.logger.info('MediaScanner: Start syncing media files')
 
@@ -302,6 +257,7 @@ export class MediaScanner {
 	}
 
 	public destroy (): Promise<void> {
+		this._isDestroyed = true
 		if (this._checkFsStatsInterval) {
 			clearInterval(this._checkFsStatsInterval)
 			this._checkFsStatsInterval = undefined
@@ -352,15 +308,9 @@ export class MediaScanner {
 					status = diskStatus
 				}
 			})
-			if (
-				this._coreHandler.mediaScannerStatus !== status ||
-				!_.isEqual(this._coreHandler.mediaScannerMessages, messages)
-			) {
-				this._coreHandler.mediaScannerStatus = status
-				this._coreHandler.mediaScannerMessages = messages
-				this._coreHandler.updateCoreStatus()
-				.catch(this.logger.error)
-			}
+			this._statusDisk.statusCode = status
+			this._statusDisk.messages = messages
+			this._updateStatus()
 		})
 		.catch((e) => {
 			this.logger.warn('It appears as if media-scanner does not support disk usage stats.', e)
@@ -370,6 +320,57 @@ export class MediaScanner {
 			this._coreHandler.updateCoreStatus()
 			.catch(this.logger.error)
 		})
+	}
+	private getChangesOptions () {
+		return {
+			since: this._lastSequenceNr || 'now',
+			include_docs: true,
+			live: true,
+			attachments: true
+		}
+	}
+	private _setConnectionStatus (connected) {
+		let status = (
+			connected ?
+			PeripheralDeviceAPI.StatusCode.GOOD :
+			PeripheralDeviceAPI.StatusCode.BAD
+		)
+		let messages = (
+			connected ?
+			[] :
+			['MediaScanner not connected']
+		)
+		if (status !== this._statusConnection.statusCode) {
+			this._statusConnection.statusCode = status
+			this._statusConnection.messages = messages
+			this._updateStatus()
+		}
+	}
+	private _updateStatus () {
+
+		let status: PeripheralDeviceAPI.StatusCode = PeripheralDeviceAPI.StatusCode.GOOD
+		let messages: Array<string> = []
+		_.each([
+			this._statusDisk,
+			this._statusConnection
+		], (s) => {
+			if (s.statusCode > status) {
+				status = s.statusCode
+			}
+			if (s.messages) {
+				messages = messages.concat(s.messages)
+			}
+		})
+
+		if (
+			this._coreHandler.mediaScannerStatus !== status ||
+			!_.isEqual(this._coreHandler.mediaScannerMessages, messages)
+		) {
+			this._coreHandler.mediaScannerStatus = status
+			this._coreHandler.mediaScannerMessages = messages
+			this._coreHandler.updateCoreStatus()
+			.catch(this.logger.error)
+		}
 	}
 	private _sendChanged (doc: MediaObject): Promise<void> {
 		// Added or changed
@@ -407,5 +408,76 @@ export class MediaScanner {
 	}
 	private hashId (id: string): string {
 		return crypto.createHash('md5').update(id).digest('hex')
+	}
+	private _triggerMonitorConnection () {
+		if (!this._monitorConnectionTimeout) {
+			this._monitorConnectionTimeout = setTimeout(() => {
+				this._monitorConnectionTimeout = null
+				this._monitorConnection()
+			}, 10 * 1000)
+		}
+	}
+	private _monitorConnection () {
+		if (this._isDestroyed) return
+
+		if (this._statusConnection.statusCode === PeripheralDeviceAPI.StatusCode.BAD) {
+			this._restartChangesStream()
+
+			this._triggerMonitorConnection()
+		}
+	}
+	private _restartChangesStream () {
+
+		// restart the changes stream
+		if (this._changes) {
+			this._changes.cancel()
+		}
+		this._changes = this._db.changes<MediaObject>(this.getChangesOptions())
+			.on('change', changes => this._changeHandler(changes))
+			.on('error', error => this._errorHandler(error))
+	}
+	private _changeHandler (changes) {
+		const newSequenceNr: number = changes.seq
+		this._lastSequenceNr = newSequenceNr
+
+		if (changes.deleted) {
+			this.logger.debug('MediaScanner: deleteMediaObject', changes.id, newSequenceNr)
+			this._sendRemoved(changes.id)
+			.catch((e) => {
+				this._coreHandler.logger.error('MediaScanner: Error sending deleted doc', e)
+			})
+		} else if (changes.doc) {
+			const md: MediaObject = changes.doc
+			this.logger.debug('MediaScanner: updateMediaObject', newSequenceNr, md._id, md.mediaId)
+			this._sendChanged(md)
+			.catch((e) => {
+				this._coreHandler.logger.error('MediaScanner: Error sending changed doc', e)
+			})
+
+			// const previewUrl = `${baseUrl}/media/preview/${md._id}`
+			// Note: it only exists if there is a previewTime or previewSize set in the doc
+		}
+
+		this._setConnectionStatus(true)
+
+		this._triggerupdateFsStats()
+	}
+	private _errorHandler (err) {
+		if (
+			err.code === 'ECONNREFUSED' ||
+			err.code === 'ECONNRESET'
+		) {
+			// TODO: try to reconnect
+			this.logger.warn('MediaScanner: ' + err.code)
+		} else if (err instanceof SyntaxError) {
+			this.logger.warn('MediaScanner: Connection terminated (' + err.message + ')') // most likely
+			// TODO: try to reconnect
+		} else {
+			this.logger.error('MediaScanner: Error', err)
+		}
+
+		this._setConnectionStatus(false)
+
+		this._triggerMonitorConnection()
 	}
 }
