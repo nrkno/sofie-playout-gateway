@@ -1,6 +1,6 @@
 {
   "name": "playout-gateway",
-  "version": "0.14.2",
+  "version": "0.0.0-develop",
   "description": "Connect to Core, play stuff",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -70,7 +70,7 @@
     "@types/node": "^8.0.4",
     "@types/underscore": "^1.8.8",
     "@types/winston": "^2.3.9",
-    "codecov": "^3.0.2",
+    "codecov": "3.1.0",
     "cpx": "^1.5.0",
     "gh-pages": "^1.2.0",
     "jest": "^23.1.0",
@@ -105,11 +105,11 @@
     "atem-connection": "0.8.1",
     "axios": "^0.18.0",
     "fast-clone": "^1.5.3",
-    "pouchdb-node": "^6.4.3",
+    "pouchdb-node": "7.0.0",
     "promise-sequence": "^0.3.1",
-    "timeline-state-resolver": "1.2.0",
+    "timeline-state-resolver": "1.6.0",
     "tslib": "^1.9.2",
-    "tv-automation-server-core-integration": "0.6.2",
+    "tv-automation-server-core-integration": "0.6.3",
     "underscore": "^1.9.1",
     "winston": "^2.4.2"
   }
