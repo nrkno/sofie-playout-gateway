@@ -442,6 +442,8 @@ export class MediaScanner {
 		else this.logger.warn(`Expected changes.seq to be number, got "${newSequenceNr}"`)
 
 		if (changes.deleted) {
+			if ((changes.id + '').match(/watchdogIgnore/i)) return // Ignore watchdog file changes
+
 			this.logger.debug('MediaScanner: deleteMediaObject', changes.id, newSequenceNr)
 			this._sendRemoved(changes.id)
 			.catch((e) => {
@@ -449,6 +451,8 @@ export class MediaScanner {
 			})
 		} else if (changes.doc) {
 			const md: MediaObject = changes.doc
+			if ((md._id + '').match(/watchdogIgnore/i)) return // Ignore watchdog file changes
+
 			this.logger.debug('MediaScanner: updateMediaObject', newSequenceNr, md._id, md.mediaId)
 			this._sendChanged(md)
 			.catch((e) => {
