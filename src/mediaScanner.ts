@@ -436,9 +436,10 @@ export class MediaScanner {
 			.on('change', changes => this._changeHandler(changes))
 			.on('error', error => this._errorHandler(error))
 	}
-	private _changeHandler (changes) {
-		const newSequenceNr: number = changes.seq
-		this._lastSequenceNr = newSequenceNr
+	private _changeHandler (changes: PouchDB.Core.ChangesResponseChange<MediaObject>) {
+		const newSequenceNr: string | number = changes.seq
+		if (_.isNumber(newSequenceNr)) this._lastSequenceNr = newSequenceNr
+		else this.logger.warn(`Expected changes.seq to be number, got "${newSequenceNr}"`)
 
 		if (changes.deleted) {
 			this.logger.debug('MediaScanner: deleteMediaObject', changes.id, newSequenceNr)
