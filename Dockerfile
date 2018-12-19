@@ -3,8 +3,8 @@
 FROM node:8.11.4
 WORKDIR /opt/playout-gateway
 COPY . .
-RUN --mount=type=cache,target=/opt/playout-gateway/node_modules yarn install --check-files --frozen-lockfile
-RUN --mount=type=cache,target=/opt/playout-gateway/node_modules yarn build
+RUN yarn install --check-files --frozen-lockfile
+RUN yarn build
 
 # DEPLOY IMAGE
 FROM node:8.11.4-alpine
