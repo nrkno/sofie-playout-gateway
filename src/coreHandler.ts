@@ -8,10 +8,10 @@ import * as cp from 'child_process'
 import { DeviceType, CasparCGDevice, Device } from 'timeline-state-resolver'
 
 import * as _ from 'underscore'
-import * as Winston from 'winston'
 import { DeviceConfig } from './connector'
 import { TSRHandler } from './tsrHandler'
 import * as fs from 'fs'
+import { LoggerInstance } from './index'
 
 export interface CoreConfig {
 	host: string,
@@ -36,7 +36,7 @@ export interface PeripheralDeviceCommand {
  */
 export class CoreHandler {
 	core: CoreConnection
-	logger: Winston.LoggerInstance
+	logger: LoggerInstance
 	public _observers: Array<any> = []
 	public deviceSettings: {[key: string]: any} = {}
 
@@ -50,10 +50,13 @@ export class CoreHandler {
 	private _tsrHandler?: TSRHandler
 	private _coreConfig?: CoreConfig
 
+	private _studioId: string
+	private _timelineSubscription: string | null = null
+
 	private _statusInitialized: boolean = false
 	private _statusDestroyed: boolean = false
 
-	constructor (logger: Winston.LoggerInstance, deviceOptions: DeviceConfig) {
+	constructor (logger: LoggerInstance, deviceOptions: DeviceConfig) {
 		this.logger = logger
 		this._deviceOptions = deviceOptions
 	}
@@ -99,9 +102,6 @@ export class CoreHandler {
 		this.logger.info('Core: Setting up subscriptions..')
 		this.logger.info('DeviceId: ' + this.core.deviceId)
 		return Promise.all([
-			this.core.autoSubscribe('timeline', {
-				deviceId: this.core.deviceId
-			}),
 			this.core.autoSubscribe('peripheralDevices', {
 				_id: this.core.deviceId
 			}),
@@ -201,6 +201,23 @@ export class CoreHandler {
 				this.logger.debug({ command: 'test command', context: 'test context' })
 
 				this.logger.debug('End test debug logging')
+			}
+
+			let studioId = device.studioInstallationId
+			if (studioId !== this._studioId) {
+				this._studioId = studioId
+
+				if (this._timelineSubscription) {
+					this.core.unsubscribe(this._timelineSubscription)
+					this._timelineSubscription = null
+				}
+				this.core.autoSubscribe('timeline', {
+					siId: studioId
+				}).then((subscriptionId) => {
+					this._timelineSubscription = subscriptionId
+				}).catch((err) => {
+					this.logger.error(err)
+				})
 			}
 
 			if (this._tsrHandler) {
@@ -456,7 +473,7 @@ export class CoreTSRDeviceHandler {
 
 		this._device = this._device
 
-		this._coreParentHandler.logger.info('new CoreMosDeviceHandler ' + device.deviceName)
+		this._coreParentHandler.logger.info('new CoreTSRDeviceHandler ' + device.deviceName)
 
 		// this.core = new CoreConnection(parent.getCoreConnectionOptions('MOS: ' + device.idPrimary, device.idPrimary, false))
 		// this.core.onError((err) => {

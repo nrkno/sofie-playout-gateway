@@ -1,11 +1,14 @@
 import { Connector } from './connector'
 import { config, logPath, disableWatchdog } from './config'
 import * as Winston from 'winston'
+export interface LoggerInstance extends Winston.LoggerInstance {
+	warning: never // logger.warning is not a function
+}
 
 let c: Connector
 // Setup logging --------------------------------------
 let logger = new (Winston.Logger)({
-})
+}) as LoggerInstance
 if (logPath) {
 	// Log json to file, human-readable to console
 	logger.add(Winston.transports.Console, {
