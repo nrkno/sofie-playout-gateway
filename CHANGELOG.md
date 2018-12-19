@@ -2,6 +2,32 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.15.0"></a>
+# [0.15.0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v0.14.2...v0.15.0) (2018-12-19)
+
+
+### Bug Fixes
+
+* **media-scanner:** reworked connection logic, adding better reconnection logic & status monitoring ([0cead6e](https://github.com/nrkno/tv-automation-playout-gateway/commit/0cead6e))
+* bump package version ([92d61e6](https://github.com/nrkno/tv-automation-playout-gateway/commit/92d61e6))
+* **media-scanner:** reworked connection logic, adding better reconnection logic & status monitoring ([2f05586](https://github.com/nrkno/tv-automation-playout-gateway/commit/2f05586))
+* **mediaScanner:** error trying to log warning when disk-usage not supported ([3d6bd22](https://github.com/nrkno/tv-automation-playout-gateway/commit/3d6bd22))
+* **mediaScanner:** error trying to log warning when disk-usage not supported ([66e4324](https://github.com/nrkno/tv-automation-playout-gateway/commit/66e4324))
+* ignore watchdog file changes ([b238e44](https://github.com/nrkno/tv-automation-playout-gateway/commit/b238e44))
+* re-implement supression of 404 casparcg commands ([d57e03d](https://github.com/nrkno/tv-automation-playout-gateway/commit/d57e03d))
+* subscribe to timeline in current studio ([4132a68](https://github.com/nrkno/tv-automation-playout-gateway/commit/4132a68))
+* supress some mediaScanner errors ([0c3468a](https://github.com/nrkno/tv-automation-playout-gateway/commit/0c3468a))
+* TSR-dep: hotfix, debuglogging ([b605f66](https://github.com/nrkno/tv-automation-playout-gateway/commit/b605f66))
+* Winston logging typing (disabled .warning) ([97c7384](https://github.com/nrkno/tv-automation-playout-gateway/commit/97c7384))
+
+
+### Features
+
+* Receive full timeline, not just portion for local devices ([388e310](https://github.com/nrkno/tv-automation-playout-gateway/commit/388e310))
+* update TSR dep ([09c2fa9](https://github.com/nrkno/tv-automation-playout-gateway/commit/09c2fa9))
+
+
+
 <a name="0.14.2"></a>
 ## [0.14.2](https://github.com/nrkno/tv-automation-playout-gateway/compare/v0.14.1...v0.14.2) (2018-12-13)
 
