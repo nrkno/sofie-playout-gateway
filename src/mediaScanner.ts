@@ -323,10 +323,9 @@ export class MediaScanner {
 				this.logger.warn(e)
 			}
 
-			this._coreHandler.mediaScannerStatus = PeripheralDeviceAPI.StatusCode.WARNING_MINOR
-			this._coreHandler.mediaScannerMessages = [`Unable to fetch disk status from media-scanner`]
-			this._coreHandler.updateCoreStatus()
-			.catch(this.logger.error)
+			this._statusDisk.statusCode = PeripheralDeviceAPI.StatusCode.WARNING_MAJOR
+			this._statusDisk.messages = [`Unable to fetch disk status from media-scanner`]
+			this._updateStatus()
 		})
 	}
 	private getChangesOptions () {
