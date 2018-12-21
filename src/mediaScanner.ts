@@ -358,14 +358,16 @@ export class MediaScanner {
 		let status: PeripheralDeviceAPI.StatusCode = PeripheralDeviceAPI.StatusCode.GOOD
 		let messages: Array<string> = []
 		_.each([
-			this._statusDisk,
-			this._statusConnection
+			this._statusConnection,
+			this._statusDisk
 		], (s) => {
-			if (s.statusCode > status) {
-				status = s.statusCode
-			}
-			if (s.messages) {
-				messages = messages.concat(s.messages)
+			if (s.statusCode >= status) {
+				if (s.messages) {
+					messages = messages.concat(s.messages)
+				}
+				if (s.statusCode > status) {
+					status = s.statusCode
+				}
 			}
 		})
 
