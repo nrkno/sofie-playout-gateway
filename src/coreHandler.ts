@@ -12,6 +12,7 @@ import { DeviceConfig } from './connector'
 import { TSRHandler } from './tsrHandler'
 import * as fs from 'fs'
 import { LoggerInstance } from './index'
+import { ThreadedClass } from 'threadedclass';
 
 export interface CoreConfig {
 	host: string,
@@ -345,9 +346,9 @@ export class CoreHandler {
 		urls.forEach((url, index) => {
 			this.logger.info('try to load ' + JSON.stringify(url) + ' to atem')
 			if (this._tsrHandler) {
-				this._tsrHandler.tsr.getDevices().forEach((device) => {
-					if (device.deviceType === DeviceType.ATEM) {
-						const options = device.deviceOptions.options as { host: string }
+				this._tsrHandler.tsr.getDevices().forEach(async (device) => {
+					if (await device.deviceType === DeviceType.ATEM) {
+						const options = (await device.deviceOptions).options as { host: string }
 						this.logger.info('options ' + JSON.stringify(options))
 						if (options && options.host) {
 							this.logger.info('uploading ' + url.value + ' to ' + options.host + ' in MP' + index)
@@ -387,7 +388,7 @@ export class CoreHandler {
 	restartCasparCG (deviceId: string): Promise<any> {
 		if (!this._tsrHandler) throw new Error('TSRHandler is not initialized')
 
-		let device = this._tsrHandler.tsr.getDevice(deviceId) as CasparCGDevice
+		let device = this._tsrHandler.tsr.getDevice(deviceId) as ThreadedClass<CasparCGDevice>
 		if (!device) throw new Error(`TSR Device "${deviceId}" not found!`)
 
 		return device.restartCasparCG()
@@ -460,13 +461,13 @@ export class CoreHandler {
 export class CoreTSRDeviceHandler {
 	core: CoreConnection
 	public _observers: Array<any> = []
-	public _device: Device
+	public _device: ThreadedClass<Device>
 	private _coreParentHandler: CoreHandler
 	private _tsrHandler: TSRHandler
 	private _subscriptions: Array<any> = []
 	private _hasGottenStatusChange: boolean = false
 
-	constructor (parent: CoreHandler, device: Device, tsrHandler: TSRHandler) {
+	constructor (parent: CoreHandler, device: ThreadedClass<Device>, tsrHandler: TSRHandler) {
 		this._coreParentHandler = parent
 		this._device = device
 		this._tsrHandler = tsrHandler
@@ -479,8 +480,9 @@ export class CoreTSRDeviceHandler {
 		// this.core.onError((err) => {
 		// 	this._coreParentHandler.logger.error('Core Error: ' + (err.message || err.toString() || err))
 		// })
-
-		this.core = new CoreConnection(this._coreParentHandler.getCoreConnectionOptions(device.deviceName, 'Playout' + device.deviceId, false))
+		Promise.resolve(device.deviceName).then(deviceName => {
+			this.core = new CoreConnection(this._coreParentHandler.getCoreConnectionOptions(deviceName, 'Playout' + device.deviceId, false))
+		})
 		this.core.onError((err) => {
 			this._coreParentHandler.logger.error('Core Error: ' + (err.message || err.toString() || err))
 		})
@@ -555,27 +557,22 @@ export class CoreTSRDeviceHandler {
 		.catch(e => this._coreParentHandler.logger.error('Error when setting status: ' + e, e.stack))
 	}
 
-	dispose (): Promise<void> {
+	async dispose (): Promise<void> {
 		this._observers.forEach((obs) => {
 			obs.stop()
 		})
 
-		return this._tsrHandler.tsr.removeDevice(this._device.deviceId)
-		.then(() => {
-			return this.core.setStatus({
-				statusCode: P.StatusCode.BAD,
-				messages: ['Uninitialized']
-			})
-		})
-		.then(() => {
-			return
+		await this._tsrHandler.tsr.removeDevice(await this._device.deviceId)
+		await this.core.setStatus({
+			statusCode: P.StatusCode.BAD,
+			messages: ['Uninitialized']
 		})
 	}
 	killProcess (actually: number) {
 		return this._coreParentHandler.killProcess(actually)
 	}
 	restartCasparCG (): Promise<any> {
-		let device = this._device as CasparCGDevice
+		let device = this._device as ThreadedClass<CasparCGDevice>
 		if (device.restartCasparCG) {
 			return device.restartCasparCG()
 		} else {

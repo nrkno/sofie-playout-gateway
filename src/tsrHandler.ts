@@ -16,6 +16,7 @@ import * as crypto from 'crypto'
 import * as _ from 'underscore'
 import { CoreConnection, PeripheralDeviceAPI as P, CollectionObj } from 'tv-automation-server-core-integration'
 import { LoggerInstance } from './index'
+import { ThreadedClass } from 'threadedclass'
 
 export interface TSRConfig {
 }
@@ -23,6 +24,7 @@ export interface TSRSettings { // Runtime settings from Core
 	devices: {
 		[deviceId: string]: {
 			type: DeviceType
+			threadUsage?: number
 			options?: {}
 		}
 	}
@@ -419,7 +421,7 @@ export class TSRHandler {
 
 			let devices = settings.devices
 
-			_.each(devices, (device, deviceId: string) => {
+			_.each(devices, async (device, deviceId: string) => {
 
 				let oldDevice = this.tsr.getDevice(deviceId)
 
@@ -431,7 +433,7 @@ export class TSRHandler {
 				} else {
 					if (device.options) {
 						let anyChanged = false
-						let oldOptions = oldDevice.deviceOptions.options || {}
+						let oldOptions = (await oldDevice.deviceOptions).options || {}
 						_.each(device.options, (val, attr) => {
 							if (!_.isEqual(oldOptions[attr], val)) {
 								anyChanged = true
@@ -446,8 +448,8 @@ export class TSRHandler {
 				}
 			})
 
-			_.each(this.tsr.getDevices(), (oldDevice: Device) => {
-				let deviceId = oldDevice.deviceId
+			_.each(this.tsr.getDevices(), async (oldDevice: ThreadedClass<Device>) => {
+				let deviceId = await oldDevice.deviceId
 				if (!devices[deviceId]) {
 					this.logger.debug('Un-initializing device: ' + deviceId)
 					this._removeDevice(deviceId)
@@ -459,14 +461,16 @@ export class TSRHandler {
 		this.logger.debug('Adding device ' + deviceId)
 
 		this.tsr.addDevice(deviceId, options)
-		.then((device: Device) => {
+		.then(async (device: ThreadedClass<Device>) => {
 			// set up device status
+			const deviceId = await device.deviceId
+			const deviceType = await device.deviceType
 
-			if (!this._coreTsrHandlers[device.deviceId]) {
+			if (!this._coreTsrHandlers[deviceId]) {
 
 				let coreTsrHandler = new CoreTSRDeviceHandler(this._coreHandler, device, this)
 
-				this._coreTsrHandlers[device.deviceId] = coreTsrHandler
+				this._coreTsrHandlers[deviceId] = coreTsrHandler
 
 				let onConnectionChanged = (connectedOrStatus: boolean | P.StatusObject) => {
 					let deviceStatus: P.StatusObject
@@ -489,7 +493,7 @@ export class TSRHandler {
 					if (deviceStatus.statusCode === P.StatusCode.GOOD) {
 						// @todo: proper atem media management
 						const studioInstallation = this._getStudioInstallation()
-						if (device.deviceType === DeviceType.ATEM && studioInstallation) {
+						if (deviceType === DeviceType.ATEM && studioInstallation) {
 							const ssrcBgs = studioInstallation.config.filter((o) => o._id.substr(0, 18) === 'atemSSrcBackground')
 							if (ssrcBgs) {
 								try {
@@ -502,10 +506,10 @@ export class TSRHandler {
 					}
 				}
 				return coreTsrHandler.init()
-				.then(() => {
+				.then(async () => {
 					device.on('connectionChanged', onConnectionChanged)
 					// also ask for the status now, and update:
-					onConnectionChanged(device.getStatus())
+					onConnectionChanged(await device.getStatus())
 
 					return Promise.resolve()
 				})
