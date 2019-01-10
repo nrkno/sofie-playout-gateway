@@ -430,13 +430,19 @@ export class MediaScanner {
 		if (this._isDestroyed) return
 
 		if (this._statusConnection.statusCode === PeripheralDeviceAPI.StatusCode.BAD) {
-			this._restartChangesStream()
+			this._restartChangesStream(true)
 
 			this._triggerMonitorConnection()
 		}
 	}
-	private _restartChangesStream () {
+	private _restartChangesStream (rewindSequence?: boolean) {
 
+		if (rewindSequence) {
+			if (this._lastSequenceNr > 0) {
+				this._lastSequenceNr--
+			}
+		}
+		this.logger.info(`MediaScanner: Restarting changes stream (from ${this._lastSequenceNr})`)
 		// restart the changes stream
 		if (this._changes) {
 			this._changes.cancel()
