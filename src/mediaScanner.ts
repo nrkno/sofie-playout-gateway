@@ -323,10 +323,9 @@ export class MediaScanner {
 				this.logger.warn(e)
 			}
 
-			this._coreHandler.mediaScannerStatus = PeripheralDeviceAPI.StatusCode.WARNING_MINOR
-			this._coreHandler.mediaScannerMessages = [`Unable to fetch disk status from media-scanner`]
-			this._coreHandler.updateCoreStatus()
-			.catch(this.logger.error)
+			this._statusDisk.statusCode = PeripheralDeviceAPI.StatusCode.WARNING_MAJOR
+			this._statusDisk.messages = [`Unable to fetch disk status from media-scanner`]
+			this._updateStatus()
 		})
 	}
 	private getChangesOptions () {
@@ -359,14 +358,16 @@ export class MediaScanner {
 		let status: PeripheralDeviceAPI.StatusCode = PeripheralDeviceAPI.StatusCode.GOOD
 		let messages: Array<string> = []
 		_.each([
-			this._statusDisk,
-			this._statusConnection
+			this._statusConnection,
+			this._statusDisk
 		], (s) => {
-			if (s.statusCode > status) {
-				status = s.statusCode
-			}
-			if (s.messages) {
-				messages = messages.concat(s.messages)
+			if (s.statusCode >= status) {
+				if (s.messages) {
+					messages = messages.concat(s.messages)
+				}
+				if (s.statusCode > status) {
+					status = s.statusCode
+				}
 			}
 		})
 
