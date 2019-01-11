@@ -191,10 +191,10 @@ export class MediaScanner {
 			this._db.allDocs({
 				include_docs: true,
 				attachments: true
-			})
+			}),
+			this._db.info()
 		])
-		.then(([coreObjects, allDocsResponse]) => {
-
+		.then(([coreObjects, allDocsResponse, dbInfo]) => {
 			this._coreHandler.logger.info('MediaScanner: synk objectlists', coreObjects.length, allDocsResponse.total_rows)
 
 			let tasks: Array<() => Promise<any>> = []
@@ -235,6 +235,7 @@ export class MediaScanner {
 					return null
 				}
 			})))
+			if (parseInt(dbInfo.update_seq + '', 10)) this._lastSequenceNr = parseInt(dbInfo.update_seq + '', 10)
 			// The ones left in coreObjRevisions have not been touched, ie they should be deleted
 			_.each(coreObjRevisions, (_rev, id) => {
 				// deleted
@@ -430,18 +431,25 @@ export class MediaScanner {
 		if (this._isDestroyed) return
 
 		if (this._statusConnection.statusCode === PeripheralDeviceAPI.StatusCode.BAD) {
-			this._restartChangesStream()
+			this._restartChangesStream(true)
 
 			this._triggerMonitorConnection()
 		}
 	}
-	private _restartChangesStream () {
+	private _restartChangesStream (rewindSequence?: boolean) {
 
+		if (rewindSequence) {
+			if (this._lastSequenceNr > 0) {
+				this._lastSequenceNr--
+			}
+		}
 		// restart the changes stream
 		if (this._changes) {
 			this._changes.cancel()
 		}
-		this._changes = this._db.changes<MediaObject>(this.getChangesOptions())
+		const opts = this.getChangesOptions()
+		this.logger.info(`MediaScanner: Restarting changes stream (since ${opts.since})`)
+		this._changes = this._db.changes<MediaObject>(opts)
 			.on('change', changes => this._changeHandler(changes))
 			.on('error', error => this._errorHandler(error))
 	}
@@ -451,25 +459,27 @@ export class MediaScanner {
 		else this.logger.warn(`Expected changes.seq to be number, got "${newSequenceNr}"`)
 
 		if (changes.deleted) {
-			if ((changes.id + '').match(/watchdogIgnore/i)) return // Ignore watchdog file changes
+			if (!(changes.id + '').match(/watchdogIgnore/i)) { // Ignore watchdog file changes
 
-			this.logger.debug('MediaScanner: deleteMediaObject', changes.id, newSequenceNr)
-			this._sendRemoved(changes.id)
-			.catch((e) => {
-				this._coreHandler.logger.error('MediaScanner: Error sending deleted doc', e)
-			})
+				this.logger.debug('MediaScanner: deleteMediaObject', changes.id, newSequenceNr)
+				this._sendRemoved(changes.id)
+				.catch((e) => {
+					this._coreHandler.logger.error('MediaScanner: Error sending deleted doc', e)
+				})
+			}
 		} else if (changes.doc) {
 			const md: MediaObject = changes.doc
-			if ((md._id + '').match(/watchdogIgnore/i)) return // Ignore watchdog file changes
+			if (!(md._id + '').match(/watchdogIgnore/i)) { // Ignore watchdog file changes
 
-			this.logger.debug('MediaScanner: updateMediaObject', newSequenceNr, md._id, md.mediaId)
-			this._sendChanged(md)
-			.catch((e) => {
-				this._coreHandler.logger.error('MediaScanner: Error sending changed doc', e)
-			})
+				this.logger.debug('MediaScanner: updateMediaObject', newSequenceNr, md._id, md.mediaId)
+				this._sendChanged(md)
+				.catch((e) => {
+					this._coreHandler.logger.error('MediaScanner: Error sending changed doc', e)
+				})
 
-			// const previewUrl = `${baseUrl}/media/preview/${md._id}`
-			// Note: it only exists if there is a previewTime or previewSize set in the doc
+				// const previewUrl = `${baseUrl}/media/preview/${md._id}`
+				// Note: it only exists if there is a previewTime or previewSize set in the doc
+			}
 		}
 
 		this._setConnectionStatus(true)
