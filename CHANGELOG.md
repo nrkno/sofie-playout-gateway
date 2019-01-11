@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.15.2"></a>
+## [0.15.2](https://github.com/nrkno/tv-automation-playout-gateway/compare/v0.15.1...v0.15.2) (2019-01-11)
+
+
+### Bug Fixes
+
+* Mediascanner reconnection bugs ([d72e3d1](https://github.com/nrkno/tv-automation-playout-gateway/commit/d72e3d1))
+* potential fix for reconnect issue ([81cbd1d](https://github.com/nrkno/tv-automation-playout-gateway/commit/81cbd1d))
+* revert pouchdb dep version to last version known to work (7.0.0 is no good) ([49567b8](https://github.com/nrkno/tv-automation-playout-gateway/commit/49567b8))
+
+
+
 <a name="0.15.1"></a>
 ## [0.15.1](https://github.com/nrkno/tv-automation-playout-gateway/compare/v0.15.0...v0.15.1) (2019-01-10)
 
