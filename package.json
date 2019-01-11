@@ -105,7 +105,7 @@
     "atem-connection": "0.8.1",
     "axios": "^0.18.0",
     "fast-clone": "^1.5.3",
-    "pouchdb-node": "7.0.0",
+    "pouchdb-node": "6.4.3",
     "promise-sequence": "^0.3.1",
     "timeline-state-resolver": "1.6.0",
     "tslib": "^1.9.2",
