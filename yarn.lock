@@ -7019,10 +7019,10 @@ timed-out@^3.0.0:
   resolved "https://registry.yarnpkg.com/timed-out/-/timed-out-3.1.3.tgz#95860bfcc5c76c277f8f8326fd0f5b2e20eba217"
   integrity sha1-lYYL/MXHbCd/j4Mm/Q9bLiDrohc=
 
-timeline-state-resolver@1.6.0:
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-1.6.0.tgz#5cd82df80e8bdf89ed6310a0e2868dc299d0847f"
-  integrity sha512-7l1ASC8mYKMoYqvqbmiFtKgzuFveaRmjr5p4CYHO6a5iSUvKdQHMC672D4k7ZKCQifIzMveZ8HqhXHhpAdZOdQ==
+timeline-state-resolver@^1.6.1:
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-1.6.1.tgz#12de2a708b852e547b698278b71d5b1cb52abb02"
+  integrity sha512-UGDT+9zM9i4P7+kIfDN1MEL6olgFTmkhIMwTBqnjErGZoNTFw5It4vb4iVBuZQH8YtsljoRcO52UVKdMEtV/KA==
   dependencies:
     "@types/request" "^2.48.1"
     "@types/sprintf-js" "^1.1.0"
