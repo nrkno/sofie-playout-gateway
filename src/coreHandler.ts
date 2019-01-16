@@ -232,7 +232,7 @@ export class CoreHandler {
 	executeFunction (cmd: PeripheralDeviceCommand, fcnObject: any) {
 		if (cmd) {
 			if (this._executedFunctions[cmd._id]) return // prevent it from running multiple times
-			this.logger.info(cmd.functionName, cmd.args)
+			this.logger.debug(`Executing function "${cmd.functionName}", args: ${JSON.stringify(cmd.args)}`)
 			this._executedFunctions[cmd._id] = true
 			// console.log('executeFunction', cmd)
 			let cb = (err: any, res?: any) => {
