@@ -3227,6 +3227,14 @@ hyperdeck-connection@^0.1.2:
     underscore "^1.9.1"
     underscore-deep-extend "^1.1.5"
 
+hyperdeck-connection@^0.1.3:
+  version "0.1.3"
+  resolved "https://registry.yarnpkg.com/hyperdeck-connection/-/hyperdeck-connection-0.1.3.tgz#379d8d99891e88b5162cf4bab27f9776b2c5fd0b"
+  integrity sha512-4ulOzMwWimh05vg2M4jMHa+pejM0MGaPpAqnY8w5Z98zB2JLLQHEYM5xbtJyNd25rB8ZE522qluiNFQKVUOqJA==
+  dependencies:
+    underscore "^1.9.1"
+    underscore-deep-extend "^1.1.5"
+
 iconv-lite@0.4.24, iconv-lite@^0.4.4:
   version "0.4.24"
   resolved "https://registry.yarnpkg.com/iconv-lite/-/iconv-lite-0.4.24.tgz#2022b4b25fbddc21d2f524974a474aafe733908b"
@@ -7034,6 +7042,28 @@ timeline-state-resolver@^1.6.2:
     emberplus "git+https://github.com/nrkno/tv-automation-emberplus-connection#dist10102018"
     fast-clone "^1.5.3"
     hyperdeck-connection "^0.1.2"
+    osc "^2.2.4"
+    request "^2.88.0"
+    sprintf-js "^1.1.2"
+    superfly-timeline "^6.0.3"
+    underscore "^1.9.1"
+    underscore-deep-extend "^1.1.5"
+    ws "^6.1.2"
+
+"timeline-state-resolver@git+https://github.com/nrkno/tv-automation-state-timeline-resolver#test/hyperdeck":
+  version "1.3.3"
+  resolved "git+https://github.com/nrkno/tv-automation-state-timeline-resolver#cd3513c2e096489c3e161651b6ec83992178392b"
+  dependencies:
+    "@types/request" "^2.48.1"
+    "@types/sprintf-js" "^1.1.0"
+    "@types/ws" "^6.0.1"
+    atem-connection "^0.8.1"
+    atem-state "^0.4.0"
+    casparcg-connection "^4.6.0"
+    casparcg-state "^1.5.1"
+    emberplus "git+https://github.com/nrkno/tv-automation-emberplus-connection#dist10102018"
+    fast-clone "^1.5.3"
+    hyperdeck-connection "^0.1.3"
     osc "^2.2.4"
     request "^2.88.0"
     sprintf-js "^1.1.2"
