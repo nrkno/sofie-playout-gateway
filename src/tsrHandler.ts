@@ -179,13 +179,18 @@ export class TSRHandler {
 				})
 			})
 			this.tsr.on('timelineCallback', (time, objId, callbackName, data) => {
-				this._coreHandler.core.callMethod(P.methods[callbackName], [Object.assign({}, data, {
-					objId: objId,
-					time: time
-				})])
-				.catch((e) => {
-					this.logger.error('Error in timelineCallback', e)
-				})
+				const method = P.methods[callbackName]
+				if (method) {
+					this._coreHandler.core.callMethod(method, [Object.assign({}, data, {
+						objId: objId,
+						time: time
+					})])
+					.catch((e) => {
+						this.logger.error('Error in timelineCallback', e)
+					})
+				} else {
+					this.logger.error(`Unknown callback method "${callbackName}"`)
+				}
 
 			})
 
@@ -508,6 +513,8 @@ export class TSRHandler {
 			return Promise.resolve()
 		})
 		.catch((e) => {
+			// TODO: What should we do here?
+			// Should we just emit an error, or actually fail the initialization (ie die)?
 			this.logger.error('Error when adding device: ' + e)
 		})
 	}
@@ -545,6 +552,7 @@ export class TSRHandler {
 					roId: obj.roId,
 					slId: obj['slId']
 				}
+				transformedObj.content.callBackStopped = 'segmentLinePlaybackStopped' // Will cause a callback to be called, when the object stops playing:
 			}
 			if (obj['sliId']) {
 				// Will cause a callback to be called, when the object starts to play:
@@ -553,6 +561,7 @@ export class TSRHandler {
 					roId: obj.roId,
 					sliId: obj['sliId']
 				}
+				transformedObj.content.callBackStopped = 'segmentLineItemPlaybackStopped' // Will cause a callback to be called, when the object stops playing:
 			}
 
 			return transformedObj
