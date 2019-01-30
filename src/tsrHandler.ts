@@ -513,6 +513,8 @@ export class TSRHandler {
 			return Promise.resolve()
 		})
 		.catch((e) => {
+			// TODO: What should we do here?
+			// Should we just emit an error, or actually fail the initialization (ie die)?
 			this.logger.error('Error when adding device: ' + e)
 		})
 	}
