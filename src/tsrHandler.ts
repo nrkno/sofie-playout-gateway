@@ -179,13 +179,18 @@ export class TSRHandler {
 				})
 			})
 			this.tsr.on('timelineCallback', (time, objId, callbackName, data) => {
-				this._coreHandler.core.callMethod(P.methods[callbackName], [Object.assign({}, data, {
-					objId: objId,
-					time: time
-				})])
-				.catch((e) => {
-					this.logger.error('Error in timelineCallback', e)
-				})
+				const method = P.methods[callbackName]
+				if (method) {
+					this._coreHandler.core.callMethod(method, [Object.assign({}, data, {
+						objId: objId,
+						time: time
+					})])
+					.catch((e) => {
+						this.logger.error('Error in timelineCallback', e)
+					})
+				} else {
+					this.logger.error(`Unknown callback method "${callbackName}"`)
+				}
 
 			})
 
