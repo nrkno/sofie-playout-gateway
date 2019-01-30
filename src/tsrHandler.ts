@@ -550,6 +550,7 @@ export class TSRHandler {
 					roId: obj.roId,
 					slId: obj['slId']
 				}
+				transformedObj.content.callBackStopped = 'segmentLinePlaybackStopped' // Will cause a callback to be called, when the object stops playing:
 			}
 			if (obj['sliId']) {
 				// Will cause a callback to be called, when the object starts to play:
@@ -558,6 +559,7 @@ export class TSRHandler {
 					roId: obj.roId,
 					sliId: obj['sliId']
 				}
+				transformedObj.content.callBackStopped = 'segmentLineItemPlaybackStopped' // Will cause a callback to be called, when the object stops playing:
 			}
 
 			return transformedObj
