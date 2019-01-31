@@ -12,7 +12,7 @@ import { DeviceConfig } from './connector'
 import { TSRHandler } from './tsrHandler'
 import * as fs from 'fs'
 import { LoggerInstance } from './index'
-import { ThreadedClass } from 'threadedclass';
+import { ThreadedClass } from 'threadedclass'
 
 export interface CoreConfig {
 	host: string,
@@ -464,7 +464,7 @@ export class CoreTSRDeviceHandler {
 	public _device: ThreadedClass<Device>
 	private _coreParentHandler: CoreHandler
 	private _tsrHandler: TSRHandler
-	private _subscriptions: Array<any> = []
+	private _subscriptions: Array<string> = []
 	private _hasGottenStatusChange: boolean = false
 
 	constructor (parent: CoreHandler, device: ThreadedClass<Device>, tsrHandler: TSRHandler) {
@@ -480,48 +480,28 @@ export class CoreTSRDeviceHandler {
 		// this.core.onError((err) => {
 		// 	this._coreParentHandler.logger.error('Core Error: ' + (err.message || err.toString() || err))
 		// })
-		Promise.resolve(device.deviceName).then(deviceName => {
-			this.core = new CoreConnection(this._coreParentHandler.getCoreConnectionOptions(deviceName, 'Playout' + device.deviceId, false))
-		})
+	}
+	async init (): Promise<void> {
+		let deviceName = await this._device.deviceName
+		let deviceId = await this._device.deviceId
+		this.core = new CoreConnection(this._coreParentHandler.getCoreConnectionOptions(deviceName, 'Playout' + deviceId, false))
 		this.core.onError((err) => {
 			this._coreParentHandler.logger.error('Core Error: ' + (err.message || err.toString() || err))
 		})
+		await this.core.init(this._coreParentHandler.core)
 
+		if (!this._hasGottenStatusChange) {
+			await this.core.setStatus({
+				statusCode: (
+					this._device.canConnect ?
+					(this._device.connected ? P.StatusCode.GOOD : P.StatusCode.BAD) :
+					P.StatusCode.GOOD
+				)
+			})
+		}
+		await this.setupSubscriptionsAndObservers()
 	}
-	init (): Promise<void> {
-
-		return this.core.init(this._coreParentHandler.core)
-		.then(() => {
-			if (!this._hasGottenStatusChange) {
-				return this.core.setStatus({
-					statusCode: (
-						this._device.canConnect ?
-						(this._device.connected ? P.StatusCode.GOOD : P.StatusCode.BAD) :
-						P.StatusCode.GOOD
-					)
-				})
-				.then(() => {
-					return
-				})
-			} else {
-				return Promise.resolve()
-			}
-		})
-		.then(() => {
-			return this.setupSubscriptionsAndObservers()
-		})
-		.then(() => {
-			return Promise.resolve()
-		})
-		// return this.core.init(this._coreParentHandler.core)
-		// .then(() => {
-		// 	return this.setupSubscriptionsAndObservers()
-		// })
-		// .then(() => {
-		// 	return
-		// })
-	}
-	setupSubscriptionsAndObservers (): void {
+	async setupSubscriptionsAndObservers (): Promise<void> {
 		// console.log('setupObservers', this.core.deviceId)
 		if (this._observers.length) {
 			this._coreParentHandler.logger.info('CoreTSRDevice: Clearing observers..')
@@ -530,20 +510,16 @@ export class CoreTSRDeviceHandler {
 			})
 			this._observers = []
 		}
-		this._coreParentHandler.logger.info('CoreTSRDevice: Setting up subscriptions for ' + this.core.deviceId + ' for device ' + this._device.deviceId + ' ..')
+		let deviceId = await this._device.deviceId
+
+		this._coreParentHandler.logger.info('CoreTSRDevice: Setting up subscriptions for ' + this.core.deviceId + ' for device ' + deviceId + ' ..')
 		this._subscriptions = []
-		Promise.all([
-			this.core.autoSubscribe('peripheralDeviceCommands', this.core.deviceId)
-		])
-		.then((subs) => {
-			this._subscriptions = this._subscriptions.concat(subs)
-		})
-		.then(() => {
-			return
-		})
-		.catch(e => {
+		try {
+			let sub = await this.core.autoSubscribe('peripheralDeviceCommands', this.core.deviceId)
+			this._subscriptions.push(sub)
+		} catch (e) {
 			this._coreParentHandler.logger.error(e)
-		})
+		}
 
 		this._coreParentHandler.logger.info('CoreTSRDevice: Setting up observers..')
 
