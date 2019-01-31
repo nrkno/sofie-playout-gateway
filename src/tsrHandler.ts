@@ -521,7 +521,7 @@ export class TSRHandler {
 		.catch((e) => {
 			// TODO: What should we do here?
 			// Should we just emit an error, or actually fail the initialization (ie die)?
-			this.logger.error('Error when adding device: ' + e)
+			this.logger.error(`Error when adding device "${deviceId}"`, e)
 		})
 	}
 	private _removeDevice (deviceId: string) {
