@@ -9,6 +9,7 @@ let deviceToken: string 	= process.env.DEVICE_TOKEN 				|| ''
 let disableWatchdog: boolean = (process.env.DISABLE_WATCHDOG === '1') 		|| false
 let mediaScannerHost: string = process.env.MEDIA_SCANNER_HOST || '127.0.0.1'
 let mediaScannerPort: number = parseInt(process.env.MEDIA_SCANNER_PORT + '', 10) || 8000
+let multiThreading: boolean = process.env.MULTI_THREADING === '1' || false
 
 logPath = logPath
 
@@ -31,6 +32,8 @@ process.argv.forEach((val) => {
 		mediaScannerHost = val
 	} else if (prevProcessArg.match(/-mediaScannerPort/i)) {
 		mediaScannerPort = parseInt(val, 10)
+	} else if (prevProcessArg.match(/-multithreading/)) {
+		multiThreading = true
 	}
 	prevProcessArg = val + ''
 })
@@ -46,7 +49,7 @@ const config: Config = {
 		watchdog: !disableWatchdog
 	},
 	tsr: {
-		devices: {} // to be fetched from Core
+		multiThreading
 	},
 	mediaScanner: {
 		collectionId: 'default', // TODO: to be fetched from core
