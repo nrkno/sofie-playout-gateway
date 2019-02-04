@@ -19,7 +19,6 @@ import { LoggerInstance } from './index'
 import { ThreadedClass } from 'threadedclass'
 
 export interface TSRConfig {
-	multiThreading?: boolean
 }
 export interface TSRSettings { // Runtime settings from Core
 	devices: {
@@ -30,7 +29,8 @@ export interface TSRSettings { // Runtime settings from Core
 		}
 	}
 	initializeAsClear: boolean
-	mappings: Mappings,
+	mappings: Mappings
+	multiThreading?: boolean
 }
 export interface TSRDevice {
 	coreConnection: CoreConnection
@@ -109,7 +109,7 @@ export class TSRHandler {
 					return this._coreHandler.core.getCurrentTime()
 				},
 				initializeAsClear: (settings.initializeAsClear !== false),
-				isMultihreaded: this._config.multiThreading === true
+				isMultihreaded: settings.multiThreading === true
 			}
 			this.tsr = new Conductor(c)
 			this._triggerupdateMapping()
