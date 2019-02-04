@@ -5,10 +5,15 @@ import { LoggerInstance } from './index'
 // import {Conductor, DeviceType} from 'timeline-state-resolver'
 
 export interface Config {
+	process: ProcessConfig
 	device: DeviceConfig
 	core: CoreConfig
 	tsr: TSRConfig
 	mediaScanner: MediaScannerConfig
+}
+export interface ProcessConfig {
+	/** Will cause the Node applocation to blindly accept all certificates. Not recommenced unless in local, controlled networks. */
+	unsafeSSL: boolean
 }
 export interface DeviceConfig {
 	deviceId: string

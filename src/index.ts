@@ -77,6 +77,10 @@ logger.info('------------------------------------------------------------------'
 logger.info('Starting Playout Gateway')
 if (disableWatchdog) logger.info('Watchdog is disabled!')
 c = new Connector(logger)
+if (config.process.unsafeSSL) {
+	logger.info('Disabling NODE_TLS_REJECT_UNAUTHORIZED, be sure to ONLY DO THIS ON A LOCAL NETWORK!')
+	process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0'
+}
 
 logger.info('Core:          ' + config.core.host + ':' + config.core.port)
 logger.info('------------------------------------------------------------------')
