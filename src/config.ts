@@ -10,13 +10,16 @@ let disableWatchdog: boolean = (process.env.DISABLE_WATCHDOG === '1') 		|| false
 let mediaScannerHost: string = process.env.MEDIA_SCANNER_HOST || '127.0.0.1'
 let mediaScannerPort: number = parseInt(process.env.MEDIA_SCANNER_PORT + '', 10) || 8000
 let multiThreading: boolean = process.env.MULTI_THREADING === '1' || false
-let unsafeSSL: boolean			= process.env.UNSAFE_SSL === '1' || false
+let unsafeSSL: boolean		= process.env.UNSAFE_SSL === '1' || false
+let certs: string[] = (process.env.CERTIFICATES || '').split(';') || []
 
 logPath = logPath
 
 let prevProcessArg = ''
 process.argv.forEach((val) => {
 	val = val + ''
+
+	let nextPrevProcessArg = val
 	if (prevProcessArg.match(/-host/i)) {
 		host = val
 	} else if (prevProcessArg.match(/-port/i)) {
@@ -31,6 +34,9 @@ process.argv.forEach((val) => {
 		mediaScannerHost = val
 	} else if (prevProcessArg.match(/-mediaScannerPort/i)) {
 		mediaScannerPort = parseInt(val, 10)
+	} else if (prevProcessArg.match(/-certificates/i)) {
+		certs.push(val)
+		nextPrevProcessArg = prevProcessArg // so that we can get multiple certificates
 
 // arguments with no options:
 	} else if (val.match(/-disableWatchdog/i)) {
@@ -41,12 +47,13 @@ process.argv.forEach((val) => {
 		// Will cause the Node applocation to blindly accept all certificates. Not recommenced unless in local, controlled networks.
 		unsafeSSL = true
 	}
-	prevProcessArg = val + ''
+	prevProcessArg = nextPrevProcessArg + ''
 })
 
 const config: Config = {
 	process: {
-		unsafeSSL: unsafeSSL
+		unsafeSSL: unsafeSSL,
+		certificates: certs
 	},
 	device: {
 		deviceId: deviceId,

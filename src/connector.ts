@@ -2,6 +2,7 @@ import { TSRHandler, TSRConfig } from './tsrHandler'
 import { CoreHandler, CoreConfig } from './coreHandler'
 import { MediaScanner, MediaScannerConfig } from './mediaScanner'
 import { LoggerInstance } from './index'
+import { Process } from './process'
 // import {Conductor, DeviceType} from 'timeline-state-resolver'
 
 export interface Config {
@@ -14,6 +15,8 @@ export interface Config {
 export interface ProcessConfig {
 	/** Will cause the Node applocation to blindly accept all certificates. Not recommenced unless in local, controlled networks. */
 	unsafeSSL: boolean
+	/** Paths to certificates to load, for SSL-connections */
+	certificates: string[]
 }
 export interface DeviceConfig {
 	deviceId: string
@@ -26,6 +29,7 @@ export class Connector {
 	private mediaScanner: MediaScanner
 	private _config: Config
 	private _logger: LoggerInstance
+	private _process: Process
 
 	constructor (logger: LoggerInstance) {
 		this._logger = logger
@@ -36,6 +40,11 @@ export class Connector {
 
 		return Promise.resolve()
 		.then(() => {
+			this._logger.info('Initializing Process...')
+			return this.initProcess()
+		})
+		.then(() => {
+			this._logger.info('Process initialized')
 			this._logger.info('Initializing Core...')
 			return this.initCore()
 		})
@@ -80,9 +89,13 @@ export class Connector {
 			return
 		})
 	}
+	initProcess () {
+		this._process = new Process(this._logger)
+		this._process.init(this._config.process)
+	}
 	initCore () {
 		this.coreHandler = new CoreHandler(this._logger, this._config.device)
-		return this.coreHandler.init(this._config.core)
+		return this.coreHandler.init(this._config.core, this._process)
 	}
 	initTSR (): Promise<void> {
 		this.tsrHandler = new TSRHandler(this._logger)

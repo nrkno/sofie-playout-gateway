@@ -13,6 +13,8 @@ import { TSRHandler } from './tsrHandler'
 import * as fs from 'fs'
 import { LoggerInstance } from './index'
 import { ThreadedClass } from 'threadedclass'
+import { Process } from './process'
+import { DDPConnectorOptions } from 'tv-automation-server-core-integration/dist/lib/ddpConnector';
 
 export interface CoreConfig {
 	host: string,
@@ -50,6 +52,7 @@ export class CoreHandler {
 	private _executedFunctions: {[id: string]: boolean} = {}
 	private _tsrHandler?: TSRHandler
 	private _coreConfig?: CoreConfig
+	private _process?: Process
 
 	private _studioId: string
 	private _timelineSubscription: string | null = null
@@ -62,10 +65,12 @@ export class CoreHandler {
 		this._deviceOptions = deviceOptions
 	}
 
-	init (config: CoreConfig): Promise<void> {
+	init (config: CoreConfig, process: Process): Promise<void> {
 		// this.logger.info('========')
 		this._statusInitialized = false
 		this._coreConfig = config
+		this._process = process
+
 		this.core = new CoreConnection(this.getCoreConnectionOptions('Playout gateway', 'PlayoutCoreParent', true))
 
 		this.core.onConnected(() => {
@@ -83,7 +88,17 @@ export class CoreHandler {
 			this.logger.error('Core Error: ' + (err.message || err.toString() || err))
 		})
 
-		return this.core.init(config)
+		let ddpConfig: DDPConnectorOptions = {
+			host: config.host,
+			port: config.port
+		}
+		if (this._process && this._process.certificates.length) {
+			ddpConfig.tlsOpts = {
+				ca: this._process.certificates
+			}
+		}
+
+		return this.core.init(ddpConfig)
 		.then(() => {
 			this.logger.info('Core id: ' + this.core.deviceId)
 			return this.setupObserversAndSubscriptions()

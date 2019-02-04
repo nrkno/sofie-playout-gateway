@@ -2005,9 +2005,9 @@ ddp-underscore-patched@0.8.1-2:
   resolved "https://registry.yarnpkg.com/ddp-underscore-patched/-/ddp-underscore-patched-0.8.1-2.tgz#65a414e9f22ec5a82aa16386e34366b48fcecf1d"
   integrity sha1-ZaQU6fIuxagqoWOG40NmtI/Ozx0=
 
-"ddp@git+http://github.com/nytamin/node-ddp-client.git#0.12.2-next1":
+"ddp@git+http://github.com/nytamin/node-ddp-client.git#v0.12.2-next2":
   version "0.12.2"
-  resolved "git+http://github.com/nytamin/node-ddp-client.git#447fbf31fdcc26df75d9c7de4ef39852507d7e9e"
+  resolved "git+http://github.com/nytamin/node-ddp-client.git#3e4e6741842aa15acb7fa64e64a109e0618305d3"
   dependencies:
     ddp-ejson "0.8.1-3"
     ddp-underscore-patched "0.8.1-2"
@@ -7379,13 +7379,13 @@ tunnel-agent@^0.6.0:
   dependencies:
     safe-buffer "^5.0.1"
 
-tv-automation-server-core-integration@0.6.3:
-  version "0.6.3"
-  resolved "https://registry.yarnpkg.com/tv-automation-server-core-integration/-/tv-automation-server-core-integration-0.6.3.tgz#82b1b8c3c27465f48a9781a8af5c7f9af310d15b"
-  integrity sha512-usa4EjFgpFVcXcmFuaOLsgFR2ket+CZl2JBATCwyp3d0yxVl2vNOgJ8f4AfHSA46X+7+CH/Tlno7LurTTUd4Tw==
+tv-automation-server-core-integration@0.8.0:
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/tv-automation-server-core-integration/-/tv-automation-server-core-integration-0.8.0.tgz#81087d46d8de6dc533fecd35bbda7050e01c9bfd"
+  integrity sha512-d/ydaPP+RxuOentEb4QSvDrYhG6B5uibrk9Q3/VXG5tvsmWEFKjaJCvjH6DKJmNgF+fpCSv4zp+6B0NpNJ+E9g==
   dependencies:
     data-store "3.1.0"
-    ddp "git+http://github.com/nytamin/node-ddp-client.git#0.12.2-next1"
+    ddp "git+http://github.com/nytamin/node-ddp-client.git#v0.12.2-next2"
     ddp-ejson "~0.8.1-3"
     ddp-random "~0.8.1-1"
     request "^2.88.0"
