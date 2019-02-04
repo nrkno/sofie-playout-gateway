@@ -77,7 +77,7 @@ export class CoreHandler {
 			this.logger.info('Core Connected!')
 			this.setupObserversAndSubscriptions()
 			.catch((e) => {
-				this.logger.error('Core Error:', e)
+				this.logger.error('Core Error during setupObserversAndSubscriptions:', e)
 			})
 			if (this._onConnected) this._onConnected()
 		})
@@ -501,7 +501,10 @@ export class CoreTSRDeviceHandler {
 		let deviceId = await this._device.deviceId
 		this.core = new CoreConnection(this._coreParentHandler.getCoreConnectionOptions(deviceName, 'Playout' + deviceId, false))
 		this.core.onError((err) => {
-			this._coreParentHandler.logger.error('Core Error: ' + (err.message || err.toString() || err))
+			this._coreParentHandler.logger.error('Core Error: ' + ((_.isObject(err) && err.message) || err.toString() || err))
+		})
+		this.core.onInfo((message) => {
+			this._coreParentHandler.logger.info('Core Info: ' + ((_.isObject(message) && message.message) || message.toString() || message))
 		})
 		await this.core.init(this._coreParentHandler.core)
 
