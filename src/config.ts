@@ -1,4 +1,5 @@
 import { Config } from './connector'
+import * as _ from 'underscore'
 
 // CLI arguments / Environment variables --------------
 let host: string 		= process.env.CORE_HOST 					|| '127.0.0.1'
@@ -50,7 +51,7 @@ process.argv.forEach((val) => {
 const config: Config = {
 	process: {
 		unsafeSSL: unsafeSSL,
-		certificates: certs
+		certificates: _.compact(certs)
 	},
 	device: {
 		deviceId: deviceId,
