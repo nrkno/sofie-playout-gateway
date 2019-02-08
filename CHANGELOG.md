@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.16.0"></a>
+# [0.16.0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v0.15.4...v0.16.0) (2019-02-08)
+
+
+### Bug Fixes
+
+* build ([20871c0](https://github.com/nrkno/tv-automation-playout-gateway/commit/20871c0))
+* handle tsr asynchronousicity properly ([9db981c](https://github.com/nrkno/tv-automation-playout-gateway/commit/9db981c))
+* log error better ([b02c92b](https://github.com/nrkno/tv-automation-playout-gateway/commit/b02c92b))
+* multi threading is a runtime config from core ([233f20e](https://github.com/nrkno/tv-automation-playout-gateway/commit/233f20e))
+* timelineCallback error handling ([3c5e494](https://github.com/nrkno/tv-automation-playout-gateway/commit/3c5e494))
+* update typings for multithreaded tsr ([638da97](https://github.com/nrkno/tv-automation-playout-gateway/commit/638da97))
+
+
+### Features
+
+* add callbackStopped ([222a46e](https://github.com/nrkno/tv-automation-playout-gateway/commit/222a46e))
+* add CLI option "-certificates", to use for self-signed certificates ([0064d7d](https://github.com/nrkno/tv-automation-playout-gateway/commit/0064d7d))
+* add config for multi threading ([203c823](https://github.com/nrkno/tv-automation-playout-gateway/commit/203c823))
+* CLI argument: "-unsafeSSL" ([757bf13](https://github.com/nrkno/tv-automation-playout-gateway/commit/757bf13))
+
+
+
 <a name="0.15.4"></a>
 ## [0.15.4](https://github.com/nrkno/tv-automation-playout-gateway/compare/v0.15.3...v0.15.4) (2019-01-16)
 
