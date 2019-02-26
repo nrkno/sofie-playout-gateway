@@ -66,11 +66,11 @@ function getCurrentTime () {
 }
 
 // Because the default NodeJS-handler sucks and wont display error properly
-process.on('unhandledRejection', (e: any) => {
+process.on('unhandledRejection', (reason: any, p: any) => {
 	logger.error('Unhandled Promise rejection, see below')
-	logger.error('error', e)
-	logger.error('error.reason', e.reason || e.message)
-	logger.error('error.stack', e.stack)
+	logger.error('reason:', reason)
+	logger.error('promise:', p)
+	// logger.error('c:', c)
 })
 process.on('warning', (e: any) => {
 	logger.warn('Unhandled warning, see below')
