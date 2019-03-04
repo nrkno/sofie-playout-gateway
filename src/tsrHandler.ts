@@ -509,7 +509,7 @@ export class TSRHandler {
 				}
 				return coreTsrHandler.init()
 				.then(async () => {
-					device.on('connectionChanged', onConnectionChanged)
+					await device.on('connectionChanged', onConnectionChanged)
 					// also ask for the status now, and update:
 					onConnectionChanged(await device.getStatus())
 
