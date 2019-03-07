@@ -5,7 +5,7 @@ import { CoreConnection,
 } from 'tv-automation-server-core-integration'
 
 import * as cp from 'child_process'
-import { DeviceType, CasparCGDevice, Device } from 'timeline-state-resolver'
+import { DeviceType, CasparCGDevice, DeviceContainer } from 'timeline-state-resolver'
 
 import * as _ from 'underscore'
 import { DeviceConfig } from './connector'
@@ -46,6 +46,8 @@ export class CoreHandler {
 	// Mediascanner statuses: temporary implementation, to be moved into casparcg device later:
 	public mediaScannerStatus: P.StatusCode = P.StatusCode.GOOD
 	public mediaScannerMessages: Array<string> = []
+
+	public multithreading: boolean = false
 
 	private _deviceOptions: DeviceConfig
 	private _onConnected?: () => any
@@ -217,6 +219,10 @@ export class CoreHandler {
 				this.logger.debug({ command: 'test command', context: 'test context' })
 
 				this.logger.debug('End test debug logging')
+			}
+
+			if (this.deviceSettings['multiThreading'] !== this.multithreading) {
+				this.multithreading = this.deviceSettings['multiThreading']
 			}
 
 			let studioId = device.studioInstallationId
@@ -403,7 +409,7 @@ export class CoreHandler {
 	restartCasparCG (deviceId: string): Promise<any> {
 		if (!this._tsrHandler) throw new Error('TSRHandler is not initialized')
 
-		let device = this._tsrHandler.tsr.getDevice(deviceId) as ThreadedClass<CasparCGDevice>
+		let device = this._tsrHandler.tsr.getDevice(deviceId).device as ThreadedClass<CasparCGDevice>
 		if (!device) throw new Error(`TSR Device "${deviceId}" not found!`)
 
 		return device.restartCasparCG()
@@ -476,13 +482,13 @@ export class CoreHandler {
 export class CoreTSRDeviceHandler {
 	core: CoreConnection
 	public _observers: Array<any> = []
-	public _device: ThreadedClass<Device>
+	public _device: DeviceContainer
 	private _coreParentHandler: CoreHandler
 	private _tsrHandler: TSRHandler
 	private _subscriptions: Array<string> = []
 	private _hasGottenStatusChange: boolean = false
 
-	constructor (parent: CoreHandler, device: ThreadedClass<Device>, tsrHandler: TSRHandler) {
+	constructor (parent: CoreHandler, device: DeviceContainer, tsrHandler: TSRHandler) {
 		this._coreParentHandler = parent
 		this._device = device
 		this._tsrHandler = tsrHandler
@@ -511,13 +517,14 @@ export class CoreTSRDeviceHandler {
 		if (!this._hasGottenStatusChange) {
 			await this.core.setStatus({
 				statusCode: (
-					this._device.canConnect ?
-					(this._device.connected ? P.StatusCode.GOOD : P.StatusCode.BAD) :
+					await this._device.device.canConnect ?
+					(await this._device.device.connected ? P.StatusCode.GOOD : P.StatusCode.BAD) :
 					P.StatusCode.GOOD
 				)
 			})
 		}
 		await this.setupSubscriptionsAndObservers()
+		console.log('setupSubscriptionsAndObservers done')
 	}
 	async setupSubscriptionsAndObservers (): Promise<void> {
 		// console.log('setupObservers', this.core.deviceId)
@@ -566,7 +573,7 @@ export class CoreTSRDeviceHandler {
 		return this._coreParentHandler.killProcess(actually)
 	}
 	restartCasparCG (): Promise<any> {
-		let device = this._device as ThreadedClass<CasparCGDevice>
+		let device = this._device.device as ThreadedClass<CasparCGDevice>
 		if (device.restartCasparCG) {
 			return device.restartCasparCG()
 		} else {

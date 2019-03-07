@@ -162,99 +162,105 @@ export class MediaScanner {
 		this._config.host = mediaScannerSettings.host || this._config.host
 		this._config.port = mediaScannerSettings.port || this._config.port
 
-		this.logger.info('MediaScanner init')
+		if (this._config.host !== 'disable') {
 
-		const baseUrl = 'http://' + this._config.host + ':' + this._config.port
+			this.logger.info('MediaScanner init')
 
-		if (this._doReplication) {
-			this._db = new PouchDB('local')
-			this._remote = new PouchDB(`${baseUrl}/db/_media`)
-			this._replication = this._remote.replicate.to(this._db, { live: true, retry: true })
-		} else {
-			this._db = new PouchDB(`${baseUrl}/db/_media`)
-		}
+			const baseUrl = 'http://' + this._config.host + ':' + this._config.port
 
-		this._restartChangesStream()
+			if (this._doReplication) {
+				this._db = new PouchDB('local')
+				this._remote = new PouchDB(`${baseUrl}/db/_media`)
+				this._replication = this._remote.replicate.to(this._db, { live: true, retry: true })
+			} else {
+				this._db = new PouchDB(`${baseUrl}/db/_media`)
+			}
 
-		this._coreHandler.logger.info('MediaScanner: Start syncing media files')
+			this._restartChangesStream()
 
-		// Check disk usage now
-		this._updateFsStats()
-		this._checkFsStatsInterval = setInterval(() => {
-			this._triggerupdateFsStats()
-		}, 30 * 1000) // Run a check every 30 seconds
+			this._coreHandler.logger.info('MediaScanner: Start syncing media files')
 
-		return Promise.all([
-			this._coreHandler.core.callMethodLowPrio(PeripheralDeviceAPI.methods.getMediaObjectRevisions, [
-				this._config.collectionId
-			]),
-			this._db.allDocs({
-				include_docs: true,
-				attachments: true
-			}),
-			this._db.info()
-		])
-		.then(([coreObjects, allDocsResponse, dbInfo]) => {
-			this._coreHandler.logger.info('MediaScanner: synk objectlists', coreObjects.length, allDocsResponse.total_rows)
+			// Check disk usage now
+			this._updateFsStats()
+			this._checkFsStatsInterval = setInterval(() => {
+				this._triggerupdateFsStats()
+			}, 30 * 1000) // Run a check every 30 seconds
 
-			let tasks: Array<() => Promise<any>> = []
+			return Promise.all([
+				this._coreHandler.core.callMethodLowPrio(PeripheralDeviceAPI.methods.getMediaObjectRevisions, [
+					this._config.collectionId
+				]),
+				this._db.allDocs({
+					include_docs: true,
+					attachments: true
+				}),
+				this._db.info()
+			])
+			.then(([coreObjects, allDocsResponse, dbInfo]) => {
+				this._coreHandler.logger.info('MediaScanner: synk objectlists', coreObjects.length, allDocsResponse.total_rows)
 
-			let coreObjRevisions: {[id: string]: string} = {}
-			_.each(coreObjects, (obj: any) => {
-				coreObjRevisions[obj.id] = obj.rev
-			})
-			tasks = tasks.concat(_.compact(_.map(allDocsResponse.rows, (doc) => {
-				const docId = this.hashId(doc.id)
+				let tasks: Array<() => Promise<any>> = []
 
-				if (doc.value.deleted) {
-					if (coreObjRevisions[docId]) {
-						// deleted
-					}
-					return null // handled later
-				} else if (
-					!coreObjRevisions[docId] ||				// created
-					coreObjRevisions[docId] !== doc.value.rev	// changed
-				) {
-					delete coreObjRevisions[docId]
+				let coreObjRevisions: {[id: string]: string} = {}
+				_.each(coreObjects, (obj: any) => {
+					coreObjRevisions[obj.id] = obj.rev
+				})
+				tasks = tasks.concat(_.compact(_.map(allDocsResponse.rows, (doc) => {
+					const docId = this.hashId(doc.id)
 
-					return () => {
-						return this._db.get<MediaObject>(doc.id, {
-							attachments: true
-						}).then((doc) => {
-							return this._sendChanged(doc)
-						})
-						.then(() => {
-							return new Promise(resolve => {
-								setTimeout(resolve, 100) // slow it down a bit, maybe remove this later
+					if (doc.value.deleted) {
+						if (coreObjRevisions[docId]) {
+							// deleted
+						}
+						return null // handled later
+					} else if (
+						!coreObjRevisions[docId] ||				// created
+						coreObjRevisions[docId] !== doc.value.rev	// changed
+					) {
+						delete coreObjRevisions[docId]
+
+						return () => {
+							return this._db.get<MediaObject>(doc.id, {
+								attachments: true
+							}).then((doc) => {
+								return this._sendChanged(doc)
 							})
-						})
+							.then(() => {
+								return new Promise(resolve => {
+									setTimeout(resolve, 100) // slow it down a bit, maybe remove this later
+								})
+							})
+						}
+					} else {
+						delete coreObjRevisions[docId]
+						// identical
+						return null
 					}
-				} else {
-					delete coreObjRevisions[docId]
-					// identical
-					return null
-				}
-			})))
-			if (parseInt(dbInfo.update_seq + '', 10)) this._lastSequenceNr = parseInt(dbInfo.update_seq + '', 10)
-			// The ones left in coreObjRevisions have not been touched, ie they should be deleted
-			_.each(coreObjRevisions, (_rev, id) => {
-				// deleted
+				})))
+				if (parseInt(dbInfo.update_seq + '', 10)) this._lastSequenceNr = parseInt(dbInfo.update_seq + '', 10)
+				// The ones left in coreObjRevisions have not been touched, ie they should be deleted
+				_.each(coreObjRevisions, (_rev, id) => {
+					// deleted
 
-				tasks.push(
-					() => {
-						return this._sendRemoved(id)
-					}
-				)
+					tasks.push(
+						() => {
+							return this._sendRemoved(id)
+						}
+					)
+				})
+				return PromiseSequence(tasks)
 			})
-			return PromiseSequence(tasks)
-		})
-		.then(() => {
-			this._coreHandler.logger.info('MediaScanner: Done file sync init')
-			return
-		})
-		.catch((e) => {
-			this._coreHandler.logger.error('MediaScanner: Error initializing MediaScanner', e)
-		})
+			.then(() => {
+				this._coreHandler.logger.info('MediaScanner: Done file sync init')
+				return
+			})
+			.catch((e) => {
+				this._coreHandler.logger.error('MediaScanner: Error initializing MediaScanner', e)
+			})
+		} else {
+
+			this.logger.info('MediaScanner disabled')
+		}
 	}
 
 	public destroy (): Promise<void> {
@@ -318,10 +324,11 @@ export class MediaScanner {
 			if (
 				!(
 					(e + '').match(/ECONNREFUSED/i) ||
-					(e + '').match(/ECONNRESET/i)
+					(e + '').match(/ECONNRESET/i) ||
+					(e + '').match(/ENOTFOUND/i)
 				)
 			) {
-				this.logger.warn(e)
+				this.logger.warn('Error in _updateFsStats', e.message || e.stack || e)
 			}
 
 			this._statusDisk.statusCode = PeripheralDeviceAPI.StatusCode.WARNING_MAJOR
