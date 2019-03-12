@@ -377,12 +377,13 @@ export class TSRHandler {
 		}
 		this._triggerupdateMappingTimeout = setTimeout(() => {
 			this._updateMapping()
+			.catch(e => this.logger.error('Error in _updateMapping', e))
 		}, 20)
 	}
-	private _updateMapping () {
+	private async _updateMapping () {
 		let mapping = this.getMapping()
 		if (mapping) {
-			this.tsr.mapping = mapping
+			await this.tsr.setMapping(mapping)
 		}
 	}
 	private _getPeripheralDevice () {
@@ -442,11 +443,10 @@ export class TSRHandler {
 					if (deviceOptions.options) {
 						let anyChanged = false
 
-						let oldOptions = (oldDevice.deviceOptions).options || {}
+						// let oldOptions = (oldDevice.deviceOptions).options || {}
 
 						if (!_.isEqual(oldDevice.deviceOptions, deviceOptions)) {
 							anyChanged = true
-							console.log('not equal', oldOptions)
 						}
 
 						if (anyChanged) {
@@ -469,6 +469,11 @@ export class TSRHandler {
 	}
 	private _addDevice (deviceId: string, options: DeviceOptions): void {
 		this.logger.debug('Adding device ' + deviceId)
+
+		// @ts-ignore
+		if (!options.limitSlowSentCommand)		options.limitSlowSentCommand = 15
+		// @ts-ignore
+		if (!options.limitSlowFulfilledCommand)	options.limitSlowFulfilledCommand = 25
 
 		this.tsr.addDevice(deviceId, options)
 		.then(async (device: DeviceContainer) => {
@@ -515,14 +520,15 @@ export class TSRHandler {
 						}
 					}
 				}
+				let onSlowCommand = (msg: string) => {
+					this.logger.warn(msg)
+				}
 				return coreTsrHandler.init()
 				.then(async () => {
-					console.log('a')
 					await device.device.on('connectionChanged', onConnectionChanged)
-					console.log('b')
+					await device.device.on('slowCommand', onSlowCommand)
 					// also ask for the status now, and update:
 					onConnectionChanged(await device.device.getStatus())
-					console.log('c')
 
 					return Promise.resolve()
 				})
