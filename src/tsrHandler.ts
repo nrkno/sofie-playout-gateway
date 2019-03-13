@@ -31,6 +31,7 @@ export interface TSRSettings { // Runtime settings from Core
 	initializeAsClear: boolean
 	mappings: Mappings
 	multiThreading?: boolean
+	multiThreadedResolver?: boolean
 }
 export interface TSRDevice {
 	coreConnection: CoreConnection
@@ -109,7 +110,8 @@ export class TSRHandler {
 					return this._coreHandler.core.getCurrentTime()
 				},
 				initializeAsClear: (settings.initializeAsClear !== false),
-				isMultihreaded: settings.multiThreading === true
+				isMultihreaded: settings.multiThreading === true,
+				multiThreadedResolver : settings.multiThreadedResolver === true
 			}
 			this.tsr = new Conductor(c)
 			this._triggerupdateMapping()
@@ -509,7 +511,7 @@ export class TSRHandler {
 				}
 				return coreTsrHandler.init()
 				.then(async () => {
-					device.on('connectionChanged', onConnectionChanged)
+					await device.on('connectionChanged', onConnectionChanged)
 					// also ask for the status now, and update:
 					onConnectionChanged(await device.getStatus())
 

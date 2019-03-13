@@ -14,7 +14,7 @@ import * as fs from 'fs'
 import { LoggerInstance } from './index'
 import { ThreadedClass } from 'threadedclass'
 import { Process } from './process'
-import { DDPConnectorOptions } from 'tv-automation-server-core-integration/dist/lib/ddpConnector';
+import { DDPConnectorOptions } from 'tv-automation-server-core-integration/dist/lib/ddpConnector'
 
 export interface CoreConfig {
 	host: string,
