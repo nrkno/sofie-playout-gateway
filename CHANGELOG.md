@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.17.0"></a>
+# [0.17.0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v0.16.2...v0.17.0) (2019-03-13)
+
+
+### Bug Fixes
+
+* mediascanner error traces & be able to disable by setting host to "disable" ([9734662](https://github.com/nrkno/tv-automation-playout-gateway/commit/9734662))
+* pleasing linter. One logical change. ([cb2449a](https://github.com/nrkno/tv-automation-playout-gateway/commit/cb2449a))
+* try to better output errors ([e4c2d3e](https://github.com/nrkno/tv-automation-playout-gateway/commit/e4c2d3e))
+* update dependencies ([3550afd](https://github.com/nrkno/tv-automation-playout-gateway/commit/3550afd))
+
+
+### Features
+
+* support for multi-threaded resolver ([c814ef3](https://github.com/nrkno/tv-automation-playout-gateway/commit/c814ef3))
+
+
+
 <a name="0.16.2"></a>
 ## [0.16.2](https://github.com/nrkno/tv-automation-playout-gateway/compare/v0.16.1...v0.16.2) (2019-02-13)
 
