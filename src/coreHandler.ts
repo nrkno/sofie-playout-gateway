@@ -368,8 +368,8 @@ export class CoreHandler {
 			this.logger.info('try to load ' + JSON.stringify(url) + ' to atem')
 			if (this._tsrHandler) {
 				this._tsrHandler.tsr.getDevices().forEach(async (device) => {
-					if (await device.deviceType === DeviceType.ATEM) {
-						const options = (await device.deviceOptions).options as { host: string }
+					if (device.deviceType === DeviceType.ATEM) {
+						const options = (device.deviceOptions).options as { host: string }
 						this.logger.info('options ' + JSON.stringify(options))
 						if (options && options.host) {
 							this.logger.info('uploading ' + url.value + ' to ' + options.host + ' in MP' + index)
@@ -503,8 +503,8 @@ export class CoreTSRDeviceHandler {
 		// })
 	}
 	async init (): Promise<void> {
-		let deviceName = await this._device.deviceName
-		let deviceId = await this._device.deviceId
+		let deviceName = this._device.deviceName
+		let deviceId = this._device.deviceId
 		this.core = new CoreConnection(this._coreParentHandler.getCoreConnectionOptions(deviceName, 'Playout' + deviceId, false))
 		this.core.onError((err) => {
 			this._coreParentHandler.logger.error('Core Error: ' + ((_.isObject(err) && err.message) || err.toString() || err))
@@ -535,7 +535,7 @@ export class CoreTSRDeviceHandler {
 			})
 			this._observers = []
 		}
-		let deviceId = await this._device.deviceId
+		let deviceId = this._device.deviceId
 
 		this._coreParentHandler.logger.info('CoreTSRDevice: Setting up subscriptions for ' + this.core.deviceId + ' for device ' + deviceId + ' ..')
 		this._subscriptions = []
@@ -563,7 +563,7 @@ export class CoreTSRDeviceHandler {
 			obs.stop()
 		})
 
-		await this._tsrHandler.tsr.removeDevice(await this._device.deviceId)
+		await this._tsrHandler.tsr.removeDevice(this._device.deviceId)
 		await this.core.setStatus({
 			statusCode: P.StatusCode.BAD,
 			messages: ['Uninitialized']

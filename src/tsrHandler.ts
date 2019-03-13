@@ -459,7 +459,7 @@ export class TSRHandler {
 			})
 
 			_.each(this.tsr.getDevices(), async (oldDevice: DeviceContainer) => {
-				let deviceId = await oldDevice.deviceId
+				let deviceId = oldDevice.deviceId
 				if (!devices[deviceId]) {
 					this.logger.info('Un-initializing device: ' + deviceId)
 					this._removeDevice(deviceId)
