@@ -7314,7 +7314,7 @@ tunnel-agent@^0.6.0:
   dependencies:
     safe-buffer "^5.0.1"
 
-tv-automation-server-core-integration@0.8.0:
+tv-automation-server-core-integration@^0.8.0:
   version "0.8.0"
   resolved "https://registry.yarnpkg.com/tv-automation-server-core-integration/-/tv-automation-server-core-integration-0.8.0.tgz#81087d46d8de6dc533fecd35bbda7050e01c9bfd"
   integrity sha512-d/ydaPP+RxuOentEb4QSvDrYhG6B5uibrk9Q3/VXG5tvsmWEFKjaJCvjH6DKJmNgF+fpCSv4zp+6B0NpNJ+E9g==

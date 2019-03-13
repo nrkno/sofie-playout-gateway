@@ -7,7 +7,8 @@ import {
 	TriggerType,
 	TimelineTriggerTimeResult,
 	DeviceOptions,
-	Mappings
+	Mappings,
+	DeviceContainer
 } from 'timeline-state-resolver'
 import { CoreHandler, CoreTSRDeviceHandler } from './coreHandler'
 let clone = require('fast-clone')
@@ -16,17 +17,12 @@ import * as crypto from 'crypto'
 import * as _ from 'underscore'
 import { CoreConnection, PeripheralDeviceAPI as P, CollectionObj } from 'tv-automation-server-core-integration'
 import { LoggerInstance } from './index'
-import { ThreadedClass } from 'threadedclass'
 
 export interface TSRConfig {
 }
 export interface TSRSettings { // Runtime settings from Core
 	devices: {
-		[deviceId: string]: {
-			type: DeviceType
-			threadUsage?: number
-			options?: {}
-		}
+		[deviceId: string]: DeviceOptions
 	}
 	initializeAsClear: boolean
 	mappings: Mappings
@@ -85,6 +81,7 @@ export class TSRHandler {
 	private _cachedStudioInstallationId: string = ''
 
 	private _initialized: boolean = false
+	private _multiThreaded: boolean | null = null
 
 	constructor (logger: LoggerInstance) {
 		this.logger = logger
@@ -110,7 +107,6 @@ export class TSRHandler {
 					return this._coreHandler.core.getCurrentTime()
 				},
 				initializeAsClear: (settings.initializeAsClear !== false),
-				isMultihreaded: settings.multiThreading === true,
 				multiThreadedResolver : settings.multiThreadedResolver === true
 			}
 			this.tsr = new Conductor(c)
@@ -125,13 +121,14 @@ export class TSRHandler {
 			this.tsr.on('error', (e, ...args) => {
 				// CasparCG play and load 404 errors should be warnings:
 				let msg: string = e + ''
-				let cmdInfo: string = args[0] + ''
-				let cmdReply = args[1]
+				// let cmdInfo: string = args[0] + ''
+				let cmdReply = args[0]
+
 				if (
 					msg.match(/casparcg/i) &&
 					(
-						cmdInfo.match(/PlayCommand/i) ||
-						cmdInfo.match(/LoadbgCommand/i)
+						msg.match(/PlayCommand/i) ||
+						msg.match(/LoadbgCommand/i)
 					) &&
 					cmdReply &&
 					_.isObject(cmdReply) &&
@@ -277,6 +274,14 @@ export class TSRHandler {
 			this.tsr.logDebug = this._coreHandler.logDebug
 		}
 
+		if (this._multiThreaded !== this._coreHandler.multithreading) {
+			this._multiThreaded = this._coreHandler.multithreading
+
+			this.logger.info('Multithreading: ' + this._multiThreaded)
+
+			this._updateDevices()
+		}
+
 	}
 	private _triggerupdateTimeline () {
 		if (!this._initialized) return
@@ -321,7 +326,7 @@ export class TSRHandler {
 							socket.receivingMessage = false
 						})
 					} catch (e) {
-						this.logger.warn(e)
+						this.logger.warn('Error in _triggerupdateTimeline (message parsing)', e)
 					}
 				}
 
@@ -360,7 +365,6 @@ export class TSRHandler {
 				this.getTimeline(true) as Array<TimelineObj>
 			)
 			if (transformedTimeline) {
-				console.log('transformedTimeline', transformedTimeline.length)
 				this.tsr.timeline = transformedTimeline
 			} else {
 				this.logger.warn('Did NOT update Timeline due to an error')
@@ -376,12 +380,13 @@ export class TSRHandler {
 		}
 		this._triggerupdateMappingTimeout = setTimeout(() => {
 			this._updateMapping()
+			.catch(e => this.logger.error('Error in _updateMapping', e))
 		}, 20)
 	}
-	private _updateMapping () {
+	private async _updateMapping () {
 		let mapping = this.getMapping()
 		if (mapping) {
-			this.tsr.mapping = mapping
+			await this.tsr.setMapping(mapping)
 		}
 	}
 	private _getPeripheralDevice () {
@@ -425,37 +430,41 @@ export class TSRHandler {
 
 			let devices = settings.devices
 
-			_.each(devices, async (device, deviceId: string) => {
+			_.each(devices, (deviceOptions: DeviceOptions, deviceId: string) => {
 
-				let oldDevice = this.tsr.getDevice(deviceId)
+				let oldDevice: DeviceContainer = this.tsr.getDevice(deviceId)
 
 				if (!oldDevice) {
-					if (device.options) {
-						this.logger.debug('Initializing device: ' + deviceId)
-						this._addDevice(deviceId, device)
+					if (deviceOptions.options) {
+						this.logger.info('Initializing device: ' + deviceId)
+						this._addDevice(deviceId, deviceOptions)
 					}
 				} else {
-					if (device.options) {
+					if (this._multiThreaded !== null && deviceOptions.isMultiThreaded === undefined) {
+						deviceOptions.isMultiThreaded = this._multiThreaded
+					}
+					if (deviceOptions.options) {
 						let anyChanged = false
-						let oldOptions = (await oldDevice.deviceOptions).options || {}
-						_.each(device.options, (val, attr) => {
-							if (!_.isEqual(oldOptions[attr], val)) {
-								anyChanged = true
-							}
-						})
+
+						// let oldOptions = (oldDevice.deviceOptions).options || {}
+
+						if (!_.isEqual(oldDevice.deviceOptions, deviceOptions)) {
+							anyChanged = true
+						}
+
 						if (anyChanged) {
-							this.logger.debug('Re-initializing device: ' + deviceId)
+							this.logger.info('Re-initializing device: ' + deviceId)
 							this._removeDevice(deviceId)
-							this._addDevice(deviceId, device)
+							this._addDevice(deviceId, deviceOptions)
 						}
 					}
 				}
 			})
 
-			_.each(this.tsr.getDevices(), async (oldDevice: ThreadedClass<Device>) => {
-				let deviceId = await oldDevice.deviceId
+			_.each(this.tsr.getDevices(), async (oldDevice: DeviceContainer) => {
+				let deviceId = oldDevice.deviceId
 				if (!devices[deviceId]) {
-					this.logger.debug('Un-initializing device: ' + deviceId)
+					this.logger.info('Un-initializing device: ' + deviceId)
 					this._removeDevice(deviceId)
 				}
 			})
@@ -464,11 +473,16 @@ export class TSRHandler {
 	private _addDevice (deviceId: string, options: DeviceOptions): void {
 		this.logger.debug('Adding device ' + deviceId)
 
+		// @ts-ignore
+		if (!options.limitSlowSentCommand)		options.limitSlowSentCommand = 40
+		// @ts-ignore
+		if (!options.limitSlowFulfilledCommand)	options.limitSlowFulfilledCommand = 100
+
 		this.tsr.addDevice(deviceId, options)
-		.then(async (device: ThreadedClass<Device>) => {
+		.then(async (device: DeviceContainer) => {
 			// set up device status
-			const deviceId = await device.deviceId
-			const deviceType = await device.deviceType
+			const deviceId = device.deviceId
+			const deviceType = device.deviceType
 
 			if (!this._coreTsrHandlers[deviceId]) {
 
@@ -509,11 +523,15 @@ export class TSRHandler {
 						}
 					}
 				}
+				let onSlowCommand = (msg: string) => {
+					this.logger.warn(msg)
+				}
 				return coreTsrHandler.init()
 				.then(async () => {
-					await device.on('connectionChanged', onConnectionChanged)
+					await device.device.on('connectionChanged', onConnectionChanged)
+					await device.device.on('slowCommand', onSlowCommand)
 					// also ask for the status now, and update:
-					onConnectionChanged(await device.getStatus())
+					onConnectionChanged(await device.device.getStatus())
 
 					return Promise.resolve()
 				})
