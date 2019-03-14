@@ -107,7 +107,8 @@ export class TSRHandler {
 					return this._coreHandler.core.getCurrentTime()
 				},
 				initializeAsClear: (settings.initializeAsClear !== false),
-				multiThreadedResolver : settings.multiThreadedResolver === true
+				multiThreadedResolver : settings.multiThreadedResolver === true,
+				proActiveResolve: true
 			}
 			this.tsr = new Conductor(c)
 			this._triggerupdateMapping()
