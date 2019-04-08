@@ -2,6 +2,160 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.18.0"></a>
+# [0.18.0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v0.17.2...v0.18.0) (2019-04-08)
+
+
+### Bug Fixes
+
+* add proActiveResolve option for TSR ([9c7ac66](https://github.com/nrkno/tv-automation-playout-gateway/commit/9c7ac66))
+* upd TSR dependency ([691b64d](https://github.com/nrkno/tv-automation-playout-gateway/commit/691b64d))
+
+
+### Features
+
+* implement support for slowCommands reporting ([c15f240](https://github.com/nrkno/tv-automation-playout-gateway/commit/c15f240))
+* support new TSR interface ([3383dde](https://github.com/nrkno/tv-automation-playout-gateway/commit/3383dde))
+* upd TSR-dependency, featuring multi-threading ([e1f5ebc](https://github.com/nrkno/tv-automation-playout-gateway/commit/e1f5ebc))
+
+
+
+<a name="0.17.2"></a>
+## [0.17.2](https://github.com/nrkno/tv-automation-playout-gateway/compare/v0.17.1...v0.17.2) (2019-03-28)
+
+
+
+<a name="0.17.1"></a>
+## [0.17.1](https://github.com/nrkno/tv-automation-playout-gateway/compare/v0.17.0...v0.17.1) (2019-03-27)
+
+
+### Bug Fixes
+
+* upd TSR dependency ([176d6bf](https://github.com/nrkno/tv-automation-playout-gateway/commit/176d6bf))
+
+
+
+<a name="0.17.0"></a>
+# [0.17.0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v0.16.2...v0.17.0) (2019-03-13)
+
+
+### Bug Fixes
+
+* mediascanner error traces & be able to disable by setting host to "disable" ([9734662](https://github.com/nrkno/tv-automation-playout-gateway/commit/9734662))
+* pleasing linter. One logical change. ([cb2449a](https://github.com/nrkno/tv-automation-playout-gateway/commit/cb2449a))
+* try to better output errors ([e4c2d3e](https://github.com/nrkno/tv-automation-playout-gateway/commit/e4c2d3e))
+* update dependencies ([3550afd](https://github.com/nrkno/tv-automation-playout-gateway/commit/3550afd))
+
+
+### Features
+
+* support for multi-threaded resolver ([c814ef3](https://github.com/nrkno/tv-automation-playout-gateway/commit/c814ef3))
+
+
+
+<a name="0.16.2"></a>
+## [0.16.2](https://github.com/nrkno/tv-automation-playout-gateway/compare/v0.16.1...v0.16.2) (2019-02-13)
+
+
+### Bug Fixes
+
+* update tsr ([1e0867a](https://github.com/nrkno/tv-automation-playout-gateway/commit/1e0867a))
+
+
+
+<a name="0.16.1"></a>
+## [0.16.1](https://github.com/nrkno/tv-automation-playout-gateway/compare/v0.16.0...v0.16.1) (2019-02-08)
+
+
+### Bug Fixes
+
+* drop empty certificates ([8aa133c](https://github.com/nrkno/tv-automation-playout-gateway/commit/8aa133c))
+* import underscore ([cfe6516](https://github.com/nrkno/tv-automation-playout-gateway/commit/cfe6516))
+
+
+
+<a name="0.16.0"></a>
+# [0.16.0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v0.15.4...v0.16.0) (2019-02-08)
+
+
+### Bug Fixes
+
+* build ([20871c0](https://github.com/nrkno/tv-automation-playout-gateway/commit/20871c0))
+* handle tsr asynchronousicity properly ([9db981c](https://github.com/nrkno/tv-automation-playout-gateway/commit/9db981c))
+* log error better ([b02c92b](https://github.com/nrkno/tv-automation-playout-gateway/commit/b02c92b))
+* multi threading is a runtime config from core ([233f20e](https://github.com/nrkno/tv-automation-playout-gateway/commit/233f20e))
+* timelineCallback error handling ([3c5e494](https://github.com/nrkno/tv-automation-playout-gateway/commit/3c5e494))
+* update typings for multithreaded tsr ([638da97](https://github.com/nrkno/tv-automation-playout-gateway/commit/638da97))
+
+
+### Features
+
+* add callbackStopped ([222a46e](https://github.com/nrkno/tv-automation-playout-gateway/commit/222a46e))
+* add CLI option "-certificates", to use for self-signed certificates ([0064d7d](https://github.com/nrkno/tv-automation-playout-gateway/commit/0064d7d))
+* add config for multi threading ([203c823](https://github.com/nrkno/tv-automation-playout-gateway/commit/203c823))
+* CLI argument: "-unsafeSSL" ([757bf13](https://github.com/nrkno/tv-automation-playout-gateway/commit/757bf13))
+
+
+
+<a name="0.15.4"></a>
+## [0.15.4](https://github.com/nrkno/tv-automation-playout-gateway/compare/v0.15.3...v0.15.4) (2019-01-16)
+
+
+
+<a name="0.15.3"></a>
+## [0.15.3](https://github.com/nrkno/tv-automation-playout-gateway/compare/v0.15.2...v0.15.3) (2019-01-14)
+
+
+
+<a name="0.15.2"></a>
+## [0.15.2](https://github.com/nrkno/tv-automation-playout-gateway/compare/v0.15.1...v0.15.2) (2019-01-11)
+
+
+### Bug Fixes
+
+* Mediascanner reconnection bugs ([d72e3d1](https://github.com/nrkno/tv-automation-playout-gateway/commit/d72e3d1))
+* potential fix for reconnect issue ([81cbd1d](https://github.com/nrkno/tv-automation-playout-gateway/commit/81cbd1d))
+* revert pouchdb dep version to last version known to work (7.0.0 is no good) ([49567b8](https://github.com/nrkno/tv-automation-playout-gateway/commit/49567b8))
+
+
+
+<a name="0.15.1"></a>
+## [0.15.1](https://github.com/nrkno/tv-automation-playout-gateway/compare/v0.15.0...v0.15.1) (2019-01-10)
+
+
+### Bug Fixes
+
+* media-scanner status ([1370703](https://github.com/nrkno/tv-automation-playout-gateway/commit/1370703))
+* media-scanner status, message ordering & prioritys ([332c92e](https://github.com/nrkno/tv-automation-playout-gateway/commit/332c92e))
+
+
+
+<a name="0.15.0"></a>
+# [0.15.0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v0.14.2...v0.15.0) (2018-12-19)
+
+
+### Bug Fixes
+
+* **media-scanner:** reworked connection logic, adding better reconnection logic & status monitoring ([0cead6e](https://github.com/nrkno/tv-automation-playout-gateway/commit/0cead6e))
+* bump package version ([92d61e6](https://github.com/nrkno/tv-automation-playout-gateway/commit/92d61e6))
+* **media-scanner:** reworked connection logic, adding better reconnection logic & status monitoring ([2f05586](https://github.com/nrkno/tv-automation-playout-gateway/commit/2f05586))
+* **mediaScanner:** error trying to log warning when disk-usage not supported ([3d6bd22](https://github.com/nrkno/tv-automation-playout-gateway/commit/3d6bd22))
+* **mediaScanner:** error trying to log warning when disk-usage not supported ([66e4324](https://github.com/nrkno/tv-automation-playout-gateway/commit/66e4324))
+* ignore watchdog file changes ([b238e44](https://github.com/nrkno/tv-automation-playout-gateway/commit/b238e44))
+* re-implement supression of 404 casparcg commands ([d57e03d](https://github.com/nrkno/tv-automation-playout-gateway/commit/d57e03d))
+* subscribe to timeline in current studio ([4132a68](https://github.com/nrkno/tv-automation-playout-gateway/commit/4132a68))
+* supress some mediaScanner errors ([0c3468a](https://github.com/nrkno/tv-automation-playout-gateway/commit/0c3468a))
+* TSR-dep: hotfix, debuglogging ([b605f66](https://github.com/nrkno/tv-automation-playout-gateway/commit/b605f66))
+* Winston logging typing (disabled .warning) ([97c7384](https://github.com/nrkno/tv-automation-playout-gateway/commit/97c7384))
+
+
+### Features
+
+* Receive full timeline, not just portion for local devices ([388e310](https://github.com/nrkno/tv-automation-playout-gateway/commit/388e310))
+* update TSR dep ([09c2fa9](https://github.com/nrkno/tv-automation-playout-gateway/commit/09c2fa9))
+
+
+
 <a name="0.14.2"></a>
 ## [0.14.2](https://github.com/nrkno/tv-automation-playout-gateway/compare/v0.14.1...v0.14.2) (2018-12-13)
 

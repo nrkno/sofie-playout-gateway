@@ -8,7 +8,7 @@ pipeline {
         branch 'master'
       }
       steps {
-        versionRelease()
+        gatewayRelease()
       }
     }
     stage('Build') {
