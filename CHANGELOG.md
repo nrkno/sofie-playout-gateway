@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.18.0"></a>
+# [0.18.0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v0.17.2...v0.18.0) (2019-04-08)
+
+
+### Bug Fixes
+
+* add proActiveResolve option for TSR ([9c7ac66](https://github.com/nrkno/tv-automation-playout-gateway/commit/9c7ac66))
+* upd TSR dependency ([691b64d](https://github.com/nrkno/tv-automation-playout-gateway/commit/691b64d))
+
+
+### Features
+
+* implement support for slowCommands reporting ([c15f240](https://github.com/nrkno/tv-automation-playout-gateway/commit/c15f240))
+* support new TSR interface ([3383dde](https://github.com/nrkno/tv-automation-playout-gateway/commit/3383dde))
+* upd TSR-dependency, featuring multi-threading ([e1f5ebc](https://github.com/nrkno/tv-automation-playout-gateway/commit/e1f5ebc))
+
+
+
 <a name="0.17.2"></a>
 ## [0.17.2](https://github.com/nrkno/tv-automation-playout-gateway/compare/v0.17.1...v0.17.2) (2019-03-28)
 
