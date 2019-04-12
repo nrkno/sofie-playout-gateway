@@ -47,7 +47,8 @@
     "start": "node dist/index.js",
     "unlinkall": "yarn unlink tv-automation-server-core-integration timeline-state-resolver && yarn --check-files",
     "validate:dependencies": "yarn audit && yarn license-validate",
-    "license-validate": "node-license-validator -p -d --allow-licenses MIT BSD BSD-2-Clause BSD-3-Clause ISC Apache Unlicense WTFPL --allow-packages cycle"
+    "license-validate": "node-license-validator -p -d --allow-licenses MIT BSD BSD-2-Clause BSD-3-Clause ISC Apache Unlicense WTFPL --allow-packages cycle",
+    "prerelease": "standard-version --prerelease"
   },
   "scripts-info": {
     "info": "Display information about the scripts",
