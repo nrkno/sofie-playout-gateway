@@ -35,9 +35,10 @@ export interface TSRDevice {
 }
 export interface TimelineObj { // interface from Core
 	_id: string
-	siId?: string
-	sliId?: string
-	roId: string
+	studioId?: string
+	pieceId?: string
+	partId?: string
+	rundownId: string
 
 	trigger: {
 		type: TriggerType
@@ -78,7 +79,7 @@ export class TSRHandler {
 	private _triggerupdateDevicesTimeout: any = null
 	private _coreTsrHandlers: {[deviceId: string]: CoreTSRDeviceHandler} = {}
 	private _observers: Array<any> = []
-	private _cachedStudioInstallationId: string = ''
+	private _cachedStudioId: string = ''
 
 	private _initialized: boolean = false
 	private _multiThreaded: boolean | null = null
@@ -228,7 +229,7 @@ export class TSRHandler {
 		timelineObserver.removed = () => { this._triggerupdateTimeline() }
 		this._observers.push(timelineObserver)
 
-		let mappingsObserver = this._coreHandler.core.observe('studioInstallation')
+		let mappingsObserver = this._coreHandler.core.observe('studio')
 		mappingsObserver.added = () => { this._triggerupdateMapping() }
 		mappingsObserver.changed = () => { this._triggerupdateMapping() }
 		mappingsObserver.removed = () => { this._triggerupdateMapping() }
@@ -245,9 +246,9 @@ export class TSRHandler {
 		return this.tsr.destroy()
 	}
 	getTimeline (excludeStatObj?: boolean): Array<CollectionObj> | null {
-		let siId = this._getStudioInstallationId()
-		if (!siId) {
-			this.logger.warn('no studioInstallationId')
+		let studioId = this._getStudioId()
+		if (!studioId) {
+			this.logger.warn('no studioId')
 			return null
 		}
 
@@ -255,15 +256,15 @@ export class TSRHandler {
 			if (excludeStatObj) {
 				if (o.statObject) return false
 			}
-			return o.siId === siId
+			return o.studioId === studioId
 		})
 
 		return objs
 	}
 	getMapping () {
-		let studioInstallation = this._getStudioInstallation()
-		if (studioInstallation) {
-			return studioInstallation.mappings
+		let studio = this._getStudio()
+		if (studio) {
+			return studio.mappings
 		}
 		return null
 	}
@@ -394,21 +395,21 @@ export class TSRHandler {
 		let peripheralDevices = this._coreHandler.core.getCollection('peripheralDevices')
 		return peripheralDevices.findOne(this._coreHandler.core.deviceId)
 	}
-	private _getStudioInstallation (): any | null {
+	private _getStudio (): any | null {
 		let peripheralDevice = this._getPeripheralDevice()
 		if (peripheralDevice) {
-			let studioInstallations = this._coreHandler.core.getCollection('studioInstallation')
-			return studioInstallations.findOne(peripheralDevice.studioInstallationId)
+			let studios = this._coreHandler.core.getCollection('studio')
+			return studios.findOne(peripheralDevice.studioId)
 		}
 		return null
 	}
-	private _getStudioInstallationId (): string | null {
-		if (this._cachedStudioInstallationId) return this._cachedStudioInstallationId
+	private _getStudioId (): string | null {
+		if (this._cachedStudioId) return this._cachedStudioId
 
-		let studioInstallation = this._getStudioInstallation()
-		if (studioInstallation) {
-			this._cachedStudioInstallationId = studioInstallation._id
-			return studioInstallation._id
+		let studio = this._getStudio()
+		if (studio) {
+			this._cachedStudioId = studio._id
+			return studio._id
 		}
 		return null
 	}
@@ -511,9 +512,9 @@ export class TSRHandler {
 					// hack to make sure atem has media after restart
 					if (deviceStatus.statusCode === P.StatusCode.GOOD) {
 						// @todo: proper atem media management
-						const studioInstallation = this._getStudioInstallation()
-						if (deviceType === DeviceType.ATEM && studioInstallation) {
-							const ssrcBgs = studioInstallation.config.filter((o) => o._id.substr(0, 18) === 'atemSSrcBackground')
+						const studio = this._getStudio()
+						if (deviceType === DeviceType.ATEM && studio) {
+							const ssrcBgs = studio.config.filter((o) => o._id.substr(0, 18) === 'atemSSrcBackground')
 							if (ssrcBgs) {
 								try {
 									this._coreHandler.uploadFileToAtem(ssrcBgs)
@@ -564,31 +565,31 @@ export class TSRHandler {
 		let transformObject = (obj: TimelineObj): TimelineContentObjectTmp => {
 			let transformedObj = clone(_.extend({
 				id: obj['_id'],
-				roId: obj['roId']
-			}, _.omit(obj, ['_id', 'deviceId', 'siId'])))
+				rundownId: obj['rundownId']
+			}, _.omit(obj, ['_id', 'deviceId', 'studioId'])))
 
 			if (!transformedObj.content) transformedObj.content = {}
 			if (transformedObj.isGroup) {
 				if (!transformedObj.content.objects) transformedObj.content.objects = []
 			}
 
-			if (obj['slId']) {
+			if (obj['partId']) {
 				// Will cause a callback to be called, when the object starts to play:
-				transformedObj.content.callBack = 'segmentLinePlaybackStarted'
+				transformedObj.content.callBack = 'partPlaybackStarted'
 				transformedObj.content.callBackData = {
-					roId: obj.roId,
-					slId: obj['slId']
+					rundownId: obj.rundownId,
+					partId: obj['partId']
 				}
-				transformedObj.content.callBackStopped = 'segmentLinePlaybackStopped' // Will cause a callback to be called, when the object stops playing:
+				transformedObj.content.callBackStopped = 'partPlaybackStopped' // Will cause a callback to be called, when the object stops playing:
 			}
-			if (obj['sliId']) {
+			if (obj['pieceId']) {
 				// Will cause a callback to be called, when the object starts to play:
-				transformedObj.content.callBack = 'segmentLineItemPlaybackStarted'
+				transformedObj.content.callBack = 'piecePlaybackStarted'
 				transformedObj.content.callBackData = {
-					roId: obj.roId,
-					sliId: obj['sliId']
+					rundownId: obj.rundownId,
+					pieceId: obj['pieceId']
 				}
-				transformedObj.content.callBackStopped = 'segmentLineItemPlaybackStopped' // Will cause a callback to be called, when the object stops playing:
+				transformedObj.content.callBackStopped = 'piecePlaybackStopped' // Will cause a callback to be called, when the object stops playing:
 			}
 
 			return transformedObj
@@ -641,13 +642,13 @@ export class TSRHandler {
 
 		if (disableStatObject) return true
 
-		let siId = this._getStudioInstallationId()
-		if (!siId) {
-			this.logger.warn('no studioInstallationId')
+		let studioId = this._getStudioId()
+		if (!studioId) {
+			this.logger.warn('no studioId')
 			return false
 		}
 
-		let statObjId = siId + '_statObj'
+		let statObjId = studioId + '_statObj'
 
 		let statObject = this._coreHandler.core.getCollection('timeline').find(statObjId)[0]
 

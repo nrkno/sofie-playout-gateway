@@ -115,7 +115,7 @@
     "promise-sequence": "^0.3.1",
     "timeline-state-resolver": "^2.1.0",
     "tslib": "^1.9.2",
-    "tv-automation-server-core-integration": "^0.9.0",
+    "tv-automation-server-core-integration": "git://github.com/nrkno/tv-automation-server-core-integration.git#fix/breakEverythingDist",
     "underscore": "^1.9.1",
     "winston": "^2.4.2"
   }

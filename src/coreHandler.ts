@@ -123,7 +123,7 @@ export class CoreHandler {
 			this.core.autoSubscribe('peripheralDevices', {
 				_id: this.core.deviceId
 			}),
-			this.core.autoSubscribe('studioInstallationOfDevice', this.core.deviceId),
+			this.core.autoSubscribe('studioOfDevice', this.core.deviceId),
 			this.core.autoSubscribe('peripheralDeviceCommands', this.core.deviceId)
 		])
 		.then(() => {
@@ -225,7 +225,7 @@ export class CoreHandler {
 				this.multithreading = this.deviceSettings['multiThreading']
 			}
 
-			let studioId = device.studioInstallationId
+			let studioId = device.studioId
 			if (studioId !== this._studioId) {
 				this._studioId = studioId
 
