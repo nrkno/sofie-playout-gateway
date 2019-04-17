@@ -7389,7 +7389,7 @@ tunnel-agent@^0.6.0:
 
 "tv-automation-server-core-integration@git://github.com/nrkno/tv-automation-server-core-integration.git#fix/breakEverythingDist":
   version "0.0.0-develop"
-  resolved "git://github.com/nrkno/tv-automation-server-core-integration.git#c9a5a29299cab4824fef72f85bc32f5889b2af57"
+  resolved "git://github.com/nrkno/tv-automation-server-core-integration.git#2f4f2e9d43338c43b6a58557a4ca831cf2903b92"
   dependencies:
     data-store "3.1.0"
     ddp "git+http://github.com/nytamin/node-ddp-client.git#v0.12.2-next2"
