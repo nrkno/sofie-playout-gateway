@@ -234,7 +234,7 @@ export class CoreHandler {
 					this._timelineSubscription = null
 				}
 				this.core.autoSubscribe('timeline', {
-					siId: studioId
+					studioId: studioId
 				}).then((subscriptionId) => {
 					this._timelineSubscription = subscriptionId
 				}).catch((err) => {

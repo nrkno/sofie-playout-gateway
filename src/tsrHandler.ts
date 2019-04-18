@@ -398,7 +398,7 @@ export class TSRHandler {
 	private _getStudio (): any | null {
 		let peripheralDevice = this._getPeripheralDevice()
 		if (peripheralDevice) {
-			let studios = this._coreHandler.core.getCollection('studio')
+			let studios = this._coreHandler.core.getCollection('studios')
 			return studios.findOne(peripheralDevice.studioId)
 		}
 		return null
