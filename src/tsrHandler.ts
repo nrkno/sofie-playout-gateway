@@ -16,6 +16,8 @@ import * as crypto from 'crypto'
 
 import * as _ from 'underscore'
 import { CoreConnection, PeripheralDeviceAPI as P, CollectionObj } from 'tv-automation-server-core-integration'
+import { TimelineObjectCoreExt } from 'tv-automation-sofie-blueprints-integration'
+import { Timeline as TimelineTypes } from 'timeline-state-resolver-types'
 import { LoggerInstance } from './index'
 
 export interface TSRConfig {
@@ -33,36 +35,50 @@ export interface TSRDevice {
 	coreConnection: CoreConnection
 	device: Device
 }
-export interface TimelineObj { // interface from Core
+
+// ----------------------------------------------------------------------------
+// interface copied from Core lib/collections/Timeline.ts
+export interface TimelineObjGeneric extends TimelineObjectCoreExt {
+	/** Unique _id (generally obj.studioId + '_' + obj.id) */
 	_id: string
-	studioId?: string
-	pieceId?: string
-	partId?: string
-	rundownId: string
+	/** Unique within a timeline (ie within a studio) */
+	id: string
 
-	trigger: {
-		type: TriggerType
-		value: number | string
+	/** Studio installation Id */
+	studioId: string
+	rundownId?: string
+
+	objectType: TimelineObjType
+
+	trigger: TimelineTypes.TimelineTrigger & {
+		setFromNow?: boolean
 	}
-	duration: number | string
-	LLayer: string | number
-	content: {
-		type: string // TimelineContentType
-		[key: string]: any // *other attributes*
-	}
-	classes?: Array<string>
-	disabled?: boolean
-	isGroup?: boolean
+
 	inGroup?: string
-	repeating?: boolean
-	priority?: number
-	externalFunction?: string
 
+	metadata?: {
+		[key: string]: any
+	}
 	/** Only set to true for the "magic" statistic objects, used to trigger playout */
 	statObject?: boolean
-	/** Only set to true for the test recording objects, to persist outside of a rundown */
-	recordingObject?: boolean
+
+	/** Only set to true when an object is inserted by lookahead */
+	isBackground?: boolean
+	/** Set when an object is on a virtual layer for lookahead, so that it can be routed correctly */
+	originalLLayer?: string | number
 }
+export enum TimelineObjType {
+	/** Objects played in a rundown */
+	RUNDOWN = 'rundown',
+	/** Objects controlling recording */
+	RECORDING = 'record',
+	/** Objects controlling manual playback */
+	MANUAL = 'manual',
+	/** "Magic object", used to calculate a hash of the timeline */
+	STAT = 'stat'
+}
+// ----------------------------------------------------------------------------
+
 export interface TimelineContentObjectTmp extends TimelineContentObject {
 	inGroup?: string
 }
@@ -252,7 +268,7 @@ export class TSRHandler {
 			return null
 		}
 
-		let objs = this._coreHandler.core.getCollection('timeline').find((o: TimelineObj) => {
+		let objs = this._coreHandler.core.getCollection('timeline').find((o: TimelineObjGeneric) => {
 			if (excludeStatObj) {
 				if (o.statObject) return false
 			}
@@ -364,7 +380,7 @@ export class TSRHandler {
 	private _updateTimeline () {
 		if (this._determineIfTimelineShouldUpdate()) {
 			let transformedTimeline = this._transformTimeline(
-				this.getTimeline(true) as Array<TimelineObj>
+				this.getTimeline(true) as Array<TimelineObjGeneric>
 			)
 			if (transformedTimeline) {
 				this.tsr.timeline = transformedTimeline
@@ -559,14 +575,19 @@ export class TSRHandler {
 	 * Go through and transform timeline and generalize the Core-specific things
 	 * @param timeline
 	 */
-	private _transformTimeline (timeline: Array<TimelineObj>): Array<TimelineContentObject> | null {
+	private _transformTimeline (timeline: Array<TimelineObjGeneric>): Array<TimelineContentObject> | null {
 		// _transformTimeline (timeline: Array<TimelineObj>): Array<TimelineContentObject> | null {
 
-		let transformObject = (obj: TimelineObj): TimelineContentObjectTmp => {
-			let transformedObj = clone(_.extend({
-				id: obj['_id'],
-				rundownId: obj['rundownId']
-			}, _.omit(obj, ['_id', 'deviceId', 'studioId'])))
+		let transformObject = (obj: TimelineObjGeneric): TimelineContentObjectTmp => {
+			let transformedObj = clone(
+				_.omit(
+					{
+						...obj,
+						rundownId: obj.rundownId
+					}, ['_id', 'deviceId', 'studioId']
+				)
+			)
+			transformedObj.id = obj.id || obj._id
 
 			if (!transformedObj.content) transformedObj.content = {}
 			if (transformedObj.isGroup) {
@@ -598,7 +619,7 @@ export class TSRHandler {
 		let objs = timeline
 		// First, transform and convert timeline to a key-value store, for fast referencing:
 		let objects: {[id: string]: TimelineContentObjectTmp} = {}
-		_.each(objs, (obj: TimelineObj) => {
+		_.each(objs, (obj: TimelineObjGeneric) => {
 			let transformedObj: TimelineContentObjectTmp = transformObject(obj)
 			objects[transformedObj.id] = transformedObj
 		})
