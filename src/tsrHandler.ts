@@ -4,7 +4,6 @@ import {
 	ConductorOptions,
 	Device,
 	TimelineContentObject,
-	TriggerType,
 	TimelineTriggerTimeResult,
 	DeviceOptions,
 	Mappings,
