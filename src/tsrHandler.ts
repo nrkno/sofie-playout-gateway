@@ -3,7 +3,6 @@ import {
 	DeviceType,
 	ConductorOptions,
 	Device,
-	TimelineContentObject,
 	TimelineTriggerTimeResult,
 	DeviceOptions,
 	Mappings,
@@ -16,7 +15,7 @@ import * as crypto from 'crypto'
 import * as _ from 'underscore'
 import { CoreConnection, PeripheralDeviceAPI as P, CollectionObj } from 'tv-automation-server-core-integration'
 import { TimelineObjectCoreExt } from 'tv-automation-sofie-blueprints-integration'
-import { Timeline as TimelineTypes } from 'timeline-state-resolver-types'
+import { Timeline as TimelineTypes, TSRTimelineObj, TSRTimeline, TSRTimelineObjBase } from 'timeline-state-resolver-types'
 import { LoggerInstance } from './index'
 
 export interface TSRConfig {
@@ -49,7 +48,7 @@ export interface TimelineObjGeneric extends TimelineObjectCoreExt {
 
 	objectType: TimelineObjType
 
-	trigger: TimelineTypes.TimelineTrigger & {
+	enable: TimelineTypes.TimelineEnable & {
 		setFromNow?: boolean
 	}
 
@@ -58,11 +57,9 @@ export interface TimelineObjGeneric extends TimelineObjectCoreExt {
 	metadata?: {
 		[key: string]: any
 	}
-	/** Only set to true for the "magic" statistic objects, used to trigger playout */
-	statObject?: boolean
 
 	/** Only set to true when an object is inserted by lookahead */
-	isBackground?: boolean
+	isLookahead?: boolean
 	/** Set when an object is on a virtual layer for lookahead, so that it can be routed correctly */
 	originalLLayer?: string | number
 }
@@ -78,7 +75,7 @@ export enum TimelineObjType {
 }
 // ----------------------------------------------------------------------------
 
-export interface TimelineContentObjectTmp extends TimelineContentObject {
+export interface TimelineContentObjectTmp extends TSRTimelineObjBase {
 	inGroup?: string
 }
 /**
@@ -269,7 +266,7 @@ export class TSRHandler {
 
 		let objs = this._coreHandler.core.getCollection('timeline').find((o: TimelineObjGeneric) => {
 			if (excludeStatObj) {
-				if (o.statObject) return false
+				if (o.objectType === TimelineObjType.STAT) return false
 			}
 			return o.studioId === studioId
 		})
@@ -574,7 +571,7 @@ export class TSRHandler {
 	 * Go through and transform timeline and generalize the Core-specific things
 	 * @param timeline
 	 */
-	private _transformTimeline (timeline: Array<TimelineObjGeneric>): Array<TimelineContentObject> | null {
+	private _transformTimeline (timeline: Array<TimelineObjGeneric>): TSRTimeline | null {
 		// _transformTimeline (timeline: Array<TimelineObj>): Array<TimelineContentObject> | null {
 
 		let transformObject = (obj: TimelineObjGeneric): TimelineContentObjectTmp => {
@@ -583,7 +580,7 @@ export class TSRHandler {
 					{
 						...obj,
 						rundownId: obj.rundownId
-					}, ['_id', 'deviceId', 'studioId']
+					}, ['_id', 'studioId']
 				)
 			)
 			transformedObj.id = obj.id || obj._id
@@ -593,29 +590,27 @@ export class TSRHandler {
 				if (!transformedObj.content.objects) transformedObj.content.objects = []
 			}
 
-
 			return transformedObj
 		}
 
-		let objs = timeline
 		// First, transform and convert timeline to a key-value store, for fast referencing:
 		let objects: {[id: string]: TimelineContentObjectTmp} = {}
-		_.each(objs, (obj: TimelineObjGeneric) => {
-			let transformedObj: TimelineContentObjectTmp = transformObject(obj)
+		_.each(timeline, (obj: TimelineObjGeneric) => {
+			let transformedObj = transformObject(obj)
 			objects[transformedObj.id] = transformedObj
 		})
 
 		// Go through all objects:
-		let transformedTimeline: Array<TimelineContentObject> = []
+		let transformedTimeline: Array<TSRTimelineObj> = []
 		_.each(objects, (obj: TimelineContentObjectTmp) => {
 			if (obj.inGroup) {
 				let groupObj = objects[obj.inGroup]
 				if (groupObj) {
 					// Add object into group:
-					if (!groupObj.content.objects) groupObj.content.objects = []
-					if (groupObj.content.objects) {
+					if (!groupObj.children) groupObj.children = []
+					if (groupObj.children) {
 						delete obj.inGroup
-						groupObj.content.objects.push(obj)
+						groupObj.children.push(obj)
 					}
 				} else {
 					// referenced group not found
@@ -624,7 +619,7 @@ export class TSRHandler {
 			} else {
 				// Add object to timeline
 				delete obj.inGroup
-				transformedTimeline.push(obj)
+				transformedTimeline.push(obj as TSRTimelineObj)
 			}
 		})
 		return transformedTimeline
@@ -696,16 +691,22 @@ export class TSRHandler {
 function stringifyObjects (objs) {
 	if (_.isArray(objs)) {
 		return _.map(objs, (obj) => {
-			return stringifyObjects(obj)
+			if (obj !== undefined) {
+				return stringifyObjects(obj)
+			}
 		}).join(',')
 	} else if (_.isFunction(objs)) {
 		return ''
 	} else if (_.isObject(objs)) {
 		let keys = _.sortBy(_.keys(objs), (k) => k)
 
-		return _.map(keys, (key) => {
-			return key + '=' + stringifyObjects(objs[key])
-		}).join(',')
+		return _.compact(_.map(keys, (key) => {
+			if (objs[key] !== undefined) {
+				return key + '=' + stringifyObjects(objs[key])
+			} else {
+				return null
+			}
+		})).join(',')
 	} else {
 		return objs + ''
 	}
