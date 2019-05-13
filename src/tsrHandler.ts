@@ -593,24 +593,6 @@ export class TSRHandler {
 				if (!transformedObj.content.objects) transformedObj.content.objects = []
 			}
 
-			if (obj['partId']) {
-				// Will cause a callback to be called, when the object starts to play:
-				transformedObj.content.callBack = 'partPlaybackStarted'
-				transformedObj.content.callBackData = {
-					rundownId: obj.rundownId,
-					partId: obj['partId']
-				}
-				transformedObj.content.callBackStopped = 'partPlaybackStopped' // Will cause a callback to be called, when the object stops playing:
-			}
-			if (obj['pieceId']) {
-				// Will cause a callback to be called, when the object starts to play:
-				transformedObj.content.callBack = 'piecePlaybackStarted'
-				transformedObj.content.callBackData = {
-					rundownId: obj.rundownId,
-					pieceId: obj['pieceId']
-				}
-				transformedObj.content.callBackStopped = 'piecePlaybackStopped' // Will cause a callback to be called, when the object stops playing:
-			}
 
 			return transformedObj
 		}
