@@ -2,7 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-# [0.19.0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v0.19.0-1...v0.19.0) (2019-05-15)
+<a name="0.19.1-0"></a>
+## [0.19.1-0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v0.19.0...v0.19.1-0) (2019-05-22)
+
+
+### Bug Fixes
+
+* Update TSR dep ([975347b](https://github.com/nrkno/tv-automation-playout-gateway/commit/975347b))
 
 
 
