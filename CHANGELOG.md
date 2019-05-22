@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [0.20.0-0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v0.19.0...v0.20.0-0) (2019-05-22)
+
+
+### Bug Fixes
+
+* fix old collection names, etc. ([4859564](https://github.com/nrkno/tv-automation-playout-gateway/commit/4859564))
+* Some playout bugs ([57c3fde](https://github.com/nrkno/tv-automation-playout-gateway/commit/57c3fde))
+* update namig to new set ([f787cc8](https://github.com/nrkno/tv-automation-playout-gateway/commit/f787cc8))
+* update server-core-integration ([945c295](https://github.com/nrkno/tv-automation-playout-gateway/commit/945c295))
+
+
+### Features
+
+* log message on startup ([dbfde0c](https://github.com/nrkno/tv-automation-playout-gateway/commit/dbfde0c))
+* removed callbacks, as they are created in Core now ([13b3cf1](https://github.com/nrkno/tv-automation-playout-gateway/commit/13b3cf1))
+* support for new device types ([54c3046](https://github.com/nrkno/tv-automation-playout-gateway/commit/54c3046))
+* timeline typings from Core & support for new timeline.id ([7a9f5a0](https://github.com/nrkno/tv-automation-playout-gateway/commit/7a9f5a0))
+* update core-integration dep ([6426afc](https://github.com/nrkno/tv-automation-playout-gateway/commit/6426afc))
+
+
+
 # [0.19.0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v0.19.0-1...v0.19.0) (2019-05-15)
 
 
