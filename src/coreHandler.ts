@@ -2,11 +2,16 @@
 import { CoreConnection,
 	CoreOptions,
 	PeripheralDeviceAPI as P,
-	DDPConnectorOptions
+	DDPConnectorOptions,
+	PeripheralDeviceAPI
 } from 'tv-automation-server-core-integration'
 
 import * as cp from 'child_process'
-import { DeviceType, CasparCGDevice, DeviceContainer } from 'timeline-state-resolver'
+import {
+	DeviceType,
+	CasparCGDevice,
+	DeviceContainer
+} from 'timeline-state-resolver'
 
 import * as _ from 'underscore'
 import { DeviceConfig } from './connector'
@@ -47,6 +52,7 @@ export class CoreHandler {
 	public mediaScannerStatus: P.StatusCode = P.StatusCode.GOOD
 	public mediaScannerMessages: Array<string> = []
 
+	public errorReporting: boolean = false
 	public multithreading: boolean = false
 
 	private _deviceOptions: DeviceConfig
@@ -229,6 +235,9 @@ export class CoreHandler {
 				this.logger.debug('End test debug logging')
 			}
 
+			if (this.deviceSettings['errorReporting'] !== this.errorReporting) {
+				this.errorReporting = this.deviceSettings['errorReporting']
+			}
 			if (this.deviceSettings['multiThreading'] !== this.multithreading) {
 				this.multithreading = this.deviceSettings['multiThreading']
 			}
@@ -564,6 +573,21 @@ export class CoreTSRDeviceHandler {
 		this._hasGottenStatusChange = true
 
 		this.core.setStatus(deviceStatus)
+		.catch(e => this._coreParentHandler.logger.error('Error when setting status: ' + e, e.stack))
+	}
+	onCommandError (
+		errorMessage: string,
+		ref: {
+			rundownId?: string,
+			partId?: string,
+			pieceId?: string,
+			context: string,
+			timelineObjId: string
+		}) {
+		this.core.callMethodLowPrio(PeripheralDeviceAPI.methods.reportCommandError, [
+			errorMessage,
+			ref
+		])
 		.catch(e => this._coreParentHandler.logger.error('Error when setting status: ' + e, e.stack))
 	}
 
