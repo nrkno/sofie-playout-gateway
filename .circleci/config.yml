@@ -1,0 +1,96 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/node:8.11.4
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-node-cache-{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - v1-node-cache-{{ .Branch }}
+      - run:
+          name: yarn install
+          command: yarn install --check-files --frozen-lockfile
+          no_output_timeout: 60m
+      - run:
+          name: yarn build
+          command: yarn build
+          no_output_timeout: 60m
+      - save_cache:
+          key: v1-node-cache-{{ .Branch }}-{{ checksum "yarn.lock" }}
+          paths: 
+            - node_modules
+      - save_cache:
+          key: v3-node-cache-{{ .Branch }}
+          paths: 
+            - node_modules
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+  publish-tag:
+    docker:
+      - image: circleci/buildpack-deps:stretch
+    steps:
+      - setup_remote_docker:
+          docker_layer_caching: true
+          version: 18.06.0-ce
+      - attach_workspace:
+          at: .
+      - run:
+          name: Build Docker Image
+          command: docker build -f Dockerfile.circle . -t sofietv/tv-automation-playout-gateway:$CIRCLE_TAG
+      - run:
+           name: Publish Docker Image to Docker Hub
+           command: |
+             echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+             docker push sofietv/tv-automation-playout-gateway:$CIRCLE_TAG
+  publish-branch:
+    docker:
+      - image: circleci/buildpack-deps:stretch
+    steps:
+      - setup_remote_docker:
+          docker_layer_caching: true
+          version: 18.06.0-ce
+      - attach_workspace:
+          at: .
+      - run:
+          name: Build Docker Image
+          command: docker build -f Dockerfile.circle . -t sofietv/tv-automation-playout-gateway:$CIRCLE_BRANCH
+      - run:
+           name: Publish Docker Image to Docker Hub
+           command: |
+             echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+             docker push sofietv/tv-automation-playout-gateway:$CIRCLE_BRANCH
+
+workflows:
+  version: 2
+  build-test-publish:
+    jobs:
+      - build:
+          filters:
+            tags:
+              only: /v.*/
+            branches:
+              only: /.*/
+      - publish-tag:
+          requires:
+            - build
+          filters:
+            tags:
+              only: /v.*/
+            branches:
+              ignore: /.*/
+      - publish-branch:
+          requires:
+            - build
+          filters:
+            tags:
+              ignore: /.*/
+            branches:
+              only: 
+                - master
+                - develop
+                - stage
+                - /release\d+/
