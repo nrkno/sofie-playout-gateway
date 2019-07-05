@@ -3,8 +3,6 @@ import {
 	DeviceType,
 	ConductorOptions,
 	Device,
-	TimelineContentObject,
-	TriggerType,
 	TimelineTriggerTimeResult,
 	DeviceOptions,
 	Mappings,
@@ -16,6 +14,8 @@ import * as crypto from 'crypto'
 
 import * as _ from 'underscore'
 import { CoreConnection, PeripheralDeviceAPI as P, CollectionObj } from 'tv-automation-server-core-integration'
+import { TimelineObjectCoreExt } from 'tv-automation-sofie-blueprints-integration'
+import { Timeline as TimelineTypes, TSRTimelineObj, TSRTimeline, TSRTimelineObjBase } from 'timeline-state-resolver-types'
 import { LoggerInstance } from './index'
 
 export interface TSRConfig {
@@ -33,36 +33,49 @@ export interface TSRDevice {
 	coreConnection: CoreConnection
 	device: Device
 }
-export interface TimelineObj { // interface from Core
+
+// ----------------------------------------------------------------------------
+// interface copied from Core lib/collections/Timeline.ts
+export interface TimelineObjGeneric extends TimelineObjectCoreExt {
+	/** Unique _id (generally obj.studioId + '_' + obj.id) */
 	_id: string
-	siId?: string
-	sliId?: string
-	roId: string
+	/** Unique within a timeline (ie within a studio) */
+	id: string
 
-	trigger: {
-		type: TriggerType
-		value: number | string
+	/** Studio installation Id */
+	studioId: string
+	rundownId?: string
+
+	objectType: TimelineObjType
+
+	enable: TimelineTypes.TimelineEnable & {
+		setFromNow?: boolean
 	}
-	duration: number | string
-	LLayer: string | number
-	content: {
-		type: string // TimelineContentType
-		[key: string]: any // *other attributes*
-	}
-	classes?: Array<string>
-	disabled?: boolean
-	isGroup?: boolean
+
 	inGroup?: string
-	repeating?: boolean
-	priority?: number
-	externalFunction?: string
 
-	/** Only set to true for the "magic" statistic objects, used to trigger playout */
-	statObject?: boolean
-	/** Only set to true for the test recording objects, to persist outside of a rundown */
-	recordingObject?: boolean
+	metadata?: {
+		[key: string]: any
+	}
+
+	/** Only set to true when an object is inserted by lookahead */
+	isLookahead?: boolean
+	/** Set when an object is on a virtual layer for lookahead, so that it can be routed correctly */
+	originalLLayer?: string | number
 }
-export interface TimelineContentObjectTmp extends TimelineContentObject {
+export enum TimelineObjType {
+	/** Objects played in a rundown */
+	RUNDOWN = 'rundown',
+	/** Objects controlling recording */
+	RECORDING = 'record',
+	/** Objects controlling manual playback */
+	MANUAL = 'manual',
+	/** "Magic object", used to calculate a hash of the timeline */
+	STAT = 'stat'
+}
+// ----------------------------------------------------------------------------
+
+export interface TimelineContentObjectTmp extends TSRTimelineObjBase {
 	inGroup?: string
 }
 /**
@@ -78,7 +91,7 @@ export class TSRHandler {
 	private _triggerupdateDevicesTimeout: any = null
 	private _coreTsrHandlers: {[deviceId: string]: CoreTSRDeviceHandler} = {}
 	private _observers: Array<any> = []
-	private _cachedStudioInstallationId: string = ''
+	private _cachedStudioId: string = ''
 
 	private _initialized: boolean = false
 	private _multiThreaded: boolean | null = null
@@ -228,7 +241,7 @@ export class TSRHandler {
 		timelineObserver.removed = () => { this._triggerupdateTimeline() }
 		this._observers.push(timelineObserver)
 
-		let mappingsObserver = this._coreHandler.core.observe('studioInstallation')
+		let mappingsObserver = this._coreHandler.core.observe('studio')
 		mappingsObserver.added = () => { this._triggerupdateMapping() }
 		mappingsObserver.changed = () => { this._triggerupdateMapping() }
 		mappingsObserver.removed = () => { this._triggerupdateMapping() }
@@ -245,25 +258,25 @@ export class TSRHandler {
 		return this.tsr.destroy()
 	}
 	getTimeline (excludeStatObj?: boolean): Array<CollectionObj> | null {
-		let siId = this._getStudioInstallationId()
-		if (!siId) {
-			this.logger.warn('no studioInstallationId')
+		let studioId = this._getStudioId()
+		if (!studioId) {
+			this.logger.warn('no studioId')
 			return null
 		}
 
-		let objs = this._coreHandler.core.getCollection('timeline').find((o: TimelineObj) => {
+		let objs = this._coreHandler.core.getCollection('timeline').find((o: TimelineObjGeneric) => {
 			if (excludeStatObj) {
-				if (o.statObject) return false
+				if (o.objectType === TimelineObjType.STAT) return false
 			}
-			return o.siId === siId
+			return o.studioId === studioId
 		})
 
 		return objs
 	}
 	getMapping () {
-		let studioInstallation = this._getStudioInstallation()
-		if (studioInstallation) {
-			return studioInstallation.mappings
+		let studio = this._getStudio()
+		if (studio) {
+			return studio.mappings
 		}
 		return null
 	}
@@ -363,7 +376,7 @@ export class TSRHandler {
 	private _updateTimeline () {
 		if (this._determineIfTimelineShouldUpdate()) {
 			let transformedTimeline = this._transformTimeline(
-				this.getTimeline(true) as Array<TimelineObj>
+				this.getTimeline(true) as Array<TimelineObjGeneric>
 			)
 			if (transformedTimeline) {
 				this.tsr.timeline = transformedTimeline
@@ -394,21 +407,21 @@ export class TSRHandler {
 		let peripheralDevices = this._coreHandler.core.getCollection('peripheralDevices')
 		return peripheralDevices.findOne(this._coreHandler.core.deviceId)
 	}
-	private _getStudioInstallation (): any | null {
+	private _getStudio (): any | null {
 		let peripheralDevice = this._getPeripheralDevice()
 		if (peripheralDevice) {
-			let studioInstallations = this._coreHandler.core.getCollection('studioInstallation')
-			return studioInstallations.findOne(peripheralDevice.studioInstallationId)
+			let studios = this._coreHandler.core.getCollection('studios')
+			return studios.findOne(peripheralDevice.studioId)
 		}
 		return null
 	}
-	private _getStudioInstallationId (): string | null {
-		if (this._cachedStudioInstallationId) return this._cachedStudioInstallationId
+	private _getStudioId (): string | null {
+		if (this._cachedStudioId) return this._cachedStudioId
 
-		let studioInstallation = this._getStudioInstallation()
-		if (studioInstallation) {
-			this._cachedStudioInstallationId = studioInstallation._id
-			return studioInstallation._id
+		let studio = this._getStudio()
+		if (studio) {
+			this._cachedStudioId = studio._id
+			return studio._id
 		}
 		return null
 	}
@@ -511,9 +524,9 @@ export class TSRHandler {
 					// hack to make sure atem has media after restart
 					if (deviceStatus.statusCode === P.StatusCode.GOOD) {
 						// @todo: proper atem media management
-						const studioInstallation = this._getStudioInstallation()
-						if (deviceType === DeviceType.ATEM && studioInstallation) {
-							const ssrcBgs = studioInstallation.config.filter((o) => o._id.substr(0, 18) === 'atemSSrcBackground')
+						const studio = this._getStudio()
+						if (deviceType === DeviceType.ATEM && studio) {
+							const ssrcBgs = studio.config.filter((o) => o._id.substr(0, 18) === 'atemSSrcBackground')
 							if (ssrcBgs) {
 								try {
 									this._coreHandler.uploadFileToAtem(ssrcBgs)
@@ -558,61 +571,46 @@ export class TSRHandler {
 	 * Go through and transform timeline and generalize the Core-specific things
 	 * @param timeline
 	 */
-	private _transformTimeline (timeline: Array<TimelineObj>): Array<TimelineContentObject> | null {
+	private _transformTimeline (timeline: Array<TimelineObjGeneric>): TSRTimeline | null {
 		// _transformTimeline (timeline: Array<TimelineObj>): Array<TimelineContentObject> | null {
 
-		let transformObject = (obj: TimelineObj): TimelineContentObjectTmp => {
-			let transformedObj = clone(_.extend({
-				id: obj['_id'],
-				roId: obj['roId']
-			}, _.omit(obj, ['_id', 'deviceId', 'siId'])))
+		let transformObject = (obj: TimelineObjGeneric): TimelineContentObjectTmp => {
+			let transformedObj = clone(
+				_.omit(
+					{
+						...obj,
+						rundownId: obj.rundownId
+					}, ['_id', 'studioId']
+				)
+			)
+			transformedObj.id = obj.id || obj._id
 
 			if (!transformedObj.content) transformedObj.content = {}
 			if (transformedObj.isGroup) {
 				if (!transformedObj.content.objects) transformedObj.content.objects = []
 			}
 
-			if (obj['slId']) {
-				// Will cause a callback to be called, when the object starts to play:
-				transformedObj.content.callBack = 'segmentLinePlaybackStarted'
-				transformedObj.content.callBackData = {
-					roId: obj.roId,
-					slId: obj['slId']
-				}
-				transformedObj.content.callBackStopped = 'segmentLinePlaybackStopped' // Will cause a callback to be called, when the object stops playing:
-			}
-			if (obj['sliId']) {
-				// Will cause a callback to be called, when the object starts to play:
-				transformedObj.content.callBack = 'segmentLineItemPlaybackStarted'
-				transformedObj.content.callBackData = {
-					roId: obj.roId,
-					sliId: obj['sliId']
-				}
-				transformedObj.content.callBackStopped = 'segmentLineItemPlaybackStopped' // Will cause a callback to be called, when the object stops playing:
-			}
-
 			return transformedObj
 		}
 
-		let objs = timeline
 		// First, transform and convert timeline to a key-value store, for fast referencing:
 		let objects: {[id: string]: TimelineContentObjectTmp} = {}
-		_.each(objs, (obj: TimelineObj) => {
-			let transformedObj: TimelineContentObjectTmp = transformObject(obj)
+		_.each(timeline, (obj: TimelineObjGeneric) => {
+			let transformedObj = transformObject(obj)
 			objects[transformedObj.id] = transformedObj
 		})
 
 		// Go through all objects:
-		let transformedTimeline: Array<TimelineContentObject> = []
+		let transformedTimeline: Array<TSRTimelineObj> = []
 		_.each(objects, (obj: TimelineContentObjectTmp) => {
 			if (obj.inGroup) {
 				let groupObj = objects[obj.inGroup]
 				if (groupObj) {
 					// Add object into group:
-					if (!groupObj.content.objects) groupObj.content.objects = []
-					if (groupObj.content.objects) {
+					if (!groupObj.children) groupObj.children = []
+					if (groupObj.children) {
 						delete obj.inGroup
-						groupObj.content.objects.push(obj)
+						groupObj.children.push(obj)
 					}
 				} else {
 					// referenced group not found
@@ -621,7 +619,7 @@ export class TSRHandler {
 			} else {
 				// Add object to timeline
 				delete obj.inGroup
-				transformedTimeline.push(obj)
+				transformedTimeline.push(obj as TSRTimelineObj)
 			}
 		})
 		return transformedTimeline
@@ -641,13 +639,13 @@ export class TSRHandler {
 
 		if (disableStatObject) return true
 
-		let siId = this._getStudioInstallationId()
-		if (!siId) {
-			this.logger.warn('no studioInstallationId')
+		let studioId = this._getStudioId()
+		if (!studioId) {
+			this.logger.warn('no studioId')
 			return false
 		}
 
-		let statObjId = siId + '_statObj'
+		let statObjId = studioId + '_statObj'
 
 		let statObject = this._coreHandler.core.getCollection('timeline').find(statObjId)[0]
 
@@ -693,16 +691,22 @@ export class TSRHandler {
 function stringifyObjects (objs) {
 	if (_.isArray(objs)) {
 		return _.map(objs, (obj) => {
-			return stringifyObjects(obj)
+			if (obj !== undefined) {
+				return stringifyObjects(obj)
+			}
 		}).join(',')
 	} else if (_.isFunction(objs)) {
 		return ''
 	} else if (_.isObject(objs)) {
 		let keys = _.sortBy(_.keys(objs), (k) => k)
 
-		return _.map(keys, (key) => {
-			return key + '=' + stringifyObjects(objs[key])
-		}).join(',')
+		return _.compact(_.map(keys, (key) => {
+			if (objs[key] !== undefined) {
+				return key + '=' + stringifyObjects(objs[key])
+			} else {
+				return null
+			}
+		})).join(',')
 	} else {
 		return objs + ''
 	}

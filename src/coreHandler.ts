@@ -1,7 +1,8 @@
 
 import { CoreConnection,
 	CoreOptions,
-	PeripheralDeviceAPI as P
+	PeripheralDeviceAPI as P,
+	DDPConnectorOptions
 } from 'tv-automation-server-core-integration'
 
 import * as cp from 'child_process'
@@ -14,7 +15,6 @@ import * as fs from 'fs'
 import { LoggerInstance } from './index'
 import { ThreadedClass } from 'threadedclass'
 import { Process } from './process'
-import { DDPConnectorOptions } from 'tv-automation-server-core-integration/dist/lib/ddpConnector'
 
 export interface CoreConfig {
 	host: string,
@@ -73,7 +73,7 @@ export class CoreHandler {
 		this._coreConfig = config
 		this._process = process
 
-		this.core = new CoreConnection(this.getCoreConnectionOptions('Playout gateway', 'PlayoutCoreParent', true))
+		this.core = new CoreConnection(this.getCoreConnectionOptions('Playout gateway', 'PlayoutCoreParent', P.SUBTYPE_PROCESS))
 
 		this.core.onConnected(() => {
 			this.logger.info('Core Connected!')
@@ -123,7 +123,7 @@ export class CoreHandler {
 			this.core.autoSubscribe('peripheralDevices', {
 				_id: this.core.deviceId
 			}),
-			this.core.autoSubscribe('studioInstallationOfDevice', this.core.deviceId),
+			this.core.autoSubscribe('studioOfDevice', this.core.deviceId),
 			this.core.autoSubscribe('peripheralDeviceCommands', this.core.deviceId)
 		])
 		.then(() => {
@@ -160,8 +160,11 @@ export class CoreHandler {
 			// nothing
 		})
 	}
-	getCoreConnectionOptions (name: string, subDeviceId: string, parentProcess: boolean): CoreOptions {
-		let credentials
+	getCoreConnectionOptions (name: string, subDeviceId: string, subDeviceType: DeviceType | P.SUBTYPE_PROCESS): CoreOptions {
+		let credentials: {
+			deviceId: string
+			deviceToken: string
+		}
 
 		if (this._deviceOptions.deviceId && this._deviceOptions.deviceToken) {
 			credentials = {
@@ -177,12 +180,17 @@ export class CoreHandler {
 		} else {
 			credentials = CoreConnection.getCredentials(subDeviceId)
 		}
-		let options: CoreOptions = _.extend(credentials, {
-			deviceType: (parentProcess ? P.DeviceType.PLAYOUT : P.DeviceType.OTHER),
+		let options: CoreOptions = {
+			...credentials,
+
+			deviceCategory: P.DeviceCategory.PLAYOUT,
+			deviceType: P.DeviceType.PLAYOUT,
+			deviceSubType: subDeviceType,
+
 			deviceName: name,
 			watchDog: (this._coreConfig ? this._coreConfig.watchdog : true)
-		})
-		if (parentProcess) options.versions = this._getVersions()
+		}
+		if (subDeviceType === P.SUBTYPE_PROCESS) options.versions = this._getVersions()
 		return options
 	}
 	onConnected (fcn: () => any) {
@@ -225,7 +233,7 @@ export class CoreHandler {
 				this.multithreading = this.deviceSettings['multiThreading']
 			}
 
-			let studioId = device.studioInstallationId
+			let studioId = device.studioId
 			if (studioId !== this._studioId) {
 				this._studioId = studioId
 
@@ -234,7 +242,7 @@ export class CoreHandler {
 					this._timelineSubscription = null
 				}
 				this.core.autoSubscribe('timeline', {
-					siId: studioId
+					studioId: studioId
 				}).then((subscriptionId) => {
 					this._timelineSubscription = subscriptionId
 				}).catch((err) => {
@@ -505,7 +513,8 @@ export class CoreTSRDeviceHandler {
 	async init (): Promise<void> {
 		let deviceName = this._device.deviceName
 		let deviceId = this._device.deviceId
-		this.core = new CoreConnection(this._coreParentHandler.getCoreConnectionOptions(deviceName, 'Playout' + deviceId, false))
+
+		this.core = new CoreConnection(this._coreParentHandler.getCoreConnectionOptions(deviceName, 'Playout' + deviceId, this._device.deviceOptions.type))
 		this.core.onError((err) => {
 			this._coreParentHandler.logger.error('Core Error: ' + ((_.isObject(err) && err.message) || err.toString() || err))
 		})

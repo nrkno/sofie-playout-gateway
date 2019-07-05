@@ -1,6 +1,6 @@
 {
   "name": "playout-gateway",
-  "version": "0.19.1",
+  "version": "0.20.0-0",
   "description": "Connect to Core, play stuff",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -113,9 +113,11 @@
     "fast-clone": "^1.5.13",
     "pouchdb-node": "6.4.3",
     "promise-sequence": "^0.3.1",
-    "timeline-state-resolver": "^2.2.0",
+    "timeline-state-resolver": "^3.0.1",
     "tslib": "^1.9.2",
-    "tv-automation-server-core-integration": "^0.9.0",
+    "tv-automation-server-core-integration": "1.1.0",
+    "tv-automation-sofie-blueprints-integration": "0.22.0",
+    "timeline-state-resolver-types": "3.0.1",
     "underscore": "^1.9.1",
     "winston": "^2.4.2"
   }

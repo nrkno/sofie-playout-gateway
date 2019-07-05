@@ -4,6 +4,7 @@ import * as Winston from 'winston'
 export interface LoggerInstance extends Winston.LoggerInstance {
 	warning: never // logger.warning is not a function
 }
+console.log('process started') // This is a message all Sofie processes log upon startup
 
 let c: Connector
 // Setup logging --------------------------------------
