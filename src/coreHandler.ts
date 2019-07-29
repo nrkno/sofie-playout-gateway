@@ -6,7 +6,7 @@ import { CoreConnection,
 } from 'tv-automation-server-core-integration'
 
 import * as cp from 'child_process'
-import { DeviceType, CasparCGDevice, DeviceContainer } from 'timeline-state-resolver'
+import { DeviceType, CasparCGDevice, DeviceContainer, HyperdeckDevice } from 'timeline-state-resolver'
 
 import * as _ from 'underscore'
 import { DeviceConfig } from './connector'
@@ -422,6 +422,14 @@ export class CoreHandler {
 
 		return device.restartCasparCG()
 	}
+	formatHyperdeck (deviceId: string): Promise<any> {
+		if (!this._tsrHandler) throw new Error('TSRHandler is not initialized')
+
+		let device = this._tsrHandler.tsr.getDevice(deviceId).device as ThreadedClass<HyperdeckDevice>
+		if (!device) throw new Error(`TSR Device "${deviceId}" not found!`)
+
+		return device.formatDisks()
+	}
 	updateCoreStatus (): Promise<any> {
 		let statusCode = P.StatusCode.GOOD
 		let messages: Array<string> = []
@@ -585,6 +593,14 @@ export class CoreTSRDeviceHandler {
 		let device = this._device.device as ThreadedClass<CasparCGDevice>
 		if (device.restartCasparCG) {
 			return device.restartCasparCG()
+		} else {
+			return Promise.reject('device.restartCasparCG not set')
+		}
+	}
+	formatHyperdeck (): Promise<any> {
+		let device = this._device.device as ThreadedClass<HyperdeckDevice>
+		if (device.formatDisks) {
+			return device.formatDisks()
 		} else {
 			return Promise.reject('device.restartCasparCG not set')
 		}
