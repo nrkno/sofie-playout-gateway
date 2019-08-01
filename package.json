@@ -113,11 +113,10 @@
     "fast-clone": "^1.5.13",
     "pouchdb-node": "6.4.3",
     "promise-sequence": "^0.3.1",
-    "timeline-state-resolver": "^3.1.0",
+    "timeline-state-resolver": "^3.1.1",
     "tslib": "^1.9.2",
     "tv-automation-server-core-integration": "1.2.0",
     "tv-automation-sofie-blueprints-integration": "0.24.0",
-    "timeline-state-resolver-types": "3.0.1",
     "underscore": "^1.9.1",
     "winston": "^2.4.2"
   }
