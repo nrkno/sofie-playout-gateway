@@ -543,10 +543,16 @@ export class TSRHandler {
 				let onSlowCommand = (msg: string) => {
 					this.logger.warn(msg)
 				}
+				const onCommandError = (error, context) => {
+					// todo: handle this better
+					this.logger.error(error)
+					this.logger.debug(context)
+				}
 				return coreTsrHandler.init()
 				.then(async () => {
 					await device.device.on('connectionChanged', onConnectionChanged)
 					await device.device.on('slowCommand', onSlowCommand)
+					await device.device.on('commandError', onCommandError)
 					// also ask for the status now, and update:
 					onConnectionChanged(await device.device.getStatus())
 
