@@ -6,7 +6,11 @@ import {
 	TimelineTriggerTimeResult,
 	DeviceOptions,
 	Mappings,
-	DeviceContainer
+	DeviceContainer,
+	Timeline as TimelineTypes,
+	TSRTimelineObj,
+	TSRTimeline,
+	TSRTimelineObjBase
 } from 'timeline-state-resolver'
 import { CoreHandler, CoreTSRDeviceHandler } from './coreHandler'
 let clone = require('fast-clone')
@@ -15,7 +19,6 @@ import * as crypto from 'crypto'
 import * as _ from 'underscore'
 import { CoreConnection, PeripheralDeviceAPI as P, CollectionObj } from 'tv-automation-server-core-integration'
 import { TimelineObjectCoreExt } from 'tv-automation-sofie-blueprints-integration'
-import { Timeline as TimelineTypes, TSRTimelineObj, TSRTimeline, TSRTimelineObjBase } from 'timeline-state-resolver-types'
 import { LoggerInstance } from './index'
 
 export interface TSRConfig {
