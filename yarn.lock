@@ -885,10 +885,10 @@ atem-connection@0.10.0, atem-connection@^0.10.0:
     tslib "^1.9.0"
     wavefile "^8.4.4"
 
-atem-state@^0.7.0:
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/atem-state/-/atem-state-0.7.0.tgz#44fff1723484ca998b46ab503f50797538c29c07"
-  integrity sha512-mOmLG38rLTc2HvOOSS5gkQw/SQKsTBsqhjV60keOYjlXQHq7wJhermgephmLELvB6icBLaBHd5ihVrZogv1TSg==
+atem-state@^0.7.1:
+  version "0.7.1"
+  resolved "https://registry.yarnpkg.com/atem-state/-/atem-state-0.7.1.tgz#266e1c4fce5ee8e97557402a5177d4b1ad1260ca"
+  integrity sha512-BJJPGLH8Vnnvg/xCI8MwOrJiRr0US33ZZLVfGJEUWOrwIfdRj48VlzewVY7mWna3zrb7FJC0YBYHpzTDCeCwKw==
   dependencies:
     atem-connection "^0.10.0"
     tslib "^1.9.2"
@@ -6610,16 +6610,16 @@ timeline-state-resolver-types@^3.2.0:
   dependencies:
     tslib "^1.9.3"
 
-timeline-state-resolver@^3.5.0:
-  version "3.5.0"
-  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-3.5.0.tgz#2ef261ebe477078ed503ac88a4519d309fdd6d42"
-  integrity sha512-mdYBCW5iG0dMTZVnL1vfUWmfFn/z4lLySM+6z2mT4AXZBtOBTDfiA4lMa32AOlBAuTDCT/blYv5rL/gUIdk+6w==
+timeline-state-resolver@^3.6.0:
+  version "3.6.0"
+  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-3.6.0.tgz#b2264adff339b2cee472e3ac0bd77ddd5b651d3c"
+  integrity sha512-KBdoU4zp++dWnbIoDjVY7e4qVzOCFh6+RcYW144Gqob4d+JbsHki6YFBZhxXQh3LgrxstMQ2RJUXgyLn7PQrPA==
   dependencies:
     "@types/request" "^2.48.1"
     "@types/sprintf-js" "^1.1.0"
     "@types/ws" "^6.0.1"
     atem-connection "^0.10.0"
-    atem-state "^0.7.0"
+    atem-state "^0.7.1"
     casparcg-connection "^4.7.0"
     casparcg-state "^1.8.1"
     emberplus "git+https://github.com/nrkno/tv-automation-emberplus-connection#dist10102018"
