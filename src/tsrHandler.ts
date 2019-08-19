@@ -10,8 +10,7 @@ import {
 	Timeline as TimelineTypes,
 	TSRTimelineObj,
 	TSRTimeline,
-	TSRTimelineObjBase,
-	CommandWithContext
+	TSRTimelineObjBase
 } from 'timeline-state-resolver'
 import { CoreHandler, CoreTSRDeviceHandler } from './coreHandler'
 let clone = require('fast-clone')
@@ -552,7 +551,7 @@ export class TSRHandler {
 				const onSlowCommand = (commandInfo: string) => {
 					this.logger.warn(commandInfo)
 				}
-				const onCommandError = (error: Error, context: CommandWithContext) => {
+				/*const onCommandError = (error: Error, context: CommandWithContext) => {
 					if (this._errorReporting) {
 						this.logger.warn('CommandError', device.deviceId, error.toString())
 						this.logger.info('Command context', context.timelineObjId, context.context)
@@ -578,7 +577,7 @@ export class TSRHandler {
 							pieceId:	obj ? obj['pieceId']	: undefined
 						})
 					}
-				}
+				}*/
 				const onCommandError = (error, context) => {
 					// todo: handle this better
 					this.logger.error(error)
