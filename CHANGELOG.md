@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [0.21.0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v0.21.0-3...v0.21.0) (2019-08-19)
+
+
+
 <a name="0.21.0-3"></a>
 # 0.21.0-3 (2019-08-19)
 
