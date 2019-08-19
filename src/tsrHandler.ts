@@ -10,7 +10,8 @@ import {
 	Timeline as TimelineTypes,
 	TSRTimelineObj,
 	TSRTimeline,
-	TSRTimelineObjBase
+	TSRTimelineObjBase,
+	CommandWithContext
 } from 'timeline-state-resolver'
 import { CoreHandler, CoreTSRDeviceHandler } from './coreHandler'
 let clone = require('fast-clone')
@@ -29,6 +30,7 @@ export interface TSRSettings { // Runtime settings from Core
 	}
 	initializeAsClear: boolean
 	mappings: Mappings
+	errorReporting?: boolean
 	multiThreading?: boolean
 	multiThreadedResolver?: boolean
 }
@@ -98,6 +100,7 @@ export class TSRHandler {
 
 	private _initialized: boolean = false
 	private _multiThreaded: boolean | null = null
+	private _errorReporting: boolean | null = null
 
 	constructor (logger: LoggerInstance) {
 		this.logger = logger
@@ -291,6 +294,11 @@ export class TSRHandler {
 			this.tsr.logDebug = this._coreHandler.logDebug
 		}
 
+		if (this._errorReporting !== this._coreHandler.errorReporting) {
+			this._errorReporting = this._coreHandler.errorReporting
+
+			this.logger.info('ErrorReporting: ' + this._multiThreaded)
+		}
 		if (this._multiThreaded !== this._coreHandler.multithreading) {
 			this._multiThreaded = this._coreHandler.multithreading
 
@@ -382,6 +390,7 @@ export class TSRHandler {
 				this.getTimeline(true) as Array<TimelineObjGeneric>
 			)
 			if (transformedTimeline) {
+				// @ts-ignore
 				this.tsr.timeline = transformedTimeline
 			} else {
 				this.logger.warn('Did NOT update Timeline due to an error')
@@ -507,7 +516,7 @@ export class TSRHandler {
 
 				this._coreTsrHandlers[deviceId] = coreTsrHandler
 
-				let onConnectionChanged = (connectedOrStatus: boolean | P.StatusObject) => {
+				const onConnectionChanged = (connectedOrStatus: boolean | P.StatusObject) => {
 					let deviceStatus: P.StatusObject
 					if (_.isBoolean(connectedOrStatus)) { // for backwards compability, to be removed later
 						if (connectedOrStatus) {
@@ -540,8 +549,35 @@ export class TSRHandler {
 						}
 					}
 				}
-				let onSlowCommand = (msg: string) => {
-					this.logger.warn(msg)
+				const onSlowCommand = (commandInfo: string) => {
+					this.logger.warn(commandInfo)
+				}
+				const onCommandError = (error: Error, context: CommandWithContext) => {
+					if (this._errorReporting) {
+						this.logger.warn('CommandError', device.deviceId, error.toString())
+						this.logger.info('Command context', context.timelineObjId, context.context)
+
+						// find the corresponding timeline object:
+						const obj = _.find(this.tsr.timeline, (obj) => {
+							return obj.id === context.timelineObjId
+						})
+
+						const errorString: string = device.deviceName +
+						(
+							error instanceof Error ?
+								error.toString() :
+							_.isObject(error) ?
+								JSON.stringify(error) :
+							error + ''
+						)
+						coreTsrHandler.onCommandError(errorString, {
+							timelineObjId:	context.timelineObjId,
+							context: 		context.context,
+							rundownId:	obj ? obj['rundownId']	: undefined,
+							partId:		obj ? obj['partId']		: undefined,
+							pieceId:	obj ? obj['pieceId']	: undefined
+						})
+					}
 				}
 				const onCommandError = (error, context) => {
 					// todo: handle this better
@@ -550,6 +586,7 @@ export class TSRHandler {
 				}
 				return coreTsrHandler.init()
 				.then(async () => {
+
 					await device.device.on('connectionChanged', onConnectionChanged)
 					await device.device.on('slowCommand', onSlowCommand)
 					await device.device.on('commandError', onCommandError)
