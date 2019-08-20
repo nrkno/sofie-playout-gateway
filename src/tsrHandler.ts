@@ -579,11 +579,6 @@ export class TSRHandler {
 						})
 					}
 				}
-				const onCommandError = (error, context) => {
-					// todo: handle this better
-					this.logger.error(error)
-					this.logger.debug(context)
-				}
 				return coreTsrHandler.init()
 				.then(async () => {
 
