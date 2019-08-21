@@ -577,6 +577,8 @@ export class TSRHandler {
 							partId:		obj ? obj['partId']		: undefined,
 							pieceId:	obj ? obj['pieceId']	: undefined
 						})
+					} else {
+						this.logger.warn('CommandError', device.deviceId, error.toString(), error.stack)
 					}
 				}
 				return coreTsrHandler.init()
