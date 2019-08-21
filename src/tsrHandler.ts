@@ -459,6 +459,7 @@ export class TSRHandler {
 			} = {}
 
 			_.each(settings.devices, (device, deviceId) => {
+				// @ts-ignore
 				if (!device.disable) {
 					devices[deviceId] = device
 				}
