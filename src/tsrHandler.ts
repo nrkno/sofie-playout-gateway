@@ -454,7 +454,17 @@ export class TSRHandler {
 		if (peripheralDevice) {
 			let settings: TSRSettings = peripheralDevice.settings || {}
 
-			let devices = settings.devices
+			const devices: {
+				[deviceId: string]: DeviceOptions;
+			} = {}
+
+			_.each(settings.devices, (device, deviceId) => {
+				if (!device.disable) {
+					devices[deviceId] = device
+				}
+			})
+
+			console.log('devices', devices)
 
 			_.each(devices, (deviceOptions: DeviceOptions, deviceId: string) => {
 
