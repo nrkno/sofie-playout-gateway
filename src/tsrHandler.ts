@@ -465,8 +465,6 @@ export class TSRHandler {
 				}
 			})
 
-			console.log('devices', devices)
-
 			_.each(devices, (deviceOptions: DeviceOptions, deviceId: string) => {
 
 				let oldDevice: DeviceContainer = this.tsr.getDevice(deviceId)
