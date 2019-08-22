@@ -453,7 +453,16 @@ export class TSRHandler {
 		if (peripheralDevice) {
 			let settings: TSRSettings = peripheralDevice.settings || {}
 
-			let devices = settings.devices
+			const devices: {
+				[deviceId: string]: DeviceOptions;
+			} = {}
+
+			_.each(settings.devices, (device, deviceId) => {
+				// @ts-ignore
+				if (!device.disable) {
+					devices[deviceId] = device
+				}
+			})
 
 			_.each(devices, (deviceOptions: DeviceOptions, deviceId: string) => {
 
@@ -576,6 +585,8 @@ export class TSRHandler {
 							partId:		obj ? obj['partId']		: undefined,
 							pieceId:	obj ? obj['pieceId']	: undefined
 						})
+					} else {
+						this.logger.warn('CommandError', device.deviceId, error.toString(), error.stack)
 					}
 				}*/
 				const onCommandError = (error, context) => {
