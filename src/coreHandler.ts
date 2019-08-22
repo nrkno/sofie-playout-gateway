@@ -10,7 +10,8 @@ import * as cp from 'child_process'
 import {
 	DeviceType,
 	CasparCGDevice,
-	DeviceContainer
+	DeviceContainer,
+	HyperdeckDevice
 } from 'timeline-state-resolver'
 
 import * as _ from 'underscore'
@@ -431,6 +432,14 @@ export class CoreHandler {
 
 		return device.restartCasparCG()
 	}
+	formatHyperdeck (deviceId: string): void {
+		if (!this._tsrHandler) throw new Error('TSRHandler is not initialized')
+
+		let device = this._tsrHandler.tsr.getDevice(deviceId).device as ThreadedClass<HyperdeckDevice>
+		if (!device) throw new Error(`TSR Device "${deviceId}" not found!`)
+
+		device.formatDisks()
+	}
 	updateCoreStatus (): Promise<any> {
 		let statusCode = P.StatusCode.GOOD
 		let messages: Array<string> = []
@@ -611,6 +620,15 @@ export class CoreTSRDeviceHandler {
 			return device.restartCasparCG()
 		} else {
 			return Promise.reject('device.restartCasparCG not set')
+		}
+	}
+	formatHyperdeck (): Promise<any> {
+		let device = this._device.device as ThreadedClass<HyperdeckDevice>
+		if (device.formatDisks) {
+			device.formatDisks()
+			return Promise.resolve()
+		} else {
+			return Promise.reject('device.formatHyperdeck not set')
 		}
 	}
 }
