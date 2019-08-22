@@ -594,12 +594,33 @@ export class TSRHandler {
 					this.logger.error(error)
 					this.logger.debug(context)
 				}
+				let deviceName = device.deviceName
+				const fixError = (e) => {
+
+					let name = `Device "${deviceName || deviceId}"`
+					if (e.reason) e.reason = name + ': ' + e.reason
+					if (e.message) e.message = name + ': ' + e.message
+					if (e.stack) {
+						e.stack += '\nAt device' + name
+					}
+					if (_.isString(e)) e = name + ': ' + e
+
+					return e
+				}
 				return coreTsrHandler.init()
 				.then(async () => {
+
+					deviceName = device.deviceName
 
 					await device.device.on('connectionChanged', onConnectionChanged)
 					await device.device.on('slowCommand', onSlowCommand)
 					await device.device.on('commandError', onCommandError)
+
+					await device.device.on('info',	(e, ...args) => this.logger.info(fixError(e), ...args))
+					await device.device.on('warning',	(e, ...args) => this.logger.warn(fixError(e), ...args))
+					await device.device.on('error',	(e, ...args) => this.logger.error(fixError(e), ...args))
+					await device.device.on('debug',	(e, ...args) => this.logger.error(fixError(e), ...args))
+
 					// also ask for the status now, and update:
 					onConnectionChanged(await device.device.getStatus())
 
