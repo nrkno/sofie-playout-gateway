@@ -619,7 +619,7 @@ export class TSRHandler {
 					await device.device.on('info',	(e, ...args) => this.logger.info(fixError(e), ...args))
 					await device.device.on('warning',	(e, ...args) => this.logger.warn(fixError(e), ...args))
 					await device.device.on('error',	(e, ...args) => this.logger.error(fixError(e), ...args))
-					await device.device.on('debug',	(e, ...args) => this.logger.error(fixError(e), ...args))
+					await device.device.on('debug',	(e, ...args) => this.logger.debug(fixError(e), ...args))
 
 					// also ask for the status now, and update:
 					onConnectionChanged(await device.device.getStatus())
