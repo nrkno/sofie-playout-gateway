@@ -1188,12 +1188,7 @@ caching-transform@^3.0.2:
     package-hash "^3.0.0"
     write-file-atomic "^2.4.2"
 
-callsites@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/callsites/-/callsites-2.0.0.tgz#06eb84f00eea413da86affefacbffb36093b3c50"
-  integrity sha1-BuuE8A7qQT2oav/vrL/7Ngk7PFA=
-
-callsites@^3.0.0:
+callsites@^3.0.0, callsites@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/callsites/-/callsites-3.1.0.tgz#b3630abd8943432f54b3f0519238e33cd7df2f73"
   integrity sha512-P8BjAsXvZS+VIDUI11hHCQEv74YT67YUi5JJFNWIqL235sBmjX4+qx9Muvls5ivyNENctx46xQLQ3aTuE7ssaQ==
@@ -6562,12 +6557,12 @@ text-hex@1.0.x:
   resolved "https://registry.yarnpkg.com/text-hex/-/text-hex-1.0.0.tgz#69dc9c1b17446ee79a92bf5b884bb4b9127506f5"
   integrity sha512-uuVGNWzgJ4yhRaNSiubPY7OjISw4sw4E5Uv0wbjp+OzcbmVU/rsT8ujgcXJhn9ypzsgr5vlzpPqP+MBBKcGvbg==
 
-threadedclass@^0.6.3:
-  version "0.6.3"
-  resolved "https://registry.yarnpkg.com/threadedclass/-/threadedclass-0.6.3.tgz#8bf6cbd0522c1a557b243848a823439db0a610b9"
-  integrity sha512-thTKgVNwtozM3G8NKYEUQut5oxkSfQrft6PB79d4ZrfmjQHTkoCKsvC5G+qc8gtnz22Icewgmm7tTd0vAYDNnQ==
+threadedclass@^0.6.4:
+  version "0.6.4"
+  resolved "https://registry.yarnpkg.com/threadedclass/-/threadedclass-0.6.4.tgz#674dcc987ad58f41a6a26ab2d08ca402fe12a55f"
+  integrity sha512-/AaKcZAp4TapCKXKsxIL2ezte9k2NBd+f5ZBbA2wSCDQXGq2r0CZRYwuNuQNHItSOjp3sLGiHNLi5rEE+cozZQ==
   dependencies:
-    callsites "^2.0.0"
+    callsites "^3.1.0"
     tslib "^1.9.3"
 
 throat@^4.0.0:
@@ -6610,10 +6605,10 @@ timeline-state-resolver-types@^3.2.0:
   dependencies:
     tslib "^1.9.3"
 
-timeline-state-resolver@^3.6.0:
-  version "3.6.0"
-  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-3.6.0.tgz#b2264adff339b2cee472e3ac0bd77ddd5b651d3c"
-  integrity sha512-KBdoU4zp++dWnbIoDjVY7e4qVzOCFh6+RcYW144Gqob4d+JbsHki6YFBZhxXQh3LgrxstMQ2RJUXgyLn7PQrPA==
+timeline-state-resolver@^3.7.0:
+  version "3.7.0"
+  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-3.7.0.tgz#c497d03eaa91ef59c9d691ffff8688f39b90cfba"
+  integrity sha512-DoeYmmZ2WW0a0J2jZXf3p+cgCCNLzGUOoiccWKCqd9padWSyVfvfw/SKotty3EwDj7W2vlK38OBvnlWDNP0lag==
   dependencies:
     "@types/request" "^2.48.1"
     "@types/sprintf-js" "^1.1.0"
@@ -6629,7 +6624,7 @@ timeline-state-resolver@^3.6.0:
     request "^2.88.0"
     sprintf-js "^1.1.2"
     superfly-timeline "^7.2.1"
-    threadedclass "^0.6.3"
+    threadedclass "^0.6.4"
     underscore "^1.9.1"
     underscore-deep-extend "^1.1.5"
     ws "^7.1.1"
