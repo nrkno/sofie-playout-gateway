@@ -92,4 +92,3 @@ c.init(config)
 	logger.error(e)
 })
 
-// @todo: remove this line of comment
