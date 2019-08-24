@@ -55,6 +55,7 @@ export class CoreHandler {
 
 	public errorReporting: boolean = false
 	public multithreading: boolean = false
+	public reportAllCommands: boolean = false
 
 	private _deviceOptions: DeviceConfig
 	private _onConnected?: () => any
@@ -241,6 +242,9 @@ export class CoreHandler {
 			}
 			if (this.deviceSettings['multiThreading'] !== this.multithreading) {
 				this.multithreading = this.deviceSettings['multiThreading']
+			}
+			if (this.deviceSettings['reportAllCommands'] !== this.reportAllCommands) {
+				this.reportAllCommands = this.deviceSettings['reportAllCommands']
 			}
 
 			let studioId = device.studioId
@@ -518,8 +522,6 @@ export class CoreTSRDeviceHandler {
 		this._coreParentHandler = parent
 		this._device = device
 		this._tsrHandler = tsrHandler
-
-		this._device = this._device
 
 		this._coreParentHandler.logger.info('new CoreTSRDeviceHandler ' + device.deviceName)
 

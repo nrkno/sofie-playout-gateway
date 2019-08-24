@@ -10,7 +10,8 @@ import {
 	Timeline as TimelineTypes,
 	TSRTimelineObj,
 	TSRTimeline,
-	TSRTimelineObjBase
+	TSRTimelineObjBase,
+	CommandReport
 } from 'timeline-state-resolver'
 import { CoreHandler, CoreTSRDeviceHandler } from './coreHandler'
 let clone = require('fast-clone')
@@ -99,6 +100,7 @@ export class TSRHandler {
 
 	private _initialized: boolean = false
 	private _multiThreaded: boolean | null = null
+	private _reportAllCommands: boolean | null = null
 	private _errorReporting: boolean | null = null
 
 	constructor (logger: LoggerInstance) {
@@ -302,6 +304,13 @@ export class TSRHandler {
 			this._multiThreaded = this._coreHandler.multithreading
 
 			this.logger.info('Multithreading: ' + this._multiThreaded)
+
+			this._updateDevices()
+		}
+		if (this._reportAllCommands !== this._coreHandler.reportAllCommands) {
+			this._reportAllCommands = this._coreHandler.reportAllCommands
+
+			this.logger.info('ReportAllCommands: ' + this._reportAllCommands)
 
 			this._updateDevices()
 		}
@@ -589,6 +598,14 @@ export class TSRHandler {
 						this.logger.warn('CommandError', device.deviceId, error.toString(), error.stack)
 					}
 				}*/
+				const onCommandReport = (commandReport: CommandReport) => {
+					if (this._reportAllCommands) {
+						// Todo: send these to Core
+						this.logger.info('commandReport', {
+							commandReport: commandReport
+						})
+					}
+				}
 				const onCommandError = (error, context) => {
 					// todo: handle this better
 					this.logger.error(error)
@@ -615,6 +632,7 @@ export class TSRHandler {
 					await device.device.on('connectionChanged', onConnectionChanged)
 					await device.device.on('slowCommand', onSlowCommand)
 					await device.device.on('commandError', onCommandError)
+					await device.device.on('commandReport', onCommandReport)
 
 					await device.device.on('info',	(e, ...args) => this.logger.info(fixError(e), ...args))
 					await device.device.on('warning',	(e, ...args) => this.logger.warn(fixError(e), ...args))
