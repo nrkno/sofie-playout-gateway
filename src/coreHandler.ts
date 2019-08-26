@@ -442,7 +442,8 @@ export class CoreHandler {
 		let device = this._tsrHandler.tsr.getDevice(deviceId).device as ThreadedClass<HyperdeckDevice>
 		if (!device) throw new Error(`TSR Device "${deviceId}" not found!`)
 
-		return device.formatDisks()
+		return Promise.resolve()
+		// return device.formatDisks()
 	}
 	updateCoreStatus (): Promise<any> {
 		let statusCode = P.StatusCode.GOOD
