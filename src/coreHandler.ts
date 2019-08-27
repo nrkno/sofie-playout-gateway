@@ -436,14 +436,13 @@ export class CoreHandler {
 
 		return device.restartCasparCG()
 	}
-	formatHyperdeck (deviceId: string): Promise<void> {
+	async formatHyperdeck (deviceId: string): Promise<void> {
 		if (!this._tsrHandler) throw new Error('TSRHandler is not initialized')
 
 		let device = this._tsrHandler.tsr.getDevice(deviceId).device as ThreadedClass<HyperdeckDevice>
 		if (!device) throw new Error(`TSR Device "${deviceId}" not found!`)
 
-		return Promise.resolve()
-		// return device.formatDisks()
+		await device.formatDisks()
 	}
 	updateCoreStatus (): Promise<any> {
 		let statusCode = P.StatusCode.GOOD
