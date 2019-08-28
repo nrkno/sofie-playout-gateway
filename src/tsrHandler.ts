@@ -612,9 +612,10 @@ export class TSRHandler {
 					this.logger.debug(context)
 				}
 				let deviceName = device.deviceName
+				let deviceInstanceId = device.instanceId
 				const fixError = (e) => {
 
-					let name = `Device "${deviceName || deviceId}"`
+					let name = `Device "${deviceName || deviceId}" (${deviceInstanceId})`
 					if (e.reason) e.reason = name + ': ' + e.reason
 					if (e.message) e.message = name + ': ' + e.message
 					if (e.stack) {
