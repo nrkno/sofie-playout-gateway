@@ -664,8 +664,20 @@ export class TSRHandler {
 
 			deviceName = device.deviceName
 
+			device.onChildClose = () => {
+				// Called if a child is closed / crashed
+				this.logger.warn(`Child of device ${deviceId} closed/crashed`)
 
+				onConnectionChanged({
+					statusCode: P.StatusCode.BAD,
+					messages: ['Child process closed']
+				})
 
+				this._removeDevice(deviceId)
+				.then(() => {
+					this._triggerUpdateDevices()
+				}, () => {
+					this._triggerUpdateDevices()
 				})
 			}
 			await device.device.on('connectionChanged', onConnectionChanged)
