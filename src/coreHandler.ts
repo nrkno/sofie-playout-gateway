@@ -428,6 +428,24 @@ export class CoreHandler {
 			mappings: mappings
 		}
 	}
+	getDevicesInfo (): any {
+		this.logger.info('getDevicesInfo')
+
+		const devices: any[] = []
+		if (this._tsrHandler) {
+			for (let device of this._tsrHandler.tsr.getDevices()) {
+
+				devices.push({
+					instanceId: device.instanceId,
+					deviceId: device.deviceId,
+					deviceName: device.deviceName,
+					startTime: device.startTime,
+					upTime: Date.now() - device.startTime
+				})
+			}
+		}
+		return devices
+	}
 	restartCasparCG (deviceId: string): Promise<any> {
 		if (!this._tsrHandler) throw new Error('TSRHandler is not initialized')
 
