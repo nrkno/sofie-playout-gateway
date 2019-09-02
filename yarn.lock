@@ -2996,10 +2996,10 @@ humanize-url@^1.0.0:
     normalize-url "^1.0.0"
     strip-url-auth "^1.0.0"
 
-hyperdeck-connection@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/hyperdeck-connection/-/hyperdeck-connection-0.2.0.tgz#cfc51723dad68ce7c64b19a5c17a168a529a82fe"
-  integrity sha512-tRN4PLna48kcrc3qRwEwjkdaWjEyWdlgz4x7P5/KL1MGShz4ZkXtn4Wx0nL/h6/ienhlgaLE7kGvaBNRu20fdQ==
+hyperdeck-connection@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/hyperdeck-connection/-/hyperdeck-connection-0.3.0.tgz#b9a7bb57cdd21a5b0203f39d95fdefc57c9d0354"
+  integrity sha512-yKxtu9op1PugwiwdrWdXTqMzk7iXdXUwUw/o9z1CEngW/9ZdOLqFysjL9siG2oL6vjPUUWLEIiCKx6p5BldBug==
   dependencies:
     underscore "^1.9.1"
     underscore-deep-extend "^1.1.5"
@@ -6605,10 +6605,10 @@ timeline-state-resolver-types@^3.2.0:
   dependencies:
     tslib "^1.9.3"
 
-timeline-state-resolver@^3.7.7:
-  version "3.7.7"
-  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-3.7.7.tgz#3dfe949a2247623e36e9a15318febe589eeecd47"
-  integrity sha512-ZLqs838E8R0dGWIJXq4VjWxM1oiuej83IIQYJ7X1wAWwyHZLfY9vNl+Hn6cJZhX3W/STG50BEvTBueBiHcfc3Q==
+timeline-state-resolver@^3.8.0:
+  version "3.8.0"
+  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-3.8.0.tgz#e7306d354bfdfb49f7adef528b9261bfc0587ab3"
+  integrity sha512-xIwad4e39aO6Q6OOYeJz/9YADo5gp17JbJFo8ghhSfUMxoTkqcNMynyttFarmkwq4yh1cBOOrN3C8RAMvyTaBg==
   dependencies:
     "@types/request" "^2.48.1"
     "@types/sprintf-js" "^1.1.0"
@@ -6619,7 +6619,7 @@ timeline-state-resolver@^3.7.7:
     casparcg-state "^1.8.1"
     emberplus "git+https://github.com/nrkno/tv-automation-emberplus-connection#dist10102018"
     fast-clone "^1.5.13"
-    hyperdeck-connection "^0.2.0"
+    hyperdeck-connection "^0.3.0"
     osc "^2.2.4"
     request "^2.88.0"
     sprintf-js "^1.1.2"
