@@ -84,7 +84,7 @@ export interface TimelineContentObjectTmp extends TSRTimelineObjBase {
 	inGroup?: string
 }
 /** Max time for initializing devices */
-const INIT_TIMEOUT = 5000
+const INIT_TIMEOUT = 10000
 /**
  * Represents a connection between Gateway and TSR
  */
@@ -546,7 +546,10 @@ export class TSRHandler {
 
 		await Promise.race([
 			Promise.all(ps),
-			new Promise(resolve => setTimeout(resolve, INIT_TIMEOUT)) // Timeout if not all are resolved within INIT_TIMEOUT
+			new Promise(resolve => setTimeout(() => {
+				this.logger.warn(`Timeout in _updateDevices`)
+				resolve()
+			}, INIT_TIMEOUT)) // Timeout if not all are resolved within INIT_TIMEOUT
 		])
 		this.logger.info('updateDevices end')
 	}
