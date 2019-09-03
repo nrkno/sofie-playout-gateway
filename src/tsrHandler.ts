@@ -502,15 +502,19 @@ export class TSRHandler {
 					limitSlowFulfilledCommand: 100
 				}, deviceOptions)
 
+				if (this._multiThreaded !== null && deviceOptions.isMultiThreaded === undefined) {
+					deviceOptions.isMultiThreaded = this._multiThreaded
+				}
+				if (this._reportAllCommands !== null && deviceOptions.reportAllCommands === undefined) {
+					deviceOptions.reportAllCommands = this._reportAllCommands
+				}
+
 				if (!oldDevice) {
 					if (deviceOptions.options) {
 						this.logger.info('Initializing device: ' + deviceId)
 						ps.push(this._addDevice(deviceId, deviceOptions))
 					}
 				} else {
-					if (this._multiThreaded !== null && deviceOptions.isMultiThreaded === undefined) {
-						deviceOptions.isMultiThreaded = this._multiThreaded
-					}
 					if (deviceOptions.options) {
 						let anyChanged = false
 
