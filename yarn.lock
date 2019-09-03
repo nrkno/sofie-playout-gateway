@@ -6443,7 +6443,7 @@ strip-url-auth@^1.0.0:
   resolved "https://registry.yarnpkg.com/strip-url-auth/-/strip-url-auth-1.0.1.tgz#22b0fa3a41385b33be3f331551bbb837fa0cd7ae"
   integrity sha1-IrD6OkE4WzO+PzMVUbu4N/oM164=
 
-superfly-timeline@^7.2.1:
+superfly-timeline@^7.2.4:
   version "7.2.4"
   resolved "https://registry.yarnpkg.com/superfly-timeline/-/superfly-timeline-7.2.4.tgz#ef3c401bd26124af7a7747926728018d211118fd"
   integrity sha512-TjO979Q26vQOFZsfb5bmMt0H+sf6Un32mS4cGaz2OQoSDZYxhhFbqT/J+X/veXkIaiIjSBjGMx9q7Csm3cduXw==
@@ -6605,10 +6605,10 @@ timeline-state-resolver-types@^3.2.0:
   dependencies:
     tslib "^1.9.3"
 
-timeline-state-resolver@^3.8.1:
-  version "3.8.1"
-  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-3.8.1.tgz#20faafcfbc7a28db53f3f34a399d13fa62179066"
-  integrity sha512-dkGuNhXOdK08hG0HcJkl/3Z0seDhWdn8d/oaEEfhvKyAiTYbDuBn4kxoyu60Bk+6Pg935OfHZOGK+kZt/xyA9Q==
+timeline-state-resolver@^3.8.2:
+  version "3.8.2"
+  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-3.8.2.tgz#62b9a3245fe3788370ae13ef12bc90563fa90612"
+  integrity sha512-/psLkW0GkJIQJDxNmK5EDicjV6PgoFDezzO9Rgt3ecz/caTJPbBQ6U8xmqwGtIUZ+45a82tKMFJzhmNridu1wQ==
   dependencies:
     "@types/request" "^2.48.1"
     "@types/sprintf-js" "^1.1.0"
@@ -6623,7 +6623,7 @@ timeline-state-resolver@^3.8.1:
     osc "^2.2.4"
     request "^2.88.0"
     sprintf-js "^1.1.2"
-    superfly-timeline "^7.2.1"
+    superfly-timeline "^7.2.4"
     threadedclass "^0.6.5"
     underscore "^1.9.1"
     underscore-deep-extend "^1.1.5"
