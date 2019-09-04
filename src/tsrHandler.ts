@@ -515,6 +515,7 @@ export class TSRHandler {
 				if (!oldDevice) {
 					if (deviceOptions.options) {
 						this.logger.info('Initializing device: ' + deviceId)
+						this.logger.info('new', deviceOptions)
 						ps.push(this._addDevice(deviceId, deviceOptions))
 					}
 				} else {
