@@ -229,8 +229,8 @@ export class TSRHandler {
 			this._initialized = true
 			this._triggerupdateMapping()
 			this._triggerupdateTimeline()
-			this._triggerUpdateDevices()
 			this.onSettingsChanged()
+			this._triggerUpdateDevices()
 			this.logger.debug('tsr init done')
 
 		})
@@ -455,12 +455,15 @@ export class TSRHandler {
 		if (!this._updateDevicesIsRunning) {
 			this._updateDevicesIsRunning = true
 
-			this._updateDevices()
-			.then(() => {
-				this._updateDevicesIsRunning = false
-			}, () => {
-				this._updateDevicesIsRunning = false
-			})
+			// Defer:
+			setTimeout(() => {
+				this._updateDevices()
+				.then(() => {
+					this._updateDevicesIsRunning = false
+				}, () => {
+					this._updateDevicesIsRunning = false
+				})
+			}, 10)
 		} else {
 			// oh, it's already running, check again later then:
 			if (this._triggerupdateDevicesTimeout) {
