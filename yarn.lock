@@ -885,10 +885,10 @@ atem-connection@0.10.0, atem-connection@^0.10.0:
     tslib "^1.9.0"
     wavefile "^8.4.4"
 
-atem-state@^0.7.0:
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/atem-state/-/atem-state-0.7.0.tgz#44fff1723484ca998b46ab503f50797538c29c07"
-  integrity sha512-mOmLG38rLTc2HvOOSS5gkQw/SQKsTBsqhjV60keOYjlXQHq7wJhermgephmLELvB6icBLaBHd5ihVrZogv1TSg==
+atem-state@^0.7.1:
+  version "0.7.1"
+  resolved "https://registry.yarnpkg.com/atem-state/-/atem-state-0.7.1.tgz#266e1c4fce5ee8e97557402a5177d4b1ad1260ca"
+  integrity sha512-BJJPGLH8Vnnvg/xCI8MwOrJiRr0US33ZZLVfGJEUWOrwIfdRj48VlzewVY7mWna3zrb7FJC0YBYHpzTDCeCwKw==
   dependencies:
     atem-connection "^0.10.0"
     tslib "^1.9.2"
@@ -1188,12 +1188,7 @@ caching-transform@^3.0.2:
     package-hash "^3.0.0"
     write-file-atomic "^2.4.2"
 
-callsites@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/callsites/-/callsites-2.0.0.tgz#06eb84f00eea413da86affefacbffb36093b3c50"
-  integrity sha1-BuuE8A7qQT2oav/vrL/7Ngk7PFA=
-
-callsites@^3.0.0:
+callsites@^3.0.0, callsites@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/callsites/-/callsites-3.1.0.tgz#b3630abd8943432f54b3f0519238e33cd7df2f73"
   integrity sha512-P8BjAsXvZS+VIDUI11hHCQEv74YT67YUi5JJFNWIqL235sBmjX4+qx9Muvls5ivyNENctx46xQLQ3aTuE7ssaQ==
@@ -3001,10 +2996,10 @@ humanize-url@^1.0.0:
     normalize-url "^1.0.0"
     strip-url-auth "^1.0.0"
 
-hyperdeck-connection@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/hyperdeck-connection/-/hyperdeck-connection-0.2.0.tgz#cfc51723dad68ce7c64b19a5c17a168a529a82fe"
-  integrity sha512-tRN4PLna48kcrc3qRwEwjkdaWjEyWdlgz4x7P5/KL1MGShz4ZkXtn4Wx0nL/h6/ienhlgaLE7kGvaBNRu20fdQ==
+hyperdeck-connection@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/hyperdeck-connection/-/hyperdeck-connection-0.3.0.tgz#b9a7bb57cdd21a5b0203f39d95fdefc57c9d0354"
+  integrity sha512-yKxtu9op1PugwiwdrWdXTqMzk7iXdXUwUw/o9z1CEngW/9ZdOLqFysjL9siG2oL6vjPUUWLEIiCKx6p5BldBug==
   dependencies:
     underscore "^1.9.1"
     underscore-deep-extend "^1.1.5"
@@ -6448,10 +6443,10 @@ strip-url-auth@^1.0.0:
   resolved "https://registry.yarnpkg.com/strip-url-auth/-/strip-url-auth-1.0.1.tgz#22b0fa3a41385b33be3f331551bbb837fa0cd7ae"
   integrity sha1-IrD6OkE4WzO+PzMVUbu4N/oM164=
 
-superfly-timeline@^7.2.1:
-  version "7.2.3"
-  resolved "https://registry.yarnpkg.com/superfly-timeline/-/superfly-timeline-7.2.3.tgz#af7f38aa06c9e3e34dfc47087c2c1f6a463e1fd0"
-  integrity sha512-0c6nTMNM9rP5b9SfK55K7C0OGknGRlfGOHxF3bYciT77r7oCJa20xJ5j0Wlf0iEST/NPWduoxF4Zco21nqDkKg==
+superfly-timeline@^7.2.4:
+  version "7.2.4"
+  resolved "https://registry.yarnpkg.com/superfly-timeline/-/superfly-timeline-7.2.4.tgz#ef3c401bd26124af7a7747926728018d211118fd"
+  integrity sha512-TjO979Q26vQOFZsfb5bmMt0H+sf6Un32mS4cGaz2OQoSDZYxhhFbqT/J+X/veXkIaiIjSBjGMx9q7Csm3cduXw==
   dependencies:
     underscore "^1.9.1"
 
@@ -6562,12 +6557,12 @@ text-hex@1.0.x:
   resolved "https://registry.yarnpkg.com/text-hex/-/text-hex-1.0.0.tgz#69dc9c1b17446ee79a92bf5b884bb4b9127506f5"
   integrity sha512-uuVGNWzgJ4yhRaNSiubPY7OjISw4sw4E5Uv0wbjp+OzcbmVU/rsT8ujgcXJhn9ypzsgr5vlzpPqP+MBBKcGvbg==
 
-threadedclass@^0.6.3:
-  version "0.6.3"
-  resolved "https://registry.yarnpkg.com/threadedclass/-/threadedclass-0.6.3.tgz#8bf6cbd0522c1a557b243848a823439db0a610b9"
-  integrity sha512-thTKgVNwtozM3G8NKYEUQut5oxkSfQrft6PB79d4ZrfmjQHTkoCKsvC5G+qc8gtnz22Icewgmm7tTd0vAYDNnQ==
+threadedclass@^0.6.6:
+  version "0.6.6"
+  resolved "https://registry.yarnpkg.com/threadedclass/-/threadedclass-0.6.6.tgz#426b9ae66deda0d8b96a1285bf5e5a03d1a5a6fc"
+  integrity sha512-YXy2Cggk4VgRbhkQXL02/kWEgIr5XKxSdi9keUFlLDJEJz26NxM6DMlnoOZY04MN7ahprJSevU8D7dD8LN1d1A==
   dependencies:
-    callsites "^2.0.0"
+    callsites "^3.1.0"
     tslib "^1.9.3"
 
 throat@^4.0.0:
@@ -6610,26 +6605,26 @@ timeline-state-resolver-types@^3.2.0:
   dependencies:
     tslib "^1.9.3"
 
-timeline-state-resolver@^3.5.0:
-  version "3.5.0"
-  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-3.5.0.tgz#2ef261ebe477078ed503ac88a4519d309fdd6d42"
-  integrity sha512-mdYBCW5iG0dMTZVnL1vfUWmfFn/z4lLySM+6z2mT4AXZBtOBTDfiA4lMa32AOlBAuTDCT/blYv5rL/gUIdk+6w==
+timeline-state-resolver@^3.8.3:
+  version "3.8.3"
+  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-3.8.3.tgz#098492b5c7c44d8b2d844406d6b5cec2c0493670"
+  integrity sha512-HffL2QQ6dT12s7SbKzWQuPPnKTfZX/z8wbOSxDxr0VeOOuXzK/nNfes7ahcFDYrGsHiixnQvk6rVu8ityglBhw==
   dependencies:
     "@types/request" "^2.48.1"
     "@types/sprintf-js" "^1.1.0"
     "@types/ws" "^6.0.1"
     atem-connection "^0.10.0"
-    atem-state "^0.7.0"
+    atem-state "^0.7.1"
     casparcg-connection "^4.7.0"
     casparcg-state "^1.8.1"
     emberplus "git+https://github.com/nrkno/tv-automation-emberplus-connection#dist10102018"
     fast-clone "^1.5.13"
-    hyperdeck-connection "^0.2.0"
+    hyperdeck-connection "^0.3.0"
     osc "^2.2.4"
     request "^2.88.0"
     sprintf-js "^1.1.2"
-    superfly-timeline "^7.2.1"
-    threadedclass "^0.6.3"
+    superfly-timeline "^7.2.4"
+    threadedclass "^0.6.6"
     underscore "^1.9.1"
     underscore-deep-extend "^1.1.5"
     ws "^7.1.1"
