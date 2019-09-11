@@ -1,26 +1,58 @@
-# Changelog
+# Change Log
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-### [1.0.0-0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v0.21.0...v1.0.0-0) (2019-08-19)
+<a name="1.0.0-3"></a>
+# [1.0.0-3](https://github.com/nrkno/tv-automation-playout-gateway/compare/v0.21.0...v1.0.0-3) (2019-09-11)
 
 
 ### Bug Fixes
 
 * circle config ([0830af4](https://github.com/nrkno/tv-automation-playout-gateway/commit/0830af4))
+* debug messages was logged as error (which is wrong..) ([a84bc09](https://github.com/nrkno/tv-automation-playout-gateway/commit/a84bc09))
+* handle promise appropriately ([6a32982](https://github.com/nrkno/tv-automation-playout-gateway/commit/6a32982))
+* handle promises appropriately ([8ecc575](https://github.com/nrkno/tv-automation-playout-gateway/commit/8ecc575))
+* HyperDeck disk formatting is asynchronous ([a1c482b](https://github.com/nrkno/tv-automation-playout-gateway/commit/a1c482b))
+* increase init timeout time ([f144209](https://github.com/nrkno/tv-automation-playout-gateway/commit/f144209))
+* listen to more device events and log them ([2d074f7](https://github.com/nrkno/tv-automation-playout-gateway/commit/2d074f7))
+* log commandError when not reporting to Core ([10bac37](https://github.com/nrkno/tv-automation-playout-gateway/commit/10bac37))
+* make sure updateDevices is not run before the config has come in ([7b5e883](https://github.com/nrkno/tv-automation-playout-gateway/commit/7b5e883))
+* monitor if child process dies, and take action accordingly ([bdef325](https://github.com/nrkno/tv-automation-playout-gateway/commit/bdef325))
+* pipe options.reportAllCommands through to devices ([3bb55a6](https://github.com/nrkno/tv-automation-playout-gateway/commit/3bb55a6))
 * preliminary consumage of commandError ([22bb910](https://github.com/nrkno/tv-automation-playout-gateway/commit/22bb910))
 * remove dev-depenencies from docker images ([8a71e88](https://github.com/nrkno/tv-automation-playout-gateway/commit/8a71e88))
+* remove old onCommandError function ([b5363b1](https://github.com/nrkno/tv-automation-playout-gateway/commit/b5363b1))
+* revert and fix [#61](https://github.com/nrkno/tv-automation-playout-gateway/issues/61)e8848 ([4270469](https://github.com/nrkno/tv-automation-playout-gateway/commit/4270469)), closes [#61e8848](https://github.com/nrkno/tv-automation-playout-gateway/issues/61e8848)
+* temporary disable commandErrors ([c94e5ea](https://github.com/nrkno/tv-automation-playout-gateway/commit/c94e5ea))
+* trace device instanceId during logging ([24c6744](https://github.com/nrkno/tv-automation-playout-gateway/commit/24c6744))
+* TSR dep ([45a85e6](https://github.com/nrkno/tv-automation-playout-gateway/commit/45a85e6))
+* TSR dep update ([f39ce1c](https://github.com/nrkno/tv-automation-playout-gateway/commit/f39ce1c))
+* TSR dep with experimental quantel playout fix ([ad054a2](https://github.com/nrkno/tv-automation-playout-gateway/commit/ad054a2))
+* TSR dep: better status reporting and logging ([d03d81d](https://github.com/nrkno/tv-automation-playout-gateway/commit/d03d81d))
+* TSR dep: quantel play fix ([7779cd7](https://github.com/nrkno/tv-automation-playout-gateway/commit/7779cd7))
+* TSR dep: quantel recovery logging ([d7fa2f4](https://github.com/nrkno/tv-automation-playout-gateway/commit/d7fa2f4))
+* TSR update (quantel fixes) ([8a4ba49](https://github.com/nrkno/tv-automation-playout-gateway/commit/8a4ba49))
 * update blueprints-integration dep ([9aa6707](https://github.com/nrkno/tv-automation-playout-gateway/commit/9aa6707))
+* update timeline dep ([1119332](https://github.com/nrkno/tv-automation-playout-gateway/commit/1119332))
+* update tsr dep ([fe66021](https://github.com/nrkno/tv-automation-playout-gateway/commit/fe66021))
 * update TSR dep ([bad1c1f](https://github.com/nrkno/tv-automation-playout-gateway/commit/bad1c1f))
+* update TSR dep ([7d5e501](https://github.com/nrkno/tv-automation-playout-gateway/commit/7d5e501))
+* update TSR dep ([7bec21b](https://github.com/nrkno/tv-automation-playout-gateway/commit/7bec21b))
 
 
 ### Features
 
+* add config to disable atem upload ([e1c7ee0](https://github.com/nrkno/tv-automation-playout-gateway/commit/e1c7ee0))
+* add externally callable function: getDevicesInfo ([e54eed9](https://github.com/nrkno/tv-automation-playout-gateway/commit/e54eed9))
+* add preliminary support for TSR device emit of commandReports ([3d849be](https://github.com/nrkno/tv-automation-playout-gateway/commit/3d849be))
+* handle initialization better, actually taking the promises generated into account ([301aeb7](https://github.com/nrkno/tv-automation-playout-gateway/commit/301aeb7))
+* HyperDeck disk formatting ([dd9e0a9](https://github.com/nrkno/tv-automation-playout-gateway/commit/dd9e0a9))
 * support for commandError callbacks ([6953130](https://github.com/nrkno/tv-automation-playout-gateway/commit/6953130))
+* support for disabled devices ([d92f272](https://github.com/nrkno/tv-automation-playout-gateway/commit/d92f272))
+* TSR dep: https://github.com/nrkno/tv-automation-state-timeline-resolver/pull/106 ([5d734a5](https://github.com/nrkno/tv-automation-playout-gateway/commit/5d734a5))
+* TSR: Lawo fullpath & atem macros ([922933b](https://github.com/nrkno/tv-automation-playout-gateway/commit/922933b))
 * TSR: Quantel playout ([de8e453](https://github.com/nrkno/tv-automation-playout-gateway/commit/de8e453))
 * update dependencies ([f03143b](https://github.com/nrkno/tv-automation-playout-gateway/commit/f03143b))
-
-# [0.21.0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v0.21.0-3...v0.21.0) (2019-08-19)
 
 
 
