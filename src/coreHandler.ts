@@ -645,8 +645,7 @@ export class CoreTSRDeviceHandler {
 	formatHyperdeck (): Promise<any> {
 		let device = this._device.device as ThreadedClass<HyperdeckDevice>
 		if (device.formatDisks) {
-			device.formatDisks()
-			return Promise.resolve()
+			return device.formatDisks()
 		} else {
 			return Promise.reject('device.formatHyperdeck not set')
 		}
