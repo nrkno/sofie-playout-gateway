@@ -283,7 +283,7 @@ export class MediaScanner {
 
 		return p
 	}
-	public _triggerupdateFsStats (): void {
+	private _triggerupdateFsStats (): void {
 		if (!this._triggerupdateFsStatsTimeout) {
 			this._triggerupdateFsStatsTimeout = setTimeout(() => {
 				this._triggerupdateFsStatsTimeout = undefined
@@ -291,7 +291,7 @@ export class MediaScanner {
 			}, 5000)
 		}
 	}
-	public _updateFsStats (): void {
+	private _updateFsStats (): void {
 		axios.get(`http://${this._config.host}:${this._config.port}/stat/fs`)
 		.then(res => res.data)
 		.then((disks: Array<DiskInfo>) => {

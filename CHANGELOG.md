@@ -1,6 +1,24 @@
-# Change Log
+# Changelog
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+### [1.0.0-0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v0.21.0...v1.0.0-0) (2019-08-19)
+
+
+### Bug Fixes
+
+* circle config ([0830af4](https://github.com/nrkno/tv-automation-playout-gateway/commit/0830af4))
+* preliminary consumage of commandError ([22bb910](https://github.com/nrkno/tv-automation-playout-gateway/commit/22bb910))
+* remove dev-depenencies from docker images ([8a71e88](https://github.com/nrkno/tv-automation-playout-gateway/commit/8a71e88))
+* update blueprints-integration dep ([9aa6707](https://github.com/nrkno/tv-automation-playout-gateway/commit/9aa6707))
+* update TSR dep ([bad1c1f](https://github.com/nrkno/tv-automation-playout-gateway/commit/bad1c1f))
+
+
+### Features
+
+* support for commandError callbacks ([6953130](https://github.com/nrkno/tv-automation-playout-gateway/commit/6953130))
+* TSR: Quantel playout ([de8e453](https://github.com/nrkno/tv-automation-playout-gateway/commit/de8e453))
+* update dependencies ([f03143b](https://github.com/nrkno/tv-automation-playout-gateway/commit/f03143b))
 
 # [0.21.0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v0.21.0-3...v0.21.0) (2019-08-19)
 

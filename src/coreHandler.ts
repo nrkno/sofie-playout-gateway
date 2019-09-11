@@ -2,11 +2,17 @@
 import { CoreConnection,
 	CoreOptions,
 	PeripheralDeviceAPI as P,
-	DDPConnectorOptions
+	DDPConnectorOptions,
+	PeripheralDeviceAPI
 } from 'tv-automation-server-core-integration'
 
 import * as cp from 'child_process'
-import { DeviceType, CasparCGDevice, DeviceContainer } from 'timeline-state-resolver'
+import {
+	DeviceType,
+	CasparCGDevice,
+	DeviceContainer,
+	HyperdeckDevice
+} from 'timeline-state-resolver'
 
 import * as _ from 'underscore'
 import { DeviceConfig } from './connector'
@@ -47,7 +53,9 @@ export class CoreHandler {
 	public mediaScannerStatus: P.StatusCode = P.StatusCode.GOOD
 	public mediaScannerMessages: Array<string> = []
 
+	public errorReporting: boolean = false
 	public multithreading: boolean = false
+	public reportAllCommands: boolean = false
 
 	private _deviceOptions: DeviceConfig
 	private _onConnected?: () => any
@@ -229,8 +237,14 @@ export class CoreHandler {
 				this.logger.debug('End test debug logging')
 			}
 
+			if (this.deviceSettings['errorReporting'] !== this.errorReporting) {
+				this.errorReporting = this.deviceSettings['errorReporting']
+			}
 			if (this.deviceSettings['multiThreading'] !== this.multithreading) {
 				this.multithreading = this.deviceSettings['multiThreading']
+			}
+			if (this.deviceSettings['reportAllCommands'] !== this.reportAllCommands) {
+				this.reportAllCommands = this.deviceSettings['reportAllCommands']
 			}
 
 			let studioId = device.studioId
@@ -414,6 +428,24 @@ export class CoreHandler {
 			mappings: mappings
 		}
 	}
+	getDevicesInfo (): any {
+		this.logger.info('getDevicesInfo')
+
+		const devices: any[] = []
+		if (this._tsrHandler) {
+			for (let device of this._tsrHandler.tsr.getDevices()) {
+
+				devices.push({
+					instanceId: device.instanceId,
+					deviceId: device.deviceId,
+					deviceName: device.deviceName,
+					startTime: device.startTime,
+					upTime: Date.now() - device.startTime
+				})
+			}
+		}
+		return devices
+	}
 	restartCasparCG (deviceId: string): Promise<any> {
 		if (!this._tsrHandler) throw new Error('TSRHandler is not initialized')
 
@@ -421,6 +453,14 @@ export class CoreHandler {
 		if (!device) throw new Error(`TSR Device "${deviceId}" not found!`)
 
 		return device.restartCasparCG()
+	}
+	async formatHyperdeck (deviceId: string): Promise<void> {
+		if (!this._tsrHandler) throw new Error('TSRHandler is not initialized')
+
+		let device = this._tsrHandler.tsr.getDevice(deviceId).device as ThreadedClass<HyperdeckDevice>
+		if (!device) throw new Error(`TSR Device "${deviceId}" not found!`)
+
+		await device.formatDisks()
 	}
 	updateCoreStatus (): Promise<any> {
 		let statusCode = P.StatusCode.GOOD
@@ -501,8 +541,6 @@ export class CoreTSRDeviceHandler {
 		this._device = device
 		this._tsrHandler = tsrHandler
 
-		this._device = this._device
-
 		this._coreParentHandler.logger.info('new CoreTSRDeviceHandler ' + device.deviceName)
 
 		// this.core = new CoreConnection(parent.getCoreConnectionOptions('MOS: ' + device.idPrimary, device.idPrimary, false))
@@ -566,6 +604,21 @@ export class CoreTSRDeviceHandler {
 		this.core.setStatus(deviceStatus)
 		.catch(e => this._coreParentHandler.logger.error('Error when setting status: ' + e, e.stack))
 	}
+	onCommandError (
+		errorMessage: string,
+		ref: {
+			rundownId?: string,
+			partId?: string,
+			pieceId?: string,
+			context: string,
+			timelineObjId: string
+		}) {
+		this.core.callMethodLowPrio(PeripheralDeviceAPI.methods.reportCommandError, [
+			errorMessage,
+			ref
+		])
+		.catch(e => this._coreParentHandler.logger.error('Error when setting status: ' + e, e.stack))
+	}
 
 	async dispose (): Promise<void> {
 		this._observers.forEach((obs) => {
@@ -587,6 +640,15 @@ export class CoreTSRDeviceHandler {
 			return device.restartCasparCG()
 		} else {
 			return Promise.reject('device.restartCasparCG not set')
+		}
+	}
+	formatHyperdeck (): Promise<any> {
+		let device = this._device.device as ThreadedClass<HyperdeckDevice>
+		if (device.formatDisks) {
+			device.formatDisks()
+			return Promise.resolve()
+		} else {
+			return Promise.reject('device.formatHyperdeck not set')
 		}
 	}
 }
