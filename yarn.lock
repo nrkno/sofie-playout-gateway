@@ -825,7 +825,7 @@ asap@^2.0.0:
   resolved "https://registry.yarnpkg.com/asap/-/asap-2.0.6.tgz#e50347611d7e690943208bbdafebcbc2fb866d46"
   integrity sha1-5QNHYR1+aQlDIIu9r+vLwvuGbUY=
 
-asn1@evs-broadcast/node-asn1:
+asn1@evs-broadcast/node-asn1#date_2018_01_02:
   version "0.5.1"
   resolved "https://codeload.github.com/evs-broadcast/node-asn1/tar.gz/2fc158464a92e1465523f108295abd54e7ce86db"
 
@@ -2047,14 +2047,15 @@ email-addresses@^3.0.1:
   resolved "https://registry.yarnpkg.com/email-addresses/-/email-addresses-3.0.3.tgz#fc3c6952f68da24239914e982c8a7783bc2ed96d"
   integrity sha512-kUlSC06PVvvjlMRpNIl3kR1NRXLEe86VQ7N0bQeaCZb2g+InShCeHQp/JvyYNTugMnRN2NvJhHlc3q12MWbbpg==
 
-"emberplus@git+https://github.com/nrkno/tv-automation-emberplus-connection#dist10102018":
-  version "1.7.10"
-  resolved "git+https://github.com/nrkno/tv-automation-emberplus-connection#7c8abd9459f376117963023d82f4bc01100b0c24"
+"emberplus@git+https://github.com/nrkno/tv-automation-emberplus-connection#dist200919_1":
+  version "1.7.17"
+  resolved "git+https://github.com/nrkno/tv-automation-emberplus-connection#7ffdca688bcc8f762757773360b7caeecf39cbc6"
   dependencies:
-    asn1 evs-broadcast/node-asn1
+    asn1 evs-broadcast/node-asn1#date_2018_01_02
     enum "^2.4.0"
     long "^3.2.0"
     smart-buffer "^3.0.3"
+    winston "^2.1.1"
     winston-color "^1.0.0"
 
 emoji-regex@^7.0.1:
@@ -6605,10 +6606,10 @@ timeline-state-resolver-types@^3.2.0:
   dependencies:
     tslib "^1.9.3"
 
-timeline-state-resolver@^3.8.4:
-  version "3.8.4"
-  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-3.8.4.tgz#6841711eac7b93bd5546672a7fe544e7e9706fa1"
-  integrity sha512-DsNDL8mDvo4+Nc+iHyHcduAQ6bSFzDQkjU4MuWk2qWoUYPJO3MVorKzqSJopHz8auJiQUI8DvO8DKafQHg0Kzg==
+timeline-state-resolver@^3.9.0:
+  version "3.9.0"
+  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-3.9.0.tgz#cc50292a5ad815a3406b59fc1a2401bb874d7d9a"
+  integrity sha512-XXwqPYCX0/TRzdezemji/OknzwfIEmMQIyi2BYH78z+4xiG7HZw/T0mPreMMMWun30Kf8WxDkUPZvO6Tax/oLQ==
   dependencies:
     "@types/request" "^2.48.1"
     "@types/sprintf-js" "^1.1.0"
@@ -6617,7 +6618,7 @@ timeline-state-resolver@^3.8.4:
     atem-state "^0.7.1"
     casparcg-connection "^4.7.0"
     casparcg-state "^1.8.1"
-    emberplus "git+https://github.com/nrkno/tv-automation-emberplus-connection#dist10102018"
+    emberplus "git+https://github.com/nrkno/tv-automation-emberplus-connection#dist200919_1"
     fast-clone "^1.5.13"
     hyperdeck-connection "^0.3.0"
     osc "^2.2.4"
