@@ -6635,10 +6635,10 @@ text-hex@1.0.x:
   resolved "https://registry.yarnpkg.com/text-hex/-/text-hex-1.0.0.tgz#69dc9c1b17446ee79a92bf5b884bb4b9127506f5"
   integrity sha512-uuVGNWzgJ4yhRaNSiubPY7OjISw4sw4E5Uv0wbjp+OzcbmVU/rsT8ujgcXJhn9ypzsgr5vlzpPqP+MBBKcGvbg==
 
-threadedclass@^0.6.6:
-  version "0.6.6"
-  resolved "https://registry.yarnpkg.com/threadedclass/-/threadedclass-0.6.6.tgz#426b9ae66deda0d8b96a1285bf5e5a03d1a5a6fc"
-  integrity sha512-YXy2Cggk4VgRbhkQXL02/kWEgIr5XKxSdi9keUFlLDJEJz26NxM6DMlnoOZY04MN7ahprJSevU8D7dD8LN1d1A==
+threadedclass@^0.6.8:
+  version "0.6.8"
+  resolved "https://registry.yarnpkg.com/threadedclass/-/threadedclass-0.6.8.tgz#7eba5d9c7b3b40b9b5a6edcee222b54d209336bf"
+  integrity sha512-pAQSA7bM1r2tSuag6buf7o7xJ3m5W3zF77xG1SlD+7yPC09Ly/JBm4rVpXY+Ryy20An3PvdHwlkAonizBvUiFA==
   dependencies:
     callsites "^3.1.0"
     tslib "^1.9.3"
@@ -6683,10 +6683,10 @@ timeline-state-resolver-types@^3.2.0:
   dependencies:
     tslib "^1.9.3"
 
-timeline-state-resolver@^3.10.0:
-  version "3.10.0"
-  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-3.10.0.tgz#b7cae9e512e3b6fae9eb8c23b226a29d1c0d8d6a"
-  integrity sha512-MDB1BUMhKn0zxpUUq6HYQLCPiPud+kv2oqO6KLFHFbau0c7JBGpN/D+SlsCUBf5mGF8FJnGdAVOBJzExlPhfOA==
+timeline-state-resolver@^3.10.1:
+  version "3.11.1"
+  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-3.11.1.tgz#31344fb24fec74867f5e7392b981c70521342a68"
+  integrity sha512-j8dkaiQ62fcoIo8d0G4jbIBVHmLhjxRbxxPJ9dBbyYDCUCetcOKd4ro4jartxh35VKdasaySOicjN+VRks5pMQ==
   dependencies:
     "@types/request" "^2.48.1"
     "@types/sprintf-js" "^1.1.0"
@@ -6702,7 +6702,7 @@ timeline-state-resolver@^3.10.0:
     request "^2.88.0"
     sprintf-js "^1.1.2"
     superfly-timeline "^7.2.4"
-    threadedclass "^0.6.6"
+    threadedclass "^0.6.8"
     underscore "^1.9.1"
     underscore-deep-extend "^1.1.5"
     ws "^7.1.1"
