@@ -481,6 +481,14 @@ export class TSRHandler {
 		let peripheralDevice = peripheralDevices.findOne(this._coreHandler.core.deviceId)
 
 		const ps: Promise<any>[] = []
+		const promiseOperations: {[id: string]: true} = {}
+		const keepTrack = <T>(p: Promise<T>, name: string) => {
+			promiseOperations[name] = true
+			return p.then((result) => {
+				delete promiseOperations[name]
+				return result
+			})
+		}
 
 		if (peripheralDevice) {
 			let settings: TSRSettings = peripheralDevice.settings || {}
@@ -516,7 +524,9 @@ export class TSRHandler {
 					if (deviceOptions.options) {
 						this.logger.info('Initializing device: ' + deviceId)
 						this.logger.info('new', deviceOptions)
-						ps.push(this._addDevice(deviceId, deviceOptions))
+						ps.push(
+							keepTrack(this._addDevice(deviceId, deviceOptions), 'add_' + deviceId)
+						)
 					}
 				} else {
 					if (deviceOptions.options) {
@@ -533,9 +543,9 @@ export class TSRHandler {
 							this.logger.info('old', oldDevice.deviceOptions)
 							this.logger.info('new', deviceOptions)
 							ps.push(
-								this._removeDevice(deviceId)
+								keepTrack(this._removeDevice(deviceId), 'remove_' + deviceId)
 								.then(() => {
-									return this._addDevice(deviceId, deviceOptions)
+									return keepTrack(this._addDevice(deviceId, deviceOptions), 're-add_' + deviceId)
 								})
 							)
 						}
@@ -547,7 +557,9 @@ export class TSRHandler {
 				let deviceId = oldDevice.deviceId
 				if (!devices[deviceId]) {
 					this.logger.info('Un-initializing device: ' + deviceId)
-					ps.push(this._removeDevice(deviceId))
+					ps.push(
+						keepTrack(this._removeDevice(deviceId), 'remove_' + deviceId)
+					)
 				}
 			})
 		}
@@ -555,7 +567,7 @@ export class TSRHandler {
 		await Promise.race([
 			Promise.all(ps),
 			new Promise(resolve => setTimeout(() => {
-				this.logger.warn(`Timeout in _updateDevices`)
+				this.logger.warn(`Timeout in _updateDevices: ${_.keys(promiseOperations).join(',')}`)
 				resolve()
 			}, INIT_TIMEOUT)) // Timeout if not all are resolved within INIT_TIMEOUT
 		])
