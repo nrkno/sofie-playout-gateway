@@ -11,7 +11,8 @@ import {
 	DeviceType,
 	CasparCGDevice,
 	DeviceContainer,
-	HyperdeckDevice
+	HyperdeckDevice,
+	QuantelDevice
 } from 'timeline-state-resolver'
 
 import * as _ from 'underscore'
@@ -454,6 +455,14 @@ export class CoreHandler {
 
 		return device.restartCasparCG()
 	}
+	restartQuantel (deviceId: string): Promise<any> {
+		if (!this._tsrHandler) throw new Error('TSRHandler is not initialized')
+
+		let device = this._tsrHandler.tsr.getDevice(deviceId).device as ThreadedClass<QuantelDevice>
+		if (!device) throw new Error(`TSR Device "${deviceId}" not found!`)
+
+		return device.restartGateway()
+	}
 	async formatHyperdeck (deviceId: string): Promise<void> {
 		if (!this._tsrHandler) throw new Error('TSRHandler is not initialized')
 
@@ -640,6 +649,14 @@ export class CoreTSRDeviceHandler {
 			return device.restartCasparCG()
 		} else {
 			return Promise.reject('device.restartCasparCG not set')
+		}
+	}
+	restartQuantel (): Promise<any> {
+		let device = this._device.device as ThreadedClass<QuantelDevice>
+		if (device.restartGateway) {
+			return device.restartGateway()
+		} else {
+			return Promise.reject('device.restartGateway not set')
 		}
 	}
 	formatHyperdeck (): Promise<any> {
