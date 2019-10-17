@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.0-0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v1.0.0...v1.1.0-0) (2019-10-02)
+
+
+### Bug Fixes
+
+* TSR dep ([610f8be](https://github.com/nrkno/tv-automation-playout-gateway/commit/610f8be))
+* TSR dep ([d708f08](https://github.com/nrkno/tv-automation-playout-gateway/commit/d708f08))
+
+
+### Features
+
+* quantel restart ([4191749](https://github.com/nrkno/tv-automation-playout-gateway/commit/4191749))
+* update dependencies ([4efed4c](https://github.com/nrkno/tv-automation-playout-gateway/commit/4efed4c))
+
 ## [1.0.0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v1.0.0-3...v1.0.0) (2019-09-11)
 
 <a name="1.0.0-3"></a>
