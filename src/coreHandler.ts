@@ -67,6 +67,7 @@ export class CoreHandler {
 
 	private _studioId: string
 	private _timelineSubscription: string | null = null
+	private _expectedItemsSubscription: string | null = null
 
 	private _statusInitialized: boolean = false
 	private _statusDestroyed: boolean = false
@@ -252,6 +253,7 @@ export class CoreHandler {
 			if (studioId !== this._studioId) {
 				this._studioId = studioId
 
+				// Set up timeline data subscription:
 				if (this._timelineSubscription) {
 					this.core.unsubscribe(this._timelineSubscription)
 					this._timelineSubscription = null
@@ -260,6 +262,19 @@ export class CoreHandler {
 					studioId: studioId
 				}).then((subscriptionId) => {
 					this._timelineSubscription = subscriptionId
+				}).catch((err) => {
+					this.logger.error(err)
+				})
+
+				// Set up expectedPlayoutItems data subscription:
+				if (this._expectedItemsSubscription) {
+					this.core.unsubscribe(this._expectedItemsSubscription)
+					this._expectedItemsSubscription = null
+				}
+				this.core.autoSubscribe('expectedPlayoutItems', {
+					studioId: studioId
+				}).then((subscriptionId) => {
+					this._expectedItemsSubscription = subscriptionId
 				}).catch((err) => {
 					this.logger.error(err)
 				})

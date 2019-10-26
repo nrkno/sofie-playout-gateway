@@ -96,6 +96,7 @@ export class TSRHandler {
 	private _triggerupdateTimelineTimeout: any = null
 	private _triggerupdateMappingTimeout: any = null
 	private _triggerupdateDevicesTimeout: any = null
+	private _triggerupdateExpectedPlayoutItemsTimeout: any = null
 	private _coreTsrHandlers: {[deviceId: string]: CoreTSRDeviceHandler} = {}
 	private _observers: Array<any> = []
 	private _cachedStudioId: string = ''
@@ -263,6 +264,12 @@ export class TSRHandler {
 		deviceObserver.changed = () => { this._triggerUpdateDevices() }
 		deviceObserver.removed = () => { this._triggerUpdateDevices() }
 		this._observers.push(deviceObserver)
+
+		let expectedPlayoutItemsObserver = this._coreHandler.core.observe('expectedPlayoutItems')
+		expectedPlayoutItemsObserver.added = () => { this._triggerupdateExpectedPlayoutItems() }
+		expectedPlayoutItemsObserver.changed = () => { this._triggerupdateExpectedPlayoutItems() }
+		expectedPlayoutItemsObserver.removed = () => { this._triggerupdateExpectedPlayoutItems() }
+		this._observers.push(expectedPlayoutItemsObserver)
 
 	}
 	destroy (): Promise<void> {
@@ -742,6 +749,43 @@ export class TSRHandler {
 			}
 		}
 		delete this._coreTsrHandlers[deviceId]
+	}
+	private _triggerupdateExpectedPlayoutItems () {
+		if (!this._initialized) return
+		if (this._triggerupdateExpectedPlayoutItemsTimeout) {
+			clearTimeout(this._triggerupdateExpectedPlayoutItemsTimeout)
+		}
+		this._triggerupdateExpectedPlayoutItemsTimeout = setTimeout(() => {
+			this. _updateExpectedPlayoutItems()
+			.catch(e => this.logger.error('Error in _updateExpectedPlayoutItems', e))
+		}, 200)
+	}
+	private async _updateExpectedPlayoutItems () {
+
+		let expectedPlayoutItems = this._coreHandler.core.getCollection('expectedPlayoutItems')
+		const peripheralDevice = this._getPeripheralDevice()
+
+		const expectedItems = expectedPlayoutItems.find({
+			studioId: peripheralDevice.studioId
+		})
+
+		await Promise.all(_.map(this.tsr.getDevices(), async (container) => {
+			if (await container.device.supportsExpectedPlayoutItems) {
+
+				await container.device.handleExpectedPlayoutItems(
+					_.map(
+						_.filter(expectedItems, (item) => {
+							return (
+								item.deviceSubType === container.deviceType
+								// TODO: implement item.deviceId === container.deviceId
+							)
+						}),
+						item => item.content
+					)
+				)
+
+			}
+		}))
 	}
 	/**
 	 * Go through and transform timeline and generalize the Core-specific things
