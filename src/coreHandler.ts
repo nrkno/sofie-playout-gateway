@@ -11,7 +11,8 @@ import {
 	DeviceType,
 	CasparCGDevice,
 	DeviceContainer,
-	HyperdeckDevice
+	HyperdeckDevice,
+	QuantelDevice
 } from 'timeline-state-resolver'
 
 import * as _ from 'underscore'
@@ -55,6 +56,7 @@ export class CoreHandler {
 
 	public errorReporting: boolean = false
 	public multithreading: boolean = false
+	public reportAllCommands: boolean = false
 
 	private _deviceOptions: DeviceConfig
 	private _onConnected?: () => any
@@ -242,6 +244,9 @@ export class CoreHandler {
 			if (this.deviceSettings['multiThreading'] !== this.multithreading) {
 				this.multithreading = this.deviceSettings['multiThreading']
 			}
+			if (this.deviceSettings['reportAllCommands'] !== this.reportAllCommands) {
+				this.reportAllCommands = this.deviceSettings['reportAllCommands']
+			}
 
 			let studioId = device.studioId
 			if (studioId !== this._studioId) {
@@ -424,6 +429,24 @@ export class CoreHandler {
 			mappings: mappings
 		}
 	}
+	getDevicesInfo (): any {
+		this.logger.info('getDevicesInfo')
+
+		const devices: any[] = []
+		if (this._tsrHandler) {
+			for (let device of this._tsrHandler.tsr.getDevices()) {
+
+				devices.push({
+					instanceId: device.instanceId,
+					deviceId: device.deviceId,
+					deviceName: device.deviceName,
+					startTime: device.startTime,
+					upTime: Date.now() - device.startTime
+				})
+			}
+		}
+		return devices
+	}
 	restartCasparCG (deviceId: string): Promise<any> {
 		if (!this._tsrHandler) throw new Error('TSRHandler is not initialized')
 
@@ -432,13 +455,21 @@ export class CoreHandler {
 
 		return device.restartCasparCG()
 	}
-	formatHyperdeck (deviceId: string): void {
+	restartQuantel (deviceId: string): Promise<any> {
+		if (!this._tsrHandler) throw new Error('TSRHandler is not initialized')
+
+		let device = this._tsrHandler.tsr.getDevice(deviceId).device as ThreadedClass<QuantelDevice>
+		if (!device) throw new Error(`TSR Device "${deviceId}" not found!`)
+
+		return device.restartGateway()
+	}
+	async formatHyperdeck (deviceId: string): Promise<void> {
 		if (!this._tsrHandler) throw new Error('TSRHandler is not initialized')
 
 		let device = this._tsrHandler.tsr.getDevice(deviceId).device as ThreadedClass<HyperdeckDevice>
 		if (!device) throw new Error(`TSR Device "${deviceId}" not found!`)
 
-		device.formatDisks()
+		await device.formatDisks()
 	}
 	updateCoreStatus (): Promise<any> {
 		let statusCode = P.StatusCode.GOOD
@@ -518,8 +549,6 @@ export class CoreTSRDeviceHandler {
 		this._coreParentHandler = parent
 		this._device = device
 		this._tsrHandler = tsrHandler
-
-		this._device = this._device
 
 		this._coreParentHandler.logger.info('new CoreTSRDeviceHandler ' + device.deviceName)
 
@@ -622,11 +651,18 @@ export class CoreTSRDeviceHandler {
 			return Promise.reject('device.restartCasparCG not set')
 		}
 	}
+	restartQuantel (): Promise<any> {
+		let device = this._device.device as ThreadedClass<QuantelDevice>
+		if (device.restartGateway) {
+			return device.restartGateway()
+		} else {
+			return Promise.reject('device.restartGateway not set')
+		}
+	}
 	formatHyperdeck (): Promise<any> {
 		let device = this._device.device as ThreadedClass<HyperdeckDevice>
 		if (device.formatDisks) {
-			device.formatDisks()
-			return Promise.resolve()
+			return device.formatDisks()
 		} else {
 			return Promise.reject('device.formatHyperdeck not set')
 		}
