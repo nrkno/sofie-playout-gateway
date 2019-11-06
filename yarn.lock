@@ -6707,10 +6707,10 @@ timeline-state-resolver-types@^3.2.0:
   dependencies:
     tslib "^1.9.3"
 
-timeline-state-resolver@^3.13.0:
-  version "3.13.0"
-  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-3.13.0.tgz#3a49e65682a5df89f423c18cb245607265c7cd72"
-  integrity sha512-IkMlvSUaeXegn/SHTJbeQ84qA9rROejwXcwRjIV7bcKtfVX79SO/vb5caMHWVi4VU2fImuripfdiL+t3Tg2dug==
+timeline-state-resolver@^3.13.1:
+  version "3.13.1"
+  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-3.13.1.tgz#a2fc34bf3b135e320fae1fe8c3dc786319ac7a4d"
+  integrity sha512-Z6CcJQebS62xsu8bRix9PYNp33mDrS2nUzFRjNui7l6tISfOR98jqLmIrX7/F6VDN8ynPTbJ8cROd4mGYZU1FQ==
   dependencies:
     "@types/request" "^2.48.1"
     "@types/sprintf-js" "^1.1.0"
