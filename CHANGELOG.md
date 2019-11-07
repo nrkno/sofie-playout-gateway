@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v1.1.0...v1.2.0) (2019-11-07)
+
+
+### Bug Fixes
+
+* TSR dep update, contains fix for hyperdeck status ([914bbdf](https://github.com/nrkno/tv-automation-playout-gateway/commit/914bbdf))
+* tsr update (setValue conflicts) ([f03b010](https://github.com/nrkno/tv-automation-playout-gateway/commit/f03b010))
+* update tsr ([d74d1a7](https://github.com/nrkno/tv-automation-playout-gateway/commit/d74d1a7))
+
+
+### Features
+
+* update TSR dep ([7ec7350](https://github.com/nrkno/tv-automation-playout-gateway/commit/7ec7350))
+
 ## [1.2.0-0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v1.1.0...v1.2.0-0) (2019-10-25)
 
 
