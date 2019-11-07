@@ -4,7 +4,7 @@ import {
 	ConductorOptions,
 	Device,
 	TimelineTriggerTimeResult,
-	DeviceOptions,
+	DeviceOptionsAny,
 	Mappings,
 	DeviceContainer,
 	Timeline as TimelineTypes,
@@ -26,7 +26,7 @@ export interface TSRConfig {
 }
 export interface TSRSettings { // Runtime settings from Core
 	devices: {
-		[deviceId: string]: DeviceOptions
+		[deviceId: string]: DeviceOptionsAny
 	}
 	initializeAsClear: boolean
 	mappings: Mappings
@@ -501,7 +501,7 @@ export class TSRHandler {
 			let settings: TSRSettings = peripheralDevice.settings || {}
 
 			const devices: {
-				[deviceId: string]: DeviceOptions;
+				[deviceId: string]: DeviceOptionsAny;
 			} = {}
 
 			_.each(settings.devices, (device, deviceId) => {
@@ -511,7 +511,7 @@ export class TSRHandler {
 				}
 			})
 
-			_.each(devices, (deviceOptions: DeviceOptions, deviceId: string) => {
+			_.each(devices, (deviceOptions: DeviceOptionsAny, deviceId: string) => {
 
 				let oldDevice: DeviceContainer = this.tsr.getDevice(deviceId)
 
@@ -580,7 +580,7 @@ export class TSRHandler {
 		])
 		this.logger.info('updateDevices end')
 	}
-	private async _addDevice (deviceId: string, options: DeviceOptions): Promise<any> {
+	private async _addDevice (deviceId: string, options: DeviceOptionsAny): Promise<any> {
 		this.logger.debug('Adding device ' + deviceId)
 
 		try {
