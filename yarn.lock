@@ -410,11 +410,6 @@
   dependencies:
     "@babel/types" "^7.3.0"
 
-"@types/caseless@*":
-  version "0.12.2"
-  resolved "https://registry.yarnpkg.com/@types/caseless/-/caseless-0.12.2.tgz#f65d3d6389e01eeb458bd54dc8f52b95a9463bc8"
-  integrity sha512-6ckxMjBBD8URvjB6J3NcnuAn5Pkl7t3TizAg+xdlzzQGSPSmBcXf8KoIH0ua/i+tio+ZRUHEXp0HEmvaR4kt0w==
-
 "@types/debug@*":
   version "4.1.5"
   resolved "https://registry.yarnpkg.com/@types/debug/-/debug-4.1.5.tgz#b14efa8852b7768d898906613c23f688713e02cd"
@@ -535,35 +530,15 @@
     "@types/pouchdb-core" "*"
     "@types/pouchdb-find" "*"
 
-"@types/request@^2.48.1":
-  version "2.48.3"
-  resolved "https://registry.yarnpkg.com/@types/request/-/request-2.48.3.tgz#970b8ed2317568c390361d29c555a95e74bd6135"
-  integrity sha512-3Wo2jNYwqgXcIz/rrq18AdOZUQB8cQ34CXZo+LUwPJNpvRAL86+Kc2wwI8mqpz9Cr1V+enIox5v+WZhy/p3h8w==
-  dependencies:
-    "@types/caseless" "*"
-    "@types/node" "*"
-    "@types/tough-cookie" "*"
-    form-data "^2.5.0"
-
 "@types/retry@^0.12.0":
   version "0.12.0"
   resolved "https://registry.yarnpkg.com/@types/retry/-/retry-0.12.0.tgz#2b35eccfcee7d38cd72ad99232fbd58bffb3c84d"
   integrity sha512-wWKOClTTiizcZhXnPY4wikVAwmdYHp8q6DmC+EJUzAMsycb7HB32Kh9RN4+0gExjmPmZSAQjgURXIGATPegAvA==
 
-"@types/sprintf-js@^1.1.0":
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/@types/sprintf-js/-/sprintf-js-1.1.2.tgz#a4fcb84c7344f39f70dc4eec0e1e7f10a48597a3"
-  integrity sha512-hkgzYF+qnIl8uTO8rmUSVSfQ8BIfMXC4yJAF4n8BE758YsKBZvFC4NumnAegj7KmylP0liEZNpb9RRGFMbFejA==
-
 "@types/stack-utils@^1.0.1":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@types/stack-utils/-/stack-utils-1.0.1.tgz#0a851d3bd96498fa25c33ab7278ed3bd65f06c3e"
   integrity sha512-l42BggppR6zLmpfU6fq9HEa2oGPEI8yrSPL3GITjfRInppYFahObbIQOQK3UGxEnyQpltZLaPe75046NOZQikw==
-
-"@types/tough-cookie@*":
-  version "2.3.5"
-  resolved "https://registry.yarnpkg.com/@types/tough-cookie/-/tough-cookie-2.3.5.tgz#9da44ed75571999b65c37b60c9b2b88db54c585d"
-  integrity sha512-SCcK7mvGi3+ZNz833RRjFIxrn4gI1PPR3NtuIS+6vMkvmsGjosqTJwRt5bAEFLRz+wtJMWv8+uOnZf2hi2QXTg==
 
 "@types/underscore@^1.9.2":
   version "1.9.3"
@@ -576,13 +551,6 @@
   integrity sha512-BVGCztsypW8EYwJ+Hq+QNYiT/MUyCif0ouBH+flrY66O5W+KIXAMML6E/0fJpm7VjIzgangahl5S03bJJQGrZw==
   dependencies:
     winston "*"
-
-"@types/ws@^6.0.1":
-  version "6.0.3"
-  resolved "https://registry.yarnpkg.com/@types/ws/-/ws-6.0.3.tgz#b772375ba59d79066561c8d87500144d674ba6b3"
-  integrity sha512-yBTM0P05Tx9iXGq00BbJPo37ox68R5vaGTXivs6RGh/BQ6QP5zqZDGWdAO6JbRE/iR1l80xeGAwCQS2nMV9S/w==
-  dependencies:
-    "@types/node" "*"
 
 "@types/yargs-parser@*":
   version "13.1.0"
@@ -1259,6 +1227,15 @@ caseless@~0.12.0:
   resolved "https://registry.yarnpkg.com/caseless/-/caseless-0.12.0.tgz#1b681c21ff84033c826543090689420d187151dc"
   integrity sha1-G2gcIf+EAzyCZUMJBolCDRhxUdw=
 
+casparcg-connection@4.8.1:
+  version "4.8.1"
+  resolved "https://registry.yarnpkg.com/casparcg-connection/-/casparcg-connection-4.8.1.tgz#9cbb54e1575cb7757679f3e1821ecb958b64ba6a"
+  integrity sha512-r+axV6pZj/LWbkm97+SFvx/k4AWD90ug3dvyw7CxeTma1qzoAWeSBKoOrF9xWvkwXViu/vqUkWbLHsqvNl2VCA==
+  dependencies:
+    highland "^3.0.0-beta.6"
+    xml2js "^0.4.19"
+    xmlbuilder "^9.0.7"
+
 casparcg-connection@^4.7.0:
   version "4.7.0"
   resolved "https://registry.yarnpkg.com/casparcg-connection/-/casparcg-connection-4.7.0.tgz#c2aa4b5b5a89b17bffac77f592627aca8ec3537e"
@@ -1268,10 +1245,10 @@ casparcg-connection@^4.7.0:
     xml2js "^0.4.19"
     xmlbuilder "^9.0.7"
 
-casparcg-state@^1.8.1:
-  version "1.8.1"
-  resolved "https://registry.yarnpkg.com/casparcg-state/-/casparcg-state-1.8.1.tgz#845b2ef51426ef9af7888146426eb31d9d7dffa3"
-  integrity sha512-kUBd91fOznkuV38RqmVx7XMU/ZQdlchQmQeZpdrz5W7tnywHUj/oxhG+6dmlOj7VB0XXJRET6QRFwYpWWCJemw==
+casparcg-state@^1.9.1:
+  version "1.9.1"
+  resolved "https://registry.yarnpkg.com/casparcg-state/-/casparcg-state-1.9.1.tgz#09702adbb68269c57b8cb154caff92eadb1b0369"
+  integrity sha512-cwAiczngF72eyQs42OZg55OlWJ5dsEdse01yKGX14i5scfnaDW5HOnF4lt/jIO4+3tjKyhRMxcj8tnR/c9nZ1Q==
   dependencies:
     casparcg-connection "^4.7.0"
     fast-clone "^1.5.13"
@@ -2540,15 +2517,6 @@ forever-agent@~0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/forever-agent/-/forever-agent-0.6.1.tgz#fbc71f0c41adeb37f96c577ad1ed42d8fdacca91"
   integrity sha1-+8cfDEGt6zf5bFd60e1C2P2sypE=
-
-form-data@^2.5.0:
-  version "2.5.1"
-  resolved "https://registry.yarnpkg.com/form-data/-/form-data-2.5.1.tgz#f2cbec57b5e59e23716e128fe44d4e5dd23895f4"
-  integrity sha512-m21N3WOmEEURgk6B9GLOE4RuWOFf28Lhh9qGYeNlGq4VDXUlJy2th2slBNU8Gp8EzloYZOibZJ7t5ecIrFSjVA==
-  dependencies:
-    asynckit "^0.4.0"
-    combined-stream "^1.0.6"
-    mime-types "^2.1.12"
 
 form-data@~2.3.1, form-data@~2.3.2:
   version "2.3.3"
@@ -6700,25 +6668,22 @@ through@2, "through@>=2.2.7 <3":
   resolved "https://registry.yarnpkg.com/through/-/through-2.3.8.tgz#0dd4c9ffaabc357960b1b724115d7e0e86a2e1f5"
   integrity sha1-DdTJ/6q8NXlgsbckEV1+Doai4fU=
 
-timeline-state-resolver-types@^3.2.0:
-  version "3.10.0"
-  resolved "https://registry.yarnpkg.com/timeline-state-resolver-types/-/timeline-state-resolver-types-3.10.0.tgz#a6395074ec9f0a3a6c99343a485faaebb34b0a96"
-  integrity sha512-hijPiCOj3oRBeUXpSFNx0jEax4TsRapaHs8jMWg/LOm8JGu/7DyUkouN5Bo50O8J17XucCL8HCNR9WbdfWyJMg==
+timeline-state-resolver-types@^3.14.0:
+  version "3.14.0"
+  resolved "https://registry.yarnpkg.com/timeline-state-resolver-types/-/timeline-state-resolver-types-3.14.0.tgz#4cb6ad003803e1b89a2a5d3676f12460f66e65d8"
+  integrity sha512-34I2GKCoWPFJG5iXqzol9gAe4F8j8XCNVoS1UT2bv4dnuaZ19Dw7xDvtkCZtD+eX34aXa6wQnWMcT4kHb2S9tA==
   dependencies:
     tslib "^1.9.3"
 
-timeline-state-resolver@^3.13.0:
-  version "3.13.0"
-  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-3.13.0.tgz#3a49e65682a5df89f423c18cb245607265c7cd72"
-  integrity sha512-IkMlvSUaeXegn/SHTJbeQ84qA9rROejwXcwRjIV7bcKtfVX79SO/vb5caMHWVi4VU2fImuripfdiL+t3Tg2dug==
+timeline-state-resolver@^3.14.0:
+  version "3.14.0"
+  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-3.14.0.tgz#db381c0b2f73e41e68a359a02e47b3b2e908bb22"
+  integrity sha512-rkuI0RQpmB0Ou8rquMRaAeUPfhZVKcgcbbY0yNYwM5+GSZMnpt7H8gdxB89sT0mflyCQv8PVp3d+VCV64xsz6A==
   dependencies:
-    "@types/request" "^2.48.1"
-    "@types/sprintf-js" "^1.1.0"
-    "@types/ws" "^6.0.1"
     atem-connection "1.1.0"
     atem-state "0.8.0"
-    casparcg-connection "^4.7.0"
-    casparcg-state "^1.8.1"
+    casparcg-connection "4.8.1"
+    casparcg-state "^1.9.1"
     emberplus "git+https://github.com/nrkno/tv-automation-emberplus-connection#dist200919_1"
     fast-clone "^1.5.13"
     hyperdeck-connection "^0.4.0"
@@ -7059,13 +7024,13 @@ tv-automation-server-core-integration@1.2.1:
     tslib "^1.9.3"
     underscore "^1.9.1"
 
-tv-automation-sofie-blueprints-integration@1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/tv-automation-sofie-blueprints-integration/-/tv-automation-sofie-blueprints-integration-1.1.0.tgz#43af07640c471657c92c503956b289186d3bef69"
-  integrity sha512-pKPzbFz9rfTMqYAtsdF73i1Qb4gDpn+z3Cq+/WkQF4QLQUP60CnchNZ24YYXMiuaxEaoZqoNsRqeQU0wgyuTdA==
+tv-automation-sofie-blueprints-integration@1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/tv-automation-sofie-blueprints-integration/-/tv-automation-sofie-blueprints-integration-1.2.1.tgz#950331b02ff5dbf4b72a8694d445e9bd0e321bef"
+  integrity sha512-03eRdYIibdflDia0GXebMDPg1+fc6eaoT5wcmM+aJI3vpxawtyg9m8xDYDeL2ea4jF+fxX4dwDw8oS+Cub0DAQ==
   dependencies:
     moment "^2.22.2"
-    timeline-state-resolver-types "^3.2.0"
+    timeline-state-resolver-types "^3.14.0"
     tslib "^1.9.3"
     underscore "^1.9.1"
 
