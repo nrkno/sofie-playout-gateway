@@ -1,6 +1,6 @@
 {
   "name": "playout-gateway",
-  "version": "1.2.1",
+  "version": "1.3.0-0",
   "description": "Connect to Core, play stuff",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
