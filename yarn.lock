@@ -6675,10 +6675,10 @@ timeline-state-resolver-types@^3.14.0:
   dependencies:
     tslib "^1.9.3"
 
-timeline-state-resolver@^3.14.0:
-  version "3.14.0"
-  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-3.14.0.tgz#db381c0b2f73e41e68a359a02e47b3b2e908bb22"
-  integrity sha512-rkuI0RQpmB0Ou8rquMRaAeUPfhZVKcgcbbY0yNYwM5+GSZMnpt7H8gdxB89sT0mflyCQv8PVp3d+VCV64xsz6A==
+timeline-state-resolver@^3.15.0:
+  version "3.15.0"
+  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-3.15.0.tgz#e3ac70ecfd13332d8f8264f91c4bd8a7efad21ad"
+  integrity sha512-SB/qgq8EeZ4ae4czwNIXktySkTjT718QB6KNNEPgtcnAZpBhn9t9hzC+PK2MZI9r3At8lFveyhYIuVoiD70IBg==
   dependencies:
     atem-connection "1.1.0"
     atem-state "0.8.0"
