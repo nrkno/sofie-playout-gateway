@@ -1,7 +1,6 @@
 import { Connector } from './connector'
-import { config, logPath, disableWatchdog, disableAtemUpload } from './config'
+import { config, logPath, disableWatchdog } from './config'
 import * as Winston from 'winston'
-import { setupAtemUploader } from './atemUploader'
 export interface LoggerInstance extends Winston.LoggerInstance {
 	warning: never // logger.warning is not a function
 }
@@ -92,7 +91,3 @@ c.init(config)
 .catch(e => {
 	logger.error(e)
 })
-
-if (!disableAtemUpload) {
-	setupAtemUploader()
-}
