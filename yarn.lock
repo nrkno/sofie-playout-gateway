@@ -6730,7 +6730,7 @@ timeline-state-resolver-types@^3.2.0:
 
 "timeline-state-resolver@git+https://github.com/olzzon/tv-automation-state-timeline-resolver#dist":
   version "0.0.0-develop"
-  resolved "git+https://github.com/olzzon/tv-automation-state-timeline-resolver#b75c9001d2500ace7cb8ab1d903bc176ea17f34f"
+  resolved "git+https://github.com/olzzon/tv-automation-state-timeline-resolver#bb208c2f09a2e00bddb858e99faf61e79d43c68c"
   dependencies:
     atem-connection "1.1.0"
     atem-state "0.8.1"
@@ -6746,7 +6746,7 @@ timeline-state-resolver-types@^3.2.0:
     threadedclass "^0.6.8"
     underscore "^1.9.1"
     underscore-deep-extend "^1.1.5"
-    v-connection "git+https://github.com/olzzon/v-connection/#dist"
+    v-connection "git+https://github.com/olzzon/v-connection#dist"
     ws "^7.1.1"
 
 tmpl@1.0.x:
@@ -7311,9 +7311,9 @@ uuid@^3.1.0, uuid@^3.3.2, uuid@^3.3.3:
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.3.3.tgz#4568f0216e78760ee1dbf3a4d2cf53e224112866"
   integrity sha512-pW0No1RGHgzlpHJO1nsVrHKpOEIxkGg1xB+v0ZmdNH5OAeAwzAVrCnI2/6Mtx+Uys6iaylxa+D3g4j63IKKjSQ==
 
-"v-connection@git+https://github.com/olzzon/v-connection/#dist":
-  version "0.0.3"
-  resolved "git+https://github.com/olzzon/v-connection/#b023815097b2501cc0e5d86c310d8b22278558ca"
+"v-connection@git+https://github.com/olzzon/v-connection#dist":
+  version "0.0.4"
+  resolved "git+https://github.com/olzzon/v-connection#5d41467c7e1ce21f87b22566e649e2eb1f8cf0ec"
   dependencies:
     koa "^2.11.0"
     request "^2.88.0"
