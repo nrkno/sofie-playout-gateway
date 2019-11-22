@@ -48,7 +48,7 @@
     "unlinkall": "yarn unlink tv-automation-server-core-integration timeline-state-resolver && yarn --check-files",
     "validate:dependencies": "yarn audit && yarn license-validate",
     "license-validate": "node-license-validator -p -d --allow-licenses MIT BSD BSD-2-Clause BSD-3-Clause ISC Apache Unlicense WTFPL --allow-packages cycle",
-    "prerelease": "standard-version --prerelease"
+    "prepareChangelog": "standard-version --prerelease"
   },
   "scripts-info": {
     "info": "Display information about the scripts",
@@ -110,10 +110,10 @@
     "fast-clone": "^1.5.13",
     "pouchdb-node": "6.4.3",
     "promise-sequence": "^0.3.1",
-    "timeline-state-resolver": "^3.5.0",
+    "timeline-state-resolver": "git+https://github.com/olzzon/tv-automation-state-timeline-resolver#dist",
     "tslib": "^1.10.0",
-    "tv-automation-server-core-integration": "1.2.0",
-    "tv-automation-sofie-blueprints-integration": "0.24.1",
+    "tv-automation-server-core-integration": "1.2.1",
+    "tv-automation-sofie-blueprints-integration": "1.1.0",
     "underscore": "^1.9.1",
     "winston": "^2.4.2"
   }

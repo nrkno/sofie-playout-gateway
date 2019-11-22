@@ -12,8 +12,7 @@ let mediaScannerHost: string = process.env.MEDIA_SCANNER_HOST || '127.0.0.1'
 let mediaScannerPort: number = parseInt(process.env.MEDIA_SCANNER_PORT + '', 10) || 8000
 let unsafeSSL: boolean		= process.env.UNSAFE_SSL === '1' || false
 let certs: string[] = (process.env.CERTIFICATES || '').split(';') || []
-
-logPath = logPath
+let disableAtemUpload: boolean = (process.env.DISABLE_ATEM_UPLOAD === '1') || false // TODO: change this to be an opt-in instead
 
 let prevProcessArg = ''
 process.argv.forEach((val) => {
@@ -41,6 +40,8 @@ process.argv.forEach((val) => {
 // arguments with no options:
 	} else if (val.match(/-disableWatchdog/i)) {
 		disableWatchdog = true
+	} else if (val.match(/-disableAtemUpload/i)) {
+		disableAtemUpload = true
 	} else if (val.match(/-unsafeSSL/i)) {
 		// Will cause the Node applocation to blindly accept all certificates. Not recommenced unless in local, controlled networks.
 		unsafeSSL = true
@@ -71,4 +72,4 @@ const config: Config = {
 	}
 }
 
-export { config, logPath, disableWatchdog }
+export { config, logPath, disableWatchdog, disableAtemUpload }
