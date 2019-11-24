@@ -6730,7 +6730,7 @@ timeline-state-resolver-types@^3.2.0:
 
 "timeline-state-resolver@git+https://github.com/olzzon/tv-automation-state-timeline-resolver#dist":
   version "0.0.0-develop"
-  resolved "git+https://github.com/olzzon/tv-automation-state-timeline-resolver#bb208c2f09a2e00bddb858e99faf61e79d43c68c"
+  resolved "git+https://github.com/olzzon/tv-automation-state-timeline-resolver#8ae9cfe252b8832b4813964b691ab0f2427ab8ed"
   dependencies:
     atem-connection "1.1.0"
     atem-state "0.8.1"
