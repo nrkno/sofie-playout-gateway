@@ -22,6 +22,7 @@ import * as fs from 'fs'
 import { LoggerInstance } from './index'
 import { ThreadedClass } from 'threadedclass'
 import { Process } from './process'
+import { PLAYOUT_DEVICE_CONFIG } from './configManifest'
 
 export interface CoreConfig {
 	host: string,
@@ -197,7 +198,9 @@ export class CoreHandler {
 			deviceSubType: subDeviceType,
 
 			deviceName: name,
-			watchDog: (this._coreConfig ? this._coreConfig.watchdog : true)
+			watchDog: (this._coreConfig ? this._coreConfig.watchdog : true),
+
+			configManifest: PLAYOUT_DEVICE_CONFIG
 		}
 		if (subDeviceType === P.SUBTYPE_PROCESS) options.versions = this._getVersions()
 		return options
