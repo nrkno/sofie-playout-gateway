@@ -4,7 +4,7 @@ import {
 	ConductorOptions,
 	Device,
 	TimelineTriggerTimeResult,
-	DeviceOptions,
+	DeviceOptionsAny,
 	Mappings,
 	DeviceContainer,
 	Timeline as TimelineTypes,
@@ -21,12 +21,13 @@ import * as _ from 'underscore'
 import { CoreConnection, PeripheralDeviceAPI as P, CollectionObj } from 'tv-automation-server-core-integration'
 import { TimelineObjectCoreExt } from 'tv-automation-sofie-blueprints-integration'
 import { LoggerInstance } from './index'
+import { disableAtemUpload } from './config'
 
 export interface TSRConfig {
 }
 export interface TSRSettings { // Runtime settings from Core
 	devices: {
-		[deviceId: string]: DeviceOptions
+		[deviceId: string]: DeviceOptionsAny
 	}
 	initializeAsClear: boolean
 	mappings: Mappings
@@ -494,7 +495,7 @@ export class TSRHandler {
 			let settings: TSRSettings = peripheralDevice.settings || {}
 
 			const devices: {
-				[deviceId: string]: DeviceOptions;
+				[deviceId: string]: DeviceOptionsAny;
 			} = {}
 
 			_.each(settings.devices, (device, deviceId) => {
@@ -504,7 +505,7 @@ export class TSRHandler {
 				}
 			})
 
-			_.each(devices, (deviceOptions: DeviceOptions, deviceId: string) => {
+			_.each(devices, (deviceOptions: DeviceOptionsAny, deviceId: string) => {
 
 				let oldDevice: DeviceContainer = this.tsr.getDevice(deviceId)
 
@@ -573,7 +574,7 @@ export class TSRHandler {
 		])
 		this.logger.info('updateDevices end')
 	}
-	private async _addDevice (deviceId: string, options: DeviceOptions): Promise<any> {
+	private async _addDevice (deviceId: string, options: DeviceOptionsAny): Promise<any> {
 		this.logger.debug('Adding device ' + deviceId)
 
 		try {
@@ -609,7 +610,7 @@ export class TSRHandler {
 				}
 				coreTsrHandler.onConnectionChanged(deviceStatus)
 				// hack to make sure atem has media after restart
-				if (deviceStatus.statusCode === P.StatusCode.GOOD) {
+				if (!disableAtemUpload && deviceStatus.statusCode === P.StatusCode.GOOD) {
 					// @todo: proper atem media management
 					const studio = this._getStudio()
 					if (deviceType === DeviceType.ATEM && studio) {
