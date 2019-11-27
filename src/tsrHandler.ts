@@ -266,6 +266,7 @@ export class TSRHandler {
 		this._observers.push(deviceObserver)
 
 		let expectedPlayoutItemsObserver = this._coreHandler.core.observe('expectedPlayoutItems')
+		this.logger.debug('VIZDEBUG: Subscribed to expected playout items')
 		expectedPlayoutItemsObserver.added = () => { this._triggerupdateExpectedPlayoutItems() }
 		expectedPlayoutItemsObserver.changed = () => { this._triggerupdateExpectedPlayoutItems() }
 		expectedPlayoutItemsObserver.removed = () => { this._triggerupdateExpectedPlayoutItems() }
@@ -751,7 +752,9 @@ export class TSRHandler {
 		delete this._coreTsrHandlers[deviceId]
 	}
 	private _triggerupdateExpectedPlayoutItems () {
+		this.logger.debug('VIZDEBUG: Update expected playout items called')
 		if (!this._initialized) return
+		this.logger.debug('VIZDEBUG: And we\'re initialized')
 		if (this._triggerupdateExpectedPlayoutItemsTimeout) {
 			clearTimeout(this._triggerupdateExpectedPlayoutItemsTimeout)
 		}
@@ -761,16 +764,22 @@ export class TSRHandler {
 		}, 200)
 	}
 	private async _updateExpectedPlayoutItems () {
+		this.logger.debug('VIZDEBUG: Update expected playout items called')
 
 		let expectedPlayoutItems = this._coreHandler.core.getCollection('expectedPlayoutItems')
 		const peripheralDevice = this._getPeripheralDevice()
+
+		this.logger.debug(`VIZDEBUG: Items before filter ${JSON.stringify(expectedPlayoutItems)}`)
 
 		const expectedItems = expectedPlayoutItems.find({
 			studioId: peripheralDevice.studioId
 		})
 
+		this.logger.debug(`VIZDEBUG: Items after filter ${JSON.stringify(expectedItems)}`)
+
 		await Promise.all(_.map(this.tsr.getDevices(), async (container) => {
 			if (await container.device.supportsExpectedPlayoutItems) {
+				this.logger.debug(`VIZDEBUG: Supports expected playout items`)
 
 				await container.device.handleExpectedPlayoutItems(
 					_.map(
