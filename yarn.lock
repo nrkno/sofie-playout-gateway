@@ -6728,7 +6728,7 @@ timeline-state-resolver-types@^3.2.0:
   dependencies:
     tslib "^1.9.3"
 
-"timeline-state-resolver@git+https://github.com/olzzon/tv-automation-state-timeline-resolver#dist":
+"timeline-state-resolver@git+https://github.com/olzzon/tv-automation-state-timeline-resolver#debugexpected":
   version "0.0.0-develop"
   resolved "git+https://github.com/olzzon/tv-automation-state-timeline-resolver#96146998072ae662bba8fed5af34ab89ac4b463d"
   dependencies:
