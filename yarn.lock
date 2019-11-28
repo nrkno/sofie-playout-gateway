@@ -6705,16 +6705,16 @@ through@2, "through@>=2.2.7 <3":
   resolved "https://registry.yarnpkg.com/through/-/through-2.3.8.tgz#0dd4c9ffaabc357960b1b724115d7e0e86a2e1f5"
   integrity sha1-DdTJ/6q8NXlgsbckEV1+Doai4fU=
 
-timeline-state-resolver-types@^3.2.0:
+timeline-state-resolver-types@^3.14.0:
   version "3.15.1"
   resolved "https://registry.yarnpkg.com/timeline-state-resolver-types/-/timeline-state-resolver-types-3.15.1.tgz#724b781fac32546ef3272bdf5572c60919979713"
   integrity sha512-9yvCJTNwiPYvo3TEGJ7vFdaDgssfTW2Ya/Ece+BlmPKm8K732nQFiXRvJiI2KZDQ4BtGHtXjkN6gqiUek0AHyw==
   dependencies:
     tslib "^1.9.3"
 
-"timeline-state-resolver@git+https://github.com/olzzon/tv-automation-state-timeline-resolver#aye3":
+"timeline-state-resolver@git+https://github.com/olzzon/tv-automation-state-timeline-resolver#dist20191128":
   version "0.0.0-develop"
-  resolved "git+https://github.com/olzzon/tv-automation-state-timeline-resolver#06630f96514deafe38e2f2ee144c2dddcc6f94ea"
+  resolved "git+https://github.com/olzzon/tv-automation-state-timeline-resolver#fd790a7ec9935e4ad3459a29b1e3d11cd9362df7"
   dependencies:
     atem-connection "1.1.0"
     atem-state "0.8.1"
