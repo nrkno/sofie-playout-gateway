@@ -7072,13 +7072,13 @@ tv-automation-server-core-integration@1.2.1:
     tslib "^1.9.3"
     underscore "^1.9.1"
 
-tv-automation-sofie-blueprints-integration@1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/tv-automation-sofie-blueprints-integration/-/tv-automation-sofie-blueprints-integration-1.1.0.tgz#43af07640c471657c92c503956b289186d3bef69"
-  integrity sha512-pKPzbFz9rfTMqYAtsdF73i1Qb4gDpn+z3Cq+/WkQF4QLQUP60CnchNZ24YYXMiuaxEaoZqoNsRqeQU0wgyuTdA==
+tv-automation-sofie-blueprints-integration@1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/tv-automation-sofie-blueprints-integration/-/tv-automation-sofie-blueprints-integration-1.2.1.tgz#950331b02ff5dbf4b72a8694d445e9bd0e321bef"
+  integrity sha512-03eRdYIibdflDia0GXebMDPg1+fc6eaoT5wcmM+aJI3vpxawtyg9m8xDYDeL2ea4jF+fxX4dwDw8oS+Cub0DAQ==
   dependencies:
     moment "^2.22.2"
-    timeline-state-resolver-types "^3.2.0"
+    timeline-state-resolver-types "^3.14.0"
     tslib "^1.9.3"
     underscore "^1.9.1"
 

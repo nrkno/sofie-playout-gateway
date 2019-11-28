@@ -113,7 +113,7 @@
     "timeline-state-resolver": "git+https://github.com/olzzon/tv-automation-state-timeline-resolver#aye3",
     "tslib": "^1.10.0",
     "tv-automation-server-core-integration": "1.2.1",
-    "tv-automation-sofie-blueprints-integration": "1.1.0",
+    "tv-automation-sofie-blueprints-integration": "1.2.1",
     "underscore": "^1.9.1",
     "winston": "^2.4.2"
   }
