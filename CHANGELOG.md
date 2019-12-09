@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.4.0-0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v1.3.0...v1.4.0-0) (2019-12-09)
+
+
+### Features
+
+* only push docker image if platform credentials are defined ([e10a096](https://github.com/nrkno/tv-automation-playout-gateway/commit/e10a096f2757adcbd763993cb6cecd55c3ce19dd))
+
+
+### Bug Fixes
+
+* DeviceOptionsAny ([5e4103c](https://github.com/nrkno/tv-automation-playout-gateway/commit/5e4103c46ddef9e6d088e37614e42bc5554ba9b8))
+
 ## [1.3.0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v1.2.1...v1.3.0) (2019-11-25)
 
 
