@@ -77,7 +77,7 @@ export class CoreHandler {
 		this._deviceOptions = deviceOptions
 	}
 
-	init (config: CoreConfig, process: Process): Promise<void> {
+	async init (config: CoreConfig, process: Process): Promise<void> {
 		// this.logger.info('========')
 		this._statusInitialized = false
 		this._coreConfig = config
@@ -110,18 +110,14 @@ export class CoreHandler {
 			}
 		}
 
-		return this.core.init(ddpConfig)
-		.then(() => {
-			this.logger.info('Core id: ' + this.core.deviceId)
-			return this.setupObserversAndSubscriptions()
-		})
-		.then(() => {
-			this._statusInitialized = true
-			return this.updateCoreStatus()
-		})
-		.then(() => {
-			return
-		})
+		await this.core.init(ddpConfig)
+
+		this.logger.info('Core id: ' + this.core.deviceId)
+		await this.setupObserversAndSubscriptions()
+
+		this._statusInitialized = true
+		await this.updateCoreStatus()
+
 	}
 	setTSR (tsr: TSRHandler) {
 		this._tsrHandler = tsr
