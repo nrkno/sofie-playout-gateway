@@ -271,7 +271,7 @@ export class TSRHandler {
 		expectedPlayoutItemsObserver.removed = () => { this._triggerupdateExpectedPlayoutItems() }
 		this._observers.push(expectedPlayoutItemsObserver)
 		this.logger.debug('VIZDEBUG: Observer to expectedPlayoutItems set up')
-
+		this._triggerupdateExpectedPlayoutItems()
 	}
 	destroy (): Promise<void> {
 		return this.tsr.destroy()
