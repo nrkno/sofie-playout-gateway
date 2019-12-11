@@ -87,11 +87,11 @@ export class CoreHandler {
 
 		this.core.onConnected(() => {
 			this.logger.info('Core Connected!')
+			if (this._onConnected) this._onConnected()
 			this.setupObserversAndSubscriptions()
 			.catch((e) => {
 				this.logger.error('Core Error during setupObserversAndSubscriptions:', e)
 			})
-			if (this._onConnected) this._onConnected()
 		})
 		this.core.onDisconnected(() => {
 			this.logger.warn('Core Disconnected!')
@@ -278,6 +278,7 @@ export class CoreHandler {
 				}).catch((err) => {
 					this.logger.error(err)
 				})
+				this.logger.debug('VIZDEBUG: Subscription to expectedPlayoutItems done')
 			}
 
 			if (this._tsrHandler) {

@@ -266,11 +266,11 @@ export class TSRHandler {
 		this._observers.push(deviceObserver)
 
 		let expectedPlayoutItemsObserver = this._coreHandler.core.observe('expectedPlayoutItems')
-		this.logger.debug('VIZDEBUG: Subscribed to expected playout items')
 		expectedPlayoutItemsObserver.added = () => { this._triggerupdateExpectedPlayoutItems() }
 		expectedPlayoutItemsObserver.changed = () => { this._triggerupdateExpectedPlayoutItems() }
 		expectedPlayoutItemsObserver.removed = () => { this._triggerupdateExpectedPlayoutItems() }
 		this._observers.push(expectedPlayoutItemsObserver)
+		this.logger.debug('VIZDEBUG: Observer to expectedPlayoutItems set up')
 
 	}
 	destroy (): Promise<void> {
