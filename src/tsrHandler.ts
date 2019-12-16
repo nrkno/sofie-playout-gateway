@@ -232,7 +232,6 @@ export class TSRHandler {
 			this._triggerupdateTimeline()
 			this.onSettingsChanged()
 			this._triggerUpdateDevices()
-			this._triggerupdateExpectedPlayoutItems()
 			this.logger.debug('tsr init done')
 
 		})
@@ -272,7 +271,6 @@ export class TSRHandler {
 		expectedPlayoutItemsObserver.removed = () => { this._triggerupdateExpectedPlayoutItems() }
 		this._observers.push(expectedPlayoutItemsObserver)
 		this.logger.debug('VIZDEBUG: Observer to expectedPlayoutItems set up')
-		this._triggerupdateExpectedPlayoutItems()
 	}
 	destroy (): Promise<void> {
 		return this.tsr.destroy()
@@ -580,6 +578,7 @@ export class TSRHandler {
 				resolve()
 			}, INIT_TIMEOUT)) // Timeout if not all are resolved within INIT_TIMEOUT
 		])
+		this._triggerupdateExpectedPlayoutItems() // So that any recently created devices will get all the ExpectedPlayoutItems
 		this.logger.info('updateDevices end')
 	}
 	private async _addDevice (deviceId: string, options: DeviceOptionsAny): Promise<any> {
