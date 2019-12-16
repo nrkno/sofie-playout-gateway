@@ -232,6 +232,7 @@ export class TSRHandler {
 			this._triggerupdateTimeline()
 			this.onSettingsChanged()
 			this._triggerUpdateDevices()
+			this._triggerupdateExpectedPlayoutItems()
 			this.logger.debug('tsr init done')
 
 		})
@@ -752,7 +753,7 @@ export class TSRHandler {
 		delete this._coreTsrHandlers[deviceId]
 	}
 	private _triggerupdateExpectedPlayoutItems () {
-		this.logger.debug('VIZDEBUG: Update expected playout items called')
+		this.logger.debug('VIZDEBUG: Trigger update expected playout items called')
 		if (!this._initialized) return
 		this.logger.debug('VIZDEBUG: And we\'re initialized')
 		if (this._triggerupdateExpectedPlayoutItemsTimeout) {
