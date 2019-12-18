@@ -583,14 +583,16 @@ export class TSRHandler {
 				throw new Error(`There is already a _coreTsrHandlers for deviceId "${deviceId}"!`)
 			}
 
-			const device: DeviceContainer = await this.tsr.addDevice(deviceId, options)
+			const devicePr: Promise<DeviceContainer> = this.tsr.addDevice(deviceId, options)
+
+			let coreTsrHandler = new CoreTSRDeviceHandler(this._coreHandler, devicePr, deviceId, this)
+
+			this._coreTsrHandlers[deviceId] = coreTsrHandler
+
+			const device = await devicePr
 
 			// Set up device status
 			const deviceType = device.deviceType
-
-			let coreTsrHandler = new CoreTSRDeviceHandler(this._coreHandler, device, this)
-
-			this._coreTsrHandlers[deviceId] = coreTsrHandler
 
 			const onConnectionChanged = (connectedOrStatus: boolean | P.StatusObject) => {
 				let deviceStatus: P.StatusObject
