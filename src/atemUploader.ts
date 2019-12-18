@@ -56,6 +56,10 @@ export class AtemUploadScript {
 			consoleLog('has stills')
 			if (this.connection.state.media.stillPool[this.mediaPool].isUsed) {
 				consoleLog('still is used')
+				if (this.fileName.length > 63) {
+					consoleError('filename is too long, change detection will always fail')
+				}
+
 				if (this.connection.state.media.stillPool[this.mediaPool].fileName === this.fileName) {
 					consoleLog('name equals')
 					return true
@@ -93,27 +97,25 @@ export class AtemUploadScript {
 	}
 }
 
-export function setupAtemUploader () {
-	console.log('Setup AtemUploader...')
-	const singleton = new AtemUploadScript()
-	singleton.connect(process.argv[2]).then(async () => {
-		consoleLog('ATEM upload connected')
-		await singleton.loadFile(process.argv[3]).catch((e) => {
-			consoleError(e)
-			console.error('Exiting process due to atemUpload error')
-			process.exit(-1)
-		})
-		let mediaPool: string | undefined
-		if (process.argv.length >= 5) {
-			mediaPool = process.argv[4]
-		}
-		if (mediaPool !== undefined) {
-			singleton.mediaPool = parseInt(mediaPool, 10)
-		}
+console.log('Setup AtemUploader...')
+const singleton = new AtemUploadScript()
+singleton.connect(process.argv[2]).then(async () => {
+	consoleLog('ATEM upload connected')
+	await singleton.loadFile(process.argv[3]).catch((e) => {
+		consoleError(e)
+		console.error('Exiting process due to atemUpload error')
+		process.exit(-1)
+	})
+	let mediaPool: string | undefined
+	if (process.argv.length >= 5) {
+		mediaPool = process.argv[4]
+	}
+	if (mediaPool !== undefined) {
+		singleton.mediaPool = parseInt(mediaPool, 10)
+	}
 
-		singleton.uploadToAtem().then(() => {
-			consoleLog('uploaded ATEM media to pool ' + singleton.mediaPool)
-			process.exit(0)
-		}, () => process.exit(-1))
+	singleton.uploadToAtem().then(() => {
+		consoleLog('uploaded ATEM media to pool ' + singleton.mediaPool)
+		process.exit(0)
 	}, () => process.exit(-1))
-}
+}, () => process.exit(-1))
