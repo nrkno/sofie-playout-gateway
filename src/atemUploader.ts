@@ -74,7 +74,7 @@ export class AtemUploadScript {
 	uploadToAtem () {
 		if (!this.checkIfFileExistsOnAtem()) {
 			consoleLog('does not exist on ATEM')
-			return this.connection.clearMediaPoolStill(0).then(() =>
+			return this.connection.clearMediaPoolStill(this.mediaPool).then(() =>
 				this.connection.uploadStill(this.mediaPool, this.file, this.fileName, '')
 			).then(() =>
 				this.setMediaPlayerToStill()

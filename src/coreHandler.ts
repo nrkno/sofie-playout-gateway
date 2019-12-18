@@ -383,7 +383,7 @@ export class CoreHandler {
 	 * // @todo: proper atem media management
 	 * /Balte - 22-08
 	 */
-	uploadFileToAtem (urls: [{ _key: string, value: any }] | { _key: string, value: any }) {
+	uploadFileToAtem (urls: { _key: string, value: any }[] | { _key: string, value: any }) {
 		if (_.isArray(urls)) {
 			urls = urls.slice(0, 2) as [{ _key: string, value: any }]
 		} else {
@@ -399,7 +399,7 @@ export class CoreHandler {
 						this.logger.info('options ' + JSON.stringify(options))
 						if (options && options.host) {
 							this.logger.info('uploading ' + url.value + ' to ' + options.host + ' in MP' + index)
-							const process = cp.spawn(`node`, [`./dist/atemUploader.js`, options.host, url.value, index])
+							const process = cp.spawn(`node`, [`./dist/atemUploader.js`, options.host, url.value, url._key])
 							process.stdout.on('data', (data) => this.logger.info(data.toString()))
 							process.stderr.on('data', (data) => this.logger.info(data.toString()))
 							process.on('close', () => {

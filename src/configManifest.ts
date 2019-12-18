@@ -1,5 +1,5 @@
 import { DeviceConfigManifest, ConfigManifestEntryType, SubDeviceConfigManifest, SubDeviceConfigManifestEntry } from 'tv-automation-server-core-integration'
-import { DeviceType } from 'timeline-state-resolver'
+import { DeviceType, AtemMediaPoolType } from 'timeline-state-resolver'
 
 export enum TimelineContentTypeHttp {
 	GET = 'get',
@@ -83,6 +83,35 @@ const PLAYOUT_SUBDEVICE_CONFIG: SubDeviceConfigManifest['config'] = {
 	[TSRDeviceType.ATEM]: [
 		...PLAYOUT_SUBDEVICE_COMMON,
 		...PLAYOUT_SUBDEVICE_HOST_PORT,
+		{
+			id: 'options.mediaPoolAssets',
+			name: 'Media Pool Assets',
+			type: ConfigManifestEntryType.TABLE,
+			defaultType: 'default',
+			config: {
+				'default': [
+					{
+						id: 'path',
+						name: 'Path',
+						columnName: 'File Path',
+						type: ConfigManifestEntryType.STRING
+					},
+					{
+						id: 'type',
+						name: 'Type',
+						columnName: 'Type',
+						defaultVal: AtemMediaPoolType.Still,
+						type: ConfigManifestEntryType.ENUM,
+						values: AtemMediaPoolType
+					},
+					{
+						id: 'position',
+						name: 'Position',
+						type: ConfigManifestEntryType.INT
+					}
+				]
+			}
+		}
 	],
 	[TSRDeviceType.LAWO]: [
 		...PLAYOUT_SUBDEVICE_COMMON,
