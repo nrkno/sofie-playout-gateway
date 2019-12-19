@@ -369,9 +369,9 @@ export class CoreHandler {
 		}
 		return 0
 	}
-	devicesMakeReady (okToDestroyStuff?: boolean): Promise<any> {
+	devicesMakeReady (okToDestroyStuff?: boolean, activeRundownId?: string): Promise<any> {
 		if (this._tsrHandler) {
-			return this._tsrHandler.tsr.devicesMakeReady(okToDestroyStuff)
+			return this._tsrHandler.tsr.devicesMakeReady(okToDestroyStuff, activeRundownId)
 		} else {
 			throw Error('TSR not set up!')
 		}
