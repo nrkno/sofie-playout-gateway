@@ -383,12 +383,7 @@ export class CoreHandler {
 	 * // @todo: proper atem media management
 	 * /Balte - 22-08
 	 */
-	uploadFileToAtem (urls: { _key: string, value: any }[] | { _key: string, value: any }) {
-		if (_.isArray(urls)) {
-			urls = urls.slice(0, 2) as [{ _key: string, value: any }]
-		} else {
-			urls = [ urls ]
-		}
+	uploadFileToAtem (urls: { _key: string, value: any }[]) {
 
 		urls.forEach((url, index) => {
 			this.logger.info('try to load ' + JSON.stringify(url) + ' to atem')
