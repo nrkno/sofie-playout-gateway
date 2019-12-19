@@ -789,7 +789,12 @@ export class TSRHandler {
 								// TODO: implement item.deviceId === container.deviceId
 							)
 						}),
-						item => item.content
+						item => {
+							return {
+								...item.content,
+								rundownId: item.rundownId
+							}
+						}
 					)
 				)
 
