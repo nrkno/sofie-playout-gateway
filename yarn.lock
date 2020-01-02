@@ -6712,9 +6712,9 @@ timeline-state-resolver-types@^3.14.0:
   dependencies:
     tslib "^1.9.3"
 
-"timeline-state-resolver@git+https://github.com/olzzon/tv-automation-state-timeline-resolver#dist20191219_3":
+"timeline-state-resolver@git+https://github.com/olzzon/tv-automation-state-timeline-resolver#dist20200102":
   version "0.0.0-develop"
-  resolved "git+https://github.com/olzzon/tv-automation-state-timeline-resolver#a4128fc4989b3ae3f9e8350f6ac720a995cac699"
+  resolved "git+https://github.com/olzzon/tv-automation-state-timeline-resolver#81db56351d504345b64792ac1ac79bb315180075"
   dependencies:
     atem-connection "1.1.0"
     atem-state "0.8.1"
