@@ -21,6 +21,7 @@ import * as _ from 'underscore'
 import { CoreConnection, PeripheralDeviceAPI as P, CollectionObj } from 'tv-automation-server-core-integration'
 import { TimelineObjectCoreExt } from 'tv-automation-sofie-blueprints-integration'
 import { LoggerInstance } from './index'
+import { disableAtemUpload } from './config'
 
 export interface TSRConfig {
 }
@@ -582,14 +583,16 @@ export class TSRHandler {
 				throw new Error(`There is already a _coreTsrHandlers for deviceId "${deviceId}"!`)
 			}
 
-			const device: DeviceContainer = await this.tsr.addDevice(deviceId, options)
+			const devicePr: Promise<DeviceContainer> = this.tsr.addDevice(deviceId, options)
+
+			let coreTsrHandler = new CoreTSRDeviceHandler(this._coreHandler, devicePr, deviceId, this)
+
+			this._coreTsrHandlers[deviceId] = coreTsrHandler
+
+			const device = await devicePr
 
 			// Set up device status
 			const deviceType = device.deviceType
-
-			let coreTsrHandler = new CoreTSRDeviceHandler(this._coreHandler, device, this)
-
-			this._coreTsrHandlers[deviceId] = coreTsrHandler
 
 			const onConnectionChanged = (connectedOrStatus: boolean | P.StatusObject) => {
 				let deviceStatus: P.StatusObject
@@ -609,7 +612,7 @@ export class TSRHandler {
 				}
 				coreTsrHandler.onConnectionChanged(deviceStatus)
 				// hack to make sure atem has media after restart
-				if (deviceStatus.statusCode === P.StatusCode.GOOD) {
+				if (!disableAtemUpload && deviceStatus.statusCode === P.StatusCode.GOOD) {
 					// @todo: proper atem media management
 					const studio = this._getStudio()
 					if (deviceType === DeviceType.ATEM && studio) {
