@@ -12,7 +12,6 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### Features
 
-* add device config manifest ([08eabd2](https://github.com/nrkno/tv-automation-playout-gateway/commit/08eabd2))
 * add device config manifest ([#58](https://github.com/nrkno/tv-automation-playout-gateway/issues/58)) ([12f8e68](https://github.com/nrkno/tv-automation-playout-gateway/commit/12f8e68))
 
 ## 1.4.0 (2020-01-02)
