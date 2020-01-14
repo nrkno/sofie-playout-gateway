@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.5.0-1](https://github.com/nrkno/tv-automation-playout-gateway/compare/v1.5.0-0...v1.5.0-1) (2020-01-14)
+
+
+### Bug Fixes
+
+* **config manifest:** fix issue with config manifest device types mapping ([9ab2374](https://github.com/nrkno/tv-automation-playout-gateway/commit/9ab2374))
+
 ## [1.5.0-0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v1.4.0...v1.5.0-0) (2020-01-08)
 
 
