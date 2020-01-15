@@ -110,7 +110,7 @@
     "fast-clone": "^1.5.13",
     "pouchdb-node": "6.4.3",
     "promise-sequence": "^0.3.1",
-    "timeline-state-resolver": "git+https://github.com/olzzon/tv-automation-state-timeline-resolver#v20200114",
+    "timeline-state-resolver": "git+https://github.com/olzzon/tv-automation-state-timeline-resolver#v20200115",
     "tslib": "^1.10.0",
     "tv-automation-server-core-integration": "1.2.1",
     "tv-automation-sofie-blueprints-integration": "1.2.1",
