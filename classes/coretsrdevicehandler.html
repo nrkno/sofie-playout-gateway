@@ -2375,6 +2375,12 @@ img {
 					<a href="coretsrdevicehandler.html#_device" class="tsd-kind-icon">_device</a>
 				</li>
 				<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
+					<a href="coretsrdevicehandler.html#_deviceid" class="tsd-kind-icon">_device<wbr>Id</a>
+				</li>
+				<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
+					<a href="coretsrdevicehandler.html#_devicepr" class="tsd-kind-icon">_device<wbr>Pr</a>
+				</li>
+				<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
 					<a href="coretsrdevicehandler.html#_observers" class="tsd-kind-icon">_observers</a>
 				</li>
 				<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
@@ -2435,6 +2441,8 @@ img {
 						<h3>Properties</h3>
 						<ul class="tsd-index-list">
 							<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="coretsrdevicehandler.html#_device" class="tsd-kind-icon">_device</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="coretsrdevicehandler.html#_deviceid" class="tsd-kind-icon">_device<wbr>Id</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="coretsrdevicehandler.html#_devicepr" class="tsd-kind-icon">_device<wbr>Pr</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="coretsrdevicehandler.html#_observers" class="tsd-kind-icon">_observers</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="coretsrdevicehandler.html#core" class="tsd-kind-icon">core</a></li>
 						</ul>
@@ -2462,13 +2470,13 @@ img {
 				<a name="constructor" class="tsd-anchor"></a>
 				<h3>constructor</h3>
 				<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-external">
-					<li class="tsd-signature tsd-kind-icon">new <wbr>CoreTSRDevice<wbr>Handler<span class="tsd-signature-symbol">(</span>parent<span class="tsd-signature-symbol">: </span><a href="corehandler.html" class="tsd-signature-type">CoreHandler</a>, device<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">DeviceContainer</span>, tsrHandler<span class="tsd-signature-symbol">: </span><a href="tsrhandler.html" class="tsd-signature-type">TSRHandler</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="coretsrdevicehandler.html" class="tsd-signature-type">CoreTSRDeviceHandler</a></li>
+					<li class="tsd-signature tsd-kind-icon">new <wbr>CoreTSRDevice<wbr>Handler<span class="tsd-signature-symbol">(</span>parent<span class="tsd-signature-symbol">: </span><a href="corehandler.html" class="tsd-signature-type">CoreHandler</a>, device<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">DeviceContainer</span><span class="tsd-signature-symbol">&gt;</span>, deviceId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, tsrHandler<span class="tsd-signature-symbol">: </span><a href="tsrhandler.html" class="tsd-signature-type">TSRHandler</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="coretsrdevicehandler.html" class="tsd-signature-type">CoreTSRDeviceHandler</a></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/nrkno/tv-automation-playout-gateway/blob/d0f60ef/src/coreHandler.ts#L546">coreHandler.ts:546</a></li>
+								<li>Defined in <a href="https://github.com/nrkno/tv-automation-playout-gateway/blob/493e6c0/src/coreHandler.ts#L551">coreHandler.ts:551</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2477,7 +2485,10 @@ img {
 								<h5>parent: <a href="corehandler.html" class="tsd-signature-type">CoreHandler</a></h5>
 							</li>
 							<li>
-								<h5>device: <span class="tsd-signature-type">DeviceContainer</span></h5>
+								<h5>device: <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">DeviceContainer</span><span class="tsd-signature-symbol">&gt;</span></h5>
+							</li>
+							<li>
+								<h5>deviceId: <span class="tsd-signature-type">string</span></h5>
 							</li>
 							<li>
 								<h5>tsrHandler: <a href="tsrhandler.html" class="tsd-signature-type">TSRHandler</a></h5>
@@ -2496,7 +2507,27 @@ img {
 				<div class="tsd-signature tsd-kind-icon">_device<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">DeviceContainer</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/nrkno/tv-automation-playout-gateway/blob/d0f60ef/src/coreHandler.ts#L542">coreHandler.ts:542</a></li>
+						<li>Defined in <a href="https://github.com/nrkno/tv-automation-playout-gateway/blob/493e6c0/src/coreHandler.ts#L547">coreHandler.ts:547</a></li>
+					</ul>
+				</aside>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-external">
+				<a name="_deviceid" class="tsd-anchor"></a>
+				<h3>_device<wbr>Id</h3>
+				<div class="tsd-signature tsd-kind-icon">_device<wbr>Id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+				<aside class="tsd-sources">
+					<ul>
+						<li>Defined in <a href="https://github.com/nrkno/tv-automation-playout-gateway/blob/493e6c0/src/coreHandler.ts#L546">coreHandler.ts:546</a></li>
+					</ul>
+				</aside>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-external">
+				<a name="_devicepr" class="tsd-anchor"></a>
+				<h3>_device<wbr>Pr</h3>
+				<div class="tsd-signature tsd-kind-icon">_device<wbr>Pr<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">DeviceContainer</span><span class="tsd-signature-symbol">&gt;</span></div>
+				<aside class="tsd-sources">
+					<ul>
+						<li>Defined in <a href="https://github.com/nrkno/tv-automation-playout-gateway/blob/493e6c0/src/coreHandler.ts#L545">coreHandler.ts:545</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -2506,7 +2537,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">_observers<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> =&nbsp;[]</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/nrkno/tv-automation-playout-gateway/blob/d0f60ef/src/coreHandler.ts#L541">coreHandler.ts:541</a></li>
+						<li>Defined in <a href="https://github.com/nrkno/tv-automation-playout-gateway/blob/493e6c0/src/coreHandler.ts#L544">coreHandler.ts:544</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -2516,7 +2547,7 @@ img {
 				<div class="tsd-signature tsd-kind-icon">core<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">CoreConnection</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/nrkno/tv-automation-playout-gateway/blob/d0f60ef/src/coreHandler.ts#L540">coreHandler.ts:540</a></li>
+						<li>Defined in <a href="https://github.com/nrkno/tv-automation-playout-gateway/blob/493e6c0/src/coreHandler.ts#L543">coreHandler.ts:543</a></li>
 					</ul>
 				</aside>
 			</section>
@@ -2533,7 +2564,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/nrkno/tv-automation-playout-gateway/blob/d0f60ef/src/coreHandler.ts#L632">coreHandler.ts:632</a></li>
+								<li>Defined in <a href="https://github.com/nrkno/tv-automation-playout-gateway/blob/493e6c0/src/coreHandler.ts#L639">coreHandler.ts:639</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -2550,7 +2581,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/nrkno/tv-automation-playout-gateway/blob/d0f60ef/src/coreHandler.ts#L662">coreHandler.ts:662</a></li>
+								<li>Defined in <a href="https://github.com/nrkno/tv-automation-playout-gateway/blob/493e6c0/src/coreHandler.ts#L669">coreHandler.ts:669</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -2567,7 +2598,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/nrkno/tv-automation-playout-gateway/blob/d0f60ef/src/coreHandler.ts#L560">coreHandler.ts:560</a></li>
+								<li>Defined in <a href="https://github.com/nrkno/tv-automation-playout-gateway/blob/493e6c0/src/coreHandler.ts#L566">coreHandler.ts:566</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -2584,7 +2615,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/nrkno/tv-automation-playout-gateway/blob/d0f60ef/src/coreHandler.ts#L643">coreHandler.ts:643</a></li>
+								<li>Defined in <a href="https://github.com/nrkno/tv-automation-playout-gateway/blob/493e6c0/src/coreHandler.ts#L650">coreHandler.ts:650</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2610,7 +2641,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/nrkno/tv-automation-playout-gateway/blob/d0f60ef/src/coreHandler.ts#L616">coreHandler.ts:616</a></li>
+								<li>Defined in <a href="https://github.com/nrkno/tv-automation-playout-gateway/blob/493e6c0/src/coreHandler.ts#L623">coreHandler.ts:623</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2653,7 +2684,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/nrkno/tv-automation-playout-gateway/blob/d0f60ef/src/coreHandler.ts#L610">coreHandler.ts:610</a></li>
+								<li>Defined in <a href="https://github.com/nrkno/tv-automation-playout-gateway/blob/493e6c0/src/coreHandler.ts#L617">coreHandler.ts:617</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2676,7 +2707,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/nrkno/tv-automation-playout-gateway/blob/d0f60ef/src/coreHandler.ts#L646">coreHandler.ts:646</a></li>
+								<li>Defined in <a href="https://github.com/nrkno/tv-automation-playout-gateway/blob/493e6c0/src/coreHandler.ts#L653">coreHandler.ts:653</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -2693,7 +2724,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/nrkno/tv-automation-playout-gateway/blob/d0f60ef/src/coreHandler.ts#L654">coreHandler.ts:654</a></li>
+								<li>Defined in <a href="https://github.com/nrkno/tv-automation-playout-gateway/blob/493e6c0/src/coreHandler.ts#L661">coreHandler.ts:661</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -2710,7 +2741,7 @@ img {
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<ul>
-								<li>Defined in <a href="https://github.com/nrkno/tv-automation-playout-gateway/blob/d0f60ef/src/coreHandler.ts#L585">coreHandler.ts:585</a></li>
+								<li>Defined in <a href="https://github.com/nrkno/tv-automation-playout-gateway/blob/493e6c0/src/coreHandler.ts#L592">coreHandler.ts:592</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
