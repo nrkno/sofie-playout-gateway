@@ -1287,7 +1287,7 @@ code-point-at@^1.0.0:
   resolved "https://registry.yarnpkg.com/code-point-at/-/code-point-at-1.1.0.tgz#0d070b4d043a5bea33a2f1a40e2edb3d9a4ccf77"
   integrity sha1-DQcLTQQ6W+ozovGkDi7bPZpMz3c=
 
-codecov@^3.5.0:
+codecov@^3.6.1:
   version "3.6.1"
   resolved "https://registry.yarnpkg.com/codecov/-/codecov-3.6.1.tgz#f39fc49413445555f81f8e3ca5730992843b4517"
   integrity sha512-IUJB6WG47nWK7o50etF8jBadxdMw7DmoQg05yIljstXFBGB6clOZsIj6iD4P82T2YaIU3qq+FFu8K9pxgkCJDQ==
@@ -2771,7 +2771,7 @@ growly@^1.3.0:
   resolved "https://registry.yarnpkg.com/growly/-/growly-1.3.0.tgz#f10748cbe76af964b7c96c93c6bcc28af120c081"
   integrity sha1-8QdIy+dq+WS3yWyTxrzCivEgwIE=
 
-handlebars@^4.1.2, handlebars@^4.4.0, handlebars@^4.5.1:
+handlebars@^4.1.2, handlebars@^4.5.3:
   version "4.5.3"
   resolved "https://registry.yarnpkg.com/handlebars/-/handlebars-4.5.3.tgz#5cf75bd8714f7605713511a56be7c349becb0482"
   integrity sha512-3yPecJoJHK/4c6aZhSvxOyG4vJKDshV36VHp0iVCDVh7o9w2vwi3NSnL2MMPj3YdduqaBcu7cGbggJQM0br9xA==
@@ -2909,7 +2909,7 @@ http-signature@~1.2.0:
     jsprim "^1.2.2"
     sshpk "^1.7.0"
 
-https-proxy-agent@^2.2.1:
+https-proxy-agent@^2.2.1, https-proxy-agent@^2.2.3:
   version "2.2.4"
   resolved "https://registry.yarnpkg.com/https-proxy-agent/-/https-proxy-agent-2.2.4.tgz#4ee7a737abd92678a293d9b34a1af4d0d08c787b"
   integrity sha512-OmvfoQ53WLjtA9HeYP9RNrWMJzzAz1JGaSFr1nijg0PVR1JaD/xbJq1mdEIIlxGpXp9eSe/O2LgU9DJmTPd0Eg==
@@ -2925,11 +2925,12 @@ humanize-url@^1.0.0:
     normalize-url "^1.0.0"
     strip-url-auth "^1.0.0"
 
-hyperdeck-connection@^0.4.0:
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/hyperdeck-connection/-/hyperdeck-connection-0.4.0.tgz#47546aa1fc37e335adaed0d06637857d455e797e"
-  integrity sha512-W2fmnaWoRAwEtHAvUTM7saaPlE6keHA7PwD4kAvd4EPwrjO6Q/FR5uK8oCVSPz8dzLiIU0DIfbQf32iJEIuDgA==
+hyperdeck-connection@^0.4.2:
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/hyperdeck-connection/-/hyperdeck-connection-0.4.2.tgz#c5e60f62eeeac3397dd9b9897d345d241894450f"
+  integrity sha512-uluecgZxeywLGMeBOv+256yJEDcghGih/ltV24vBBwaMF7oL0OEphsMbGLKZah5KZfIsDE8vTK5Hy342891JjQ==
   dependencies:
+    tslib "^1.9.0"
     underscore "^1.9.1"
     underscore-deep-extend "^1.1.5"
 
@@ -6348,10 +6349,10 @@ timeline-state-resolver-types@^3.14.0:
   dependencies:
     tslib "^1.9.3"
 
-timeline-state-resolver@^3.16.2:
-  version "3.16.2"
-  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-3.16.2.tgz#f021bd4db4d18add880298a0c8388d1bd61ffda9"
-  integrity sha512-7hZigYdumpr7Uh1tkRcg3Hs5kpwVFlCSRgX8gtN9eqb5KIpaskEDyPlJ08A108M4C0V6ZuFEGvBnCiM18Rw94g==
+timeline-state-resolver@^3.17.0:
+  version "3.17.0"
+  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-3.17.0.tgz#0424ec039bc92564272bfb5bfdf47192ea2d18be"
+  integrity sha512-ydgeYu/S0keOekuQMqVSU4OgNccVugeqsbwh1WORpK9Pgtdq0zidyUrnrPQ21QrEOC0Wkud1W8uA/0Y092TY+g==
   dependencies:
     atem-connection "1.1.0"
     atem-state "^0.8.1"
@@ -6359,7 +6360,7 @@ timeline-state-resolver@^3.16.2:
     casparcg-state "^1.11.2"
     emberplus "git+https://github.com/nrkno/tv-automation-emberplus-connection#dist200919_1"
     fast-clone "^1.5.13"
-    hyperdeck-connection "^0.4.0"
+    hyperdeck-connection "^0.4.2"
     osc "^2.2.4"
     request "^2.88.0"
     sprintf-js "^1.1.2"
@@ -6573,16 +6574,15 @@ tunnel-agent@^0.6.0:
   dependencies:
     safe-buffer "^5.0.1"
 
-tv-automation-server-core-integration@1.2.1:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/tv-automation-server-core-integration/-/tv-automation-server-core-integration-1.2.1.tgz#d5d94d49db9bb3dd003772cffff5795007b96e8e"
-  integrity sha512-83+I9RqdwwY+mkERiBQ5Ro+pEXecG757w+5/8RUU2mj1XJtIdhVlSlhByo3uJqug5S8zeq3rSgYZZUaKvyZRTw==
+tv-automation-server-core-integration@1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/tv-automation-server-core-integration/-/tv-automation-server-core-integration-1.3.0.tgz#6f5f212070abac1cf6cbb5190eadbcac2ff0e98e"
+  integrity sha512-mgHfTA3UZrsYu1/sTPonhqZ7E1X2j2O78/8lIoF5DHjvgn85v27Gfk3BZnDeMBP1GZEV37jOCXmT1v4Ron08jA==
   dependencies:
     data-store "3.1.0"
     ddp "git+http://github.com/nytamin/node-ddp-client.git#v0.12.2-next2"
     ddp-ejson "~0.8.1-3"
     ddp-random "~0.8.1-1"
-    request "^2.88.0"
     tslib "^1.9.3"
     underscore "^1.9.1"
 

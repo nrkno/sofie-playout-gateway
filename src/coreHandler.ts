@@ -537,18 +537,21 @@ export class CoreHandler {
 export class CoreTSRDeviceHandler {
 	core: CoreConnection
 	public _observers: Array<any> = []
+	public _devicePr: Promise<DeviceContainer>
+	public _deviceId: string
 	public _device: DeviceContainer
 	private _coreParentHandler: CoreHandler
 	private _tsrHandler: TSRHandler
 	private _subscriptions: Array<string> = []
 	private _hasGottenStatusChange: boolean = false
 
-	constructor (parent: CoreHandler, device: DeviceContainer, tsrHandler: TSRHandler) {
+	constructor (parent: CoreHandler, device: Promise<DeviceContainer>, deviceId: string, tsrHandler: TSRHandler) {
 		this._coreParentHandler = parent
-		this._device = device
+		this._devicePr = device
+		this._deviceId = deviceId
 		this._tsrHandler = tsrHandler
 
-		this._coreParentHandler.logger.info('new CoreTSRDeviceHandler ' + device.deviceName)
+		// this._coreParentHandler.logger.info('new CoreTSRDeviceHandler ' + device.deviceName)
 
 		// this.core = new CoreConnection(parent.getCoreConnectionOptions('MOS: ' + device.idPrimary, device.idPrimary, false))
 		// this.core.onError((err) => {
@@ -556,6 +559,7 @@ export class CoreTSRDeviceHandler {
 		// })
 	}
 	async init (): Promise<void> {
+		this._device = await this._devicePr
 		let deviceName = this._device.deviceName
 		let deviceId = this._device.deviceId
 
@@ -632,7 +636,7 @@ export class CoreTSRDeviceHandler {
 			obs.stop()
 		})
 
-		await this._tsrHandler.tsr.removeDevice(this._device.deviceId)
+		await this._tsrHandler.tsr.removeDevice(this._deviceId)
 		await this.core.setStatus({
 			statusCode: P.StatusCode.BAD,
 			messages: ['Uninitialized']
