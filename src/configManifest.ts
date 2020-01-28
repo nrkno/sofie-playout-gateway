@@ -1,5 +1,5 @@
 import { DeviceConfigManifest, ConfigManifestEntryType, SubDeviceConfigManifest, SubDeviceConfigManifestEntry } from 'tv-automation-server-core-integration'
-import { DeviceType, AtemMediaPoolType } from 'timeline-state-resolver'
+import { AtemMediaPoolType } from 'timeline-state-resolver'
 
 export enum TimelineContentTypeHttp {
 	GET = 'get',
