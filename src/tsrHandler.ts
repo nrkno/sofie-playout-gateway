@@ -50,7 +50,6 @@ export interface TimelineObjGeneric extends TimelineObjectCoreExt {
 
 	/** Studio installation Id */
 	studioId: string
-	rundownId?: string
 
 	objectType: TimelineObjType
 
@@ -651,7 +650,6 @@ export class TSRHandler {
 					coreTsrHandler.onCommandError(errorString, {
 						timelineObjId:	context.timelineObjId,
 						context: 		context.context,
-						rundownId:	obj ? obj['rundownId']	: undefined,
 						partId:		obj ? obj['partId']		: undefined,
 						pieceId:	obj ? obj['pieceId']	: undefined
 					})
@@ -754,14 +752,7 @@ export class TSRHandler {
 		// _transformTimeline (timeline: Array<TimelineObj>): Array<TimelineContentObject> | null {
 
 		let transformObject = (obj: TimelineObjGeneric): TimelineContentObjectTmp => {
-			let transformedObj = clone(
-				_.omit(
-					{
-						...obj,
-						rundownId: obj.rundownId
-					}, ['_id', 'studioId']
-				)
-			)
+			let transformedObj = clone(_.omit(obj, ['_id', 'studioId']))
 			transformedObj.id = obj.id || obj._id
 
 			if (!transformedObj.content) transformedObj.content = {}
