@@ -1,40 +1,11 @@
 import { DeviceConfigManifest, ConfigManifestEntryType, SubDeviceConfigManifest, SubDeviceConfigManifestEntry } from 'tv-automation-server-core-integration'
+import { DeviceType as TSRDeviceType, AtemMediaPoolType } from 'timeline-state-resolver'
 
 export enum TimelineContentTypeHttp {
 	GET = 'get',
 	POST = 'post',
 	PUT = 'put',
 	DELETE = 'delete'
-}
-export enum TSRDeviceType {
-	ABSTRACT = 'abstract',
-	CASPARCG = 'casparcg',
-	ATEM = 'atem',
-	LAWO = 'lawo',
-	HTTPSEND = 'httpsend',
-	PANASONIC_PTZ = 'panasonic_ptz',
-	TCPSEND = 'tcpsend',
-	HYPERDECK = 'hyperdeck',
-	PHAROS = 'pharos',
-	OSC = 'osc',
-	HTTPWATCHER = 'httpwatcher',
-	SISYFOS = 'sisyfos',
-	QUANTEL = 'quantel'
-}
-export const TSRDeviceTypeValue = {
-	[TSRDeviceType.ABSTRACT]: 0,
-	[TSRDeviceType.CASPARCG]: 1,
-	[TSRDeviceType.ATEM]: 2,
-	[TSRDeviceType.LAWO]: 3,
-	[TSRDeviceType.HTTPSEND]: 4,
-	[TSRDeviceType.PANASONIC_PTZ]: 5,
-	[TSRDeviceType.TCPSEND]: 6,
-	[TSRDeviceType.HYPERDECK]: 7,
-	[TSRDeviceType.PHAROS]: 8,
-	[TSRDeviceType.OSC]: 9,
-	[TSRDeviceType.HTTPWATCHER]: 10,
-	[TSRDeviceType.SISYFOS]: 11,
-	[TSRDeviceType.QUANTEL]: 12
 }
 
 const PLAYOUT_SUBDEVICE_COMMON: SubDeviceConfigManifestEntry[] = [
@@ -81,7 +52,38 @@ const PLAYOUT_SUBDEVICE_CONFIG: SubDeviceConfigManifest['config'] = {
 	],
 	[TSRDeviceType.ATEM]: [
 		...PLAYOUT_SUBDEVICE_COMMON,
-		...PLAYOUT_SUBDEVICE_HOST_PORT
+		...PLAYOUT_SUBDEVICE_HOST_PORT,
+		{
+			id: 'options.mediaPoolAssets',
+			name: 'Media Pool Assets',
+			type: ConfigManifestEntryType.TABLE,
+			defaultType: 'default',
+			config: {
+				'default': [
+					{
+						id: 'path',
+						name: 'Path',
+						columnName: 'File Path',
+						type: ConfigManifestEntryType.STRING,
+						defaultVal: ''
+					},
+					{
+						id: 'type',
+						name: 'Type',
+						columnName: 'Type',
+						defaultVal: AtemMediaPoolType.Still,
+						type: ConfigManifestEntryType.ENUM,
+						values: AtemMediaPoolType
+					},
+					{
+						id: 'position',
+						name: 'Position',
+						type: ConfigManifestEntryType.INT,
+						defaultVal: 0
+					}
+				]
+			}
+		}
 	],
 	[TSRDeviceType.LAWO]: [
 		...PLAYOUT_SUBDEVICE_COMMON,
@@ -259,37 +261,9 @@ export const PLAYOUT_DEVICE_CONFIG: DeviceConfigManifest = {
 			id: 'devices',
 			name: 'Sub Devices',
 			type: ConfigManifestEntryType.TABLE,
-			defaultType: TSRDeviceType.ABSTRACT,
+			defaultType: TSRDeviceType.ABSTRACT as any,
 			isSubDevices: true,
-			deviceTypesMapping: {
-				[TSRDeviceType.ABSTRACT]: TSRDeviceType.ABSTRACT,
-				[TSRDeviceType.CASPARCG]: TSRDeviceType.CASPARCG,
-				[TSRDeviceType.ATEM]: TSRDeviceType.ATEM,
-				[TSRDeviceType.LAWO]: TSRDeviceType.LAWO,
-				[TSRDeviceType.HTTPSEND]: TSRDeviceType.HTTPSEND,
-				[TSRDeviceType.PANASONIC_PTZ]: TSRDeviceType.PANASONIC_PTZ,
-				[TSRDeviceType.TCPSEND]: TSRDeviceType.TCPSEND,
-				[TSRDeviceType.HYPERDECK]: TSRDeviceType.HYPERDECK,
-				[TSRDeviceType.PHAROS]: TSRDeviceType.PHAROS,
-				[TSRDeviceType.OSC]: TSRDeviceType.OSC,
-				[TSRDeviceType.HTTPWATCHER]: TSRDeviceType.HTTPWATCHER,
-				[TSRDeviceType.SISYFOS]: TSRDeviceType.SISYFOS,
-				[TSRDeviceType.QUANTEL]: TSRDeviceType.QUANTEL,
-
-				[TSRDeviceType.ABSTRACT]: TSRDeviceType.ABSTRACT,
-				[TSRDeviceType.CASPARCG]: TSRDeviceType.CASPARCG,
-				[TSRDeviceType.ATEM]: TSRDeviceType.ATEM,
-				[TSRDeviceType.LAWO]: TSRDeviceType.LAWO,
-				[TSRDeviceType.HTTPSEND]: TSRDeviceType.HTTPSEND,
-				[TSRDeviceType.PANASONIC_PTZ]: TSRDeviceType.PANASONIC_PTZ,
-				[TSRDeviceType.TCPSEND]: TSRDeviceType.TCPSEND,
-				[TSRDeviceType.HYPERDECK]: TSRDeviceType.HYPERDECK,
-				[TSRDeviceType.PHAROS]: TSRDeviceType.PHAROS,
-				[TSRDeviceType.OSC]: TSRDeviceType.OSC,
-				[TSRDeviceType.HTTPWATCHER]: TSRDeviceType.HTTPWATCHER,
-				[TSRDeviceType.SISYFOS]: TSRDeviceType.SISYFOS,
-				[TSRDeviceType.QUANTEL]: TSRDeviceType.QUANTEL
-			},
+			deviceTypesMapping: TSRDeviceType,
 			config: PLAYOUT_SUBDEVICE_CONFIG
 		}
 	]

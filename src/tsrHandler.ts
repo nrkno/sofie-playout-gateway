@@ -11,7 +11,9 @@ import {
 	TSRTimelineObj,
 	TSRTimeline,
 	TSRTimelineObjBase,
-	CommandReport
+	CommandReport,
+	DeviceOptionsAtem,
+	AtemMediaPoolType
 } from 'timeline-state-resolver'
 import { CoreHandler, CoreTSRDeviceHandler } from './coreHandler'
 let clone = require('fast-clone')
@@ -611,17 +613,20 @@ export class TSRHandler {
 				}
 				coreTsrHandler.onConnectionChanged(deviceStatus)
 				// hack to make sure atem has media after restart
-				if (!disableAtemUpload && deviceStatus.statusCode === P.StatusCode.GOOD) {
-					// @todo: proper atem media management
-					const studio = this._getStudio()
-					if (deviceType === DeviceType.ATEM && studio) {
-						const ssrcBgs = studio.config.filter((o) => o._id.substr(0, 18) === 'atemSSrcBackground')
-						if (ssrcBgs) {
-							try {
-								this._coreHandler.uploadFileToAtem(ssrcBgs)
-							} catch (e) {
-								// don't worry about it.
-							}
+				if (deviceStatus.statusCode === P.StatusCode.GOOD && deviceType === DeviceType.ATEM && !disableAtemUpload) {
+					// const ssrcBgs = studio.config.filter((o) => o._id.substr(0, 18) === 'atemSSrcBackground')
+					const assets = (options as DeviceOptionsAtem).options.mediaPoolAssets
+					if (assets && assets.length > 0) {
+						try {
+							// TODO: support uploading clips and audio
+							this._coreHandler.uploadFileToAtem(_.compact(assets.map((asset, index) => {
+								return asset.type === AtemMediaPoolType.Still ? {
+									_key: (asset.position === undefined ? index : asset.position).toString(),
+									value: asset.path
+								} : undefined
+							})))
+						} catch (e) {
+							// don't worry about it.
 						}
 					}
 				}
