@@ -64,7 +64,8 @@ const PLAYOUT_SUBDEVICE_CONFIG: SubDeviceConfigManifest['config'] = {
 						id: 'path',
 						name: 'Path',
 						columnName: 'File Path',
-						type: ConfigManifestEntryType.STRING
+						type: ConfigManifestEntryType.STRING,
+						defaultVal: ''
 					},
 					{
 						id: 'type',
@@ -77,7 +78,8 @@ const PLAYOUT_SUBDEVICE_CONFIG: SubDeviceConfigManifest['config'] = {
 					{
 						id: 'position',
 						name: 'Position',
-						type: ConfigManifestEntryType.INT
+						type: ConfigManifestEntryType.INT,
+						defaultVal: 0
 					}
 				]
 			}
