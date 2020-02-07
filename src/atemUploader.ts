@@ -75,25 +75,15 @@ export class AtemUploadScript {
 		}
 	}
 
-	uploadToAtem () {
+	async uploadToAtem () {
 		if (!this.checkIfFileExistsOnAtem()) {
 			consoleLog('does not exist on ATEM')
-			return this.connection.clearMediaPoolStill(this.mediaPool).then(() =>
-				this.connection.uploadStill(this.mediaPool, this.file, this.fileName, '')
-			).then(() =>
-				this.setMediaPlayerToStill()
-			)
+			await this.connection.clearMediaPoolStill(this.mediaPool)
+			return this.connection.uploadStill(this.mediaPool, this.file, this.fileName, '')
 		} else {
 			consoleLog('does exist on ATEM')
-			return this.setMediaPlayerToStill()
+			return {}
 		}
-	}
-
-	setMediaPlayerToStill () {
-		if (this.connection.state.media.players[this.mediaPool] && (this.connection.state.media.players[this.mediaPool].stillIndex !== this.mediaPool || this.connection.state.media.players[this.mediaPool].sourceType !== 0)) {
-			return this.connection.setMediaPlayerSource({ sourceType: 0, stillIndex: this.mediaPool }, this.mediaPool)
-		}
-		return Promise.resolve()
 	}
 }
 
