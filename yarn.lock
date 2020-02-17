@@ -878,10 +878,10 @@ atem-connection@1.1.0:
     tslib "^1.9.0"
     wavefile "^8.4.4"
 
-atem-state@^0.8.2-nightly-feat-media-player-source-20200207-132810-3636f30.0:
-  version "0.8.2-nightly-feat-media-player-source-20200207-132810-3636f30.0"
-  resolved "https://registry.yarnpkg.com/atem-state/-/atem-state-0.8.2-nightly-feat-media-player-source-20200207-132810-3636f30.0.tgz#cfec10d9b960cc7eba0c092d157d4750cabdb5f6"
-  integrity sha512-fd1yPsjh9+Z06vvUo20BCrd2lkBXEMLRf9UUIUvIUjeXW5pSdP2HJ23x9+Kb3ozelNchNUB2H+y7PGHXIa6ZFQ==
+atem-state@^0.9.0:
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/atem-state/-/atem-state-0.9.0.tgz#379c85c437c881bed39076b7abe8dcd871908982"
+  integrity sha512-cFNBUZ1psc1ykdwcWZhh+vsG1iU8FBT7buJFmYzZ/INeXCv0xKs/n2JkLvzot0pCmxb0/U6qh/gaLJQQ2MkQoA==
   dependencies:
     atem-connection "1.1.0"
     tslib "^1.9.2"
@@ -2910,7 +2910,7 @@ http-signature@~1.2.0:
     jsprim "^1.2.2"
     sshpk "^1.7.0"
 
-https-proxy-agent@^2.2.1, https-proxy-agent@^2.2.3:
+https-proxy-agent@^2.2.1:
   version "2.2.4"
   resolved "https://registry.yarnpkg.com/https-proxy-agent/-/https-proxy-agent-2.2.4.tgz#4ee7a737abd92678a293d9b34a1af4d0d08c787b"
   integrity sha512-OmvfoQ53WLjtA9HeYP9RNrWMJzzAz1JGaSFr1nijg0PVR1JaD/xbJq1mdEIIlxGpXp9eSe/O2LgU9DJmTPd0Eg==
@@ -6350,13 +6350,13 @@ timeline-state-resolver-types@^3.14.0:
   dependencies:
     tslib "^1.10.0"
 
-timeline-state-resolver@^3.18.0-nightly-feat-atem-media-player-20200207-135153-91247417.0:
-  version "3.18.0-nightly-feat-atem-media-player-20200207-135153-91247417.0"
-  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-3.18.0-nightly-feat-atem-media-player-20200207-135153-91247417.0.tgz#bc79fce145186d50f354446f4e40036301a2b05a"
-  integrity sha512-QVS7B3cCDcmvOUZf7V8r/kosW1rKJyObIWyRzYD5xzI0L51uPzcHfgvx8vs/J8e9dLyvFmQQ57ehNBVyKaHh2Q==
+timeline-state-resolver@3.18.0-nightly-20200217-205200-95f897a0.0:
+  version "3.18.0-nightly-20200217-205200-95f897a0.0"
+  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-3.18.0-nightly-20200217-205200-95f897a0.0.tgz#d2ca66db82b61f38c05debea7dd5574397cd4ba9"
+  integrity sha512-6vmOh3IZUFvMjkTqlI38MaeznFp37PzD5mH/Aq0bfB+6cJWak0Wgh63K716wupoBjrDQAt0r6PzYtwW2Cb7DTQ==
   dependencies:
     atem-connection "1.1.0"
-    atem-state "^0.8.2-nightly-feat-media-player-source-20200207-132810-3636f30.0"
+    atem-state "^0.9.0"
     casparcg-connection "4.8.1"
     casparcg-state "^1.11.2"
     emberplus "git+https://github.com/nrkno/tv-automation-emberplus-connection#dist200919_1"
