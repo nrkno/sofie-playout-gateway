@@ -6,7 +6,6 @@ import { CoreConnection,
 	PeripheralDeviceAPI
 } from 'tv-automation-server-core-integration'
 
-import * as cp from 'child_process'
 import {
 	DeviceType,
 	CasparCGDevice,
@@ -376,39 +375,6 @@ export class CoreHandler {
 	pingResponse (message: string) {
 		this.core.setPingResponse(message)
 		return true
-	}
-	/**
-	 * This function is a quick and dirty solution to load a still to the atem mixers.
-	 * This does not serve as a proper implementation! And need to be refactor
-	 * // @todo: proper atem media management
-	 * /Balte - 22-08
-	 */
-	uploadFileToAtem (urls: { _key: string, value: any }[]) {
-
-		urls.forEach((url, index) => {
-			this.logger.info('try to load ' + JSON.stringify(url) + ' to atem')
-			if (this._tsrHandler) {
-				this._tsrHandler.tsr.getDevices().forEach(async (device) => {
-					if (device.deviceType === DeviceType.ATEM) {
-						const options = (device.deviceOptions).options as { host: string }
-						this.logger.info('options ' + JSON.stringify(options))
-						if (options && options.host) {
-							this.logger.info('uploading ' + url.value + ' to ' + options.host + ' in MP' + index)
-							const process = cp.spawn(`node`, [`./dist/atemUploader.js`, options.host, url.value, url._key])
-							process.stdout.on('data', (data) => this.logger.info(data.toString()))
-							process.stderr.on('data', (data) => this.logger.info(data.toString()))
-							process.on('close', () => {
-								process.removeAllListeners()
-							})
-						} else {
-							throw Error('ATEM host option not set')
-						}
-					}
-				})
-			} else {
-				throw Error('TSR not set up!')
-			}
-		})
 	}
 	getSnapshot (): any {
 		this.logger.info('getSnapshot')
