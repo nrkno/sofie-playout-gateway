@@ -18,6 +18,7 @@ import {
 import { CoreHandler, CoreTSRDeviceHandler } from './coreHandler'
 let clone = require('fast-clone')
 import * as crypto from 'crypto'
+import * as cp from 'child_process'
 
 import * as _ from 'underscore'
 import { CoreConnection, PeripheralDeviceAPI as P, CollectionObj } from 'tv-automation-server-core-integration'
@@ -613,16 +614,19 @@ export class TSRHandler {
 				}
 				coreTsrHandler.onConnectionChanged(deviceStatus)
 				// hack to make sure atem has media after restart
-				if (deviceStatus.statusCode === P.StatusCode.GOOD && deviceType === DeviceType.ATEM && !disableAtemUpload) {
+				if (
+					(deviceStatus.statusCode === P.StatusCode.GOOD || deviceStatus.statusCode === P.StatusCode.WARNING_MINOR || deviceStatus.statusCode === P.StatusCode.WARNING_MAJOR) 
+					&& deviceType === DeviceType.ATEM && !disableAtemUpload
+				) {
 					// const ssrcBgs = studio.config.filter((o) => o._id.substr(0, 18) === 'atemSSrcBackground')
 					const assets = (options as DeviceOptionsAtem).options.mediaPoolAssets
 					if (assets && assets.length > 0) {
 						try {
 							// TODO: support uploading clips and audio
-							this._coreHandler.uploadFileToAtem(_.compact(assets.map((asset, index) => {
-								return asset.type === AtemMediaPoolType.Still ? {
-									_key: (asset.position === undefined ? index : asset.position).toString(),
-									value: asset.path
+							this.uploadFilesToAtem(_.compact(assets.map((asset) => {
+								return asset.type === AtemMediaPoolType.Still && asset.position !== undefined && asset.path ? {
+									position: asset.position,
+									path: asset.path
 								} : undefined
 							})))
 						} catch (e) {
@@ -738,6 +742,34 @@ export class TSRHandler {
 				this._triggerUpdateDevices()
 			}, 10 * 1000)
 		}
+	}
+	/**
+	 * This function is a quick and dirty solution to load a still to the atem mixers.
+	 * This does not serve as a proper implementation! And need to be refactor
+	 * // @todo: proper atem media management
+	 * /Balte - 22-08
+	 */
+	private uploadFilesToAtem (files: { position: number, path: string }[]) {
+		files.forEach((file) => {
+			this.logger.info('try to load ' + JSON.stringify(file) + ' to atem')
+			this.tsr.getDevices().forEach(async (device) => {
+				if (device.deviceType === DeviceType.ATEM) {
+					const options = (device.deviceOptions).options as { host: string }
+					this.logger.info('options ' + JSON.stringify(options))
+					if (options && options.host) {
+						this.logger.info('uploading ' + file.path + ' to ' + options.host + ' in MP' + file.position)
+						const process = cp.spawn(`node`, [`./dist/atemUploader.js`, options.host, file.path, file.position.toString()])
+						process.stdout.on('data', (data) => this.logger.info(data.toString()))
+						process.stderr.on('data', (data) => this.logger.info(data.toString()))
+						process.on('close', () => {
+							process.removeAllListeners()
+						})
+					} else {
+						throw Error('ATEM host option not set')
+					}
+				}
+			})
+		})
 	}
 	private async _removeDevice (deviceId: string): Promise<any> {
 		if (this._coreTsrHandlers[deviceId]) {

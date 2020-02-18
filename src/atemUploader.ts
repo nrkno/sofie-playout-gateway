@@ -104,6 +104,11 @@ singleton.connect(process.argv[2]).then(async () => {
 		singleton.mediaPool = parseInt(mediaPool, 10)
 	}
 
+	if (isNaN(singleton.mediaPool) || singleton.mediaPool === undefined) {
+		console.error('Exiting due to invalid mediaPool')
+		process.exit(-1)
+	}
+
 	singleton.uploadToAtem().then(() => {
 		consoleLog('uploaded ATEM media to pool ' + singleton.mediaPool)
 		process.exit(0)
