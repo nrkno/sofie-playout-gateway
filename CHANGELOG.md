@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.6.0-0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v1.5.0...v1.6.0-0) (2020-02-19)
+
+
+### Features
+
+* ATEM Media Pool config ([#57](https://github.com/nrkno/tv-automation-playout-gateway/issues/57)) ([afe1801](https://github.com/nrkno/tv-automation-playout-gateway/commit/afe1801db5e5c9e84b4c5da6c3c38fc4b35ad728))
+
+
+### Bug Fixes
+
+* dont set atem media players to stills during upload ([596d8a7](https://github.com/nrkno/tv-automation-playout-gateway/commit/596d8a777d7c5f6060b4769dafe65ad1341d5ef5))
+* take full ownership of atem media uploading, and remove hook for call from core. Trigger check even if device is warning ([a254210](https://github.com/nrkno/tv-automation-playout-gateway/commit/a25421055224de944129dc8bc24eaaef6e518be0))
+
 ## [1.5.0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v1.4.0...v1.5.0) (2020-01-24)
 
 
