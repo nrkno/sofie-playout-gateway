@@ -615,7 +615,7 @@ export class TSRHandler {
 				coreTsrHandler.onConnectionChanged(deviceStatus)
 				// hack to make sure atem has media after restart
 				if (
-					(deviceStatus.statusCode === P.StatusCode.GOOD || deviceStatus.statusCode === P.StatusCode.WARNING_MINOR || deviceStatus.statusCode === P.StatusCode.WARNING_MAJOR) 
+					(deviceStatus.statusCode === P.StatusCode.GOOD || deviceStatus.statusCode === P.StatusCode.WARNING_MINOR || deviceStatus.statusCode === P.StatusCode.WARNING_MAJOR)
 					&& deviceType === DeviceType.ATEM && !disableAtemUpload
 				) {
 					// const ssrcBgs = studio.config.filter((o) => o._id.substr(0, 18) === 'atemSSrcBackground')
@@ -624,7 +624,7 @@ export class TSRHandler {
 						try {
 							// TODO: support uploading clips and audio
 							this.uploadFilesToAtem(_.compact(assets.map((asset) => {
-								return asset.type === AtemMediaPoolType.Still && asset.position !== undefined && asset.path ? {
+								return asset.type === AtemMediaPoolType.Still && _.isNumber(asset.position) && asset.path ? {
 									position: asset.position,
 									path: asset.path
 								} : undefined

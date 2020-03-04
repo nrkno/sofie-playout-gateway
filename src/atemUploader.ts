@@ -1,5 +1,6 @@
 import { Atem } from 'atem-connection'
 import * as fs from 'fs'
+import * as _ from 'underscore'
 
 /**
  * This script is a temporary implementation to upload media to the atem.
@@ -104,7 +105,7 @@ singleton.connect(process.argv[2]).then(async () => {
 		singleton.mediaPool = parseInt(mediaPool, 10)
 	}
 
-	if (isNaN(singleton.mediaPool) || singleton.mediaPool === undefined) {
+	if (isNaN(singleton.mediaPool) || !_.isNumber(singleton.mediaPool)) {
 		console.error('Exiting due to invalid mediaPool')
 		process.exit(-1)
 	}
