@@ -74,7 +74,7 @@
     "@types/node": "^8.0.4",
     "@types/underscore": "^1.9.2",
     "@types/winston": "^2.3.9",
-    "codecov": "^3.6.1",
+    "codecov": "^3.6.5",
     "gh-pages": "^2.1.1",
     "jest": "^24.9.0",
     "mkdirp": "^0.5.1",
