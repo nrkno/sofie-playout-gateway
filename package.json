@@ -3,7 +3,6 @@
   "version": "1.6.0",
   "private": true,
   "description": "Connect to Core, play stuff",
-  "main": "dist/index.js",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -24,8 +23,8 @@
     "build": "trash dist && yarn build:main",
     "buildstart": "yarn build && yarn start",
     "buildinspect": "yarn build && yarn inspect",
-    "build:main": "tsc -p tsconfig.json",
-    "lint": "tslint --project tsconfig.jest.json --config tslint.json",
+    "build:main": "tsc -p tsconfig.build.json",
+    "lint": "tslint --project tsconfig.json --config tslint.json",
     "unit": "jest",
     "test": "yarn lint && yarn unit",
     "test:integration": "yarn lint && jest --config=jest-integration.config.js",

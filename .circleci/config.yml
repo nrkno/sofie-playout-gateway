@@ -1,14 +1,66 @@
 version: 2
 jobs:
-  build:
+
+  validate-dependencies:
     docker:
-      - image: circleci/node:8.11.4
+      - image: circleci/node:12
+    working_directory: ~/project
     steps:
       - checkout
       - restore_cache:
           keys:
-            - v1-node-cache-{{ .Branch }}-{{ checksum "yarn.lock" }}
-            - v1-node-cache-{{ .Branch }}
+            - yarn-cache-{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - yarn-cache-{{ .Branch }}
+            - yarn-cache-
+
+      - run: yarn install
+      - run: yarn validate:dependencies
+
+  test:
+    docker:
+      - image: circleci/node:12
+    working_directory: ~/project
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/project
+      - restore_cache:
+          keys:
+            - yarn-cache-{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - yarn-cache-{{ .Branch }}
+            - yarn-cache-
+
+      - run: yarn install
+
+      - save_cache:
+          key: yarn-cache-{{ .Branch }}-{{ checksum "yarn.lock" }}
+          paths: [node_modules]
+
+      - run: yarn test
+      - run: yarn send-coverage
+
+      - persist_to_workspace:
+          root: .
+          paths: [.]
+      - store_artifacts:
+          path: ./coverage/clover.xml
+          prefix: tests
+      - store_artifacts:
+          path: coverage
+          prefix: coverage
+      - store_test_results:
+          path: ./coverage/clover.xml
+
+  build:
+    docker:
+      - image: circleci/node:12.16.1
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - yarn-cache-{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - yarn-cache-{{ .Branch }}
+            - yarn-cache-
       - run:
           name: yarn install
           command: yarn install --check-files --frozen-lockfile
@@ -22,23 +74,40 @@ jobs:
           command: yarn install --check-files --frozen-lockfile --production --force
           no_output_timeout: 60m
       - save_cache:
-          key: v1-node-cache-{{ .Branch }}-{{ checksum "yarn.lock" }}
-          paths: 
-            - node_modules
-      - save_cache:
-          key: v3-node-cache-{{ .Branch }}
+          key: yarn-cache-{{ .Branch }}-{{ checksum "yarn.lock" }}
           paths: 
             - node_modules
       - persist_to_workspace:
           root: .
-          paths:
-            - .
+          paths: [.]
+
+  # This is handled by Jenkins currently. This block is untested, but should work fine.
+  # Note: Make sure to setup standard-version to skip-ci to avoid an infinite build loop!
+  # release:
+  #   docker:
+  #     - image: circleci/node:12
+  #   working_directory: ~/project
+  #   steps:
+  #     - attach_workspace:
+  #         at: ~/project
+  #     - add_ssh_keys:
+  #         fingerprints:
+  #           - "8d:6d:9a:46:be:ea:ae:99:a9:d4:97:b7:42:0e:bc:59"
+  #     - run: mkdir -p ~/.ssh
+  #     - run:
+  #         name: Keyscan Github
+  #         command: ssh-keyscan -H github.com >> ~/.ssh/known_hosts
+  #     # Clean working tree, tag, and push
+  #     - run: git config --global user.email "info@superfly.tv"
+  #     - run: git config --global user.name "superflytvab"
+  #     - run: yarn release
+  #     - run: git push --follow-tags origin HEAD
+
   publish-tag:
     docker:
       - image: circleci/buildpack-deps:stretch
     steps:
       - setup_remote_docker:
-          # docker_layer_caching: true
           version: 18.06.0-ce
       - attach_workspace:
           at: .
@@ -70,7 +139,6 @@ jobs:
       - image: circleci/buildpack-deps:stretch
     steps:
       - setup_remote_docker:
-          # docker_layer_caching: true
           version: 18.06.0-ce
       - attach_workspace:
           at: .
@@ -102,12 +170,30 @@ workflows:
   version: 2
   build-test-publish:
     jobs:
+      # - test
+      - validate-dependencies:
+          filters:
+            branches:
+              only:
+                - master
+                - develop
       - build:
+          requires:
+            # - test
+            - validate-dependencies
           filters:
             tags:
               only: /v.*/
             branches:
               only: /.*/
+      # Jenkins handles release currently
+      # - release: # This triggers a new pipeline, which will build that tag
+      #     requires:
+      #       - build
+      #     filters:
+      #       branches:
+      #         only:
+      #           - master
       - publish-tag:
           requires:
             - build
