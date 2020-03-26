@@ -36,12 +36,8 @@
     "cov": "jest; open-cli coverage/lcov-report/index.html",
     "cov-open": "open-cli coverage/lcov-report/index.html",
     "send-coverage": "jest && codecov",
-    "docs": "yarn docs:html && open-cli docs/index.html",
-    "docs:html": "typedoc src/index.ts --excludePrivate --mode file --theme minimal --out docs",
-    "docs:json": "typedoc --mode file --json docs/typedoc.json src/index.ts",
-    "docs:publish": "yarn docs:html && gh-pages -d docs",
     "changelog": "standard-version",
-    "release": "yarn reset && yarn test && yarn docs:publish && yarn changelog",
+    "release": "yarn reset && yarn test && yarn changelog",
     "reset": "git clean -dfx && git reset --hard && yarn",
     "ci": "yarn test",
     "inspect": "node --inspect dist/index.js",
@@ -59,12 +55,9 @@
     "test": "Lint, build, and test the library",
     "watch": "Watch source files, rebuild library on changes, rerun relevant tests",
     "cov": "Run tests, generate the HTML coverage report, and open it in a browser",
-    "docs": "Generate HTML API documentation and open it in a browser",
-    "docs:publish": "Generate HTML API documentation and push it to GitHub Pages",
-    "docs:json": "Generate API documentation in typedoc JSON format",
     "changelog": "Bump package.json version, update CHANGELOG.md, tag a release",
     "reset": "Delete all untracked files and reset the repo to the last commit",
-    "release": "Clean, build, test, publish docs, and prepare release (a one-step publish process)"
+    "release": "Clean, build, test, and prepare release (a one-step publish process)"
   },
   "engines": {
     "node": ">=8"
@@ -76,7 +69,6 @@
     "@types/underscore": "^1.9.2",
     "@types/winston": "^2.3.9",
     "codecov": "^3.6.5",
-    "gh-pages": "^2.1.1",
     "jest": "^24.9.0",
     "node-license-validator": "^1.3.0",
     "npm-scripts-info": "^0.3.9",
@@ -86,7 +78,6 @@
     "ts-jest": "^24.0.2",
     "tslint": "^5.18.0",
     "tslint-config-standard": "^8.0.1",
-    "typedoc": "^0.15.0",
     "typescript": "~3.6.4"
   },
   "keywords": [
