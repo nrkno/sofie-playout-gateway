@@ -205,7 +205,7 @@ export class MediaScanner {
 				_.each(coreObjects, (obj: any) => {
 					coreObjRevisions[obj.id] = obj.rev
 				})
-				tasks = tasks.concat(_.compact(_.map(allDocsResponse.rows, (doc) => {
+				tasks = tasks.concat(_.compact(_.map(allDocsResponse.rows, (doc: any) => {
 					const docId = this.hashId(doc.id)
 
 					if (doc.value.deleted) {
