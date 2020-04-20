@@ -6273,10 +6273,10 @@ timeline-state-resolver-types@^3.18.0:
   dependencies:
     tslib "^1.10.0"
 
-timeline-state-resolver@^3.19.1-nightly-fix-node12-multithreaded-devices-20200326-181834-17c79ee2.0:
-  version "3.19.1-nightly-fix-node12-multithreaded-devices-20200326-181834-17c79ee2.0"
-  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-3.19.1-nightly-fix-node12-multithreaded-devices-20200326-181834-17c79ee2.0.tgz#7eeb0d6484f33d422213d4de6b95e23c5fb1bf89"
-  integrity sha512-+vGFSwLbpi/uab1zloiIyXHFPsJrmDKOyZtt2fknc4gnkZvbqRUDFWskMv302KVBdrwO/kuXYM0f2pZmMpuBdQ==
+timeline-state-resolver@^3.20.0-nightly-20200420-102121-93de1abf.0:
+  version "3.20.0-nightly-20200420-102121-93de1abf.0"
+  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-3.20.0-nightly-20200420-102121-93de1abf.0.tgz#110d98a11233267eee31ee990dec54104830f0dd"
+  integrity sha512-Fc7w/RDaHDCp4ZJ0uezVk3t6w1lrwc8ArHg3gyk76unA1yAeivM92x/pYr0HU+sJff263+Rg1Epj0Dwf53+CPg==
   dependencies:
     atem-connection "1.1.0"
     atem-state "^0.9.0"
