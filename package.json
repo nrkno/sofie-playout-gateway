@@ -111,7 +111,7 @@
     "fast-clone": "^1.5.13",
     "pouchdb-node": "^7.1.1",
     "promise-sequence": "^0.3.1",
-    "timeline-state-resolver": "^3.19.0",
+    "timeline-state-resolver": "3.19.1-nightly-hotfix-3-19-x-20200424-131551-2c189e3a.0",
     "tslib": "^1.10.0",
     "tv-automation-server-core-integration": "1.3.0",
     "tv-automation-sofie-blueprints-integration": "1.8.0",
