@@ -6481,10 +6481,10 @@ timeline-state-resolver-types@^3.18.0:
   dependencies:
     tslib "^1.10.0"
 
-timeline-state-resolver@^3.20.0-nightly-feat-vizMSE-and-sisyfos-20200420-105306-6577f6eb.0:
-  version "3.20.0-nightly-feat-vizMSE-and-sisyfos-20200420-105306-6577f6eb.0"
-  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-3.20.0-nightly-feat-vizMSE-and-sisyfos-20200420-105306-6577f6eb.0.tgz#38b297a67ccb9d58b7283cce2fea8c9093a26227"
-  integrity sha512-KT/tg3S/E7zZbwUbl3yCB/w9zB2C8YKMX7FYLmbsH8Bax3yNz5Ag0tD7PGU+FkPq+wgRtf4i5Lf8zUWxljebQw==
+timeline-state-resolver@3.20.0-nightly-feat-vizMSE-and-sisyfos-20200428-095712-352b66ad.0:
+  version "3.20.0-nightly-feat-vizMSE-and-sisyfos-20200428-095712-352b66ad.0"
+  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-3.20.0-nightly-feat-vizMSE-and-sisyfos-20200428-095712-352b66ad.0.tgz#f3aef5ee0a9a863b884f3d096a600ef1596023d5"
+  integrity sha512-XGSrBmJc0HoHVoVk1F33wLXwK4tp4DA6yALl3kyYVHiCAOugqrNqtPVVHaZCXIt9aZNk4K3eDDNvqOJj6oxuIQ==
   dependencies:
     atem-connection "1.1.0"
     atem-state "^0.9.0"
