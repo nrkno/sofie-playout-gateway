@@ -95,7 +95,7 @@
     "fast-clone": "^1.5.13",
     "pouchdb-node": "^7.1.1",
     "promise-sequence": "^0.3.1",
-    "timeline-state-resolver": "3.20.0-nightly-feat-vizMSE-and-sisyfos-20200428-095712-352b66ad.0",
+    "timeline-state-resolver": "3.20.0-nightly-20200429-103425-8687ec9e.0",
     "tslib": "^1.10.0",
     "tv-automation-server-core-integration": "1.4.0",
     "tv-automation-sofie-blueprints-integration": "1.10.0",
