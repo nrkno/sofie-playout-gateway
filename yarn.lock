@@ -6481,10 +6481,10 @@ timeline-state-resolver-types@^3.18.0:
   dependencies:
     tslib "^1.10.0"
 
-timeline-state-resolver@3.20.0-nightly-20200429-152716-60931c7d.0:
-  version "3.20.0-nightly-20200429-152716-60931c7d.0"
-  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-3.20.0-nightly-20200429-152716-60931c7d.0.tgz#bd547e2be9e766760cdd66d0c5bf148839eb96cc"
-  integrity sha512-d2Ge/+oRokQOdhFPivhyFl1sIAeD8RuE/wIodn+otoVIGCo0n9SfxQ1rgNzqD+eR5f9qk0T0bg3Qe/3vzJBX7Q==
+timeline-state-resolver@3.20.0:
+  version "3.20.0"
+  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-3.20.0.tgz#824b1ad6ee9311fb795b77793c7b8b4947549d53"
+  integrity sha512-/OT4Geu+Sa2AlnNY5dmOsOs87uou31XSYF2EGN4ITMjARIK6viwX+pPR7mh08WV4DsF8vrlL4BtW18M62EdDzg==
   dependencies:
     atem-connection "1.1.0"
     atem-state "^0.9.0"
