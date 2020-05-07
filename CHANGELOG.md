@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.7.0-0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v1.6.2...v1.7.0-0) (2020-05-07)
+
+
+### Features
+
+* update pipeline to build node12 ([bf85ca5](https://github.com/nrkno/tv-automation-playout-gateway/commit/bf85ca5347a31de736d0232971654e833004c17b))
+
+
+### Bug Fixes
+
+* update TSR ([4c65de6](https://github.com/nrkno/tv-automation-playout-gateway/commit/4c65de6ed400fb4713365c965127be32d4c167ff))
+* update TSR ([ccd8910](https://github.com/nrkno/tv-automation-playout-gateway/commit/ccd8910517af74665b23ccc92bead4fcefd2c0d1))
+* update TSR dep to latest release20-version ([a0da849](https://github.com/nrkno/tv-automation-playout-gateway/commit/a0da8491289db95a2bd02a4732b0574912fbd27f))
+
 ### [1.6.2](https://github.com/nrkno/tv-automation-playout-gateway/compare/v1.6.1...v1.6.2) (2020-03-31)
 
 ### [1.6.2-0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v1.6.1...v1.6.2-0) (2020-03-25)
