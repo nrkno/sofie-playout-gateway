@@ -13,12 +13,15 @@ const PLAYOUT_SUBDEVICE_COMMON: SubDeviceConfigManifestEntry[] = [
 		type: ConfigManifestEntryType.FLOAT
 	}
 ]
-const PLAYOUT_SUBDEVICE_HOST_PORT = [
+const PLAYOUT_SUBDEVICE_HOST = [
 	{
 		id: 'options.host',
 		name: 'Host',
 		type: ConfigManifestEntryType.STRING
-	},
+	}
+]
+const PLAYOUT_SUBDEVICE_HOST_PORT = [
+	...PLAYOUT_SUBDEVICE_HOST,
 	{
 		id: 'options.port',
 		name: 'Port',
@@ -212,6 +215,70 @@ const PLAYOUT_SUBDEVICE_CONFIG: SubDeviceConfigManifest['config'] = {
 			id: 'options.serverId',
 			name: 'Quantel Server ID',
 			type: ConfigManifestEntryType.NUMBER
+		}
+	],
+	[TSRDeviceType.VIZMSE]: [
+		...PLAYOUT_SUBDEVICE_COMMON,
+		...PLAYOUT_SUBDEVICE_HOST,
+		{
+			id: 'options.restPort',
+			name: '(Optional) REST port',
+			type: ConfigManifestEntryType.NUMBER
+		},
+		{
+			id: 'options.wsPort',
+			name: '(Optional) Websocket port',
+			type: ConfigManifestEntryType.NUMBER
+		},
+		{
+			id: 'options.showID',
+			name: 'Show ID',
+			type: ConfigManifestEntryType.STRING
+		},
+		{
+			id: 'options.profile',
+			name: 'Profile',
+			type: ConfigManifestEntryType.STRING
+		},
+		{
+			id: 'options.playlistID',
+			name: '(Optional) Playlist ID',
+			type: ConfigManifestEntryType.STRING
+		},
+		{
+			id: 'options.preloadAllElements',
+			name: 'Preload all elements',
+			type: ConfigManifestEntryType.BOOLEAN
+		},
+		{
+			id: 'options.autoLoadInternalElements',
+			name: 'Automatically load internal elements when added',
+			type: ConfigManifestEntryType.BOOLEAN
+		},
+		{
+			id: 'options.clearAllTemplateName',
+			name: 'Clear-All template name',
+			type: ConfigManifestEntryType.STRING
+		},
+		{
+			id: 'options.clearAllOnMakeReady',
+			name: 'Clear-All on make-ready (activate rundown)',
+			type: ConfigManifestEntryType.BOOLEAN
+		},
+		{
+			id: 'options.dontDeactivateOnStandDown',
+			name: 'Don\'t deactivate on stand-down (deactivate rundown)',
+			type: ConfigManifestEntryType.BOOLEAN
+		},
+		{
+			id: 'options.onlyPreloadActiveRundown',
+			name: 'Only preload elements in active Rundown',
+			type: ConfigManifestEntryType.BOOLEAN
+		},
+		{
+			id: 'options.initializeRundownOnLoadAll',
+			name: 'On preload-All elements, also initialize the rundown playlist again',
+			type: ConfigManifestEntryType.BOOLEAN
 		}
 	]
 }
