@@ -98,6 +98,11 @@ const PLAYOUT_SUBDEVICE_CONFIG: SubDeviceConfigManifest['config'] = {
 	[TSRDeviceType.HTTPSEND]: [
 		...PLAYOUT_SUBDEVICE_COMMON,
 		{
+			id: 'options.makeReadyDoesReset',
+			name: 'Whether Make Ready triggers a state reset',
+			type: ConfigManifestEntryType.BOOLEAN
+		},
+		{
 			id: 'options.makeReadyCommands',
 			name: 'Make Ready Commands',
 			type: ConfigManifestEntryType.TABLE,
@@ -122,6 +127,16 @@ const PLAYOUT_SUBDEVICE_CONFIG: SubDeviceConfigManifest['config'] = {
 						id: 'params',
 						name: 'Parameters',
 						type: ConfigManifestEntryType.OBJECT
+					},
+					{
+						id: 'temporalPriority',
+						name: 'Temporal Priority',
+						type: ConfigManifestEntryType.NUMBER
+					},
+					{
+						id: 'queueId',
+						name: 'Queue ID',
+						type: ConfigManifestEntryType.STRING
 					}
 				]
 			}
@@ -138,6 +153,36 @@ const PLAYOUT_SUBDEVICE_CONFIG: SubDeviceConfigManifest['config'] = {
 			id: 'options.bufferEncoding',
 			name: 'Buffer Encoding',
 			type: ConfigManifestEntryType.STRING
+		},
+		{
+			id: 'options.makeReadyDoesReset',
+			name: 'Whether Make Ready triggers a state reset',
+			type: ConfigManifestEntryType.BOOLEAN
+		},
+		{
+			id: 'options.makeReadyCommands',
+			name: 'Make Ready Commands',
+			type: ConfigManifestEntryType.TABLE,
+			defaultType: 'default',
+			config: {
+				'default': [
+					{
+						id: 'message',
+						name: 'Message',
+						type: ConfigManifestEntryType.STRING
+					},
+					{
+						id: 'temporalPriority',
+						name: 'Temporal Priority',
+						type: ConfigManifestEntryType.NUMBER
+					},
+					{
+						id: 'queueId',
+						name: 'Queue ID',
+						type: ConfigManifestEntryType.STRING
+					}
+				]
+			}
 		}
 	],
 	[TSRDeviceType.HYPERDECK]: [

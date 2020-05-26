@@ -2371,6 +2371,11 @@ event-target-shim@^5.0.0:
   resolved "https://registry.yarnpkg.com/event-target-shim/-/event-target-shim-5.0.1.tgz#5d4d3ebdf9583d63a5333ce2deb7480ab2b05789"
   integrity sha512-i/2XbnSz/uxRCU6+NdVJgKWDTM427+MqYbkQzD321DuCQJUqOuJKIA0IM2+W2xtYHdKOmZ4dR6fExsd4SXL+WQ==
 
+eventemitter3@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-4.0.0.tgz#d65176163887ee59f386d64c82610b696a4a74eb"
+  integrity sha512-qerSRB0p+UDEssxTtm6EDKcE7W4OaoisfIMl4CngyEhjpYglocpNg6UEqCvemdGhosAsg4sO2dXJOdyBifPGCg==
+
 exec-sh@^0.3.2:
   version "0.3.4"
   resolved "https://registry.yarnpkg.com/exec-sh/-/exec-sh-0.3.4.tgz#3a018ceb526cc6f6df2bb504b2bfe8e3a4934ec5"
@@ -5037,6 +5042,14 @@ p-queue@^2.4.2:
   resolved "https://registry.yarnpkg.com/p-queue/-/p-queue-2.4.2.tgz#03609826682b743be9a22dba25051bd46724fc34"
   integrity sha512-n8/y+yDJwBjoLQe1GSJbbaYQLTI7QHNZI2+rpmCDbe++WLf9HC3gf6iqj5yfPAV71W4UF3ql5W1+UBPXoXTxng==
 
+p-queue@^6.4.0:
+  version "6.4.0"
+  resolved "https://registry.yarnpkg.com/p-queue/-/p-queue-6.4.0.tgz#5050b379393ea1814d6f9613a654f687d92c0466"
+  integrity sha512-X7ddxxiQ+bLR/CUt3/BVKrGcJDNxBr0pEEFKHHB6vTPWNUhgDv36GpIH18RmGM3YGPpBT+JWGjDDqsVGuF0ERw==
+  dependencies:
+    eventemitter3 "^4.0.0"
+    p-timeout "^3.1.0"
+
 p-retry@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/p-retry/-/p-retry-2.0.0.tgz#b97f1f4d6d81a3c065b2b40107b811e995c1bfba"
@@ -5051,6 +5064,13 @@ p-retry@^4.1.0:
   dependencies:
     "@types/retry" "^0.12.0"
     retry "^0.12.0"
+
+p-timeout@^3.1.0, p-timeout@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/p-timeout/-/p-timeout-3.2.0.tgz#c7e17abc971d2a7962ef83626b35d635acf23dfe"
+  integrity sha512-rhIwUycgwwKcP9yTOOFK/AKsAopjjCakVqLHePO3CC6Mir1Z99xT+R63jZxAT5lFZLa2inS5h+ZS2GvR99/FBg==
+  dependencies:
+    p-finally "^1.0.0"
 
 p-try@^1.0.0:
   version "1.0.0"
@@ -6481,10 +6501,10 @@ timeline-state-resolver-types@^3.18.0:
   dependencies:
     tslib "^1.10.0"
 
-timeline-state-resolver@3.20.0:
-  version "3.20.0"
-  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-3.20.0.tgz#824b1ad6ee9311fb795b77793c7b8b4947549d53"
-  integrity sha512-/OT4Geu+Sa2AlnNY5dmOsOs87uou31XSYF2EGN4ITMjARIK6viwX+pPR7mh08WV4DsF8vrlL4BtW18M62EdDzg==
+timeline-state-resolver@3.20.1-nightly-fix-http-makeready-can-reset-state-20200507-144359-96d04107.0:
+  version "3.20.1-nightly-fix-http-makeready-can-reset-state-20200507-144359-96d04107.0"
+  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-3.20.1-nightly-fix-http-makeready-can-reset-state-20200507-144359-96d04107.0.tgz#7ee9054bf3c3a6d3fd2f982c7a88ee1894c45955"
+  integrity sha512-VB4OzBb95+YvGOIbLO/pmmB5rA4ZKmbeZAAgRHOB+zaW1isOR9ylIAKvFbrB2V1617DIs0g/gVUpLrbttT15OQ==
   dependencies:
     atem-connection "1.1.0"
     atem-state "^0.9.0"
@@ -6494,6 +6514,8 @@ timeline-state-resolver@3.20.0:
     fast-clone "^1.5.13"
     hyperdeck-connection "^0.4.3"
     osc "^2.4.0"
+    p-queue "^6.4.0"
+    p-timeout "^3.2.0"
     request "^2.88.0"
     sprintf-js "^1.1.2"
     superfly-timeline "^7.3.1"
