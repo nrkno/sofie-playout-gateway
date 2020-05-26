@@ -331,18 +331,6 @@ const PLAYOUT_SUBDEVICE_CONFIG: SubDeviceConfigManifest['config'] = {
 export const PLAYOUT_DEVICE_CONFIG: DeviceConfigManifest = {
 	deviceConfig: [
 		{
-			id: 'mediaScanner.host',
-			name: 'Media Scanner Host',
-			type: ConfigManifestEntryType.STRING
-
-		},
-		{
-			id: 'mediaScanner.port',
-			name: 'Media Scanner Port',
-			type: ConfigManifestEntryType.NUMBER
-
-		},
-		{
 			id: 'debugLogging',
 			name: 'Activate Debug Logging',
 			type: ConfigManifestEntryType.BOOLEAN
