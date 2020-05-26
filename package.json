@@ -95,10 +95,10 @@
     "fast-clone": "^1.5.13",
     "pouchdb-node": "^7.1.1",
     "promise-sequence": "^0.3.1",
-    "timeline-state-resolver": "3.20.1-nightly-fix-http-makeready-can-reset-state-20200507-144359-96d04107.0",
-    "tslib": "^1.10.0",
-    "tv-automation-server-core-integration": "1.4.0",
-    "tv-automation-sofie-blueprints-integration": "1.10.0",
+    "timeline-state-resolver": "3.20.1-nightly-20200526-091821-ac706bda.0",
+    "tslib": "^1.13.0",
+    "tv-automation-server-core-integration": "1.5.0",
+    "tv-automation-sofie-blueprints-integration": "1.11.0",
     "underscore": "^1.9.1",
     "winston": "^2.4.2"
   }
