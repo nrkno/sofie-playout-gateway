@@ -1,5 +1,6 @@
 import { DeviceConfigManifest, ConfigManifestEntryType, SubDeviceConfigManifest, SubDeviceConfigManifestEntry } from 'tv-automation-server-core-integration'
 import { DeviceType as TSRDeviceType, AtemMediaPoolType, TimelineContentTypeHTTP } from 'timeline-state-resolver'
+import { LawoDeviceMode } from 'timeline-state-resolver-types'
 
 const PLAYOUT_SUBDEVICE_COMMON: SubDeviceConfigManifestEntry[] = [
 	{
@@ -85,14 +86,37 @@ const PLAYOUT_SUBDEVICE_CONFIG: SubDeviceConfigManifest['config'] = {
 		...PLAYOUT_SUBDEVICE_COMMON,
 		...PLAYOUT_SUBDEVICE_HOST_PORT,
 		{
+			id: 'options.deviceMode',
+			name: 'Device Mode',
+			type: ConfigManifestEntryType.ENUM,
+			values: LawoDeviceMode,
+			defaultVal: 1
+		},
+		{
+			id: 'options.faderInterval',
+			name: 'Fader setValue Interval',
+			type: ConfigManifestEntryType.STRING
+		},
+		{
 			id: 'options.sourcesPath',
 			name: 'Sources Path',
 			type: ConfigManifestEntryType.STRING
 		},
 		{
-			id: 'options.rampMotorFunctionPath',
-			name: 'Ramp Function Path',
+			id: 'options.dbPropertiesName',
+			name: 'dB Property Path',
 			type: ConfigManifestEntryType.STRING
+		},
+		{
+			id: 'options.rampMotorFunctionPath',
+			name: 'Ramp Motor Function Path',
+			type: ConfigManifestEntryType.STRING
+		},
+		{
+			id: 'options.faderThreshold',
+			name: 'Fader cutoff value',
+			type: ConfigManifestEntryType.NUMBER,
+			placeholder: '-60'
 		}
 	],
 	[TSRDeviceType.HTTPSEND]: [
