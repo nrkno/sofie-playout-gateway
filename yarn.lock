@@ -753,6 +753,13 @@
   resolved "https://registry.yarnpkg.com/@types/retry/-/retry-0.12.0.tgz#2b35eccfcee7d38cd72ad99232fbd58bffb3c84d"
   integrity sha512-wWKOClTTiizcZhXnPY4wikVAwmdYHp8q6DmC+EJUzAMsycb7HB32Kh9RN4+0gExjmPmZSAQjgURXIGATPegAvA==
 
+"@types/safer-buffer@^2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@types/safer-buffer/-/safer-buffer-2.1.0.tgz#8c498815fe00af8f8b23d63eb3fd6fae6ae2ab7a"
+  integrity sha512-04WlrCdOLy1Ejpwc3A7qyZzsH6uqeWoH+XO80V8S8NRubGg+E4FMMM3VAS6jZZ8w+dXki1/5FI5upmMDQlaQsQ==
+  dependencies:
+    "@types/node" "*"
+
 "@types/stack-utils@^1.0.1":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@types/stack-utils/-/stack-utils-1.0.1.tgz#0a851d3bd96498fa25c33ab7278ed3bd65f06c3e"
@@ -1070,9 +1077,12 @@ asap@^2.0.0:
   resolved "https://registry.yarnpkg.com/asap/-/asap-2.0.6.tgz#e50347611d7e690943208bbdafebcbc2fb866d46"
   integrity sha1-5QNHYR1+aQlDIIu9r+vLwvuGbUY=
 
-asn1@evs-broadcast/node-asn1#date_2018_01_02:
-  version "0.5.1"
-  resolved "https://codeload.github.com/evs-broadcast/node-asn1/tar.gz/2fc158464a92e1465523f108295abd54e7ce86db"
+asn1@evs-broadcast/node-asn1:
+  version "0.5.4"
+  resolved "https://codeload.github.com/evs-broadcast/node-asn1/tar.gz/0146823069e479e90595480dc90c72cafa161ba1"
+  dependencies:
+    "@types/safer-buffer" "^2.1.0"
+    safer-buffer "~2.1.0"
 
 asn1@~0.2.3:
   version "0.2.4"
@@ -2373,16 +2383,18 @@ ee-first@1.1.1:
   resolved "https://registry.yarnpkg.com/ee-first/-/ee-first-1.1.1.tgz#590c61156b0ae2f4f0255732a158b266bc56b21d"
   integrity sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0=
 
-"emberplus@git+https://github.com/nrkno/tv-automation-emberplus-connection#dist200919_1":
-  version "1.7.17"
-  resolved "git+https://github.com/nrkno/tv-automation-emberplus-connection#7ffdca688bcc8f762757773360b7caeecf39cbc6"
+emberplus-connection@^0.0.2-nightly-next-20200526-132421-5cd24f3.0:
+  version "0.0.2-nightly-next-20200526-132421-5cd24f3.0"
+  resolved "https://registry.yarnpkg.com/emberplus-connection/-/emberplus-connection-0.0.2-nightly-next-20200526-132421-5cd24f3.0.tgz#432e17b6de7a2a53a98fa240260c073e929bd74d"
+  integrity sha512-4Z9HQh7PNhaM+ExnT/OO7JrYSirdj2FSgL/kBEBY4du4G7+u4ik5XcmtOGgXK4BD6ao8cvZFNC7wgLjzZ2tg+w==
   dependencies:
-    asn1 evs-broadcast/node-asn1#date_2018_01_02
+    asn1 evs-broadcast/node-asn1
     enum "^2.4.0"
     long "^3.2.0"
     smart-buffer "^3.0.3"
     winston "^2.1.1"
     winston-color "^1.0.0"
+    yargs "^15.1.0"
 
 emoji-regex@^7.0.1:
   version "7.0.3"
@@ -5179,6 +5191,13 @@ osc@^2.4.0:
   optionalDependencies:
     serialport "8.0.6"
 
+p-all@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/p-all/-/p-all-3.0.0.tgz#077c023c37e75e760193badab2bad3ccd5782bfb"
+  integrity sha512-qUZbvbBFVXm6uJ7U/WDiO0fv6waBMbjlCm4E66oZdRR+egswICarIdHyVSZZHudH8T5SF8x/JG0q0duFzPnlBw==
+  dependencies:
+    p-map "^4.0.0"
+
 p-cancelable@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/p-cancelable/-/p-cancelable-1.1.0.tgz#d078d15a3af409220c886f1d9a0ca2e441ab26cc"
@@ -5233,6 +5252,13 @@ p-map@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/p-map/-/p-map-3.0.0.tgz#d704d9af8a2ba684e2600d9a215983d4141a979d"
   integrity sha512-d3qXVTF/s+W+CdJ5A29wywV2n8CQQYahlgz2bFiA+4eVNJbHJodPZ+/gXwPGh0bOqA+j8S+6+ckmvLGPk1QpxQ==
+  dependencies:
+    aggregate-error "^3.0.0"
+
+p-map@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/p-map/-/p-map-4.0.0.tgz#bb2f95a5eda2ec168ec9274e06a747c3e2904d2b"
+  integrity sha512-/bjOqmgETBYB5BoEeGVea8dmvHb2m9GLy1E9W43yeyfP6QQCZGFNa+XRceJEuDB6zqr+gKpIAmlLebMpykw/MQ==
   dependencies:
     aggregate-error "^3.0.0"
 
@@ -6723,19 +6749,27 @@ timeline-state-resolver-types@3.20.0:
   dependencies:
     tslib "^1.10.0"
 
-timeline-state-resolver@3.20.1-nightly-20200526-091821-ac706bda.0:
-  version "3.20.1-nightly-20200526-091821-ac706bda.0"
-  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-3.20.1-nightly-20200526-091821-ac706bda.0.tgz#013219025c8dffc9f82aeef48e3e0b841e8b51b9"
-  integrity sha512-jBmX2o20xaa3HqFb/TYRkf4Wthm//o2nLVu2mbeRFKoBJAC7PlkeFef7nUMaw9MubsEEDURTPZphDd8rjezcTA==
+timeline-state-resolver-types@^4.0.0-nightly-feat-emberplus-conn-upgrade-20200528-101921-d2dd13a5.0:
+  version "4.0.0-nightly-feat-emberplus-conn-upgrade-20200528-101921-d2dd13a5.0"
+  resolved "https://registry.yarnpkg.com/timeline-state-resolver-types/-/timeline-state-resolver-types-4.0.0-nightly-feat-emberplus-conn-upgrade-20200528-101921-d2dd13a5.0.tgz#0536f5ab1c19776c60797ee4b0c9a8298aa1e514"
+  integrity sha512-bCCpQwp4lJbOE80ifAuMG2doerF2RcmZ+DmG0+MeYcyFsSBWxKsPNrh1r0BZ6ek1sVJS7wopJ9HFpaVLaC3BHA==
+  dependencies:
+    tslib "^1.10.0"
+
+timeline-state-resolver@^4.0.0-nightly-feat-emberplus-conn-upgrade-20200527-073844-742147a1.0:
+  version "4.0.0-nightly-feat-emberplus-conn-upgrade-20200527-073844-742147a1.0"
+  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-4.0.0-nightly-feat-emberplus-conn-upgrade-20200527-073844-742147a1.0.tgz#bc32163d497d9fd2503b80f52f46966b1d67914b"
+  integrity sha512-cEb6X5ax4u84e5aFaXlffuP+BkIJFvkD0GzdU5ryFml5C3LsyXttbbJWX497CsGOF/cmOVDR/TZZy5fTaabvyA==
   dependencies:
     atem-connection "1.1.0"
     atem-state "^0.9.0"
     casparcg-connection "^4.9.0"
     casparcg-state "^1.12.0"
-    emberplus "git+https://github.com/nrkno/tv-automation-emberplus-connection#dist200919_1"
+    emberplus-connection "^0.0.2-nightly-next-20200526-132421-5cd24f3.0"
     fast-clone "^1.5.13"
     hyperdeck-connection "^0.4.3"
     osc "^2.4.0"
+    p-all "^3.0.0"
     p-queue "^6.4.0"
     p-timeout "^3.2.0"
     request "^2.88.0"
@@ -7598,7 +7632,7 @@ yargs-parser@^15.0.1:
     camelcase "^5.0.0"
     decamelize "^1.2.0"
 
-yargs@15.3.1, yargs@^15.3.1:
+yargs@15.3.1, yargs@^15.1.0, yargs@^15.3.1:
   version "15.3.1"
   resolved "https://registry.yarnpkg.com/yargs/-/yargs-15.3.1.tgz#9505b472763963e54afe60148ad27a330818e98b"
   integrity sha512-92O1HWEjw27sBfgmXiixJWT5hRBp2eobqXicLtPBIDBhYB+1HpwZlXmbW2luivBJHBzki+7VyCLRtAkScbTBQA==
