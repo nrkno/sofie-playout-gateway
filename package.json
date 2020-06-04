@@ -96,7 +96,7 @@
     "fast-clone": "^1.5.13",
     "pouchdb-node": "^7.1.1",
     "promise-sequence": "^0.3.1",
-    "timeline-state-resolver": "^4.0.0-nightly-feat-emberplus-conn-upgrade-20200527-073844-742147a1.0",
+    "timeline-state-resolver": "^4.0.0-nightly-feat-emberplus-conn-upgrade-20200604-124853-36e989f0.0",
     "timeline-state-resolver-types": "^4.0.0-nightly-feat-emberplus-conn-upgrade-20200528-101921-d2dd13a5.0",
     "tslib": "^1.13.0",
     "tv-automation-server-core-integration": "1.5.0",

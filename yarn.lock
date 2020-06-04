@@ -2383,10 +2383,10 @@ ee-first@1.1.1:
   resolved "https://registry.yarnpkg.com/ee-first/-/ee-first-1.1.1.tgz#590c61156b0ae2f4f0255732a158b266bc56b21d"
   integrity sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0=
 
-emberplus-connection@^0.0.2-nightly-next-20200526-132421-5cd24f3.0:
-  version "0.0.2-nightly-next-20200526-132421-5cd24f3.0"
-  resolved "https://registry.yarnpkg.com/emberplus-connection/-/emberplus-connection-0.0.2-nightly-next-20200526-132421-5cd24f3.0.tgz#432e17b6de7a2a53a98fa240260c073e929bd74d"
-  integrity sha512-4Z9HQh7PNhaM+ExnT/OO7JrYSirdj2FSgL/kBEBY4du4G7+u4ik5XcmtOGgXK4BD6ao8cvZFNC7wgLjzZ2tg+w==
+emberplus-connection@^0.0.2-nightly-next-20200604-105628-46d0ba3.0:
+  version "0.0.2-nightly-next-20200604-105628-46d0ba3.0"
+  resolved "https://registry.yarnpkg.com/emberplus-connection/-/emberplus-connection-0.0.2-nightly-next-20200604-105628-46d0ba3.0.tgz#a2f6044a959283240972d76e22a9cc126b8fc9c4"
+  integrity sha512-NIB3w3F48i+st4LoBlXJh7b6OH8QwhL1GU3ECZfO+X8KgscOy6YcqLMqRt4KIfO/sXeMrX4fmaeTFus2T9TjgQ==
   dependencies:
     asn1 evs-broadcast/node-asn1
     enum "^2.4.0"
@@ -6756,16 +6756,16 @@ timeline-state-resolver-types@^4.0.0-nightly-feat-emberplus-conn-upgrade-2020052
   dependencies:
     tslib "^1.10.0"
 
-timeline-state-resolver@^4.0.0-nightly-feat-emberplus-conn-upgrade-20200527-073844-742147a1.0:
-  version "4.0.0-nightly-feat-emberplus-conn-upgrade-20200527-073844-742147a1.0"
-  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-4.0.0-nightly-feat-emberplus-conn-upgrade-20200527-073844-742147a1.0.tgz#bc32163d497d9fd2503b80f52f46966b1d67914b"
-  integrity sha512-cEb6X5ax4u84e5aFaXlffuP+BkIJFvkD0GzdU5ryFml5C3LsyXttbbJWX497CsGOF/cmOVDR/TZZy5fTaabvyA==
+timeline-state-resolver@^4.0.0-nightly-feat-emberplus-conn-upgrade-20200604-124853-36e989f0.0:
+  version "4.0.0-nightly-feat-emberplus-conn-upgrade-20200604-124853-36e989f0.0"
+  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-4.0.0-nightly-feat-emberplus-conn-upgrade-20200604-124853-36e989f0.0.tgz#fb02bff066332cc334a9592a1d9e79cc1167faf0"
+  integrity sha512-kquxJsm3kXQIcvbzrzedtckeLW+Z7lBxiZeREDpFMsOTEQEIUHjkWBnq9fua7tkb44M7whUPGs8hWEI+flT9QQ==
   dependencies:
     atem-connection "1.1.0"
     atem-state "^0.9.0"
     casparcg-connection "^4.9.0"
     casparcg-state "^1.12.0"
-    emberplus-connection "^0.0.2-nightly-next-20200526-132421-5cd24f3.0"
+    emberplus-connection "^0.0.2-nightly-next-20200604-105628-46d0ba3.0"
     fast-clone "^1.5.13"
     hyperdeck-connection "^0.4.3"
     osc "^2.4.0"
