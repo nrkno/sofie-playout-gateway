@@ -1,6 +1,6 @@
 {
   "name": "playout-gateway",
-  "version": "1.7.0",
+  "version": "1.8.0-0",
   "private": true,
   "description": "Connect to Core, play stuff",
   "license": "MIT",
@@ -92,11 +92,15 @@
   "dependencies": {
     "atem-connection": "0.10.0",
     "fast-clone": "^1.5.13",
-    "timeline-state-resolver": "3.20.1-nightly-20200526-091821-ac706bda.0",
+    "timeline-state-resolver": "3.20.2-nightly-hotfix-3-20-x-20200604-105107-652ef36d.0",
     "tslib": "^1.13.0",
-    "tv-automation-server-core-integration": "1.5.0",
-    "tv-automation-sofie-blueprints-integration": "1.11.0",
+    "tv-automation-server-core-integration": "1.5.1",
+    "tv-automation-sofie-blueprints-integration": "1.12.0",
     "underscore": "^1.9.1",
     "winston": "^2.4.2"
+  },
+  "resolutions": {
+    "yargs-parser": "^18.1.2",
+    "minimist": "^1.2.3"
   }
 }
