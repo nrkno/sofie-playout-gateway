@@ -324,6 +324,11 @@ const PLAYOUT_SUBDEVICE_CONFIG: SubDeviceConfigManifest['config'] = {
 			id: 'options.initializeRundownOnLoadAll',
 			name: 'On preload-All elements, also initialize the rundown playlist again',
 			type: ConfigManifestEntryType.BOOLEAN
+		},
+		{
+			id: 'options.clearAllCommands',
+			name: 'Clear All Channels Commands',
+			type: ConfigManifestEntryType.MULTILINE_STRING
 		}
 	]
 }
