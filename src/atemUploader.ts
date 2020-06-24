@@ -1,5 +1,6 @@
 import { Atem } from 'atem-connection'
 import * as fs from 'fs'
+import * as _ from 'underscore'
 
 /**
  * This script is a temporary implementation to upload media to the atem.
@@ -56,6 +57,10 @@ export class AtemUploadScript {
 			consoleLog('has stills')
 			if (this.connection.state.media.stillPool[this.mediaPool].isUsed) {
 				consoleLog('still is used')
+				if (this.fileName.length > 63) {
+					consoleError('filename is too long, change detection will always fail')
+				}
+
 				if (this.connection.state.media.stillPool[this.mediaPool].fileName === this.fileName) {
 					consoleLog('name equals')
 					return true
@@ -71,49 +76,42 @@ export class AtemUploadScript {
 		}
 	}
 
-	uploadToAtem () {
+	async uploadToAtem () {
 		if (!this.checkIfFileExistsOnAtem()) {
 			consoleLog('does not exist on ATEM')
-			return this.connection.clearMediaPoolStill(0).then(() =>
-				this.connection.uploadStill(this.mediaPool, this.file, this.fileName, '')
-			).then(() =>
-				this.setMediaPlayerToStill()
-			)
+			await this.connection.clearMediaPoolStill(this.mediaPool)
+			return this.connection.uploadStill(this.mediaPool, this.file, this.fileName, '')
 		} else {
 			consoleLog('does exist on ATEM')
-			return this.setMediaPlayerToStill()
+			return {}
 		}
-	}
-
-	setMediaPlayerToStill () {
-		if (this.connection.state.media.players[this.mediaPool] && (this.connection.state.media.players[this.mediaPool].stillIndex !== this.mediaPool || this.connection.state.media.players[this.mediaPool].sourceType !== 0)) {
-			return this.connection.setMediaPlayerSource({ sourceType: 0, stillIndex: this.mediaPool }, this.mediaPool)
-		}
-		return Promise.resolve()
 	}
 }
 
-export function setupAtemUploader () {
-	console.log('Setup AtemUploader...')
-	const singleton = new AtemUploadScript()
-	singleton.connect(process.argv[2]).then(async () => {
-		consoleLog('ATEM upload connected')
-		await singleton.loadFile(process.argv[3]).catch((e) => {
-			consoleError(e)
-			console.error('Exiting process due to atemUpload error')
-			process.exit(-1)
-		})
-		let mediaPool: string | undefined
-		if (process.argv.length >= 5) {
-			mediaPool = process.argv[4]
-		}
-		if (mediaPool !== undefined) {
-			singleton.mediaPool = parseInt(mediaPool, 10)
-		}
+console.log('Setup AtemUploader...')
+const singleton = new AtemUploadScript()
+singleton.connect(process.argv[2]).then(async () => {
+	consoleLog('ATEM upload connected')
+	await singleton.loadFile(process.argv[3]).catch((e) => {
+		consoleError(e)
+		console.error('Exiting process due to atemUpload error')
+		process.exit(-1)
+	})
+	let mediaPool: string | undefined
+	if (process.argv.length >= 5) {
+		mediaPool = process.argv[4]
+	}
+	if (mediaPool !== undefined) {
+		singleton.mediaPool = parseInt(mediaPool, 10)
+	}
 
-		singleton.uploadToAtem().then(() => {
-			consoleLog('uploaded ATEM media to pool ' + singleton.mediaPool)
-			process.exit(0)
-		}, () => process.exit(-1))
+	if (isNaN(singleton.mediaPool) || !_.isNumber(singleton.mediaPool)) {
+		console.error('Exiting due to invalid mediaPool')
+		process.exit(-1)
+	}
+
+	singleton.uploadToAtem().then(() => {
+		consoleLog('uploaded ATEM media to pool ' + singleton.mediaPool)
+		process.exit(0)
 	}, () => process.exit(-1))
-}
+}, () => process.exit(-1))

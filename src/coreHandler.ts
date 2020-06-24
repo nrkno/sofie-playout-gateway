@@ -6,7 +6,6 @@ import { CoreConnection,
 	PeripheralDeviceAPI
 } from 'tv-automation-server-core-integration'
 
-import * as cp from 'child_process'
 import {
 	DeviceType,
 	CasparCGDevice,
@@ -22,6 +21,7 @@ import * as fs from 'fs'
 import { LoggerInstance } from './index'
 import { ThreadedClass } from 'threadedclass'
 import { Process } from './process'
+import { PLAYOUT_DEVICE_CONFIG } from './configManifest'
 
 export interface CoreConfig {
 	host: string,
@@ -49,10 +49,6 @@ export class CoreHandler {
 	logger: LoggerInstance
 	public _observers: Array<any> = []
 	public deviceSettings: {[key: string]: any} = {}
-
-	// Mediascanner statuses: temporary implementation, to be moved into casparcg device later:
-	public mediaScannerStatus: P.StatusCode = P.StatusCode.GOOD
-	public mediaScannerMessages: Array<string> = []
 
 	public errorReporting: boolean = false
 	public multithreading: boolean = false
@@ -195,7 +191,9 @@ export class CoreHandler {
 			deviceSubType: subDeviceType,
 
 			deviceName: name,
-			watchDog: (this._coreConfig ? this._coreConfig.watchdog : true)
+			watchDog: (this._coreConfig ? this._coreConfig.watchdog : true),
+
+			configManifest: PLAYOUT_DEVICE_CONFIG
 		}
 		if (subDeviceType === P.SUBTYPE_PROCESS) options.versions = this._getVersions()
 		return options
@@ -387,44 +385,6 @@ export class CoreHandler {
 		this.core.setPingResponse(message)
 		return true
 	}
-	/**
-	 * This function is a quick and dirty solution to load a still to the atem mixers.
-	 * This does not serve as a proper implementation! And need to be refactor
-	 * // @todo: proper atem media management
-	 * /Balte - 22-08
-	 */
-	uploadFileToAtem (urls: [{ _key: string, value: any }] | { _key: string, value: any }) {
-		if (_.isArray(urls)) {
-			urls = urls.slice(0, 2) as [{ _key: string, value: any }]
-		} else {
-			urls = [ urls ]
-		}
-
-		urls.forEach((url, index) => {
-			this.logger.info('try to load ' + JSON.stringify(url) + ' to atem')
-			if (this._tsrHandler) {
-				this._tsrHandler.tsr.getDevices().forEach(async (device) => {
-					if (device.deviceType === DeviceType.ATEM) {
-						const options = (device.deviceOptions).options as { host: string }
-						this.logger.info('options ' + JSON.stringify(options))
-						if (options && options.host) {
-							this.logger.info('uploading ' + url.value + ' to ' + options.host + ' in MP' + index)
-							const process = cp.spawn(`node`, [`./dist/atemUploader.js`, options.host, url.value, index])
-							process.stdout.on('data', (data) => this.logger.info(data.toString()))
-							process.stderr.on('data', (data) => this.logger.info(data.toString()))
-							process.on('close', () => {
-								process.removeAllListeners()
-							})
-						} else {
-							throw Error('ATEM host option not set')
-						}
-					}
-				})
-			} else {
-				throw Error('TSR not set up!')
-			}
-		})
-	}
 	getSnapshot (): any {
 		this.logger.info('getSnapshot')
 		let timeline = (
@@ -488,14 +448,6 @@ export class CoreHandler {
 		let statusCode = P.StatusCode.GOOD
 		let messages: Array<string> = []
 
-		if (this.mediaScannerStatus !== P.StatusCode.GOOD) {
-			statusCode = this.mediaScannerStatus
-			if (this.mediaScannerMessages) {
-				_.each(this.mediaScannerMessages, (msg) => {
-					messages.push(msg)
-				})
-			}
-		}
 		if (!this._statusInitialized) {
 			statusCode = P.StatusCode.BAD
 			messages.push('Starting up...')
@@ -552,18 +504,21 @@ export class CoreHandler {
 export class CoreTSRDeviceHandler {
 	core: CoreConnection
 	public _observers: Array<any> = []
+	public _devicePr: Promise<DeviceContainer>
+	public _deviceId: string
 	public _device: DeviceContainer
 	private _coreParentHandler: CoreHandler
 	private _tsrHandler: TSRHandler
 	private _subscriptions: Array<string> = []
 	private _hasGottenStatusChange: boolean = false
 
-	constructor (parent: CoreHandler, device: DeviceContainer, tsrHandler: TSRHandler) {
+	constructor (parent: CoreHandler, device: Promise<DeviceContainer>, deviceId: string, tsrHandler: TSRHandler) {
 		this._coreParentHandler = parent
-		this._device = device
+		this._devicePr = device
+		this._deviceId = deviceId
 		this._tsrHandler = tsrHandler
 
-		this._coreParentHandler.logger.info('new CoreTSRDeviceHandler ' + device.deviceName)
+		// this._coreParentHandler.logger.info('new CoreTSRDeviceHandler ' + device.deviceName)
 
 		// this.core = new CoreConnection(parent.getCoreConnectionOptions('MOS: ' + device.idPrimary, device.idPrimary, false))
 		// this.core.onError((err) => {
@@ -571,6 +526,7 @@ export class CoreTSRDeviceHandler {
 		// })
 	}
 	async init (): Promise<void> {
+		this._device = await this._devicePr
 		let deviceName = this._device.deviceName
 		let deviceId = this._device.deviceId
 
@@ -647,7 +603,7 @@ export class CoreTSRDeviceHandler {
 			obs.stop()
 		})
 
-		await this._tsrHandler.tsr.removeDevice(this._device.deviceId)
+		await this._tsrHandler.tsr.removeDevice(this._deviceId)
 		await this.core.setStatus({
 			statusCode: P.StatusCode.BAD,
 			messages: ['Uninitialized']

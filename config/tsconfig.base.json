@@ -16,7 +16,7 @@
         "../src/index.ts"
       ]
     },
-    "declaration": true,
+    "declaration": false,
     "importHelpers": true,
     "listFiles": false,
     "traceResolution": false,

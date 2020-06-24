@@ -11,16 +11,20 @@ import {
 	TSRTimelineObj,
 	TSRTimeline,
 	TSRTimelineObjBase,
-	CommandReport
+	CommandReport,
+	DeviceOptionsAtem,
+	AtemMediaPoolType
 } from 'timeline-state-resolver'
 import { CoreHandler, CoreTSRDeviceHandler } from './coreHandler'
 let clone = require('fast-clone')
 import * as crypto from 'crypto'
+import * as cp from 'child_process'
 
 import * as _ from 'underscore'
 import { CoreConnection, PeripheralDeviceAPI as P, CollectionObj } from 'tv-automation-server-core-integration'
 import { TimelineObjectCoreExt } from 'tv-automation-sofie-blueprints-integration'
 import { LoggerInstance } from './index'
+import { disableAtemUpload } from './config'
 
 export interface TSRConfig {
 }
@@ -49,7 +53,6 @@ export interface TimelineObjGeneric extends TimelineObjectCoreExt {
 
 	/** Studio installation Id */
 	studioId: string
-	rundownId?: string
 
 	objectType: TimelineObjType
 
@@ -574,7 +577,10 @@ export class TSRHandler {
 		await Promise.race([
 			Promise.all(ps),
 			new Promise(resolve => setTimeout(() => {
-				this.logger.warn(`Timeout in _updateDevices: ${_.keys(promiseOperations).join(',')}`)
+				const keys = _.keys(promiseOperations)
+				if (keys.length) {
+					this.logger.warn(`Timeout in _updateDevices: ${keys.join(',')}`)
+				}
 				resolve()
 			}, INIT_TIMEOUT)) // Timeout if not all are resolved within INIT_TIMEOUT
 		])
@@ -590,14 +596,16 @@ export class TSRHandler {
 				throw new Error(`There is already a _coreTsrHandlers for deviceId "${deviceId}"!`)
 			}
 
-			const device: DeviceContainer = await this.tsr.addDevice(deviceId, options)
+			const devicePr: Promise<DeviceContainer> = this.tsr.addDevice(deviceId, options)
+
+			let coreTsrHandler = new CoreTSRDeviceHandler(this._coreHandler, devicePr, deviceId, this)
+
+			this._coreTsrHandlers[deviceId] = coreTsrHandler
+
+			const device = await devicePr
 
 			// Set up device status
 			const deviceType = device.deviceType
-
-			let coreTsrHandler = new CoreTSRDeviceHandler(this._coreHandler, device, this)
-
-			this._coreTsrHandlers[deviceId] = coreTsrHandler
 
 			const onConnectionChanged = (connectedOrStatus: boolean | P.StatusObject) => {
 				let deviceStatus: P.StatusObject
@@ -617,17 +625,23 @@ export class TSRHandler {
 				}
 				coreTsrHandler.onConnectionChanged(deviceStatus)
 				// hack to make sure atem has media after restart
-				if (deviceStatus.statusCode === P.StatusCode.GOOD) {
-					// @todo: proper atem media management
-					const studio = this._getStudio()
-					if (deviceType === DeviceType.ATEM && studio) {
-						const ssrcBgs = studio.config.filter((o) => o._id.substr(0, 18) === 'atemSSrcBackground')
-						if (ssrcBgs) {
-							try {
-								this._coreHandler.uploadFileToAtem(ssrcBgs)
-							} catch (e) {
-								// don't worry about it.
-							}
+				if (
+					(deviceStatus.statusCode === P.StatusCode.GOOD || deviceStatus.statusCode === P.StatusCode.WARNING_MINOR || deviceStatus.statusCode === P.StatusCode.WARNING_MAJOR)
+					&& deviceType === DeviceType.ATEM && !disableAtemUpload
+				) {
+					// const ssrcBgs = studio.config.filter((o) => o._id.substr(0, 18) === 'atemSSrcBackground')
+					const assets = (options as DeviceOptionsAtem).options.mediaPoolAssets
+					if (assets && assets.length > 0) {
+						try {
+							// TODO: support uploading clips and audio
+							this.uploadFilesToAtem(_.compact(assets.map((asset) => {
+								return asset.type === AtemMediaPoolType.Still && _.isNumber(asset.position) && asset.path ? {
+									position: asset.position,
+									path: asset.path
+								} : undefined
+							})))
+						} catch (e) {
+							// don't worry about it.
 						}
 					}
 				}
@@ -656,7 +670,6 @@ export class TSRHandler {
 					coreTsrHandler.onCommandError(errorString, {
 						timelineObjId:	context.timelineObjId,
 						context: 		context.context,
-						rundownId:	obj ? obj['rundownId']	: undefined,
 						partId:		obj ? obj['partId']		: undefined,
 						pieceId:	obj ? obj['pieceId']	: undefined
 					})
@@ -741,6 +754,34 @@ export class TSRHandler {
 			}, 10 * 1000)
 		}
 	}
+	/**
+	 * This function is a quick and dirty solution to load a still to the atem mixers.
+	 * This does not serve as a proper implementation! And need to be refactor
+	 * // @todo: proper atem media management
+	 * /Balte - 22-08
+	 */
+	private uploadFilesToAtem (files: { position: number, path: string }[]) {
+		files.forEach((file) => {
+			this.logger.info('try to load ' + JSON.stringify(file) + ' to atem')
+			this.tsr.getDevices().forEach(async (device) => {
+				if (device.deviceType === DeviceType.ATEM) {
+					const options = (device.deviceOptions).options as { host: string }
+					this.logger.info('options ' + JSON.stringify(options))
+					if (options && options.host) {
+						this.logger.info('uploading ' + file.path + ' to ' + options.host + ' in MP' + file.position)
+						const process = cp.spawn(`node`, [`./dist/atemUploader.js`, options.host, file.path, file.position.toString()])
+						process.stdout.on('data', (data) => this.logger.info(data.toString()))
+						process.stderr.on('data', (data) => this.logger.info(data.toString()))
+						process.on('close', () => {
+							process.removeAllListeners()
+						})
+					} else {
+						throw Error('ATEM host option not set')
+					}
+				}
+			})
+		})
+	}
 	private async _removeDevice (deviceId: string): Promise<any> {
 		if (this._coreTsrHandlers[deviceId]) {
 			try {
@@ -809,14 +850,7 @@ export class TSRHandler {
 		// _transformTimeline (timeline: Array<TimelineObj>): Array<TimelineContentObject> | null {
 
 		let transformObject = (obj: TimelineObjGeneric): TimelineContentObjectTmp => {
-			let transformedObj = clone(
-				_.omit(
-					{
-						...obj,
-						rundownId: obj.rundownId
-					}, ['_id', 'studioId']
-				)
-			)
+			let transformedObj = clone(_.omit(obj, ['_id', 'studioId']))
 			transformedObj.id = obj.id || obj._id
 
 			if (!transformedObj.content) transformedObj.content = {}
