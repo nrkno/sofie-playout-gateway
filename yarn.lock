@@ -2310,10 +2310,10 @@ ee-first@1.1.1:
   resolved "https://registry.yarnpkg.com/ee-first/-/ee-first-1.1.1.tgz#590c61156b0ae2f4f0255732a158b266bc56b21d"
   integrity sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0=
 
-emberplus-connection@^0.0.2:
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/emberplus-connection/-/emberplus-connection-0.0.2.tgz#191761640bdfce1a23a4f216d3dbaa9dfa1830e8"
-  integrity sha512-Kl19gJBKEhAaMKH8xx+Ezk85BKUFFtik36qmG/aigIq7SAs9NVPriDTuXdtnr4pFAuQB8OwylWwSrwIz+ktRIg==
+emberplus-connection@^0.0.3-nightly-20200622-114815-88534e2.0:
+  version "0.0.3-nightly-20200622-114815-88534e2.0"
+  resolved "https://registry.yarnpkg.com/emberplus-connection/-/emberplus-connection-0.0.3-nightly-20200622-114815-88534e2.0.tgz#32682f6a9d7bb189f154857c021d8fa7132b3bd3"
+  integrity sha512-0SkeCLmcIuPN5GZIxmlmAETpxlsrCx+hNSwlpBErOcq4v7Vr8rRKdpc9lWC0eJ4WtdkKr18oj0bdy5nHG101dg==
   dependencies:
     asn1 evs-broadcast/node-asn1
     enum "^2.4.0"
@@ -6477,23 +6477,23 @@ through@2, "through@>=2.2.7 <3":
   resolved "https://registry.yarnpkg.com/through/-/through-2.3.8.tgz#0dd4c9ffaabc357960b1b724115d7e0e86a2e1f5"
   integrity sha1-DdTJ/6q8NXlgsbckEV1+Doai4fU=
 
-timeline-state-resolver-types@3.20.1:
-  version "3.20.1"
-  resolved "https://registry.yarnpkg.com/timeline-state-resolver-types/-/timeline-state-resolver-types-3.20.1.tgz#a5a25bbc12e8588c2fd099fd112d4c4186a6ee06"
-  integrity sha512-mjdVcTkDcBocXzqD12rH5ABkoDeWkkJMHCEgtJ6onLOdXasUflrW5/ZdMj4TiV9cORO1p4gMMlrKEhJSlv/XEg==
+timeline-state-resolver-types@4.0.0-nightly-20200611-075605-93ae546a.0:
+  version "4.0.0-nightly-20200611-075605-93ae546a.0"
+  resolved "https://registry.yarnpkg.com/timeline-state-resolver-types/-/timeline-state-resolver-types-4.0.0-nightly-20200611-075605-93ae546a.0.tgz#aa161da876d23591f1a6bf618b62e3262b1c116b"
+  integrity sha512-KC0Ab9pgBQ6lPZO2AaNIqRs/QxhDjPwUMAj/RLtvXhTmRgiim7IOFZTkD1FO2+IO3flZo3FI45K6zXTDGNRlWw==
   dependencies:
-    tslib "^1.10.0"
+    tslib "^1.13.0"
 
-timeline-state-resolver@4.0.0-nightly-20200615-062035-87c768e6.0:
-  version "4.0.0-nightly-20200615-062035-87c768e6.0"
-  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-4.0.0-nightly-20200615-062035-87c768e6.0.tgz#94b433e5c9b46080cdd3c4bf46fc2a88530cd326"
-  integrity sha512-bv9T/cTqc64FOpqWzoi1NU3M7cRmKUYkWjq+LR8Dio2NribO9xwvm0IKLy6kUrzOvurFs5xEvWERMAKjVEfGJQ==
+timeline-state-resolver@4.0.0-nightly-20200625-095256-314a03cf.0:
+  version "4.0.0-nightly-20200625-095256-314a03cf.0"
+  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-4.0.0-nightly-20200625-095256-314a03cf.0.tgz#8d7487a63822423cc1dcf9b643827537a440a23a"
+  integrity sha512-dNVxvl3eV71rCTVzVkziGSMgVmrWgr/GANrUvOtG1iAAc1NEwPqlDTcSjmac+WSkQtbcftxJZFLML/Lr4hiwoA==
   dependencies:
     atem-connection "1.1.0"
     atem-state "^0.9.0"
     casparcg-connection "^4.9.0"
     casparcg-state "^1.12.0"
-    emberplus-connection "^0.0.2"
+    emberplus-connection "^0.0.3-nightly-20200622-114815-88534e2.0"
     hyperdeck-connection "^0.4.3"
     osc "^2.4.0"
     p-all "^3.0.0"
@@ -6507,7 +6507,7 @@ timeline-state-resolver@4.0.0-nightly-20200615-062035-87c768e6.0:
     tv-automation-quantel-gateway-client "^1.0.8"
     underscore "^1.10.2"
     underscore-deep-extend "^1.1.5"
-    v-connection "git+https://github.com/olzzon/v-connection#v20200304_1"
+    v-connection "git+https://github.com/olzzon/v-connection#v20200515_1"
     ws "^7.1.1"
 
 tmpl@1.0.x:
@@ -6757,14 +6757,14 @@ tv-automation-server-core-integration@1.5.1:
     tslib "^1.11.1"
     underscore "^1.9.1"
 
-tv-automation-sofie-blueprints-integration@1.12.0:
-  version "1.12.0"
-  resolved "https://registry.yarnpkg.com/tv-automation-sofie-blueprints-integration/-/tv-automation-sofie-blueprints-integration-1.12.0.tgz#093cd0b09fb492b45567e6d4b3e1168bd6e08f8f"
-  integrity sha512-khZr4BaPE4fkw5bQJkz1lwPJzG7pKe7qlQ7zvK7pwhAp47hYfKtK3vTF/8qlkvtLHQvwLQKdoCbn2A2ww3gGCg==
+tv-automation-sofie-blueprints-integration@2.1.0-nightly-20200625-055003-623cf11.0:
+  version "2.1.0-nightly-20200625-055003-623cf11.0"
+  resolved "https://registry.yarnpkg.com/tv-automation-sofie-blueprints-integration/-/tv-automation-sofie-blueprints-integration-2.1.0-nightly-20200625-055003-623cf11.0.tgz#62d43c40bc6c547eab5711143a9fcc1d36954780"
+  integrity sha512-Ww+o1CTYINHV609e9SBnJwJfiOp4+jUmPLdx30n1fJJijsvWpK/c2cm+q7eRjI5jK0mJI4Ysg2hEeO9+TNBVfg==
   dependencies:
     moment "2.22.2"
-    timeline-state-resolver-types "3.20.1"
-    tslib "^1.10.0"
+    timeline-state-resolver-types "4.0.0-nightly-20200611-075605-93ae546a.0"
+    tslib "^1.13.0"
     underscore "1.9.1"
 
 tweetnacl@^0.14.3, tweetnacl@~0.14.0:
@@ -6977,9 +6977,9 @@ uuid@^7.0.3:
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-7.0.3.tgz#c5c9f2c8cf25dc0a372c4df1441c41f5bd0c680b"
   integrity sha512-DPSke0pXhTZgoF/d+WSt2QaKMCFSfx7QegxEWT+JOuHF5aWrKEn0G+ztjuJg/gG8/ItK+rbPCD/yNv8yyih6Cg==
 
-"v-connection@git+https://github.com/olzzon/v-connection#v20200304_1":
+"v-connection@git+https://github.com/olzzon/v-connection#v20200515_1":
   version "0.0.11"
-  resolved "git+https://github.com/olzzon/v-connection#c39f290f11b58102b4262f0a9f2ae095013350b2"
+  resolved "git+https://github.com/olzzon/v-connection#8f6cb135096cf36630713b1582ed4928d2754812"
   dependencies:
     koa "^2.11.0"
     request "^2.88.0"
