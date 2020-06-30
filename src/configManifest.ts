@@ -292,7 +292,7 @@ const PLAYOUT_SUBDEVICE_CONFIG: SubDeviceConfigManifest['config'] = {
 		{
 			id: 'options.allowCloneClips',
 			name: 'Allow cloning of clips if on wrong server/pool',
-			type: ConfigManifestEntryType.NUMBER
+			type: ConfigManifestEntryType.BOOLEAN
 		}
 	],
 	[TSRDeviceType.VIZMSE]: [
