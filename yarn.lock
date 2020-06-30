@@ -6484,10 +6484,10 @@ timeline-state-resolver-types@4.0.0-nightly-20200611-075605-93ae546a.0:
   dependencies:
     tslib "^1.13.0"
 
-timeline-state-resolver@4.0.0-nightly-feat-quantel-copy-clip-20200630-114019-698f9bc5.0:
-  version "4.0.0-nightly-feat-quantel-copy-clip-20200630-114019-698f9bc5.0"
-  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-4.0.0-nightly-feat-quantel-copy-clip-20200630-114019-698f9bc5.0.tgz#ed59d2ade6829e4920777b317c95ddf511420a21"
-  integrity sha512-q+t6VCm3Yi/pitjtRnYmuEQP5Ec4mQ4AT5y9wtag3jKXNJcOvdj7STnrnalMc8PnZqYSaA8R0sX+ey3omiSKYg==
+timeline-state-resolver@4.0.0-nightly-20200630-121654-6950b970.0:
+  version "4.0.0-nightly-20200630-121654-6950b970.0"
+  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-4.0.0-nightly-20200630-121654-6950b970.0.tgz#fb74deccc07d6354878cce784158591eb2d79924"
+  integrity sha512-hvib/0gkBdZZxI1ZbQFAfwvYge62LWAcTEM+DjEXGvBtfhVgRit12xGbszcnxZ07nBvD6Ihc38+Qy7LSvCsxqg==
   dependencies:
     atem-connection "1.1.0"
     atem-state "^0.9.0"
