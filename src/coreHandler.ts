@@ -376,7 +376,7 @@ export class CoreHandler {
 		this.logger.info('getSnapshot')
 		let timeline = (
 			this._tsrHandler ?
-			this._tsrHandler.getTimeline(false) :
+			this._tsrHandler.getFullTimeline() :
 			[]
 		)
 		let mappings = (

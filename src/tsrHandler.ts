@@ -109,6 +109,7 @@ export class TSRHandler {
 	private _errorReporting: boolean | null = null
 
 	private _updateDevicesIsRunning: boolean = false
+	private _lastReportedObjHashes: string[] = []
 
 	constructor (logger: LoggerInstance) {
 		this.logger = logger
@@ -224,6 +225,18 @@ export class TSRHandler {
 				}
 
 			})
+			this.tsr.on('resolveDone', (objHash: string, resolveDuration: number) => {
+				if (!this._lastReportedObjHashes.includes(objHash)) {
+					this._lastReportedObjHashes.unshift(objHash)
+					if (this._lastReportedObjHashes.length > 10) {
+						this._lastReportedObjHashes.splice(10, 9999)
+					}
+					this._coreHandler.core.callMethod('peripheralDevice.reportResolveDone', [objHash, resolveDuration])
+					.catch((e) => {
+						this.logger.error('Error in reportResolveDone', e)
+					})
+				}
+			})
 
 			this.logger.debug('tsr init')
 			return this.tsr.init()
@@ -271,7 +284,7 @@ export class TSRHandler {
 	destroy (): Promise<void> {
 		return this.tsr.destroy()
 	}
-	getTimeline (excludeStatObj?: boolean): Array<CollectionObj> | null {
+	getFullTimeline (): Array<CollectionObj> | null {
 		let studioId = this._getStudioId()
 		if (!studioId) {
 			this.logger.warn('no studioId')
@@ -279,13 +292,25 @@ export class TSRHandler {
 		}
 
 		let objs = this._coreHandler.core.getCollection('timeline').find((o: TimelineObjGeneric) => {
-			if (excludeStatObj) {
-				if (o.objectType === TimelineObjType.STAT) return false
-			}
 			return o.studioId === studioId
 		})
-
 		return objs
+	}
+	getTimeline (): {objs: Array<CollectionObj> | null, statObj: CollectionObj | null} {
+
+		const timeline = this.getFullTimeline()
+		if (!timeline) return { objs: null, statObj: null }
+
+		let statObj: CollectionObj | null = null
+		let objs = timeline.filter((o: TimelineObjGeneric) => {
+			if (o.objectType === TimelineObjType.STAT) {
+				statObj = o
+				return false
+			}
+			return true
+		})
+
+		return { objs, statObj }
 	}
 	getMapping () {
 		let studio = this._getStudio()
@@ -401,11 +426,13 @@ export class TSRHandler {
 	}
 	private _updateTimeline () {
 		if (this._determineIfTimelineShouldUpdate()) {
-			let transformedTimeline = this._transformTimeline(
-				this.getTimeline(true) as Array<TimelineObjGeneric>
-			)
+			const tl = this.getTimeline()
+			const objHash = tl.statObj && tl.statObj.content.objHash
+			let transformedTimeline = tl.objs ? this._transformTimeline(
+				tl.objs as Array<TimelineObjGeneric>
+			) : null
 			if (transformedTimeline) {
-				// @ts-ignore
+				this.tsr.timelineHash = objHash
 				this.tsr.timeline = transformedTimeline
 			} else {
 				this.logger.warn('Did NOT update Timeline due to an error')
@@ -874,7 +901,7 @@ export class TSRHandler {
 		let statObjHash 	= (statObject.content || {}).objHash || ''
 
 		// collect statistics
-		let objs = this.getTimeline(true)
+		let { objs } = this.getTimeline()
 		if (!objs) return false
 
 		// Number of objects
