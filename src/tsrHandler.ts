@@ -249,13 +249,13 @@ export class TSRHandler {
 		}
 		this.logger.debug('Renewing observers')
 
-		let timelineObserver = this._coreHandler.core.observe('timeline')
+		let timelineObserver = this._coreHandler.core.observe('studioTimeline')
 		timelineObserver.added = () => { this._triggerupdateTimeline() }
 		timelineObserver.changed = () => { this._triggerupdateTimeline() }
 		timelineObserver.removed = () => { this._triggerupdateTimeline() }
 		this._observers.push(timelineObserver)
 
-		let mappingsObserver = this._coreHandler.core.observe('studio')
+		let mappingsObserver = this._coreHandler.core.observe('studioMappings')
 		mappingsObserver.added = () => { this._triggerupdateMapping() }
 		mappingsObserver.changed = () => { this._triggerupdateMapping() }
 		mappingsObserver.removed = () => { this._triggerupdateMapping() }
@@ -278,7 +278,7 @@ export class TSRHandler {
 			return null
 		}
 
-		let objs = this._coreHandler.core.getCollection('timeline').find((o: TimelineObjGeneric) => {
+		let objs = this._coreHandler.core.getCollection('studioTimeline').find((o: TimelineObjGeneric) => {
 			if (excludeStatObj) {
 				if (o.objectType === TimelineObjType.STAT) return false
 			}
@@ -288,11 +288,15 @@ export class TSRHandler {
 		return objs
 	}
 	getMapping () {
-		let studio = this._getStudio()
-		if (studio) {
-			return studio.mappings
+		let studioId = this._getStudioId()
+		if (!studioId) {
+			// this.logger.warn('no studioId')
+			return null
 		}
-		return null
+		// Note: The studioMappings virtual collection contains a single object that contains all mappings
+		const doc = this._coreHandler.core.getCollection('studioMappings').findOne(studioId)
+
+		return doc.mappings
 	}
 	onSettingsChanged (): void {
 		if (!this._initialized) return
@@ -857,7 +861,7 @@ export class TSRHandler {
 
 		let statObjId = studioId + '_statObj'
 
-		let statObject = this._coreHandler.core.getCollection('timeline').find(statObjId)[0]
+		let statObject = this._coreHandler.core.getCollection('studioTimeline').find(statObjId)[0]
 
 		if (!statObject) {
 			if (requireStatObject) {
