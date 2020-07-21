@@ -725,11 +725,6 @@
   dependencies:
     "@types/node" "*"
 
-"@types/retry@^0.12.0":
-  version "0.12.0"
-  resolved "https://registry.yarnpkg.com/@types/retry/-/retry-0.12.0.tgz#2b35eccfcee7d38cd72ad99232fbd58bffb3c84d"
-  integrity sha512-wWKOClTTiizcZhXnPY4wikVAwmdYHp8q6DmC+EJUzAMsycb7HB32Kh9RN4+0gExjmPmZSAQjgURXIGATPegAvA==
-
 "@types/safer-buffer@^2.1.0":
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/@types/safer-buffer/-/safer-buffer-2.1.0.tgz#8c498815fe00af8f8b23d63eb3fd6fae6ae2ab7a"
@@ -1053,36 +1048,26 @@ asynckit@^0.4.0:
   resolved "https://registry.yarnpkg.com/asynckit/-/asynckit-0.4.0.tgz#c79ed97f7f34cb8f2ba1bc9790bcc366474b4b79"
   integrity sha1-x57Zf380y48robyXkLzDZkdLS3k=
 
-atem-connection@0.10.0:
-  version "0.10.0"
-  resolved "https://registry.yarnpkg.com/atem-connection/-/atem-connection-0.10.0.tgz#2ce82cdf3415a4a2f7a0638e2c7eaa7e937f9f03"
-  integrity sha512-WhQ4bzKzCMBEb0T/+yo/Dzkz4dtwTdcX1y1ej1M/VctnRIkX4QESXZaToTp+6lCxUIRReZ2jKHrRZBEDpAwwBw==
+atem-connection@2.0.0-nightly-20200720-080906-2fb917b.0:
+  version "2.0.0-nightly-20200720-080906-2fb917b.0"
+  resolved "https://registry.yarnpkg.com/atem-connection/-/atem-connection-2.0.0-nightly-20200720-080906-2fb917b.0.tgz#af469d5f38e8c2068abb0c76790b735dd09a4535"
+  integrity sha512-hirdtvkuGj3wQADKZcA4YOVC2bY0aStGGxycpBZEi05IbW965CKFHzy1gEJYDK8babVom0f3ZCZfzd4O7+R4/g==
   dependencies:
+    eventemitter3 "^4.0.4"
     exit-hook "^2.0.0"
     nanotimer "^0.3.15"
-    p-queue "^2.4.2"
-    p-retry "^2.0.0"
-    tslib "^1.9.0"
+    threadedclass "0.8.0-nightly-20200626-190313-597bdf9.0"
+    tslib "^1.13.0"
     wavefile "^8.4.4"
 
-atem-connection@1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/atem-connection/-/atem-connection-1.1.0.tgz#cfe073164d5b46b3014bdb6ade829925b15f0c9c"
-  integrity sha512-P0h09N3BZ0XETyjbfPjn/MwrtZi8F9fFupjAKcEgPtvnYr0CG505UE1iRhrMG3zXARcC5gFI40JnvFsOF5EpcA==
+atem-state@^0.10.0-nightly-feat-v8-strict-20200720-093258-6efd32a.0:
+  version "0.10.0-nightly-feat-v8-strict-20200720-093258-6efd32a.0"
+  resolved "https://registry.yarnpkg.com/atem-state/-/atem-state-0.10.0-nightly-feat-v8-strict-20200720-093258-6efd32a.0.tgz#c3b94e1df9c8e7b1dfc897afe34944f80bf92e85"
+  integrity sha512-xWd/N4EkDcvE4sMayXifhtAZuXR2KXQAcAJcB/U+/E8JXCgIRcouYIBlOE9k2sgSHMNJVjWZbgpSqQC7N4GWew==
   dependencies:
-    exit-hook "^2.0.0"
-    nanotimer "^0.3.15"
-    p-retry "^4.1.0"
-    tslib "^1.9.0"
-    wavefile "^8.4.4"
-
-atem-state@^0.9.0:
-  version "0.9.0"
-  resolved "https://registry.yarnpkg.com/atem-state/-/atem-state-0.9.0.tgz#379c85c437c881bed39076b7abe8dcd871908982"
-  integrity sha512-cFNBUZ1psc1ykdwcWZhh+vsG1iU8FBT7buJFmYzZ/INeXCv0xKs/n2JkLvzot0pCmxb0/U6qh/gaLJQQ2MkQoA==
-  dependencies:
-    atem-connection "1.1.0"
-    tslib "^1.9.2"
+    atem-connection "2.0.0-nightly-20200720-080906-2fb917b.0"
+    tslib "^1.13"
+    underscore "^1.9.1"
 
 atob@^2.1.2:
   version "2.1.2"
@@ -2422,7 +2407,7 @@ esutils@^2.0.2:
   resolved "https://registry.yarnpkg.com/esutils/-/esutils-2.0.3.tgz#74d2eb4de0b8da1293711910d50775b9b710ef64"
   integrity sha512-kVscqXk4OCp68SZ0dkgEKVi6/8ij300KBWTJq32P/dYeWTSwK41WyTxalN1eRmA5Z9UU/LX9D7FWSmV9SAYx6g==
 
-eventemitter3@^4.0.0:
+eventemitter3@^4.0.0, eventemitter3@^4.0.4:
   version "4.0.4"
   resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-4.0.4.tgz#b5463ace635a083d018bdc7c917b4c5f10a85384"
   integrity sha512-rlaVLnVxtxvoyLsQQFBx53YmXHDxRIzzTLbdfxqi4yocpSjAxXwkU0cScM5JgSKMqEhrZpnvQ2D9gjylR0AimQ==
@@ -3431,6 +3416,11 @@ is-potential-custom-element-name@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/is-potential-custom-element-name/-/is-potential-custom-element-name-1.0.0.tgz#0c52e54bcca391bb2c494b21e8626d7336c6e397"
   integrity sha1-DFLlS8yjkbssSUsh6GJtczbG45c=
+
+is-running@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/is-running/-/is-running-2.1.0.tgz#30a73ff5cc3854e4fc25490809e9f5abf8de09e0"
+  integrity sha1-MKc/9cw4VOT8JUkICen1q/jeCeA=
 
 is-stream@^1.1.0:
   version "1.1.0"
@@ -5036,11 +5026,6 @@ p-map@^4.0.0:
   dependencies:
     aggregate-error "^3.0.0"
 
-p-queue@^2.4.2:
-  version "2.4.2"
-  resolved "https://registry.yarnpkg.com/p-queue/-/p-queue-2.4.2.tgz#03609826682b743be9a22dba25051bd46724fc34"
-  integrity sha512-n8/y+yDJwBjoLQe1GSJbbaYQLTI7QHNZI2+rpmCDbe++WLf9HC3gf6iqj5yfPAV71W4UF3ql5W1+UBPXoXTxng==
-
 p-queue@^6.4.0:
   version "6.4.0"
   resolved "https://registry.yarnpkg.com/p-queue/-/p-queue-6.4.0.tgz#5050b379393ea1814d6f9613a654f687d92c0466"
@@ -5048,21 +5033,6 @@ p-queue@^6.4.0:
   dependencies:
     eventemitter3 "^4.0.0"
     p-timeout "^3.1.0"
-
-p-retry@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/p-retry/-/p-retry-2.0.0.tgz#b97f1f4d6d81a3c065b2b40107b811e995c1bfba"
-  integrity sha512-ZbCuzAmiwJ45q4evp/IG9D+5MUllGSUeCWwPt3j/tdYSi1KPkSD+46uqmAA1LhccDhOXv8kYZKNb8x78VflzfA==
-  dependencies:
-    retry "^0.12.0"
-
-p-retry@^4.1.0:
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/p-retry/-/p-retry-4.2.0.tgz#ea9066c6b44f23cab4cd42f6147cdbbc6604da5d"
-  integrity sha512-jPH38/MRh263KKcq0wBNOGFJbm+U6784RilTmHjB/HM9kH9V8WlCpVUcdOmip9cjXOh6MxZ5yk1z2SjDUJfWmA==
-  dependencies:
-    "@types/retry" "^0.12.0"
-    retry "^0.12.0"
 
 p-timeout@^3.1.0, p-timeout@^3.2.0:
   version "3.2.0"
@@ -5708,11 +5678,6 @@ ret@~0.1.10:
   version "0.1.15"
   resolved "https://registry.yarnpkg.com/ret/-/ret-0.1.15.tgz#b8a4825d5bdb1fc3f6f53c2bc33f81388681c7bc"
   integrity sha512-TTlYpa+OL+vMMNG24xSlQGEJ3B/RzEfUlLct7b5G/ytav+wPrplCpVMFuwzXbkecJrb6IYo1iFb0S9v37754mg==
-
-retry@^0.12.0:
-  version "0.12.0"
-  resolved "https://registry.yarnpkg.com/retry/-/retry-0.12.0.tgz#1b42a6266a21f07421d1b0b54b7dc167b01c013b"
-  integrity sha1-G0KmJmoh8HQh0bC1S33BZ7AcATs=
 
 rimraf@^3.0.0:
   version "3.0.2"
@@ -6444,6 +6409,16 @@ text-hex@1.0.x:
   resolved "https://registry.yarnpkg.com/text-hex/-/text-hex-1.0.0.tgz#69dc9c1b17446ee79a92bf5b884bb4b9127506f5"
   integrity sha512-uuVGNWzgJ4yhRaNSiubPY7OjISw4sw4E5Uv0wbjp+OzcbmVU/rsT8ujgcXJhn9ypzsgr5vlzpPqP+MBBKcGvbg==
 
+threadedclass@0.8.0-nightly-20200626-190313-597bdf9.0:
+  version "0.8.0-nightly-20200626-190313-597bdf9.0"
+  resolved "https://registry.yarnpkg.com/threadedclass/-/threadedclass-0.8.0-nightly-20200626-190313-597bdf9.0.tgz#e23d411155479836a1c4de4fff3f6fb30367f5d1"
+  integrity sha512-KZU6T1f6fLeITp3M5IrTT4m50v20igfUpvr3SSSrBjHfSoMiNvxpI0vvc6S9xkx/1nhBqniWHdNnLAFLLVCnZw==
+  dependencies:
+    callsites "^3.1.0"
+    eventemitter3 "^4.0.4"
+    is-running "^2.1.0"
+    tslib "^1.13.0"
+
 threadedclass@^0.7.0:
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/threadedclass/-/threadedclass-0.7.0.tgz#16d970211f930b5759fae83a4cde78563b0b5104"
@@ -6484,13 +6459,12 @@ timeline-state-resolver-types@4.0.0-nightly-20200611-075605-93ae546a.0:
   dependencies:
     tslib "^1.13.0"
 
-timeline-state-resolver@4.0.0-nightly-20200630-121654-6950b970.0:
-  version "4.0.0-nightly-20200630-121654-6950b970.0"
-  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-4.0.0-nightly-20200630-121654-6950b970.0.tgz#fb74deccc07d6354878cce784158591eb2d79924"
-  integrity sha512-hvib/0gkBdZZxI1ZbQFAfwvYge62LWAcTEM+DjEXGvBtfhVgRit12xGbszcnxZ07nBvD6Ihc38+Qy7LSvCsxqg==
+timeline-state-resolver@^4.0.0-nightly-feat-atem-conn-v2-20200721-114512-156896c3.0:
+  version "4.0.0-nightly-feat-atem-conn-v2-20200721-114512-156896c3.0"
+  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-4.0.0-nightly-feat-atem-conn-v2-20200721-114512-156896c3.0.tgz#c987e0212c3a3ce0f873b0b7db8d474d2a3c7c6e"
+  integrity sha512-dnOMHh56b09S/oOsdBhvq2GPGBLqwcHNIYJhp5CzyNE5K9YauP8SdO/3zDIuLRJwWHodiyX4s1QEUovUcbdXyw==
   dependencies:
-    atem-connection "1.1.0"
-    atem-state "^0.9.0"
+    atem-state "^0.10.0-nightly-feat-v8-strict-20200720-093258-6efd32a.0"
     casparcg-connection "^4.9.0"
     casparcg-state "^1.12.0"
     emberplus-connection "^0.0.3-nightly-20200622-114815-88534e2.0"
