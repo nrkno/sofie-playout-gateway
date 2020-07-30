@@ -2028,7 +2028,7 @@ dateformat@^3.0.0:
   resolved "https://registry.yarnpkg.com/dateformat/-/dateformat-3.0.3.tgz#a6e37499a4d9a9cf85ef5872044d62901c9889ae"
   integrity sha512-jyCETtSl3VMZMWeRo7iY1FL19ges1t55hMo5yaam4Jrsm5EPL89UQkoQRyiI+Yf4k8r2ZpdngkV8hr1lIdjb3Q==
 
-ddp-ejson@0.8.1-3, ddp-ejson@~0.8.1-3:
+ddp-ejson@0.8.1-3:
   version "0.8.1-3"
   resolved "https://registry.yarnpkg.com/ddp-ejson/-/ddp-ejson-0.8.1-3.tgz#e9d67466ab789bd74e7d97074a36e240690eeec2"
   integrity sha1-6dZ0Zqt4m9dOfZcHSjbiQGkO7sI=
@@ -6671,7 +6671,7 @@ tslib@1.9.0:
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.9.0.tgz#e37a86fda8cbbaf23a057f473c9f4dc64e5fc2e8"
   integrity sha512-f/qGG2tUkrISBlQZEjEqoZ3B2+npJjIf04H1wuAv9iA8i04Icp+61KRXxFdha22670NJopsZCIjhC3SnjPRKrQ==
 
-tslib@^1.10.0, tslib@^1.11.1, tslib@^1.13.0, tslib@^1.8.1, tslib@^1.9.0, tslib@^1.9.2:
+tslib@^1.10.0, tslib@^1.13.0, tslib@^1.8.1, tslib@^1.9.0, tslib@^1.9.2:
   version "1.13.0"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.13.0.tgz#c881e13cc7015894ed914862d276436fa9a47043"
   integrity sha512-i/6DQjL8Xf3be4K/E6Wgpekn5Qasl1usyw++dAA35Ue5orEn65VIxOA+YvNNl9HV3qv70T7CNwjODHZrLwvd1Q==
@@ -6745,17 +6745,16 @@ tv-automation-quantel-gateway-client@^1.0.8:
     got "^11.0.2"
     underscore "^1.9.1"
 
-tv-automation-server-core-integration@1.5.1:
-  version "1.5.1"
-  resolved "https://registry.yarnpkg.com/tv-automation-server-core-integration/-/tv-automation-server-core-integration-1.5.1.tgz#ece7ecf087922272d5b85e96382d84b50f93090c"
-  integrity sha512-YZmrJBB7GAGSXR3/EYJRzZvD4DiQPzAayS5hfNhKAK19pGRwbaEfY3CsgF1PwJGt/bVRQ/MqU6EGRQrj9uhvpg==
+tv-automation-server-core-integration@2.0.0-nightly-release23-20200730-111752-c6bf53e.0:
+  version "2.0.0-nightly-release23-20200730-111752-c6bf53e.0"
+  resolved "https://registry.yarnpkg.com/tv-automation-server-core-integration/-/tv-automation-server-core-integration-2.0.0-nightly-release23-20200730-111752-c6bf53e.0.tgz#2183bcd00a04ba614e2ce84135f93828d160cd36"
+  integrity sha512-T+o83b2F+NBUD8B9VUe//g+GtdJRtYuPBTlVS/Dq+6rh1ZMZoUPYTBOgqaxSMDInL+lZpaQfic88OwJaUQaSFw==
   dependencies:
     data-store "3.1.0"
     ddp "git+http://github.com/nytamin/node-ddp-client.git#v0.12.2-next2"
-    ddp-ejson "~0.8.1-3"
     ddp-random "~0.8.1-1"
-    tslib "^1.11.1"
-    underscore "^1.9.1"
+    tslib "^1.13.0"
+    underscore "^1.10.2"
 
 tv-automation-sofie-blueprints-integration@2.1.0-nightly-20200625-055003-623cf11.0:
   version "2.1.0-nightly-20200625-055003-623cf11.0"
