@@ -6459,10 +6459,10 @@ timeline-state-resolver-types@4.0.0-nightly-20200611-075605-93ae546a.0:
   dependencies:
     tslib "^1.13.0"
 
-timeline-state-resolver@^4.0.0-nightly-feat-atem-conn-v2-20200721-114512-156896c3.0:
-  version "4.0.0-nightly-feat-atem-conn-v2-20200721-114512-156896c3.0"
-  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-4.0.0-nightly-feat-atem-conn-v2-20200721-114512-156896c3.0.tgz#c987e0212c3a3ce0f873b0b7db8d474d2a3c7c6e"
-  integrity sha512-dnOMHh56b09S/oOsdBhvq2GPGBLqwcHNIYJhp5CzyNE5K9YauP8SdO/3zDIuLRJwWHodiyX4s1QEUovUcbdXyw==
+timeline-state-resolver@4.0.0-nightly-feat-atem-conn-v2-20200810-082539-e53999f0.0:
+  version "4.0.0-nightly-feat-atem-conn-v2-20200810-082539-e53999f0.0"
+  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-4.0.0-nightly-feat-atem-conn-v2-20200810-082539-e53999f0.0.tgz#d57caf8ab039ed2a9f1db93ee066f777dc7886d8"
+  integrity sha512-SzZdYikORnZAYSeruaDXRXZ0CqojPUiPW2vWETLz1ooHnj0rImk0konEh/rgsRljOpn+vpNl+UU6kIwzWqC/sA==
   dependencies:
     atem-state "^0.10.0-nightly-feat-v8-strict-20200720-093258-6efd32a.0"
     casparcg-connection "^4.9.0"
