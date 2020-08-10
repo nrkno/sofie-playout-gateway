@@ -694,6 +694,9 @@ export class TSRHandler {
 			const onUpdateMediaObject = (collectionId: string, docId: string, doc: MediaObject | null) => {
 				coreTsrHandler.onUpdateMediaObject(collectionId, docId, doc)
 			}
+			const onClearMediaObjectCollection = (collectionId: string) => {
+				coreTsrHandler.onClearMediaObjectCollection(collectionId)
+			}
 			let deviceName = device.deviceName
 			let deviceInstanceId = device.instanceId
 			const fixError = (e) => {
@@ -733,6 +736,7 @@ export class TSRHandler {
 			await device.device.on('commandError', onCommandError)
 			await device.device.on('commandReport', onCommandReport)
 			await device.device.on('updateMediaObject', onUpdateMediaObject)
+			await device.device.on('clearMediaObjects', onClearMediaObjectCollection)
 
 			await device.device.on('info',	(e, ...args) => this.logger.info(fixError(e), ...args))
 			await device.device.on('warning',	(e, ...args) => this.logger.warn(fixError(e), ...args))
