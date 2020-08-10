@@ -13,7 +13,8 @@ import {
 	TSRTimelineObjBase,
 	CommandReport,
 	DeviceOptionsAtem,
-	AtemMediaPoolType
+	AtemMediaPoolType,
+	MediaObject
 } from 'timeline-state-resolver'
 import { CoreHandler, CoreTSRDeviceHandler } from './coreHandler'
 let clone = require('fast-clone')
@@ -690,6 +691,9 @@ export class TSRHandler {
 				this.logger.error(error)
 				this.logger.debug(context)
 			}
+			const onUpdateMediaObject = (collectionId: string, docId: string, doc: MediaObject | null) => {
+				coreTsrHandler.onUpdateMediaObject(collectionId, docId, doc)
+			}
 			let deviceName = device.deviceName
 			let deviceInstanceId = device.instanceId
 			const fixError = (e) => {
@@ -728,6 +732,7 @@ export class TSRHandler {
 			await device.device.on('slowCommand', onSlowCommand)
 			await device.device.on('commandError', onCommandError)
 			await device.device.on('commandReport', onCommandReport)
+			await device.device.on('updateMediaObject', onUpdateMediaObject)
 
 			await device.device.on('info',	(e, ...args) => this.logger.info(fixError(e), ...args))
 			await device.device.on('warning',	(e, ...args) => this.logger.warn(fixError(e), ...args))
