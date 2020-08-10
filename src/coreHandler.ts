@@ -591,7 +591,13 @@ export class CoreTSRDeviceHandler {
 			docId,
 			doc
 		])
-		.catch(e => this._coreParentHandler.logger.error('Error when updating Media Object: ' + JSON.stringify(e), e))
+		.catch(e => this._coreParentHandler.logger.error('Error when updating Media Object: ' + e, e.stack))
+	}
+	onClearMediaObjectCollection (collectionId: string) {
+		this.core.callMethodLowPrio(PeripheralDeviceAPI.methods.clearMediaObjectCollection, [
+			collectionId
+		])
+		.catch(e => this._coreParentHandler.logger.error('Error when clearing Media Objects collection: ' + e, e.stack))
 	}
 
 	async dispose (): Promise<void> {
