@@ -1,10 +1,26 @@
 import { Connector } from './connector'
 import { config, logPath, disableWatchdog } from './config'
+import * as APM from 'elastic-apm-node'
 import * as Winston from 'winston'
+import { env } from 'process'
 export interface LoggerInstance extends Winston.LoggerInstance {
 	warning: never // logger.warning is not a function
 }
 console.log('process started') // This is a message all Sofie processes log upon startup
+
+// Setup Elastic APM:
+if (env.APM_HOST && env.APM_SECRET) {
+	APM.start({
+		serviceName: 'tv-automation-playout-gateway',
+		verifyServerCert: true,
+	
+		// Use if APM Server requires a token
+		secretToken: env.APM_SECRET,
+	
+		// Set custom APM Server URL (default: http://localhost:8200)
+		serverUrl: env.APM_HOST
+	})
+}
 
 let c: Connector
 // Setup logging --------------------------------------
