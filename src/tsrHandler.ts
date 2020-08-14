@@ -110,11 +110,15 @@ export class TSRHandler {
 
 	private _updateDevicesIsRunning: boolean = false
 
-	constructor (logger: LoggerInstance) {
+	private _elasticAPM: any
+
+	constructor (logger: LoggerInstance, elasticAPM: any) {
 		this.logger = logger
+		this._elasticAPM = elasticAPM
 	}
 
 	public init (config: TSRConfig, coreHandler: CoreHandler): Promise<any> {
+		const span = this._elasticAPM.startSpan('TSRHandler.init')
 
 		this._config = config
 		this._coreHandler = coreHandler
@@ -165,6 +169,7 @@ export class TSRHandler {
 				) {
 					this.logger.warn('TSR', e, ...args)
 				} else {
+					this._elasticAPM.captureError(e)
 					this.logger.error('TSR', e, ...args)
 				}
 			})
@@ -236,6 +241,7 @@ export class TSRHandler {
 			this._triggerUpdateDevices()
 			this.logger.debug('tsr init done')
 
+			span.end()
 		})
 
 	}
@@ -272,6 +278,7 @@ export class TSRHandler {
 		return this.tsr.destroy()
 	}
 	getTimeline (excludeStatObj?: boolean): Array<CollectionObj> | null {
+		const span = this._elasticAPM.startSpan('TSRHandler.getTimeline')
 		let studioId = this._getStudioId()
 		if (!studioId) {
 			this.logger.warn('no studioId')
@@ -285,6 +292,7 @@ export class TSRHandler {
 			return o.studioId === studioId
 		})
 
+		span.end()
 		return objs
 	}
 	getMapping () {
@@ -325,6 +333,8 @@ export class TSRHandler {
 	}
 	private _triggerupdateTimeline () {
 		if (!this._initialized) return
+
+		const span = this._elasticAPM.startSpan('TSRHandler._triggerUpdateTimeline')
 
 		if (this._triggerupdateTimelineTimeout) {
 			clearTimeout(this._triggerupdateTimelineTimeout)
@@ -385,21 +395,25 @@ export class TSRHandler {
 				this._triggerupdateTimelineTimeout = setTimeout(checkIfNotSending, 1)
 				time++
 			} catch (e) {
+				this._elasticAPM.captureError(e)
 				this.logger.warn(e)
 
 				// Fallback to old way:
 				this._triggerupdateTimelineTimeout = setTimeout(() => {
 					this._updateTimeline()
+					span.end()
 				}, 20)
 			}
 		} else {
 
 			this._triggerupdateTimelineTimeout = setTimeout(() => {
 				this._updateTimeline()
+				span.end()
 			}, 20)
 		}
 	}
 	private _updateTimeline () {
+		const span = this._elasticAPM.startSpan('updateTimeline')
 		if (this._determineIfTimelineShouldUpdate()) {
 			let transformedTimeline = this._transformTimeline(
 				this.getTimeline(true) as Array<TimelineObjGeneric>
@@ -413,15 +427,22 @@ export class TSRHandler {
 		} else {
 			this.logger.debug('_updateTimeline deferring update')
 		}
+		span.endSpan()
 	}
 	private _triggerupdateMapping () {
 		if (!this._initialized) return
+		const span = this._elasticAPM.startSpan('TSRHandler._triggerUpdateMapping')
 		if (this._triggerupdateMappingTimeout) {
 			clearTimeout(this._triggerupdateMappingTimeout)
 		}
 		this._triggerupdateMappingTimeout = setTimeout(() => {
 			this._updateMapping()
-			.catch(e => this.logger.error('Error in _updateMapping', e))
+			.then(() => span.end())
+			.catch(e => {
+				this.logger.error('Error in _updateMapping', e)
+				this._elasticAPM.captureError(e)
+				span.end()
+			})
 		}, 20)
 	}
 	private async _updateMapping () {

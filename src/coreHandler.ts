@@ -67,9 +67,12 @@ export class CoreHandler {
 	private _statusInitialized: boolean = false
 	private _statusDestroyed: boolean = false
 
-	constructor (logger: LoggerInstance, deviceOptions: DeviceConfig) {
+	private _elasticAPM: any
+
+	constructor (logger: LoggerInstance, deviceOptions: DeviceConfig, elasticAPM: any) {
 		this.logger = logger
 		this._deviceOptions = deviceOptions
+		this._elasticAPM = elasticAPM
 	}
 
 	init (config: CoreConfig, process: Process): Promise<void> {
@@ -275,17 +278,20 @@ export class CoreHandler {
 	executeFunction (cmd: PeripheralDeviceCommand, fcnObject: any) {
 		if (cmd) {
 			if (this._executedFunctions[cmd._id]) return // prevent it from running multiple times
+			const span = this._elasticAPM.startSpan('executeFunction')
 			this.logger.debug(`Executing function "${cmd.functionName}", args: ${JSON.stringify(cmd.args)}`)
 			this._executedFunctions[cmd._id] = true
 			// console.log('executeFunction', cmd)
 			let cb = (err: any, res?: any) => {
 				// console.log('cb', err, res)
 				if (err) {
+					this._elasticAPM.captureError(err)
 					this.logger.error('executeFunction error', err, err.stack)
 				}
 				this.core.callMethod(P.methods.functionReply, [cmd._id, err, res])
 				.then(() => {
 					// console.log('cb done')
+					span.end()
 				})
 				.catch((e) => {
 					this.logger.error(e)
@@ -354,9 +360,12 @@ export class CoreHandler {
 		}
 		return 0
 	}
-	devicesMakeReady (okToDestroyStuff?: boolean): Promise<any> {
+	async devicesMakeReady (okToDestroyStuff?: boolean): Promise<any> {
 		if (this._tsrHandler) {
-			return this._tsrHandler.tsr.devicesMakeReady(okToDestroyStuff)
+			const span = this._elasticAPM.startSpan('devicesMakeReady')
+			const res = await this._tsrHandler.tsr.devicesMakeReady(okToDestroyStuff)
+			span.end()
+			return res
 		} else {
 			throw Error('TSR not set up!')
 		}

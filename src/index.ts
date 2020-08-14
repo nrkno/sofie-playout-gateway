@@ -8,9 +8,10 @@ export interface LoggerInstance extends Winston.LoggerInstance {
 }
 console.log('process started') // This is a message all Sofie processes log upon startup
 
+let elasticAPM: any
 // Setup Elastic APM:
 if (env.APM_HOST && env.APM_SECRET) {
-	APM.start({
+	elasticAPM = APM.start({
 		serviceName: 'tv-automation-playout-gateway',
 		verifyServerCert: true,
 	
@@ -99,7 +100,7 @@ process.on('warning', (e: any) => {
 logger.info('------------------------------------------------------------------')
 logger.info('Starting Playout Gateway')
 if (disableWatchdog) logger.info('Watchdog is disabled!')
-c = new Connector(logger)
+c = new Connector(logger, elasticAPM)
 
 logger.info('Core:          ' + config.core.host + ':' + config.core.port)
 logger.info('------------------------------------------------------------------')

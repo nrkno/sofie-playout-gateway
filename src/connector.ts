@@ -27,9 +27,11 @@ export class Connector {
 	private _config: Config
 	private _logger: LoggerInstance
 	private _process: Process
+	private _elasticAPM: any
 
-	constructor (logger: LoggerInstance) {
+	constructor (logger: LoggerInstance, elasticAPM: any) {
 		this._logger = logger
+		this._elasticAPM = elasticAPM
 	}
 
 	init (config: Config): Promise<void> {
@@ -86,11 +88,11 @@ export class Connector {
 		this._process.init(this._config.process)
 	}
 	initCore () {
-		this.coreHandler = new CoreHandler(this._logger, this._config.device)
+		this.coreHandler = new CoreHandler(this._logger, this._config.device, this._elasticAPM)
 		return this.coreHandler.init(this._config.core, this._process)
 	}
 	initTSR (): Promise<void> {
-		this.tsrHandler = new TSRHandler(this._logger)
+		this.tsrHandler = new TSRHandler(this._logger, this._elasticAPM)
 		return this.tsrHandler.init(this._config.tsr, this.coreHandler)
 
 	}
