@@ -241,7 +241,7 @@ export class TSRHandler {
 			this._triggerUpdateDevices()
 			this.logger.debug('tsr init done')
 
-			span.end()
+			if (span) span.end()
 		})
 
 	}
@@ -292,7 +292,7 @@ export class TSRHandler {
 			return o.studioId === studioId
 		})
 
-		span.end()
+		if (span) span.end()
 		return objs
 	}
 	getMapping () {
@@ -401,14 +401,14 @@ export class TSRHandler {
 				// Fallback to old way:
 				this._triggerupdateTimelineTimeout = setTimeout(() => {
 					this._updateTimeline()
-					span.end()
+					if (span) span.end()
 				}, 20)
 			}
 		} else {
 
 			this._triggerupdateTimelineTimeout = setTimeout(() => {
 				this._updateTimeline()
-				span.end()
+				if (span) span.end()
 			}, 20)
 		}
 	}
@@ -437,11 +437,11 @@ export class TSRHandler {
 		}
 		this._triggerupdateMappingTimeout = setTimeout(() => {
 			this._updateMapping()
-			.then(() => span.end())
+			.then(() => { if (span) span.end() })
 			.catch(e => {
 				this.logger.error('Error in _updateMapping', e)
 				this._elasticAPM.captureError(e)
-				span.end()
+				if (span) span.end()
 			})
 		}, 20)
 	}

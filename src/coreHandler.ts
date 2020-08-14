@@ -291,7 +291,7 @@ export class CoreHandler {
 				this.core.callMethod(P.methods.functionReply, [cmd._id, err, res])
 				.then(() => {
 					// console.log('cb done')
-					span.end()
+					if (span) span.end()
 				})
 				.catch((e) => {
 					this.logger.error(e)
@@ -364,7 +364,7 @@ export class CoreHandler {
 		if (this._tsrHandler) {
 			const span = this._elasticAPM.startSpan('devicesMakeReady')
 			const res = await this._tsrHandler.tsr.devicesMakeReady(okToDestroyStuff)
-			span.end()
+			if (span) span.end()
 			return res
 		} else {
 			throw Error('TSR not set up!')
