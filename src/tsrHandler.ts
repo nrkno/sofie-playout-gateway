@@ -424,6 +424,7 @@ export class TSRHandler {
 				this.getTimeline(true) as Array<TimelineObjGeneric>
 			)
 			if (transformedTimeline) {
+				span.setLabel('timelineSize', transformedTimeline.length)
 				// @ts-ignore
 				this.tsr.timeline = transformedTimeline
 			} else {
@@ -816,6 +817,8 @@ export class TSRHandler {
 	 */
 	private _transformTimeline (timeline: Array<TimelineObjGeneric>): TSRTimeline | null {
 		// _transformTimeline (timeline: Array<TimelineObj>): Array<TimelineContentObject> | null {
+		
+		const span = this._elasticAPM.startSpan('TSRHandler.transformTimeline')
 
 		let transformObject = (obj: TimelineObjGeneric): TimelineContentObjectTmp => {
 			let transformedObj = clone(_.omit(obj, ['_id', 'studioId']))
@@ -858,9 +861,12 @@ export class TSRHandler {
 				transformedTimeline.push(obj as TSRTimelineObj)
 			}
 		})
+		span.end()
 		return transformedTimeline
 	}
 	private _determineIfTimelineShouldUpdate (): boolean {
+
+		const span = this._elasticAPM.startSpan('TSRHandler.datermineIfTimelineShouldUpdate')
 
 		let requireStatObject: boolean = true // set to false for backwards compability
 		let disableStatObject: boolean = false // set to true to disable the statobject check completely
@@ -921,6 +927,7 @@ export class TSRHandler {
 			this.logger.info('Delaying timeline update, hash differ (' + objHash + ',' + statObjHash + ') ')
 			return false
 		}
+		span.end()
 		return true
 	}
 }
