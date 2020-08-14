@@ -256,9 +256,14 @@ export class TSRHandler {
 		this.logger.debug('Renewing observers')
 
 		let timelineObserver = this._coreHandler.core.observe('timeline')
-		timelineObserver.added = () => { this._triggerupdateTimeline() }
-		timelineObserver.changed = () => { this._triggerupdateTimeline() }
-		timelineObserver.removed = () => { this._triggerupdateTimeline() }
+		const timelineObserverCallback = () => {
+			const transaction = this._elasticAPM.startTransaction('timelineChanged')
+			this._triggerupdateTimeline()
+			transaction.end()
+		}
+		timelineObserver.added = timelineObserverCallback
+		timelineObserver.changed = timelineObserverCallback
+		timelineObserver.removed = timelineObserverCallback
 		this._observers.push(timelineObserver)
 
 		let mappingsObserver = this._coreHandler.core.observe('studio')
@@ -334,7 +339,7 @@ export class TSRHandler {
 	private _triggerupdateTimeline () {
 		if (!this._initialized) return
 
-		const transaction = this._elasticAPM.startTransaction('TSRHandler._triggerUpdateTimeline')
+		const span = this._elasticAPM.startSpan('TSRHandler._triggerUpdateTimeline')
 
 		if (this._triggerupdateTimelineTimeout) {
 			clearTimeout(this._triggerupdateTimelineTimeout)
@@ -401,14 +406,14 @@ export class TSRHandler {
 				// Fallback to old way:
 				this._triggerupdateTimelineTimeout = setTimeout(() => {
 					this._updateTimeline()
-					if (transaction) transaction.end()
+					if (span) span.end()
 				}, 20)
 			}
 		} else {
 
 			this._triggerupdateTimelineTimeout = setTimeout(() => {
 				this._updateTimeline()
-				if (transaction) transaction.end()
+				if (span) span.end()
 			}, 20)
 		}
 	}
