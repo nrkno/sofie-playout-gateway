@@ -409,7 +409,7 @@ export class TSRHandler {
 							if (receiveSpan) receiveSpan.end()
 							const updateSpan = this._elasticAPM.startSpan('Update timeline')
 							this._updateTimeline()
-							updateSpan.end()
+							if (updateSpan) updateSpan.end()
 							if (transaction) transaction.end()
 							return
 						}
@@ -445,7 +445,7 @@ export class TSRHandler {
 				this.getTimeline(true) as Array<TimelineObjGeneric>
 			)
 			if (transformedTimeline) {
-				span.setLabel('timelineSize', transformedTimeline.length)
+				if (span) span.setLabel('timelineSize', transformedTimeline.length)
 				// @ts-ignore
 				this.tsr.timeline = transformedTimeline
 			} else {
@@ -882,7 +882,7 @@ export class TSRHandler {
 				transformedTimeline.push(obj as TSRTimelineObj)
 			}
 		})
-		span.end()
+		if (span) span.end()
 		return transformedTimeline
 	}
 	private _determineIfTimelineShouldUpdate (): boolean {
@@ -948,7 +948,7 @@ export class TSRHandler {
 			this.logger.info('Delaying timeline update, hash differ (' + objHash + ',' + statObjHash + ') ')
 			return false
 		}
-		span.end()
+		if (span) span.end()
 		return true
 	}
 }
