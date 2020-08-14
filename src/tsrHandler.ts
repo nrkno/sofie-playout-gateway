@@ -256,14 +256,9 @@ export class TSRHandler {
 		this.logger.debug('Renewing observers')
 
 		let timelineObserver = this._coreHandler.core.observe('timeline')
-		const timelineObserverCallback = () => {
-			const transaction = this._elasticAPM.startTransaction('timelineChanged')
-			this._triggerupdateTimeline()
-			transaction.end()
-		}
-		timelineObserver.added = timelineObserverCallback
-		timelineObserver.changed = timelineObserverCallback
-		timelineObserver.removed = timelineObserverCallback
+		timelineObserver.added = () => { this._triggerupdateTimeline() }
+		timelineObserver.changed = () => { this._triggerupdateTimeline() }
+		timelineObserver.removed = () => { this._triggerupdateTimeline() }
 		this._observers.push(timelineObserver)
 
 		let mappingsObserver = this._coreHandler.core.observe('studio')
@@ -339,7 +334,8 @@ export class TSRHandler {
 	private _triggerupdateTimeline () {
 		if (!this._initialized) return
 
-		const span = this._elasticAPM.startSpan('TSRHandler._triggerUpdateTimeline')
+		const transaction = this._elasticAPM.startTransaction('TSRHandler._triggerUpdateTimeline')
+		const receiveSpan = this._elasticAPM.startSpan('Receive timeline')
 
 		if (this._triggerupdateTimelineTimeout) {
 			clearTimeout(this._triggerupdateTimelineTimeout)
@@ -389,7 +385,11 @@ export class TSRHandler {
 				let checkIfNotSending = () => {
 					if (!socket.receivingMessage) {
 						if (time > 2) {
+							if (receiveSpan) receiveSpan.end()
+							const updateSpan = this._elasticAPM.startSpan('Update timeline')
 							this._updateTimeline()
+							updateSpan.end()
+							if (transaction) transaction.end()
 							return
 						}
 					}
@@ -406,14 +406,14 @@ export class TSRHandler {
 				// Fallback to old way:
 				this._triggerupdateTimelineTimeout = setTimeout(() => {
 					this._updateTimeline()
-					if (span) span.end()
+					if (transaction) transaction.end()
 				}, 20)
 			}
 		} else {
 
 			this._triggerupdateTimelineTimeout = setTimeout(() => {
 				this._updateTimeline()
-				if (span) span.end()
+				if (transaction) transaction.end()
 			}, 20)
 		}
 	}
