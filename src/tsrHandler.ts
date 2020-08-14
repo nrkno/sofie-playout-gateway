@@ -427,7 +427,7 @@ export class TSRHandler {
 		} else {
 			this.logger.debug('_updateTimeline deferring update')
 		}
-		span.endSpan()
+		if (span) span.end()
 	}
 	private _triggerupdateMapping () {
 		if (!this._initialized) return
