@@ -278,7 +278,7 @@ export class CoreHandler {
 	executeFunction (cmd: PeripheralDeviceCommand, fcnObject: any) {
 		if (cmd) {
 			if (this._executedFunctions[cmd._id]) return // prevent it from running multiple times
-			const span = this._elasticAPM.startSpan('executeFunction')
+			const transaction = this._elasticAPM.startTransaction('executeFunction')
 			this.logger.debug(`Executing function "${cmd.functionName}", args: ${JSON.stringify(cmd.args)}`)
 			this._executedFunctions[cmd._id] = true
 			// console.log('executeFunction', cmd)
@@ -291,7 +291,7 @@ export class CoreHandler {
 				this.core.callMethod(P.methods.functionReply, [cmd._id, err, res])
 				.then(() => {
 					// console.log('cb done')
-					if (span) span.end()
+					if (transaction) transaction.end()
 				})
 				.catch((e) => {
 					this.logger.error(e)
@@ -362,9 +362,9 @@ export class CoreHandler {
 	}
 	async devicesMakeReady (okToDestroyStuff?: boolean): Promise<any> {
 		if (this._tsrHandler) {
-			const span = this._elasticAPM.startSpan('devicesMakeReady')
+			const transaction = this._elasticAPM.startTransaction('devicesMakeReady')
 			const res = await this._tsrHandler.tsr.devicesMakeReady(okToDestroyStuff)
-			if (span) span.end()
+			if (transaction) transaction.end()
 			return res
 		} else {
 			throw Error('TSR not set up!')

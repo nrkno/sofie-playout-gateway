@@ -118,7 +118,7 @@ export class TSRHandler {
 	}
 
 	public init (config: TSRConfig, coreHandler: CoreHandler): Promise<any> {
-		const span = this._elasticAPM.startSpan('TSRHandler.init')
+		const transaction = this._elasticAPM.startTransaction('TSRHandler.init')
 
 		this._config = config
 		this._coreHandler = coreHandler
@@ -241,7 +241,7 @@ export class TSRHandler {
 			this._triggerUpdateDevices()
 			this.logger.debug('tsr init done')
 
-			if (span) span.end()
+			if (transaction) transaction.end()
 		})
 
 	}
@@ -334,7 +334,7 @@ export class TSRHandler {
 	private _triggerupdateTimeline () {
 		if (!this._initialized) return
 
-		const span = this._elasticAPM.startSpan('TSRHandler._triggerUpdateTimeline')
+		const transaction = this._elasticAPM.startTransaction('TSRHandler._triggerUpdateTimeline')
 
 		if (this._triggerupdateTimelineTimeout) {
 			clearTimeout(this._triggerupdateTimelineTimeout)
@@ -401,14 +401,14 @@ export class TSRHandler {
 				// Fallback to old way:
 				this._triggerupdateTimelineTimeout = setTimeout(() => {
 					this._updateTimeline()
-					if (span) span.end()
+					if (transaction) transaction.end()
 				}, 20)
 			}
 		} else {
 
 			this._triggerupdateTimelineTimeout = setTimeout(() => {
 				this._updateTimeline()
-				if (span) span.end()
+				if (transaction) transaction.end()
 			}, 20)
 		}
 	}
