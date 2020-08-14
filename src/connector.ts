@@ -2,6 +2,7 @@ import { TSRHandler, TSRConfig } from './tsrHandler'
 import { CoreHandler, CoreConfig } from './coreHandler'
 import { LoggerInstance } from './index'
 import { Process } from './process'
+import * as Agent from 'elastic-apm-node'
 // import {Conductor, DeviceType} from 'timeline-state-resolver'
 
 export interface Config {
@@ -27,9 +28,9 @@ export class Connector {
 	private _config: Config
 	private _logger: LoggerInstance
 	private _process: Process
-	private _elasticAPM: any
+	private _elasticAPM: typeof Agent
 
-	constructor (logger: LoggerInstance, elasticAPM: any) {
+	constructor (logger: LoggerInstance, elasticAPM: typeof Agent) {
 		this._logger = logger
 		this._elasticAPM = elasticAPM
 	}

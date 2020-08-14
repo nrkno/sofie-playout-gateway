@@ -14,6 +14,8 @@ import {
 	QuantelDevice
 } from 'timeline-state-resolver'
 
+import * as Agent from 'elastic-apm-node'
+
 import * as _ from 'underscore'
 import { DeviceConfig } from './connector'
 import { TSRHandler } from './tsrHandler'
@@ -67,9 +69,9 @@ export class CoreHandler {
 	private _statusInitialized: boolean = false
 	private _statusDestroyed: boolean = false
 
-	private _elasticAPM: any
+	private _elasticAPM: typeof Agent
 
-	constructor (logger: LoggerInstance, deviceOptions: DeviceConfig, elasticAPM: any) {
+	constructor (logger: LoggerInstance, deviceOptions: DeviceConfig, elasticAPM: typeof Agent) {
 		this.logger = logger
 		this._deviceOptions = deviceOptions
 		this._elasticAPM = elasticAPM

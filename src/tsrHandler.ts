@@ -13,12 +13,14 @@ import {
 	TSRTimelineObjBase,
 	CommandReport,
 	DeviceOptionsAtem,
-	AtemMediaPoolType
+	AtemMediaPoolType,
+	StatReport
 } from 'timeline-state-resolver'
 import { CoreHandler, CoreTSRDeviceHandler } from './coreHandler'
 let clone = require('fast-clone')
 import * as crypto from 'crypto'
 import * as cp from 'child_process'
+import * as Agent from 'elastic-apm-node'
 
 import * as _ from 'underscore'
 import { CoreConnection, PeripheralDeviceAPI as P, CollectionObj } from 'tv-automation-server-core-integration'
@@ -110,9 +112,9 @@ export class TSRHandler {
 
 	private _updateDevicesIsRunning: boolean = false
 
-	private _elasticAPM: any
+	private _elasticAPM: typeof Agent
 
-	constructor (logger: LoggerInstance, elasticAPM: any) {
+	constructor (logger: LoggerInstance, elasticAPM: typeof Agent) {
 		this.logger = logger
 		this._elasticAPM = elasticAPM
 	}
@@ -228,6 +230,25 @@ export class TSRHandler {
 					this.logger.error(`Unknown callback method "${callbackName}"`)
 				}
 
+			})
+
+			this.tsr.on('statReport', (reportDuration: StatReport) => {
+				const transaction = this._elasticAPM.startTransaction(reportDuration.reason || 'statReport', null, null, null, {
+					startTime: Date.now() - reportDuration.done
+				})
+				if (transaction) {
+					const tlResolve = transaction.startSpan('timelineResolve', null, null, null, {
+						// @ts-ignore: badly typed
+						startTime: Date.now() - reportDuration.timelineStartResolve
+					})
+					if (tlResolve) tlResolve.end(Date.now() - reportDuration.timelineResolved)
+					const stateHandled = transaction.startSpan('handleState', null, null, null, {
+						// @ts-ignore: badly typed
+						startTime: Date.now() - reportDuration.timelineResolved
+					})
+					if (stateHandled) stateHandled.end(Date.now() - reportDuration.stateHandled)
+					transaction.end()
+				}
 			})
 
 			this.logger.debug('tsr init')
