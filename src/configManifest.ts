@@ -1,5 +1,5 @@
 import { DeviceConfigManifest, ConfigManifestEntryType, SubDeviceConfigManifest, SubDeviceConfigManifestEntry } from 'tv-automation-server-core-integration'
-import { DeviceType as TSRDeviceType, AtemMediaPoolType, TimelineContentTypeHTTP } from 'timeline-state-resolver'
+import { DeviceType as TSRDeviceType, AtemMediaPoolType, TimelineContentTypeHTTP, LawoDeviceMode } from 'timeline-state-resolver'
 
 const PLAYOUT_SUBDEVICE_COMMON: SubDeviceConfigManifestEntry[] = [
 	{
@@ -13,12 +13,15 @@ const PLAYOUT_SUBDEVICE_COMMON: SubDeviceConfigManifestEntry[] = [
 		type: ConfigManifestEntryType.FLOAT
 	}
 ]
-const PLAYOUT_SUBDEVICE_HOST_PORT = [
+const PLAYOUT_SUBDEVICE_HOST = [
 	{
 		id: 'options.host',
 		name: 'Host',
 		type: ConfigManifestEntryType.STRING
-	},
+	}
+]
+const PLAYOUT_SUBDEVICE_HOST_PORT = [
+	...PLAYOUT_SUBDEVICE_HOST,
 	{
 		id: 'options.port',
 		name: 'Port',
@@ -82,18 +85,46 @@ const PLAYOUT_SUBDEVICE_CONFIG: SubDeviceConfigManifest['config'] = {
 		...PLAYOUT_SUBDEVICE_COMMON,
 		...PLAYOUT_SUBDEVICE_HOST_PORT,
 		{
+			id: 'options.deviceMode',
+			name: 'Device Mode',
+			type: ConfigManifestEntryType.ENUM,
+			values: LawoDeviceMode,
+			defaultVal: 1
+		},
+		{
+			id: 'options.faderInterval',
+			name: 'Fader setValue Interval',
+			type: ConfigManifestEntryType.STRING
+		},
+		{
 			id: 'options.sourcesPath',
 			name: 'Sources Path',
 			type: ConfigManifestEntryType.STRING
 		},
 		{
-			id: 'options.rampMotorFunctionPath',
-			name: 'Ramp Function Path',
+			id: 'options.dbPropertiesName',
+			name: 'dB Property Path',
 			type: ConfigManifestEntryType.STRING
+		},
+		{
+			id: 'options.rampMotorFunctionPath',
+			name: 'Ramp Motor Function Path',
+			type: ConfigManifestEntryType.STRING
+		},
+		{
+			id: 'options.faderThreshold',
+			name: 'Fader cutoff value',
+			type: ConfigManifestEntryType.NUMBER,
+			placeholder: '-60'
 		}
 	],
 	[TSRDeviceType.HTTPSEND]: [
 		...PLAYOUT_SUBDEVICE_COMMON,
+		{
+			id: 'options.makeReadyDoesReset',
+			name: 'Whether Make Ready triggers a state reset',
+			type: ConfigManifestEntryType.BOOLEAN
+		},
 		{
 			id: 'options.makeReadyCommands',
 			name: 'Make Ready Commands',
@@ -119,6 +150,16 @@ const PLAYOUT_SUBDEVICE_CONFIG: SubDeviceConfigManifest['config'] = {
 						id: 'params',
 						name: 'Parameters',
 						type: ConfigManifestEntryType.OBJECT
+					},
+					{
+						id: 'temporalPriority',
+						name: 'Temporal Priority',
+						type: ConfigManifestEntryType.NUMBER
+					},
+					{
+						id: 'queueId',
+						name: 'Queue ID',
+						type: ConfigManifestEntryType.STRING
 					}
 				]
 			}
@@ -135,6 +176,36 @@ const PLAYOUT_SUBDEVICE_CONFIG: SubDeviceConfigManifest['config'] = {
 			id: 'options.bufferEncoding',
 			name: 'Buffer Encoding',
 			type: ConfigManifestEntryType.STRING
+		},
+		{
+			id: 'options.makeReadyDoesReset',
+			name: 'Whether Make Ready triggers a state reset',
+			type: ConfigManifestEntryType.BOOLEAN
+		},
+		{
+			id: 'options.makeReadyCommands',
+			name: 'Make Ready Commands',
+			type: ConfigManifestEntryType.TABLE,
+			defaultType: 'default',
+			config: {
+				'default': [
+					{
+						id: 'message',
+						name: 'Message',
+						type: ConfigManifestEntryType.STRING
+					},
+					{
+						id: 'temporalPriority',
+						name: 'Temporal Priority',
+						type: ConfigManifestEntryType.NUMBER
+					},
+					{
+						id: 'queueId',
+						name: 'Queue ID',
+						type: ConfigManifestEntryType.STRING
+					}
+				]
+			}
 		}
 	],
 	[TSRDeviceType.HYPERDECK]: [
@@ -199,8 +270,13 @@ const PLAYOUT_SUBDEVICE_CONFIG: SubDeviceConfigManifest['config'] = {
 			type: ConfigManifestEntryType.STRING
 		},
 		{
-			id: 'options.ISAUrl',
-			name: 'ISA URL',
+			id: 'options.ISAUrlMaster',
+			name: 'ISA URL (Master)',
+			type: ConfigManifestEntryType.STRING
+		},
+		{
+			id: 'options.ISAUrlBackup',
+			name: 'ISA URL (Backup)',
 			type: ConfigManifestEntryType.STRING
 		},
 		{
@@ -212,24 +288,81 @@ const PLAYOUT_SUBDEVICE_CONFIG: SubDeviceConfigManifest['config'] = {
 			id: 'options.serverId',
 			name: 'Quantel Server ID',
 			type: ConfigManifestEntryType.NUMBER
+		},
+		{
+			id: 'options.allowCloneClips',
+			name: 'Allow cloning of clips if on wrong server/pool',
+			type: ConfigManifestEntryType.BOOLEAN
+		}
+	],
+	[TSRDeviceType.VIZMSE]: [
+		...PLAYOUT_SUBDEVICE_COMMON,
+		...PLAYOUT_SUBDEVICE_HOST,
+		{
+			id: 'options.restPort',
+			name: '(Optional) REST port',
+			type: ConfigManifestEntryType.NUMBER
+		},
+		{
+			id: 'options.wsPort',
+			name: '(Optional) Websocket port',
+			type: ConfigManifestEntryType.NUMBER
+		},
+		{
+			id: 'options.showID',
+			name: 'Show ID',
+			type: ConfigManifestEntryType.STRING
+		},
+		{
+			id: 'options.profile',
+			name: 'Profile',
+			type: ConfigManifestEntryType.STRING
+		},
+		{
+			id: 'options.playlistID',
+			name: '(Optional) Playlist ID',
+			type: ConfigManifestEntryType.STRING
+		},
+		{
+			id: 'options.preloadAllElements',
+			name: 'Preload all elements',
+			type: ConfigManifestEntryType.BOOLEAN
+		},
+		{
+			id: 'options.autoLoadInternalElements',
+			name: 'Automatically load internal elements when added',
+			type: ConfigManifestEntryType.BOOLEAN
+		},
+		{
+			id: 'options.clearAllTemplateName',
+			name: 'Clear-All template name',
+			type: ConfigManifestEntryType.STRING
+		},
+		{
+			id: 'options.clearAllOnMakeReady',
+			name: 'Clear-All on make-ready (activate rundown)',
+			type: ConfigManifestEntryType.BOOLEAN
+		},
+		{
+			id: 'options.dontDeactivateOnStandDown',
+			name: 'Don\'t deactivate on stand-down (deactivate rundown)',
+			type: ConfigManifestEntryType.BOOLEAN
+		},
+		{
+			id: 'options.onlyPreloadActiveRundown',
+			name: 'Only preload elements in active Rundown',
+			type: ConfigManifestEntryType.BOOLEAN
+		},
+		{
+			id: 'options.initializeRundownOnLoadAll',
+			name: 'On preload-All elements, also initialize the rundown playlist again',
+			type: ConfigManifestEntryType.BOOLEAN
 		}
 	]
 }
 
 export const PLAYOUT_DEVICE_CONFIG: DeviceConfigManifest = {
 	deviceConfig: [
-		{
-			id: 'mediaScanner.host',
-			name: 'Media Scanner Host',
-			type: ConfigManifestEntryType.STRING
-
-		},
-		{
-			id: 'mediaScanner.port',
-			name: 'Media Scanner Port',
-			type: ConfigManifestEntryType.NUMBER
-
-		},
 		{
 			id: 'debugLogging',
 			name: 'Activate Debug Logging',

@@ -2,6 +2,37 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.8.1-0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v1.7.0...v1.8.1-0) (2020-06-17)
+
+
+### Features
+
+* Add VizMSE device config manifest ([d2468ff](https://github.com/nrkno/tv-automation-playout-gateway/commit/d2468ff38f7dbe04abad33d23be4fbc58efea667))
+* remove old media-scanner mediaobject management (replaced with improved media-manager) ([ec2be33](https://github.com/nrkno/tv-automation-playout-gateway/commit/ec2be33164a4981aeb764e261cfee17e333919b1))
+* update tsr ([79a8a06](https://github.com/nrkno/tv-automation-playout-gateway/commit/79a8a066486d970f8e165c42068f5f4e09d32a45))
+
+
+### Bug Fixes
+
+* hide `Timeout in _updateDevices` message if nothing timed out ([cb62414](https://github.com/nrkno/tv-automation-playout-gateway/commit/cb624146082ac8306d56010717feef8e8e263cbf))
+* import TSR, not TSR-types ([ebe5ce5](https://github.com/nrkno/tv-automation-playout-gateway/commit/ebe5ce532096b201fdc6e81752bad2f0cd85bf02))
+* update circleci images ([add82e0](https://github.com/nrkno/tv-automation-playout-gateway/commit/add82e032f373e8a84831217fb855c8b8dc86f58))
+* update tsr ([28d2b96](https://github.com/nrkno/tv-automation-playout-gateway/commit/28d2b96e89abf0bbd24cf20ab330629c53d64ee6))
+
+## [1.8.0-0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v1.7.0...v1.8.0-0) (2020-05-28)
+
+
+### Features
+
+* Add VizMSE device config manifest ([d2468ff](https://github.com/nrkno/tv-automation-playout-gateway/commit/d2468ff38f7dbe04abad33d23be4fbc58efea667))
+* update tsr ([79a8a06](https://github.com/nrkno/tv-automation-playout-gateway/commit/79a8a066486d970f8e165c42068f5f4e09d32a45))
+
+
+### Bug Fixes
+
+* hide `Timeout in _updateDevices` message if nothing timed out ([cb62414](https://github.com/nrkno/tv-automation-playout-gateway/commit/cb624146082ac8306d56010717feef8e8e263cbf))
+* update circleci images ([add82e0](https://github.com/nrkno/tv-automation-playout-gateway/commit/add82e032f373e8a84831217fb855c8b8dc86f58))
+
 ## 1.7.0 (2020-05-12)
 
 

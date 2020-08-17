@@ -1,6 +1,6 @@
 {
   "name": "playout-gateway",
-  "version": "1.7.0",
+  "version": "1.8.1-0",
   "private": true,
   "description": "Connect to Core, play stuff",
   "license": "MIT",
@@ -39,8 +39,9 @@
     "inspect": "node --inspect dist/index.js",
     "start": "node dist/index.js",
     "unlinkall": "yarn unlink tv-automation-server-core-integration timeline-state-resolver && yarn --check-files",
-    "validate:dependencies": "yarn audit && yarn license-validate",
-    "license-validate": "node-license-validator -p -d --allow-licenses MIT BSD BSD-2-Clause BSD-3-Clause ISC Apache Apache-2.0 Unlicense WTFPL --allow-packages cycle",
+    "validate:dependencies": "yarn audit --groups dependencies && yarn license-validate",
+    "validate:dev-dependencies": "yarn audit --groups devDependencies",
+    "license-validate": "node-license-validator -p -d --allow-licenses MIT 0BSD BSD BSD-2-Clause BSD-3-Clause ISC Apache Apache-2.0 Unlicense WTFPL --allow-packages cycle",
     "prepareChangelog": "standard-version --prerelease"
   },
   "scripts-info": {
@@ -59,20 +60,19 @@
     "node": ">=12"
   },
   "devDependencies": {
-    "@types/jest": "^25.1.4",
+    "@types/jest": "^26.0.9",
     "@types/node": "^12.12.29",
-    "@types/pouchdb-node": "^6.1.3",
     "@types/underscore": "^1.9.2",
     "@types/winston": "^2.3.9",
     "codecov": "^3.6.5",
-    "jest": "^25.2.2",
+    "jest": "^26.0.1",
     "node-license-validator": "^1.3.0",
     "npm-scripts-info": "^0.3.9",
     "open-cli": "^6.0.1",
-    "standard-version": "^7.0.0",
+    "standard-version": "^8.0.0",
     "trash-cli": "^3.0.0",
-    "ts-jest": "^25.2.1",
-    "tslint": "^5.18.0",
+    "ts-jest": "^26.0.0",
+    "tslint": "^6.1.2",
     "tslint-config-standard": "^9.0.0",
     "typescript": "~3.6.4"
   },
@@ -91,15 +91,16 @@
   ],
   "dependencies": {
     "atem-connection": "0.10.0",
-    "axios": "^0.19.0",
     "fast-clone": "^1.5.13",
-    "pouchdb-node": "^7.1.1",
-    "promise-sequence": "^0.3.1",
-    "timeline-state-resolver": "3.20.0",
-    "tslib": "^1.10.0",
-    "tv-automation-server-core-integration": "1.4.0",
-    "tv-automation-sofie-blueprints-integration": "1.10.0",
+    "timeline-state-resolver": "4.0.0",
+    "tslib": "^1.13.0",
+    "tv-automation-server-core-integration": "1.5.1",
+    "tv-automation-sofie-blueprints-integration": "2.1.0-nightly-20200625-055003-623cf11.0",
     "underscore": "^1.9.1",
     "winston": "^2.4.2"
+  },
+  "resolutions": {
+    "yargs-parser": "^18.1.2",
+    "minimist": "^1.2.3"
   }
 }

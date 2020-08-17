@@ -1,6 +1,5 @@
 import { TSRHandler, TSRConfig } from './tsrHandler'
 import { CoreHandler, CoreConfig } from './coreHandler'
-import { MediaScanner, MediaScannerConfig } from './mediaScanner'
 import { LoggerInstance } from './index'
 import { Process } from './process'
 // import {Conductor, DeviceType} from 'timeline-state-resolver'
@@ -10,7 +9,6 @@ export interface Config {
 	device: DeviceConfig
 	core: CoreConfig
 	tsr: TSRConfig
-	mediaScanner: MediaScannerConfig
 }
 export interface ProcessConfig {
 	/** Will cause the Node applocation to blindly accept all certificates. Not recommenced unless in local, controlled networks. */
@@ -26,7 +24,6 @@ export class Connector {
 
 	private tsrHandler: TSRHandler
 	private coreHandler: CoreHandler
-	private mediaScanner: MediaScanner
 	private _config: Config
 	private _logger: LoggerInstance
 	private _process: Process
@@ -55,11 +52,6 @@ export class Connector {
 		})
 		.then(() => {
 			this._logger.info('TSR initialized')
-			this._logger.info('Initializing Media Scanner...')
-			return this.initMediaScanner()
-		})
-		.then(() => {
-			this._logger.info('Media scanner initialized')
 			this._logger.info('Initialization done')
 			return
 		})
@@ -100,12 +92,6 @@ export class Connector {
 	initTSR (): Promise<void> {
 		this.tsrHandler = new TSRHandler(this._logger)
 		return this.tsrHandler.init(this._config.tsr, this.coreHandler)
-
-	}
-	initMediaScanner (): Promise<void> {
-		this.mediaScanner = new MediaScanner(this._logger)
-
-		return this.mediaScanner.init(this._config.mediaScanner, this.coreHandler)
 
 	}
 }

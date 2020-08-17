@@ -8,8 +8,6 @@ let logPath: string 	= process.env.CORE_LOG						|| ''
 let deviceId: string 	= process.env.DEVICE_ID						|| ''
 let deviceToken: string 	= process.env.DEVICE_TOKEN 				|| ''
 let disableWatchdog: boolean = (process.env.DISABLE_WATCHDOG === '1') 		|| false
-let mediaScannerHost: string = process.env.MEDIA_SCANNER_HOST || '127.0.0.1'
-let mediaScannerPort: number = parseInt(process.env.MEDIA_SCANNER_PORT + '', 10) || 8000
 let unsafeSSL: boolean		= process.env.UNSAFE_SSL === '1' || false
 let certs: string[] = (process.env.CERTIFICATES || '').split(';') || []
 let disableAtemUpload: boolean = (process.env.DISABLE_ATEM_UPLOAD === '1') || false // TODO: change this to be an opt-in instead
@@ -29,10 +27,6 @@ process.argv.forEach((val) => {
 		deviceId = val
 	} else if (prevProcessArg.match(/-token/i)) {
 		deviceToken = val
-	} else if (prevProcessArg.match(/-mediaScannerHost/i)) {
-		mediaScannerHost = val
-	} else if (prevProcessArg.match(/-mediaScannerPort/i)) {
-		mediaScannerPort = parseInt(val, 10)
 	} else if (prevProcessArg.match(/-certificates/i)) {
 		certs.push(val)
 		nextPrevProcessArg = prevProcessArg // so that we can get multiple certificates
@@ -64,11 +58,6 @@ const config: Config = {
 		watchdog: !disableWatchdog
 	},
 	tsr: {
-	},
-	mediaScanner: {
-		collectionId: 'default', // TODO: to be fetched from core
-		host: mediaScannerHost,
-		port: mediaScannerPort
 	}
 }
 

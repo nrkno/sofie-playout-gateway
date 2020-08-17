@@ -50,10 +50,6 @@ export class CoreHandler {
 	public _observers: Array<any> = []
 	public deviceSettings: {[key: string]: any} = {}
 
-	// Mediascanner statuses: temporary implementation, to be moved into casparcg device later:
-	public mediaScannerStatus: P.StatusCode = P.StatusCode.GOOD
-	public mediaScannerMessages: Array<string> = []
-
 	public errorReporting: boolean = false
 	public multithreading: boolean = false
 	public reportAllCommands: boolean = false
@@ -439,14 +435,6 @@ export class CoreHandler {
 		let statusCode = P.StatusCode.GOOD
 		let messages: Array<string> = []
 
-		if (this.mediaScannerStatus !== P.StatusCode.GOOD) {
-			statusCode = this.mediaScannerStatus
-			if (this.mediaScannerMessages) {
-				_.each(this.mediaScannerMessages, (msg) => {
-					messages.push(msg)
-				})
-			}
-		}
 		if (!this._statusInitialized) {
 			statusCode = P.StatusCode.BAD
 			messages.push('Starting up...')

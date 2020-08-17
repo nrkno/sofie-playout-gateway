@@ -14,7 +14,30 @@ jobs:
             - yarn-cache-
 
       - run: yarn install
+      - run:
+          name: yarn validate:dependencies
+          command: |
+            if ! git log --format=oneline -n 1 | grep -q "\[ignore-audit\]"; then
+              yarn validate:dependencies
+            else
+              echo "Skipping audit"
+            fi
+
+  validate-all-dependencies:
+    docker:
+      - image: circleci/node:12
+    working_directory: ~/project
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - yarn-cache-{{ .Branch }}-{{ checksum "yarn.lock" }}
+            - yarn-cache-{{ .Branch }}
+            - yarn-cache-
+            
+      - run: yarn install
       - run: yarn validate:dependencies
+      - run: yarn validate:dev-dependencies
 
   test:
     docker:
@@ -105,10 +128,10 @@ jobs:
 
   publish-tag:
     docker:
-      - image: circleci/buildpack-deps:stretch
+      - image: circleci/buildpack-deps:buster
     steps:
       - setup_remote_docker:
-          version: 18.06.0-ce
+          version: 19.03.8
       - attach_workspace:
           at: .
       - run:
@@ -136,10 +159,10 @@ jobs:
              fi
   publish-branch:
     docker:
-      - image: circleci/buildpack-deps:stretch
+      - image: circleci/buildpack-deps:buster
     steps:
       - setup_remote_docker:
-          version: 18.06.0-ce
+          version: 19.03.8
       - attach_workspace:
           at: .
       - run:
@@ -171,6 +194,12 @@ workflows:
   build-test-publish:
     jobs:
       # - test
+      - validate-all-dependencies:
+          filters:
+            branches:
+              only:
+                - master
+                - develop
       - validate-dependencies:
           filters:
             branches:

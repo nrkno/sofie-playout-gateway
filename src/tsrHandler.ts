@@ -570,7 +570,10 @@ export class TSRHandler {
 		await Promise.race([
 			Promise.all(ps),
 			new Promise(resolve => setTimeout(() => {
-				this.logger.warn(`Timeout in _updateDevices: ${_.keys(promiseOperations).join(',')}`)
+				const keys = _.keys(promiseOperations)
+				if (keys.length) {
+					this.logger.warn(`Timeout in _updateDevices: ${keys.join(',')}`)
+				}
 				resolve()
 			}, INIT_TIMEOUT)) // Timeout if not all are resolved within INIT_TIMEOUT
 		])
