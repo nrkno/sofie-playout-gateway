@@ -200,12 +200,16 @@ workflows:
               only:
                 - master
                 - develop
+            tags:
+              only: /v.*/
       - validate-dependencies:
           filters:
             branches:
               only:
                 - master
                 - develop
+            tags:
+              only: /v.*/
       - build:
           requires:
             # - test
