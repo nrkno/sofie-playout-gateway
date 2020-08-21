@@ -237,6 +237,9 @@ export class TSRHandler {
 					startTime: Date.now() - reportDuration.done
 				})
 				if (transaction) {
+					transaction.addLabels({
+						...reportDuration
+					})
 					const tlResolve = transaction.startSpan('timelineResolve', null, null, null, {
 						// @ts-ignore: badly typed
 						startTime: Date.now() - reportDuration.timelineStartResolve
