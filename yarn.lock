@@ -6241,10 +6241,10 @@ timeline-state-resolver-types@^4.0.0:
   dependencies:
     tslib "^1.13.0"
 
-timeline-state-resolver@4.0.2:
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-4.0.2.tgz#a5b377404291fd2a7bfdba6d89833d996a2579b8"
-  integrity sha512-r21RQGFzYGfg/IGNF6Y+0RxttgFIALjust5mgrAr++lA0mjLLXeMyFseMloYD2ycOWxgkQ9mG2xa83nko7o2XQ==
+timeline-state-resolver@4.0.3:
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-4.0.3.tgz#e05294b064f286911d408c79077c13e619fb0f99"
+  integrity sha512-rE3gTHsimh1BGbwyYceAn21OBnS2WC7FpHRc3dGKRR54S03dMvrosx064Za4y61zY8gPvddZ3VKI02s/sf2rnQ==
   dependencies:
     atem-connection "1.1.0"
     atem-state "^0.9.0"
@@ -6261,7 +6261,7 @@ timeline-state-resolver@4.0.2:
     superfly-timeline "^7.3.1"
     threadedclass "^0.7.0"
     tslib "^1.10.0"
-    tv-automation-quantel-gateway-client "^1.0.11"
+    tv-automation-quantel-gateway-client "^1.0.12"
     underscore "^1.10.2"
     underscore-deep-extend "^1.1.5"
     v-connection "git+https://github.com/olzzon/v-connection#v20200515_1"
@@ -6489,10 +6489,10 @@ tunnel-agent@^0.6.0:
   dependencies:
     safe-buffer "^5.0.1"
 
-tv-automation-quantel-gateway-client@^1.0.11:
-  version "1.0.11"
-  resolved "https://registry.yarnpkg.com/tv-automation-quantel-gateway-client/-/tv-automation-quantel-gateway-client-1.0.11.tgz#410be5aed8ea91ea27b7fd7ce1c1e9807b8874f1"
-  integrity sha512-kHC3MVkdIdsNes1bNks7BwCnDBcM60TXYU7o+dWoJqXYqthp78xp+F/j6tPhqM3EI5NNs1UMmDrzzz8rmfbL2w==
+tv-automation-quantel-gateway-client@^1.0.12:
+  version "1.0.12"
+  resolved "https://registry.yarnpkg.com/tv-automation-quantel-gateway-client/-/tv-automation-quantel-gateway-client-1.0.12.tgz#2856a2d8459a9fe21c2eb12f54ecea471db3e930"
+  integrity sha512-yab4tXDifQAZhLRl+t03zSnSlu/N3Zh9zGHs5c3b1OuRSHTEFZqHIt6jnXVsxzHfLSTo2NYV5T5f8o4GmMVhIQ==
   dependencies:
     got "^11.5.2"
     underscore "^1.9.1"
