@@ -81,6 +81,10 @@ export enum TimelineObjType {
 	/** "Magic object", used to calculate a hash of the timeline */
 	STAT = 'stat'
 }
+export interface TimelineComplete {
+	_id: string
+	timeline: Array<TimelineObjGeneric>
+}
 // ----------------------------------------------------------------------------
 
 export interface TimelineContentObjectTmp extends TSRTimelineObjBase {
@@ -271,18 +275,15 @@ export class TSRHandler {
 	destroy (): Promise<void> {
 		return this.tsr.destroy()
 	}
-	getTimeline (excludeStatObj?: boolean): Array<CollectionObj> | null {
+	getTimeline (_excludeStatObj?: boolean): Array<CollectionObj> | null {
 		let studioId = this._getStudioId()
 		if (!studioId) {
 			this.logger.warn('no studioId')
 			return null
 		}
 
-		let objs = this._coreHandler.core.getCollection('timeline').find((o: TimelineObjGeneric) => {
-			if (excludeStatObj) {
-				if (o.objectType === TimelineObjType.STAT) return false
-			}
-			return o.studioId === studioId
+		let objs = this._coreHandler.core.getCollection('timeline').find((o: TimelineComplete) => {
+			return o._id === studioId
 		})
 
 		return objs
