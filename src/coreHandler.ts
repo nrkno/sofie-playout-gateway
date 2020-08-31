@@ -11,7 +11,8 @@ import {
 	CasparCGDevice,
 	DeviceContainer,
 	HyperdeckDevice,
-	QuantelDevice
+	QuantelDevice,
+	MediaObject
 } from 'timeline-state-resolver'
 
 import * as _ from 'underscore'
@@ -596,6 +597,20 @@ export class CoreTSRDeviceHandler {
 			ref
 		])
 		.catch(e => this._coreParentHandler.logger.error('Error when setting status: ' + e, e.stack))
+	}
+	onUpdateMediaObject (collectionId: string, docId: string, doc: MediaObject | null) {
+		this.core.callMethodLowPrio(PeripheralDeviceAPI.methods.updateMediaObject, [
+			collectionId,
+			docId,
+			doc
+		])
+		.catch(e => this._coreParentHandler.logger.error('Error when updating Media Object: ' + e, e.stack))
+	}
+	onClearMediaObjectCollection (collectionId: string) {
+		this.core.callMethodLowPrio(PeripheralDeviceAPI.methods.clearMediaObjectCollection, [
+			collectionId
+		])
+		.catch(e => this._coreParentHandler.logger.error('Error when clearing Media Objects collection: ' + e, e.stack))
 	}
 
 	async dispose (): Promise<void> {
