@@ -1,6 +1,6 @@
 {
   "name": "playout-gateway",
-  "version": "1.8.1-0",
+  "version": "1.10.0-0",
   "private": true,
   "description": "Connect to Core, play stuff",
   "license": "MIT",
@@ -60,7 +60,7 @@
     "node": ">=12"
   },
   "devDependencies": {
-    "@types/jest": "^25.1.4",
+    "@types/jest": "^26.0.9",
     "@types/node": "^12.12.29",
     "@types/underscore": "^1.9.2",
     "@types/winston": "^2.3.9",
@@ -69,7 +69,7 @@
     "node-license-validator": "^1.3.0",
     "npm-scripts-info": "^0.3.9",
     "open-cli": "^6.0.1",
-    "standard-version": "^8.0.0",
+    "standard-version": "^9.0.0",
     "trash-cli": "^3.0.0",
     "ts-jest": "^26.0.0",
     "tslint": "^6.1.2",
@@ -92,10 +92,10 @@
   "dependencies": {
     "atem-connection": "0.10.0",
     "fast-clone": "^1.5.13",
-    "timeline-state-resolver": "4.0.0-nightly-20200615-062035-87c768e6.0",
+    "timeline-state-resolver": "4.0.0",
     "tslib": "^1.13.0",
-    "tv-automation-server-core-integration": "1.5.1",
-    "tv-automation-sofie-blueprints-integration": "1.12.0",
+    "tv-automation-server-core-integration": "2.0.0-nightly-release23-20200730-111752-c6bf53e.0",
+    "tv-automation-sofie-blueprints-integration": "2.1.0-nightly-20200625-055003-623cf11.0",
     "underscore": "^1.9.1",
     "winston": "^2.4.2"
   },
