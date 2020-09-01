@@ -61,6 +61,8 @@
   },
   "devDependencies": {
     "@types/jest": "^26.0.9",
+    "@types/koa": "^2.11.4",
+    "@types/koa-bodyparser": "^4.3.0",
     "@types/node": "^12.12.29",
     "@types/underscore": "^1.9.2",
     "@types/winston": "^2.3.9",
@@ -92,6 +94,8 @@
   "dependencies": {
     "atem-connection": "0.10.0",
     "fast-clone": "^1.5.13",
+    "koa": "^2.13.0",
+    "koa-bodyparser": "^4.3.0",
     "timeline-state-resolver": "4.0.0",
     "tslib": "^1.13.0",
     "tv-automation-server-core-integration": "2.0.0-nightly-release23-20200730-111752-c6bf53e.0",

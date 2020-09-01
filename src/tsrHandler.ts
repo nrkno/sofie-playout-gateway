@@ -26,6 +26,9 @@ import { TimelineObjectCoreExt } from 'tv-automation-sofie-blueprints-integratio
 import { LoggerInstance } from './index'
 import { disableAtemUpload } from './config'
 
+import * as Koa from 'koa'
+import * as bodyparser from 'koa-bodyparser'
+
 export interface TSRConfig {
 }
 export interface TSRSettings { // Runtime settings from Core
@@ -113,6 +116,7 @@ export class TSRHandler {
 	private _errorReporting: boolean | null = null
 
 	private _updateDevicesIsRunning: boolean = false
+	private _app: Koa = new Koa()
 
 	constructor (logger: LoggerInstance) {
 		this.logger = logger
@@ -124,6 +128,14 @@ export class TSRHandler {
 		this._coreHandler = coreHandler
 
 		this._coreHandler.setTSR(this)
+
+		this._app.use(bodyparser())
+
+		this._app.use(async ctx => {
+			this._receiveTimeline(ctx.request.body)
+			ctx.body = 'Updating timeline'
+		})
+		this._app.listen(4242)
 
 		this._config = this._config // ts-lint: not used fix
 		this.logger.info('TSRHandler init')
@@ -414,6 +426,16 @@ export class TSRHandler {
 		// } else {
 		// 	this.logger.debug('_updateTimeline deferring update')
 		// }
+	}
+	private _receiveTimeline(tc: TimelineComplete) {
+		let transformedTimeline = this._transformTimeline(
+			tc.timeline
+		)
+		if (transformedTimeline) {
+			this.tsr.timeline = transformedTimeline
+		} else {
+			this.logger.warn('Did NOT update Timeline due to an error')
+		}
 	}
 	private _triggerupdateMapping () {
 		if (!this._initialized) return
