@@ -132,6 +132,7 @@ export class TSRHandler {
 		this._app.use(bodyparser())
 
 		this._app.use(async ctx => {
+			this.logger.info('Received timeline direct from core', ctx.request.body._id)
 			this._receiveTimeline(ctx.request.body)
 			ctx.body = 'Updating timeline'
 		})
