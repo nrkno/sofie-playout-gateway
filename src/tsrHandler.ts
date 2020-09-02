@@ -21,7 +21,7 @@ import * as crypto from 'crypto'
 import * as cp from 'child_process'
 
 import * as _ from 'underscore'
-import { CoreConnection, PeripheralDeviceAPI as P, CollectionObj } from 'tv-automation-server-core-integration'
+import { CoreConnection, PeripheralDeviceAPI as P } from 'tv-automation-server-core-integration'
 import { TimelineObjectCoreExt } from 'tv-automation-sofie-blueprints-integration'
 import { LoggerInstance } from './index'
 import { disableAtemUpload } from './config'
@@ -100,8 +100,6 @@ export class TSRHandler {
 	tsr: Conductor
 	private _config: TSRConfig
 	private _coreHandler: CoreHandler
-	// private _triggerupdateTimelineTimeout: any = null
-	private _triggerupdateMappingTimeout: any = null
 	private _triggerupdateDevicesTimeout: any = null
 	private _coreTsrHandlers: {[deviceId: string]: CoreTSRDeviceHandler} = {}
 	private _observers: Array<any> = []
@@ -142,8 +140,7 @@ export class TSRHandler {
 				proActiveResolve: true
 			}
 			this.tsr = new Conductor(c)
-			this._triggerupdateMapping()
-			this._triggerupdateTimeline()
+			this._triggerupdateTimelineAndMappings()
 
 			coreHandler.onConnected(() => {
 				this.setupObservers()
@@ -234,8 +231,7 @@ export class TSRHandler {
 		})
 		.then(() => {
 			this._initialized = true
-			this._triggerupdateMapping()
-			this._triggerupdateTimeline()
+			this._triggerupdateTimelineAndMappings()
 			this.onSettingsChanged()
 			this._triggerUpdateDevices()
 			this.logger.debug('tsr init done')
@@ -254,15 +250,15 @@ export class TSRHandler {
 		this.logger.debug('Renewing observers')
 
 		let timelineObserver = this._coreHandler.core.observe('studioTimeline')
-		timelineObserver.added = () => { this._triggerupdateTimeline() }
-		timelineObserver.changed = () => { this._triggerupdateTimeline() }
-		timelineObserver.removed = () => { this._triggerupdateTimeline() }
+		timelineObserver.added = () => { this._triggerupdateTimelineAndMappings() }
+		timelineObserver.changed = () => { this._triggerupdateTimelineAndMappings() }
+		timelineObserver.removed = () => { this._triggerupdateTimelineAndMappings() }
 		this._observers.push(timelineObserver)
 
 		let mappingsObserver = this._coreHandler.core.observe('studioMappings')
-		mappingsObserver.added = () => { this._triggerupdateMapping() }
-		mappingsObserver.changed = () => { this._triggerupdateMapping() }
-		mappingsObserver.removed = () => { this._triggerupdateMapping() }
+		mappingsObserver.added = () => { this._triggerupdateTimelineAndMappings() }
+		mappingsObserver.changed = () => { this._triggerupdateTimelineAndMappings() }
+		mappingsObserver.removed = () => { this._triggerupdateTimelineAndMappings() }
 		this._observers.push(mappingsObserver)
 
 		let deviceObserver = this._coreHandler.core.observe('peripheralDevices')
@@ -275,29 +271,38 @@ export class TSRHandler {
 	destroy (): Promise<void> {
 		return this.tsr.destroy()
 	}
-	getTimeline (_excludeStatObj?: boolean): Array<CollectionObj> | null {
+	getTimeline (): {
+		// Copied from Core:
+		_id: string, // Studio id
+		mappingHash: string,
+		timeline: TimelineObjGeneric[]
+	} | undefined {
 		let studioId = this._getStudioId()
 		if (!studioId) {
 			this.logger.warn('no studioId')
-			return null
+			return undefined
 		}
 
-		let objs = this._coreHandler.core.getCollection('studioTimeline').findOne((o: TimelineComplete) => {
+		let timeline = this._coreHandler.core.getCollection('studioTimeline').findOne((o: TimelineComplete) => {
 			return o._id === studioId
 		})
 
-		return objs && objs.timeline || []
+		return timeline as any
 	}
-	getMapping () {
+	getMappings (): {
+		_id: string, // Studio id
+		mappingsHash: string,
+		mappings: Mappings
+	} | undefined {
 		let studioId = this._getStudioId()
 		if (!studioId) {
 			// this.logger.warn('no studioId')
-			return null
+			return undefined
 		}
 		// Note: The studioMappings virtual collection contains a single object that contains all mappings
-		const doc = this._coreHandler.core.getCollection('studioMappings').findOne(studioId)
+		const mappingsObject = this._coreHandler.core.getCollection('studioMappings').findOne(studioId)
 
-		return doc.mappings
+		return mappingsObject as any
 	}
 	onSettingsChanged (): void {
 		if (!this._initialized) return
@@ -328,45 +333,34 @@ export class TSRHandler {
 		}
 
 	}
-	private _triggerupdateTimeline () {
+	private _triggerupdateTimelineAndMappings () {
 		if (!this._initialized) return
 
+		this._updateTimelineAndMappings()
 
-			// this._triggerupdateTimelineTimeout = setTimeout(() => {
-		this._updateTimeline()
-			// }, 20)
-		// }
 	}
-	private _updateTimeline () {
-		// if (this._determineIfTimelineShouldUpdate()) {
-		let transformedTimeline = this._transformTimeline(
-			this.getTimeline(true) as Array<TimelineObjGeneric>
-		)
-		if (transformedTimeline) {
-			// @ts-ignore
-			this.tsr.timeline = transformedTimeline
-		} else {
-			this.logger.warn('Did NOT update Timeline due to an error')
+	private _updateTimelineAndMappings () {
+		const timeline = this.getTimeline()
+		const mappingsObject = this.getMappings()
+
+		if (!timeline) {
+			this.logger.debug(`Cancel resolving: No timeline`)
+			return
 		}
-		// } else {
-		// 	this.logger.debug('_updateTimeline deferring update')
-		// }
-	}
-	private _triggerupdateMapping () {
-		if (!this._initialized) return
-		if (this._triggerupdateMappingTimeout) {
-			clearTimeout(this._triggerupdateMappingTimeout)
+		if (!mappingsObject) {
+			this.logger.debug(`Cancel resolving: No mappings`)
+			return
 		}
-		this._triggerupdateMappingTimeout = setTimeout(() => {
-			this._updateMapping()
-			.catch(e => this.logger.error('Error in _updateMapping', e))
-		}, 20)
-	}
-	private async _updateMapping () {
-		let mapping = this.getMapping()
-		if (mapping) {
-			await this.tsr.setMapping(mapping)
+		// Compare mappingsHash to ensure that the timeline we've received is in sync with the mappings:
+		if (timeline.mappingHash !== mappingsObject.mappingsHash) {
+			this.logger.debug(`Cancel resolving: mappingHash differ: "${timeline.mappingHash}" vs "${mappingsObject.mappingsHash}"`)
+			return
 		}
+
+		this.logger.debug(`Trigger new resolving`)
+
+		let transformedTimeline = this._transformTimeline(timeline.timeline)
+		this.tsr.setTimelineAndMappings(transformedTimeline, mappingsObject.mappings)
 	}
 	private _getPeripheralDevice () {
 		let peripheralDevices = this._coreHandler.core.getCollection('peripheralDevices')
@@ -726,7 +720,7 @@ export class TSRHandler {
 	 * Go through and transform timeline and generalize the Core-specific things
 	 * @param timeline
 	 */
-	private _transformTimeline (timeline: Array<TimelineObjGeneric>): TSRTimeline | null {
+	private _transformTimeline (timeline: Array<TimelineObjGeneric>): TSRTimeline {
 		// _transformTimeline (timeline: Array<TimelineObj>): Array<TimelineContentObject> | null {
 
 		let transformObject = (obj: TimelineObjGeneric): TimelineContentObjectTmp => {
@@ -762,7 +756,7 @@ export class TSRHandler {
 					}
 				} else {
 					// referenced group not found
-					this.logger.warn('Referenced group "' + obj.inGroup + '" not found! Referenced by "' + obj.id + '"')
+					this.logger.error('Referenced group "' + obj.inGroup + '" not found! Referenced by "' + obj.id + '"')
 				}
 			} else {
 				// Add object to timeline
@@ -772,93 +766,7 @@ export class TSRHandler {
 		})
 		return transformedTimeline
 	}
-	// private _determineIfTimelineShouldUpdate (): boolean {
-
-	// 	let requireStatObject: boolean = true // set to false for backwards compability
-	// 	let disableStatObject: boolean = false // set to true to disable the statobject check completely
-
-	// 	let pd = this._getPeripheralDevice()
-	// 	if (pd && (pd.settings || {}).enableBackwardsCompability) {
-	// 		requireStatObject = false
-	// 	}
-	// 	if (pd && (pd.settings || {}).disableStatObj) {
-	// 		disableStatObject = true
-	// 	}
-
-	// 	if (disableStatObject) return true
-
-	// 	let studioId = this._getStudioId()
-	// 	if (!studioId) {
-	// 		this.logger.warn('no studioId')
-	// 		return false
-	// 	}
-
-	// 	let statObjId = studioId + '_statObj'
-
-	// 	let statObject = this._coreHandler.core.getCollection('timeline').find(statObjId)[0]
-
-	// 	if (!statObject) {
-	// 		if (requireStatObject) {
-	// 			this.logger.info('no statObject')
-	// 			return false
-	// 		} else {
-	// 			return true
-	// 		}
-	// 	}
-
-	// 	this.logger.info('statObject found')
-
-	// 	let statObjCount 	= (statObject.content || {}).objCount || 0
-	// 	let statObjHash 	= (statObject.content || {}).objHash || ''
-
-	// 	// collect statistics
-	// 	let objs = this.getTimeline(true)
-	// 	if (!objs) return false
-
-	// 	// Number of objects
-	// 	let objCount = objs.length
-	// 	// Hash of all objects
-	// 	objs = objs.sort((a, b) => {
-	// 		if (a._id < b._id) return 1
-	// 		if (a._id > b._id) return -1
-	// 		return 0
-	// 	})
-	// 	let objHash = getHash(stringifyObjects(objs))
-
-	// 	if (objCount !== statObjCount) {
-	// 		this.logger.info('Delaying timeline update, objcount differ (' + objCount + ',' + statObjCount + ') ')
-	// 		return false
-	// 	}
-	// 	if (objHash !== statObjHash) {
-	// 		this.logger.info('Delaying timeline update, hash differ (' + objHash + ',' + statObjHash + ') ')
-	// 		return false
-	// 	}
-	// 	return true
-	// }
 }
-// function stringifyObjects (objs) {
-// 	if (_.isArray(objs)) {
-// 		return _.map(objs, (obj) => {
-// 			if (obj !== undefined) {
-// 				return stringifyObjects(obj)
-// 			}
-// 		}).join(',')
-// 	} else if (_.isFunction(objs)) {
-// 		return ''
-// 	} else if (_.isObject(objs)) {
-// 		let keys = _.sortBy(_.keys(objs), (k) => k)
-
-// 		return _.compact(_.map(keys, (key) => {
-// 			if (objs[key] !== undefined) {
-// 				return key + '=' + stringifyObjects(objs[key])
-// 			} else {
-// 				return null
-// 			}
-// 		})).join(',')
-// 	} else {
-// 		return objs + ''
-// 	}
-// }
 
 export function getHash (str: string): string {
 	const hash = crypto.createHash('sha1')

@@ -358,12 +358,12 @@ export class CoreHandler {
 		this.logger.info('getSnapshot')
 		let timeline = (
 			this._tsrHandler ?
-			this._tsrHandler.getTimeline(false) :
+			this._tsrHandler.getTimeline() :
 			[]
 		)
 		let mappings = (
 			this._tsrHandler ?
-			this._tsrHandler.getMapping() :
+			this._tsrHandler.getMappings() :
 			[]
 		)
 		return {
