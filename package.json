@@ -90,7 +90,6 @@
     "production"
   ],
   "dependencies": {
-    "atem-connection": "0.10.0",
     "fast-clone": "^1.5.13",
     "timeline-state-resolver": "4.0.0",
     "tslib": "^1.13.0",

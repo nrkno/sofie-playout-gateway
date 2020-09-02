@@ -1054,18 +1054,6 @@ asynckit@^0.4.0:
   resolved "https://registry.yarnpkg.com/asynckit/-/asynckit-0.4.0.tgz#c79ed97f7f34cb8f2ba1bc9790bcc366474b4b79"
   integrity sha1-x57Zf380y48robyXkLzDZkdLS3k=
 
-atem-connection@0.10.0:
-  version "0.10.0"
-  resolved "https://registry.yarnpkg.com/atem-connection/-/atem-connection-0.10.0.tgz#2ce82cdf3415a4a2f7a0638e2c7eaa7e937f9f03"
-  integrity sha512-WhQ4bzKzCMBEb0T/+yo/Dzkz4dtwTdcX1y1ej1M/VctnRIkX4QESXZaToTp+6lCxUIRReZ2jKHrRZBEDpAwwBw==
-  dependencies:
-    exit-hook "^2.0.0"
-    nanotimer "^0.3.15"
-    p-queue "^2.4.2"
-    p-retry "^2.0.0"
-    tslib "^1.9.0"
-    wavefile "^8.4.4"
-
 atem-connection@1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/atem-connection/-/atem-connection-1.1.0.tgz#cfe073164d5b46b3014bdb6ade829925b15f0c9c"
@@ -6201,10 +6189,10 @@ through@2, "through@>=2.2.7 <3":
   resolved "https://registry.yarnpkg.com/through/-/through-2.3.8.tgz#0dd4c9ffaabc357960b1b724115d7e0e86a2e1f5"
   integrity sha1-DdTJ/6q8NXlgsbckEV1+Doai4fU=
 
-timeline-state-resolver-types@4.0.0-nightly-20200611-075605-93ae546a.0:
-  version "4.0.0-nightly-20200611-075605-93ae546a.0"
-  resolved "https://registry.yarnpkg.com/timeline-state-resolver-types/-/timeline-state-resolver-types-4.0.0-nightly-20200611-075605-93ae546a.0.tgz#aa161da876d23591f1a6bf618b62e3262b1c116b"
-  integrity sha512-KC0Ab9pgBQ6lPZO2AaNIqRs/QxhDjPwUMAj/RLtvXhTmRgiim7IOFZTkD1FO2+IO3flZo3FI45K6zXTDGNRlWw==
+timeline-state-resolver-types@^4.0.0:
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/timeline-state-resolver-types/-/timeline-state-resolver-types-4.0.3.tgz#42be337d42fba647000bac99c346587a7e72a722"
+  integrity sha512-urKK2rTz2FKpPUxARJoVAorQuKdFHV45lXxQmNJd62SVDXHqxN0djv5YKj4zgX4qN/7IrEmQKCPNEWt2iPCzAA==
   dependencies:
     tslib "^1.13.0"
 
