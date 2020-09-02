@@ -4827,11 +4827,6 @@ p-map@^4.0.0:
   dependencies:
     aggregate-error "^3.0.0"
 
-p-queue@^2.4.2:
-  version "2.4.2"
-  resolved "https://registry.yarnpkg.com/p-queue/-/p-queue-2.4.2.tgz#03609826682b743be9a22dba25051bd46724fc34"
-  integrity sha512-n8/y+yDJwBjoLQe1GSJbbaYQLTI7QHNZI2+rpmCDbe++WLf9HC3gf6iqj5yfPAV71W4UF3ql5W1+UBPXoXTxng==
-
 p-queue@^6.4.0:
   version "6.6.0"
   resolved "https://registry.yarnpkg.com/p-queue/-/p-queue-6.6.0.tgz#263f2b73add4cefca81d8d6b2696ee74b326de2f"
@@ -4839,13 +4834,6 @@ p-queue@^6.4.0:
   dependencies:
     eventemitter3 "^4.0.4"
     p-timeout "^3.1.0"
-
-p-retry@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/p-retry/-/p-retry-2.0.0.tgz#b97f1f4d6d81a3c065b2b40107b811e995c1bfba"
-  integrity sha512-ZbCuzAmiwJ45q4evp/IG9D+5MUllGSUeCWwPt3j/tdYSi1KPkSD+46uqmAA1LhccDhOXv8kYZKNb8x78VflzfA==
-  dependencies:
-    retry "^0.12.0"
 
 p-retry@^4.1.0:
   version "4.2.0"
@@ -6476,10 +6464,10 @@ tv-automation-quantel-gateway-client@^1.0.8:
     got "^11.0.2"
     underscore "^1.9.1"
 
-tv-automation-server-core-integration@2.0.0-nightly-release23-20200730-111752-c6bf53e.0:
-  version "2.0.0-nightly-release23-20200730-111752-c6bf53e.0"
-  resolved "https://registry.yarnpkg.com/tv-automation-server-core-integration/-/tv-automation-server-core-integration-2.0.0-nightly-release23-20200730-111752-c6bf53e.0.tgz#2183bcd00a04ba614e2ce84135f93828d160cd36"
-  integrity sha512-T+o83b2F+NBUD8B9VUe//g+GtdJRtYuPBTlVS/Dq+6rh1ZMZoUPYTBOgqaxSMDInL+lZpaQfic88OwJaUQaSFw==
+tv-automation-server-core-integration@2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/tv-automation-server-core-integration/-/tv-automation-server-core-integration-2.0.0.tgz#f9b1039126c6b8648b4ce37e4f7ca8639ee7a03d"
+  integrity sha512-lMuh9zBkIIJRa0jJBZwtintsLzySF+JK3Rc0HqCkCpQ84/nURD+Tk67A3Rtpq9zz1OjOPsfA2sV6PgiEsaoxBg==
   dependencies:
     data-store "3.1.0"
     ddp "git+http://github.com/nytamin/node-ddp-client.git#v0.12.2-next2"
@@ -6487,13 +6475,13 @@ tv-automation-server-core-integration@2.0.0-nightly-release23-20200730-111752-c6
     tslib "^1.13.0"
     underscore "^1.10.2"
 
-tv-automation-sofie-blueprints-integration@2.1.0-nightly-20200625-055003-623cf11.0:
-  version "2.1.0-nightly-20200625-055003-623cf11.0"
-  resolved "https://registry.yarnpkg.com/tv-automation-sofie-blueprints-integration/-/tv-automation-sofie-blueprints-integration-2.1.0-nightly-20200625-055003-623cf11.0.tgz#62d43c40bc6c547eab5711143a9fcc1d36954780"
-  integrity sha512-Ww+o1CTYINHV609e9SBnJwJfiOp4+jUmPLdx30n1fJJijsvWpK/c2cm+q7eRjI5jK0mJI4Ysg2hEeO9+TNBVfg==
+tv-automation-sofie-blueprints-integration@2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/tv-automation-sofie-blueprints-integration/-/tv-automation-sofie-blueprints-integration-2.1.0.tgz#906b2a4d9d49674fabf4221f06117f35870cb76d"
+  integrity sha512-St9GsGCNriO+C+hzQnUbu/VaPqE+6Iv/us+NrqYMVFrmcBkIK6IMy9v095bfmdCAto0tFr4ovIR4t+Y3mEghUQ==
   dependencies:
     moment "2.22.2"
-    timeline-state-resolver-types "4.0.0-nightly-20200611-075605-93ae546a.0"
+    timeline-state-resolver-types "^4.0.0"
     tslib "^1.13.0"
     underscore "1.9.1"
 
