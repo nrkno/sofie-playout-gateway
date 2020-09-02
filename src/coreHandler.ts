@@ -245,26 +245,6 @@ export class CoreHandler {
 				this.reportAllCommands = this.deviceSettings['reportAllCommands']
 			}
 
-<<<<<<< HEAD
-=======
-			let studioId = device.studioId
-			if (studioId !== this._studioId) {
-				this._studioId = studioId
-
-				if (this._timelineSubscription) {
-					this.core.unsubscribe(this._timelineSubscription)
-					this._timelineSubscription = null
-				}
-				this.core.autoSubscribe('timeline', {
-					_id: studioId
-				}).then((subscriptionId) => {
-					this._timelineSubscription = subscriptionId
-				}).catch((err) => {
-					this.logger.error(err)
-				})
-			}
-
->>>>>>> develop
 			if (this._tsrHandler) {
 				this._tsrHandler.onSettingsChanged()
 			}
