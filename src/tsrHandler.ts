@@ -81,6 +81,10 @@ export enum TimelineObjType {
 	/** "Magic object", used to calculate a hash of the timeline */
 	STAT = 'stat'
 }
+export interface TimelineComplete {
+	_id: string
+	timeline: Array<TimelineObjGeneric>
+}
 // ----------------------------------------------------------------------------
 
 export interface TimelineContentObjectTmp extends TSRTimelineObjBase {
@@ -96,7 +100,7 @@ export class TSRHandler {
 	tsr: Conductor
 	private _config: TSRConfig
 	private _coreHandler: CoreHandler
-	private _triggerupdateTimelineTimeout: any = null
+	// private _triggerupdateTimelineTimeout: any = null
 	private _triggerupdateMappingTimeout: any = null
 	private _triggerupdateDevicesTimeout: any = null
 	private _coreTsrHandlers: {[deviceId: string]: CoreTSRDeviceHandler} = {}
@@ -271,21 +275,18 @@ export class TSRHandler {
 	destroy (): Promise<void> {
 		return this.tsr.destroy()
 	}
-	getTimeline (excludeStatObj?: boolean): Array<CollectionObj> | null {
+	getTimeline (_excludeStatObj?: boolean): Array<CollectionObj> | null {
 		let studioId = this._getStudioId()
 		if (!studioId) {
 			this.logger.warn('no studioId')
 			return null
 		}
 
-		let objs = this._coreHandler.core.getCollection('studioTimeline').find((o: TimelineObjGeneric) => {
-			if (excludeStatObj) {
-				if (o.objectType === TimelineObjType.STAT) return false
-			}
-			return o.studioId === studioId
+		let objs = this._coreHandler.core.getCollection('studioTimeline').findOne((o: TimelineComplete) => {
+			return o._id === studioId
 		})
 
-		return objs
+		return objs && objs.timeline || []
 	}
 	getMapping () {
 		let studioId = this._getStudioId()
@@ -330,93 +331,93 @@ export class TSRHandler {
 	private _triggerupdateTimeline () {
 		if (!this._initialized) return
 
-		if (this._triggerupdateTimelineTimeout) {
-			clearTimeout(this._triggerupdateTimelineTimeout)
-		}
+		// if (this._triggerupdateTimelineTimeout) {
+		// 	clearTimeout(this._triggerupdateTimelineTimeout)
+		// }
 
-		let experimentalMessageWaiting = true
-		if (experimentalMessageWaiting) {
-			/**
-			 * In this mode, we're trying a more aggressive strategy to figure out if messages
-			 * are still arriving from Core (because we don't want to resolve a partial timeline).
-			 * Instead of just waiting a "safe" time, we hijack into the websocket parser to determine
-			 * if data is currently arriving.
-			 */
+		// let experimentalMessageWaiting = true
+		// if (experimentalMessageWaiting) {
+		// 	/**
+		// 	 * In this mode, we're trying a more aggressive strategy to figure out if messages
+		// 	 * are still arriving from Core (because we don't want to resolve a partial timeline).
+		// 	 * Instead of just waiting a "safe" time, we hijack into the websocket parser to determine
+		// 	 * if data is currently arriving.
+		// 	 */
 
-			try {
+		// 	try {
 
-				// @ts-ignore
-				let socket: any = this._coreHandler.core._ddp.ddpClient.socket
+		// 		// @ts-ignore
+		// 		let socket: any = this._coreHandler.core._ddp.ddpClient.socket
 
-				if (!socket.setupFakeDriver) {
-					socket.setupFakeDriver = true
-					socket.receivingMessage = false
-					try {
+		// 		if (!socket.setupFakeDriver) {
+		// 			socket.setupFakeDriver = true
+		// 			socket.receivingMessage = false
+		// 			try {
 
-						// @ts-ignore
-						let driver = socket._driver
+		// 				// @ts-ignore
+		// 				let driver = socket._driver
 
-						let orgParse = driver.parse
-						driver.parse = function (...args) {
+		// 				let orgParse = driver.parse
+		// 				driver.parse = function (...args) {
 
-							// This is called when data starts arriving (?)
-							socket.receivingMessage = true
-							orgParse.call(driver, ...args)
-						}
+		// 					// This is called when data starts arriving (?)
+		// 					socket.receivingMessage = true
+		// 					orgParse.call(driver, ...args)
+		// 				}
 
-						socket.on('message', () => {
+		// 				socket.on('message', () => {
 
-							// The message has been recieved and emitted
-							socket.receivingMessage = false
-						})
-					} catch (e) {
-						this.logger.warn('Error in _triggerupdateTimeline (message parsing)', e)
-					}
-				}
+		// 					// The message has been recieved and emitted
+		// 					socket.receivingMessage = false
+		// 				})
+		// 			} catch (e) {
+		// 				this.logger.warn('Error in _triggerupdateTimeline (message parsing)', e)
+		// 			}
+		// 		}
 
-				let time = 0
-				let checkIfNotSending = () => {
-					if (!socket.receivingMessage) {
-						if (time > 2) {
-							this._updateTimeline()
-							return
-						}
-					}
-					// check again later
-					time++
-					this._triggerupdateTimelineTimeout = setTimeout(checkIfNotSending, 1)
-				}
-				this._triggerupdateTimelineTimeout = setTimeout(checkIfNotSending, 1)
-				time++
-			} catch (e) {
-				this.logger.warn(e)
+		// 		let time = 0
+		// 		let checkIfNotSending = () => {
+		// 			if (!socket.receivingMessage) {
+		// 				if (time > 2) {
+		// 					this._updateTimeline()
+		// 					return
+		// 				}
+		// 			}
+		// 			// check again later
+		// 			time++
+		// 			this._triggerupdateTimelineTimeout = setTimeout(checkIfNotSending, 1)
+		// 		}
+		// 		this._triggerupdateTimelineTimeout = setTimeout(checkIfNotSending, 1)
+		// 		time++
+		// 	} catch (e) {
+		// 		this.logger.warn(e)
 
-				// Fallback to old way:
-				this._triggerupdateTimelineTimeout = setTimeout(() => {
-					this._updateTimeline()
-				}, 20)
-			}
-		} else {
+		// 		// Fallback to old way:
+		// 		this._triggerupdateTimelineTimeout = setTimeout(() => {
+		// 			this._updateTimeline()
+		// 		}, 20)
+		// 	}
+		// } else {
 
-			this._triggerupdateTimelineTimeout = setTimeout(() => {
-				this._updateTimeline()
-			}, 20)
-		}
+			// this._triggerupdateTimelineTimeout = setTimeout(() => {
+		this._updateTimeline()
+			// }, 20)
+		// }
 	}
 	private _updateTimeline () {
-		if (this._determineIfTimelineShouldUpdate()) {
-			let transformedTimeline = this._transformTimeline(
-				this.getTimeline(true) as Array<TimelineObjGeneric>
-			)
-			if (transformedTimeline) {
-				// @ts-ignore
-				this.tsr.timeline = transformedTimeline
-			} else {
-				this.logger.warn('Did NOT update Timeline due to an error')
-			}
+		// if (this._determineIfTimelineShouldUpdate()) {
+		let transformedTimeline = this._transformTimeline(
+			this.getTimeline(true) as Array<TimelineObjGeneric>
+		)
+		if (transformedTimeline) {
+			// @ts-ignore
+			this.tsr.timeline = transformedTimeline
 		} else {
-			this.logger.debug('_updateTimeline deferring update')
+			this.logger.warn('Did NOT update Timeline due to an error')
 		}
+		// } else {
+		// 	this.logger.debug('_updateTimeline deferring update')
+		// }
 	}
 	private _triggerupdateMapping () {
 		if (!this._initialized) return
@@ -838,93 +839,93 @@ export class TSRHandler {
 		})
 		return transformedTimeline
 	}
-	private _determineIfTimelineShouldUpdate (): boolean {
+	// private _determineIfTimelineShouldUpdate (): boolean {
 
-		let requireStatObject: boolean = true // set to false for backwards compability
-		let disableStatObject: boolean = false // set to true to disable the statobject check completely
+	// 	let requireStatObject: boolean = true // set to false for backwards compability
+	// 	let disableStatObject: boolean = false // set to true to disable the statobject check completely
 
-		let pd = this._getPeripheralDevice()
-		if (pd && (pd.settings || {}).enableBackwardsCompability) {
-			requireStatObject = false
-		}
-		if (pd && (pd.settings || {}).disableStatObj) {
-			disableStatObject = true
-		}
+	// 	let pd = this._getPeripheralDevice()
+	// 	if (pd && (pd.settings || {}).enableBackwardsCompability) {
+	// 		requireStatObject = false
+	// 	}
+	// 	if (pd && (pd.settings || {}).disableStatObj) {
+	// 		disableStatObject = true
+	// 	}
 
-		if (disableStatObject) return true
+	// 	if (disableStatObject) return true
 
-		let studioId = this._getStudioId()
-		if (!studioId) {
-			this.logger.warn('no studioId')
-			return false
-		}
+	// 	let studioId = this._getStudioId()
+	// 	if (!studioId) {
+	// 		this.logger.warn('no studioId')
+	// 		return false
+	// 	}
 
-		let statObjId = studioId + '_statObj'
+	// 	let statObjId = studioId + '_statObj'
 
-		let statObject = this._coreHandler.core.getCollection('studioTimeline').find(statObjId)[0]
+	// 	let statObject = this._coreHandler.core.getCollection('timeline').find(statObjId)[0]
 
-		if (!statObject) {
-			if (requireStatObject) {
-				this.logger.info('no statObject')
-				return false
-			} else {
-				return true
-			}
-		}
+	// 	if (!statObject) {
+	// 		if (requireStatObject) {
+	// 			this.logger.info('no statObject')
+	// 			return false
+	// 		} else {
+	// 			return true
+	// 		}
+	// 	}
 
-		this.logger.info('statObject found')
+	// 	this.logger.info('statObject found')
 
-		let statObjCount 	= (statObject.content || {}).objCount || 0
-		let statObjHash 	= (statObject.content || {}).objHash || ''
+	// 	let statObjCount 	= (statObject.content || {}).objCount || 0
+	// 	let statObjHash 	= (statObject.content || {}).objHash || ''
 
-		// collect statistics
-		let objs = this.getTimeline(true)
-		if (!objs) return false
+	// 	// collect statistics
+	// 	let objs = this.getTimeline(true)
+	// 	if (!objs) return false
 
-		// Number of objects
-		let objCount = objs.length
-		// Hash of all objects
-		objs = objs.sort((a, b) => {
-			if (a._id < b._id) return 1
-			if (a._id > b._id) return -1
-			return 0
-		})
-		let objHash = getHash(stringifyObjects(objs))
+	// 	// Number of objects
+	// 	let objCount = objs.length
+	// 	// Hash of all objects
+	// 	objs = objs.sort((a, b) => {
+	// 		if (a._id < b._id) return 1
+	// 		if (a._id > b._id) return -1
+	// 		return 0
+	// 	})
+	// 	let objHash = getHash(stringifyObjects(objs))
 
-		if (objCount !== statObjCount) {
-			this.logger.info('Delaying timeline update, objcount differ (' + objCount + ',' + statObjCount + ') ')
-			return false
-		}
-		if (objHash !== statObjHash) {
-			this.logger.info('Delaying timeline update, hash differ (' + objHash + ',' + statObjHash + ') ')
-			return false
-		}
-		return true
-	}
+	// 	if (objCount !== statObjCount) {
+	// 		this.logger.info('Delaying timeline update, objcount differ (' + objCount + ',' + statObjCount + ') ')
+	// 		return false
+	// 	}
+	// 	if (objHash !== statObjHash) {
+	// 		this.logger.info('Delaying timeline update, hash differ (' + objHash + ',' + statObjHash + ') ')
+	// 		return false
+	// 	}
+	// 	return true
+	// }
 }
-function stringifyObjects (objs) {
-	if (_.isArray(objs)) {
-		return _.map(objs, (obj) => {
-			if (obj !== undefined) {
-				return stringifyObjects(obj)
-			}
-		}).join(',')
-	} else if (_.isFunction(objs)) {
-		return ''
-	} else if (_.isObject(objs)) {
-		let keys = _.sortBy(_.keys(objs), (k) => k)
+// function stringifyObjects (objs) {
+// 	if (_.isArray(objs)) {
+// 		return _.map(objs, (obj) => {
+// 			if (obj !== undefined) {
+// 				return stringifyObjects(obj)
+// 			}
+// 		}).join(',')
+// 	} else if (_.isFunction(objs)) {
+// 		return ''
+// 	} else if (_.isObject(objs)) {
+// 		let keys = _.sortBy(_.keys(objs), (k) => k)
 
-		return _.compact(_.map(keys, (key) => {
-			if (objs[key] !== undefined) {
-				return key + '=' + stringifyObjects(objs[key])
-			} else {
-				return null
-			}
-		})).join(',')
-	} else {
-		return objs + ''
-	}
-}
+// 		return _.compact(_.map(keys, (key) => {
+// 			if (objs[key] !== undefined) {
+// 				return key + '=' + stringifyObjects(objs[key])
+// 			} else {
+// 				return null
+// 			}
+// 		})).join(',')
+// 	} else {
+// 		return objs + ''
+// 	}
+// }
 
 export function getHash (str: string): string {
 	const hash = crypto.createHash('sha1')
