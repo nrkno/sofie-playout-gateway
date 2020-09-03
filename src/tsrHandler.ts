@@ -274,7 +274,7 @@ export class TSRHandler {
 	getTimeline (): {
 		// Copied from Core:
 		_id: string, // Studio id
-		mappingHash: string,
+		mappingsHash: string,
 		timeline: TimelineObjGeneric[]
 	} | undefined {
 		let studioId = this._getStudioId()
@@ -352,8 +352,8 @@ export class TSRHandler {
 			return
 		}
 		// Compare mappingsHash to ensure that the timeline we've received is in sync with the mappings:
-		if (timeline.mappingHash !== mappingsObject.mappingsHash) {
-			this.logger.debug(`Cancel resolving: mappingHash differ: "${timeline.mappingHash}" vs "${mappingsObject.mappingsHash}"`)
+		if (timeline.mappingsHash !== mappingsObject.mappingsHash) {
+			this.logger.info(`Cancel resolving: mappingsHash differ: "${timeline.mappingsHash}" vs "${mappingsObject.mappingsHash}"`)
 			return
 		}
 
