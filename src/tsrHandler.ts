@@ -37,6 +37,7 @@ export interface TSRSettings { // Runtime settings from Core
 	errorReporting?: boolean
 	multiThreading?: boolean
 	multiThreadedResolver?: boolean
+	useCacheWhenResolving?: boolean
 }
 export interface TSRDevice {
 	coreConnection: CoreConnection
@@ -135,6 +136,7 @@ export class TSRHandler {
 				},
 				initializeAsClear: (settings.initializeAsClear !== false),
 				multiThreadedResolver : settings.multiThreadedResolver === true,
+				useCacheWhenResolving : settings.useCacheWhenResolving === true,
 				proActiveResolve: true
 			}
 			this.tsr = new Conductor(c)
