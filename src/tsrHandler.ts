@@ -842,7 +842,8 @@ export class TSRHandler {
 						item => {
 							return {
 								...item.content,
-								rundownId: item.rundownId
+								rundownId: item.rundownId,
+								playlistId: item.playlistId
 							}
 						}
 					)
