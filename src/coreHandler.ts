@@ -61,9 +61,6 @@ export class CoreHandler {
 	private _coreConfig?: CoreConfig
 	private _process?: Process
 
-	private _studioId: string
-	private _timelineSubscription: string | null = null
-
 	private _statusInitialized: boolean = false
 	private _statusDestroyed: boolean = false
 
@@ -129,6 +126,8 @@ export class CoreHandler {
 				_id: this.core.deviceId
 			}),
 			this.core.autoSubscribe('studioOfDevice', this.core.deviceId),
+			this.core.autoSubscribe('mappingsForDevice', this.core.deviceId),
+			this.core.autoSubscribe('timelineForDevice', this.core.deviceId),
 			this.core.autoSubscribe('peripheralDeviceCommands', this.core.deviceId)
 		])
 		.then(() => {
@@ -246,23 +245,6 @@ export class CoreHandler {
 				this.reportAllCommands = this.deviceSettings['reportAllCommands']
 			}
 
-			let studioId = device.studioId
-			if (studioId !== this._studioId) {
-				this._studioId = studioId
-
-				if (this._timelineSubscription) {
-					this.core.unsubscribe(this._timelineSubscription)
-					this._timelineSubscription = null
-				}
-				this.core.autoSubscribe('timeline', {
-					studioId: studioId
-				}).then((subscriptionId) => {
-					this._timelineSubscription = subscriptionId
-				}).catch((err) => {
-					this.logger.error(err)
-				})
-			}
-
 			if (this._tsrHandler) {
 				this._tsrHandler.onSettingsChanged()
 			}
@@ -376,12 +358,12 @@ export class CoreHandler {
 		this.logger.info('getSnapshot')
 		let timeline = (
 			this._tsrHandler ?
-			this._tsrHandler.getTimeline(false) :
+			this._tsrHandler.getTimeline() :
 			[]
 		)
 		let mappings = (
 			this._tsrHandler ?
-			this._tsrHandler.getMapping() :
+			this._tsrHandler.getMappings() :
 			[]
 		)
 		return {
