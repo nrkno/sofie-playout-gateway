@@ -6046,12 +6046,12 @@ stubs@^3.0.0:
   resolved "https://registry.yarnpkg.com/stubs/-/stubs-3.0.0.tgz#e8d2ba1fa9c90570303c030b6900f7d5f89abe5b"
   integrity sha1-6NK6H6nJBXAwPAMLaQD31fiavls=
 
-superfly-timeline@^7.3.1:
-  version "7.3.1"
-  resolved "https://registry.yarnpkg.com/superfly-timeline/-/superfly-timeline-7.3.1.tgz#6a7aa04a768be198c677ad8a1e8eacdfc603c8fb"
-  integrity sha512-xmg9GgVNWUPA48MGwrwicwP/yEw7gZSl5nVnwcf3p50GZx1ChOxa5rCJQyTpPoyKG8pqwXKZkbJsq2ylk2p4iQ==
+superfly-timeline@^8.1.0:
+  version "8.1.0"
+  resolved "https://registry.yarnpkg.com/superfly-timeline/-/superfly-timeline-8.1.0.tgz#40666fc1a1f65d7df5184046be5b1f626154c64e"
+  integrity sha512-Bt8QZdz30khJ+dka6fBgfVPptx2iVW/qbNuaePs3iNO0B+vP8lsjt4Fq+yIhSWldSRfI3trwDXN8UYpQ1jDy/w==
   dependencies:
-    tslib "^1.10.0"
+    tslib "^1.13.0"
     underscore "^1.9.1"
 
 supports-color@^5.3.0:
@@ -6200,17 +6200,17 @@ through@2, "through@>=2.2.7 <3":
   resolved "https://registry.yarnpkg.com/through/-/through-2.3.8.tgz#0dd4c9ffaabc357960b1b724115d7e0e86a2e1f5"
   integrity sha1-DdTJ/6q8NXlgsbckEV1+Doai4fU=
 
-timeline-state-resolver-types@4.0.0-nightly-20200611-075605-93ae546a.0:
-  version "4.0.0-nightly-20200611-075605-93ae546a.0"
-  resolved "https://registry.yarnpkg.com/timeline-state-resolver-types/-/timeline-state-resolver-types-4.0.0-nightly-20200611-075605-93ae546a.0.tgz#aa161da876d23591f1a6bf618b62e3262b1c116b"
-  integrity sha512-KC0Ab9pgBQ6lPZO2AaNIqRs/QxhDjPwUMAj/RLtvXhTmRgiim7IOFZTkD1FO2+IO3flZo3FI45K6zXTDGNRlWw==
+timeline-state-resolver-types@^4.0.0:
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/timeline-state-resolver-types/-/timeline-state-resolver-types-4.0.3.tgz#42be337d42fba647000bac99c346587a7e72a722"
+  integrity sha512-urKK2rTz2FKpPUxARJoVAorQuKdFHV45lXxQmNJd62SVDXHqxN0djv5YKj4zgX4qN/7IrEmQKCPNEWt2iPCzAA==
   dependencies:
     tslib "^1.13.0"
 
-timeline-state-resolver@4.0.0-nightly-release23-20200831-133920-83167e53.0:
-  version "4.0.0-nightly-release23-20200831-133920-83167e53.0"
-  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-4.0.0-nightly-release23-20200831-133920-83167e53.0.tgz#77502262be6f23a93764e1ad69056426b10427f7"
-  integrity sha512-PfOFggLZhFUrpGPAdNeprzb84dkAhE5Y1C1knq20Is9mnnyWMBtCN6G4EgOPgvTOMjG+74ZXii9S89o4iEjq2w==
+timeline-state-resolver@4.0.0-nightly-release24-1-20200903-111013-2e6c17d1.0:
+  version "4.0.0-nightly-release24-1-20200903-111013-2e6c17d1.0"
+  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-4.0.0-nightly-release24-1-20200903-111013-2e6c17d1.0.tgz#bffcb9b049340d20ec012e7bf0f158594976c8a1"
+  integrity sha512-BXAxrG7XmdhxJqTo5Fwprp/iVarjwYuLqwg0/6BGswMVbiTjZW9NK3ezdhG4cph5fpvs7v179sdRhcpo28rQ4g==
   dependencies:
     atem-state "^0.10.0"
     bufferutil "^4.0.1"
@@ -6224,7 +6224,7 @@ timeline-state-resolver@4.0.0-nightly-release23-20200831-133920-83167e53.0:
     p-timeout "^3.2.0"
     request "^2.88.0"
     sprintf-js "^1.1.2"
-    superfly-timeline "^7.3.1"
+    superfly-timeline "^8.1.0"
     threadedclass "^0.7.0"
     tslib "^1.10.0"
     tv-automation-quantel-gateway-client "^1.0.8"
@@ -6465,10 +6465,10 @@ tv-automation-quantel-gateway-client@^1.0.8:
     got "^11.0.2"
     underscore "^1.9.1"
 
-tv-automation-server-core-integration@2.0.0-nightly-release23-20200730-111752-c6bf53e.0:
-  version "2.0.0-nightly-release23-20200730-111752-c6bf53e.0"
-  resolved "https://registry.yarnpkg.com/tv-automation-server-core-integration/-/tv-automation-server-core-integration-2.0.0-nightly-release23-20200730-111752-c6bf53e.0.tgz#2183bcd00a04ba614e2ce84135f93828d160cd36"
-  integrity sha512-T+o83b2F+NBUD8B9VUe//g+GtdJRtYuPBTlVS/Dq+6rh1ZMZoUPYTBOgqaxSMDInL+lZpaQfic88OwJaUQaSFw==
+tv-automation-server-core-integration@2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/tv-automation-server-core-integration/-/tv-automation-server-core-integration-2.0.0.tgz#f9b1039126c6b8648b4ce37e4f7ca8639ee7a03d"
+  integrity sha512-lMuh9zBkIIJRa0jJBZwtintsLzySF+JK3Rc0HqCkCpQ84/nURD+Tk67A3Rtpq9zz1OjOPsfA2sV6PgiEsaoxBg==
   dependencies:
     data-store "3.1.0"
     ddp "git+http://github.com/nytamin/node-ddp-client.git#v0.12.2-next2"
@@ -6476,13 +6476,13 @@ tv-automation-server-core-integration@2.0.0-nightly-release23-20200730-111752-c6
     tslib "^1.13.0"
     underscore "^1.10.2"
 
-tv-automation-sofie-blueprints-integration@2.1.0-nightly-20200625-055003-623cf11.0:
-  version "2.1.0-nightly-20200625-055003-623cf11.0"
-  resolved "https://registry.yarnpkg.com/tv-automation-sofie-blueprints-integration/-/tv-automation-sofie-blueprints-integration-2.1.0-nightly-20200625-055003-623cf11.0.tgz#62d43c40bc6c547eab5711143a9fcc1d36954780"
-  integrity sha512-Ww+o1CTYINHV609e9SBnJwJfiOp4+jUmPLdx30n1fJJijsvWpK/c2cm+q7eRjI5jK0mJI4Ysg2hEeO9+TNBVfg==
+tv-automation-sofie-blueprints-integration@2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/tv-automation-sofie-blueprints-integration/-/tv-automation-sofie-blueprints-integration-2.1.0.tgz#906b2a4d9d49674fabf4221f06117f35870cb76d"
+  integrity sha512-St9GsGCNriO+C+hzQnUbu/VaPqE+6Iv/us+NrqYMVFrmcBkIK6IMy9v095bfmdCAto0tFr4ovIR4t+Y3mEghUQ==
   dependencies:
     moment "2.22.2"
-    timeline-state-resolver-types "4.0.0-nightly-20200611-075605-93ae546a.0"
+    timeline-state-resolver-types "^4.0.0"
     tslib "^1.13.0"
     underscore "1.9.1"
 
