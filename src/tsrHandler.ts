@@ -447,7 +447,8 @@ export class TSRHandler {
 
 				deviceOptions = _.extend({ // Defaults:
 					limitSlowSentCommand: 40,
-					limitSlowFulfilledCommand: 100
+					limitSlowFulfilledCommand: 100,
+					options: {}
 				}, deviceOptions)
 
 				if (this._multiThreaded !== null && deviceOptions.isMultiThreaded === undefined) {
