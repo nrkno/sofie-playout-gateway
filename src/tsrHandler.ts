@@ -38,6 +38,7 @@ export interface TSRSettings { // Runtime settings from Core
 	errorReporting?: boolean
 	multiThreading?: boolean
 	multiThreadedResolver?: boolean
+	useCacheWhenResolving?: boolean
 }
 export interface TSRDevice {
 	coreConnection: CoreConnection
@@ -136,6 +137,7 @@ export class TSRHandler {
 					return this._coreHandler.core.getCurrentTime()
 				},
 				initializeAsClear: (settings.initializeAsClear !== false),
+				useCacheWhenResolving : settings.useCacheWhenResolving === true,
 				multiThreadedResolver : settings.multiThreadedResolver === true,
 				proActiveResolve: true
 			}
