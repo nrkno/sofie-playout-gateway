@@ -270,8 +270,13 @@ const PLAYOUT_SUBDEVICE_CONFIG: SubDeviceConfigManifest['config'] = {
 			type: ConfigManifestEntryType.STRING
 		},
 		{
-			id: 'options.ISAUrl',
-			name: 'ISA URL',
+			id: 'options.ISAUrlMaster',
+			name: 'ISA URL (Master)',
+			type: ConfigManifestEntryType.STRING
+		},
+		{
+			id: 'options.ISAUrlBackup',
+			name: 'ISA URL (Backup)',
 			type: ConfigManifestEntryType.STRING
 		},
 		{
@@ -283,6 +288,11 @@ const PLAYOUT_SUBDEVICE_CONFIG: SubDeviceConfigManifest['config'] = {
 			id: 'options.serverId',
 			name: 'Quantel Server ID',
 			type: ConfigManifestEntryType.NUMBER
+		},
+		{
+			id: 'options.allowCloneClips',
+			name: 'Allow cloning of clips if on wrong server/pool',
+			type: ConfigManifestEntryType.BOOLEAN
 		}
 	],
 	[TSRDeviceType.VIZMSE]: [
@@ -347,6 +357,11 @@ const PLAYOUT_SUBDEVICE_CONFIG: SubDeviceConfigManifest['config'] = {
 			id: 'options.initializeRundownOnLoadAll',
 			name: 'On preload-All elements, also initialize the rundown playlist again',
 			type: ConfigManifestEntryType.BOOLEAN
+		},
+		{
+			id: 'options.clearAllCommands',
+			name: 'Clear All Channels Commands',
+			type: ConfigManifestEntryType.MULTILINE_STRING
 		}
 	]
 }
@@ -366,6 +381,11 @@ export const PLAYOUT_DEVICE_CONFIG: DeviceConfigManifest = {
 		{
 			id: 'multiThreadedResolver',
 			name: 'Activate Multi-Threaded Timeline Resolving',
+			type: ConfigManifestEntryType.BOOLEAN
+		},
+		{
+			id: 'useCacheWhenResolving',
+			name: 'Activate Partial resolving, when resolving the Timeline',
 			type: ConfigManifestEntryType.BOOLEAN
 		},
 		{
