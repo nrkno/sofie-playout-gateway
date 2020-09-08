@@ -305,12 +305,15 @@ export class CoreHandler {
 					this.logger.error(e)
 				})
 			}
-			// @ts-ignore
-			let fcn: Function = fcnObject[cmd.functionName]
+			let fcn: Function = (
+				fcnObject._device && fcnObject._device._device ?
+				fcnObject._device._device[cmd.functionName] : // fcnObject is a CoreTSRDeviceHandler
+				fcnObject[cmd.functionName]
+			)
 			try {
-				if (!fcn) throw Error('Function "' + cmd.functionName + '" not found!')
+				if (!fcn) throw Error(`Function "${cmd.functionName}" not found on device "${cmd.deviceId}"!`)
 
-				Promise.resolve(fcn.apply(fcnObject, cmd.args))
+				Promise.resolve(fcn(...cmd.args))
 				.then((result) => {
 					cb(null, result)
 				})
