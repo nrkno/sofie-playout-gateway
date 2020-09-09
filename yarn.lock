@@ -555,10 +555,10 @@
   dependencies:
     execa "^0.2.2"
 
-"@sindresorhus/is@^3.0.0":
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-3.1.0.tgz#d8735532635bea69ad39119df5f0f10099bd09dc"
-  integrity sha512-n4J+zu52VdY43kdi/XdI9DzuMr1Mur8zFL5ZRG2opCans9aiFwkPxHYFEb5Xgy7n1Z4K6WfI4FpqUqsh3E8BPQ==
+"@sindresorhus/is@^3.1.1":
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-3.1.2.tgz#548650de521b344e3781fbdb0ece4aa6f729afb8"
+  integrity sha512-JiX9vxoKMmu8Y3Zr2RVathBL1Cdu4Nt4MuNWemt1Nc06A0RAin9c5FArkhGsyMBWfCu4zj+9b+GxtjAnE4qqLQ==
 
 "@sinonjs/commons@^1.7.0":
   version "1.8.1"
@@ -2784,19 +2784,19 @@ globby@^7.1.1:
     pify "^3.0.0"
     slash "^1.0.0"
 
-got@^11.0.2:
-  version "11.5.2"
-  resolved "https://registry.yarnpkg.com/got/-/got-11.5.2.tgz#772e3f3a06d9c7589c7c94dc3c83cdb31ddbf742"
-  integrity sha512-yUhpEDLeuGiGJjRSzEq3kvt4zJtAcjKmhIiwNp/eUs75tRlXfWcHo5tcBaMQtnjHWC7nQYT5HkY/l0QOQTkVww==
+got@^11.5.2:
+  version "11.6.1"
+  resolved "https://registry.yarnpkg.com/got/-/got-11.6.1.tgz#a307122fc136c446f676f7b939d89dbc6ed6b909"
+  integrity sha512-6izGvOsrd/4CsIdQMgweFOTCtS4sAwJTuCzIuVoTbCDzt3+wa3eGIHhSIMgEF6gfCDenslGlMUmAdPap5DkirQ==
   dependencies:
-    "@sindresorhus/is" "^3.0.0"
+    "@sindresorhus/is" "^3.1.1"
     "@szmarczak/http-timer" "^4.0.5"
     "@types/cacheable-request" "^6.0.1"
     "@types/responselike" "^1.0.0"
     cacheable-lookup "^5.0.3"
     cacheable-request "^7.0.1"
     decompress-response "^6.0.0"
-    http2-wrapper "^1.0.0-beta.5.0"
+    http2-wrapper "^1.0.0-beta.5.2"
     lowercase-keys "^2.0.0"
     p-cancelable "^2.0.0"
     responselike "^2.0.0"
@@ -2980,7 +2980,7 @@ http-signature@~1.2.0:
     jsprim "^1.2.2"
     sshpk "^1.7.0"
 
-http2-wrapper@^1.0.0-beta.5.0:
+http2-wrapper@^1.0.0-beta.5.2:
   version "1.0.0-beta.5.2"
   resolved "https://registry.yarnpkg.com/http2-wrapper/-/http2-wrapper-1.0.0-beta.5.2.tgz#8b923deb90144aea65cf834b016a340fc98556f3"
   integrity sha512-xYz9goEyBnC8XwXDTuC/MZ6t+MrKVQZOk4s7+PaDkwIsQd8IwqvM+0M6bA/2lvG8GHXcPdf+MejTUeO2LCPCeQ==
@@ -6207,10 +6207,10 @@ timeline-state-resolver-types@^4.0.0:
   dependencies:
     tslib "^1.13.0"
 
-timeline-state-resolver@4.0.0-nightly-release24-1-20200903-111013-2e6c17d1.0:
-  version "4.0.0-nightly-release24-1-20200903-111013-2e6c17d1.0"
-  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-4.0.0-nightly-release24-1-20200903-111013-2e6c17d1.0.tgz#bffcb9b049340d20ec012e7bf0f158594976c8a1"
-  integrity sha512-BXAxrG7XmdhxJqTo5Fwprp/iVarjwYuLqwg0/6BGswMVbiTjZW9NK3ezdhG4cph5fpvs7v179sdRhcpo28rQ4g==
+timeline-state-resolver@5.0.0-nightly-release24-20200909-082945-7086b22d.0:
+  version "5.0.0-nightly-release24-20200909-082945-7086b22d.0"
+  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-5.0.0-nightly-release24-20200909-082945-7086b22d.0.tgz#0aaeac0a9ab8ce3f74777dbf3ebf82db0d23a471"
+  integrity sha512-fiQMNv7hkB1L/h1QsTafE+Z0zGRpe/w+worc0ygLNnvUuN8QHaBmGc0RbGLl8U4/aQtibI8MhqKYNX64CcY6RA==
   dependencies:
     atem-state "^0.10.0"
     bufferutil "^4.0.1"
@@ -6227,7 +6227,7 @@ timeline-state-resolver@4.0.0-nightly-release24-1-20200903-111013-2e6c17d1.0:
     superfly-timeline "^8.1.0"
     threadedclass "^0.7.0"
     tslib "^1.10.0"
-    tv-automation-quantel-gateway-client "^1.0.8"
+    tv-automation-quantel-gateway-client "^1.0.12"
     underscore "^1.10.2"
     underscore-deep-extend "^1.1.5"
     utf-8-validate "^5.0.2"
@@ -6457,12 +6457,12 @@ tunnel-agent@^0.6.0:
   dependencies:
     safe-buffer "^5.0.1"
 
-tv-automation-quantel-gateway-client@^1.0.8:
-  version "1.0.8"
-  resolved "https://registry.yarnpkg.com/tv-automation-quantel-gateway-client/-/tv-automation-quantel-gateway-client-1.0.8.tgz#0b6bba56dc2824d8cacf8671e2d5236eadd7f5d8"
-  integrity sha512-VKB/a/vXF+chkGMA6/HEJ5/IH4OGmSSePf0oukYJY2i4K7IC3ehxJQSR/kuRU/NXq1zDFCHM1PDK+7l630WIzg==
+tv-automation-quantel-gateway-client@^1.0.12:
+  version "1.0.12"
+  resolved "https://registry.yarnpkg.com/tv-automation-quantel-gateway-client/-/tv-automation-quantel-gateway-client-1.0.12.tgz#2856a2d8459a9fe21c2eb12f54ecea471db3e930"
+  integrity sha512-yab4tXDifQAZhLRl+t03zSnSlu/N3Zh9zGHs5c3b1OuRSHTEFZqHIt6jnXVsxzHfLSTo2NYV5T5f8o4GmMVhIQ==
   dependencies:
-    got "^11.0.2"
+    got "^11.5.2"
     underscore "^1.9.1"
 
 tv-automation-server-core-integration@2.0.0:
