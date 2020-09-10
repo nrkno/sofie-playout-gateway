@@ -6489,9 +6489,9 @@ tv-automation-quantel-gateway-client@^1.0.8:
     got "^11.0.2"
     underscore "^1.9.1"
 
-"tv-automation-server-core-integration@git+https://github.com/olzzon/tv-automation-server-core-integration.git#v20200831_1":
+"tv-automation-server-core-integration@git+https://github.com/olzzon/tv-automation-server-core-integration.git#v20200910_1":
   version "1.5.1"
-  resolved "git+https://github.com/olzzon/tv-automation-server-core-integration.git#2c9e7d214d11fbac1b8aa499702365b3608b875f"
+  resolved "git+https://github.com/olzzon/tv-automation-server-core-integration.git#816249f584cf708c838272a392dedfa2156ecad6"
   dependencies:
     data-store "3.1.0"
     ddp "git+http://github.com/nytamin/node-ddp-client.git#v0.12.2-next2"
