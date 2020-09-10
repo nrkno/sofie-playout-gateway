@@ -310,7 +310,7 @@ export class CoreHandler {
 				fcnObject._device._device : // fcnObject is a CoreTSRDeviceHandler
 				fcnObject
 			)
-			let fcn: Function = fcnObject[cmd.functionName]
+			let fcn: Function = context[cmd.functionName]
 			try {
 				if (!fcn) throw Error(`Function "${cmd.functionName}" not found on device "${cmd.deviceId}"!`)
 
