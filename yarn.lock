@@ -6231,9 +6231,9 @@ through@2, "through@>=2.2.7 <3":
   dependencies:
     tslib "^1.13.0"
 
-"timeline-state-resolver@git+https://github.com/olzzon/tv-automation-state-timeline-resolver.git#dist20200908":
+"timeline-state-resolver@git+https://github.com/olzzon/tv-automation-state-timeline-resolver.git#dist20200910_1":
   version "3.20.1"
-  resolved "git+https://github.com/olzzon/tv-automation-state-timeline-resolver.git#e67d6f9bd47d6ba1fefee247a16c62324d7ab28a"
+  resolved "git+https://github.com/olzzon/tv-automation-state-timeline-resolver.git#44ac64c6de425320cfef316e38501ef50d4e7be0"
   dependencies:
     atem-connection "1.1.0"
     atem-state "^0.9.0"
