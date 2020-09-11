@@ -6225,15 +6225,15 @@ through@2, "through@>=2.2.7 <3":
   resolved "https://registry.yarnpkg.com/through/-/through-2.3.8.tgz#0dd4c9ffaabc357960b1b724115d7e0e86a2e1f5"
   integrity sha1-DdTJ/6q8NXlgsbckEV1+Doai4fU=
 
-"timeline-state-resolver-types@git+https://github.com/olzzon/tv-automation-state-timeline-resolver#dist_types20200911_1":
+"timeline-state-resolver-types@git+https://github.com/olzzon/tv-automation-state-timeline-resolver#dist_types20200911_2":
   version "1.3.0"
-  resolved "git+https://github.com/olzzon/tv-automation-state-timeline-resolver#72fbcc44db96d15fac3be1cb2a4627584cca46bc"
+  resolved "git+https://github.com/olzzon/tv-automation-state-timeline-resolver#a6cfc16ebd523f2b4107e15279ee7333abcaa3ba"
   dependencies:
     tslib "^1.13.0"
 
-"timeline-state-resolver@git+https://github.com/olzzon/tv-automation-state-timeline-resolver.git#dist20200911_1":
+"timeline-state-resolver@git+https://github.com/olzzon/tv-automation-state-timeline-resolver.git#dist20200911_2":
   version "3.20.1"
-  resolved "git+https://github.com/olzzon/tv-automation-state-timeline-resolver.git#5672c7fb47dcbccde9810e4248cb44d027bfd38a"
+  resolved "git+https://github.com/olzzon/tv-automation-state-timeline-resolver.git#7972d35bdefd498fb5cf6654f1161c00e52b006a"
   dependencies:
     atem-connection "1.1.0"
     atem-state "^0.9.0"
@@ -6499,12 +6499,12 @@ tv-automation-quantel-gateway-client@^1.0.8:
     tslib "^1.13.0"
     underscore "^1.10.2"
 
-"tv-automation-sofie-blueprints-integration@git+https://github.com/olzzon/tv-automation-sofie-blueprints-integration.git#dist20200911_1":
+"tv-automation-sofie-blueprints-integration@git+https://github.com/olzzon/tv-automation-sofie-blueprints-integration.git#dist20200911_2":
   version "2.1.0"
-  resolved "git+https://github.com/olzzon/tv-automation-sofie-blueprints-integration.git#690e6b36e4d612470128c18091a448fa1e8fa1eb"
+  resolved "git+https://github.com/olzzon/tv-automation-sofie-blueprints-integration.git#f281c3f85d567c7a386bd0dd415b2ed3a2e071bc"
   dependencies:
     moment "2.22.2"
-    timeline-state-resolver-types "git+https://github.com/olzzon/tv-automation-state-timeline-resolver#dist_types20200911_1"
+    timeline-state-resolver-types "git+https://github.com/olzzon/tv-automation-state-timeline-resolver#dist_types20200911_2"
     tslib "^1.13.0"
     underscore "1.9.1"
 
