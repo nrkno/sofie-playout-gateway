@@ -384,11 +384,6 @@ export const PLAYOUT_DEVICE_CONFIG: DeviceConfigManifest = {
 			type: ConfigManifestEntryType.BOOLEAN
 		},
 		{
-			id: 'useCacheWhenResolving',
-			name: 'Activate Partial resolving, when resolving the Timeline',
-			type: ConfigManifestEntryType.BOOLEAN
-		},
-		{
 			id: 'reportAllCommands',
 			name: 'Report command timings on all commands',
 			type: ConfigManifestEntryType.BOOLEAN
