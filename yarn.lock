@@ -6046,7 +6046,7 @@ stubs@^3.0.0:
   resolved "https://registry.yarnpkg.com/stubs/-/stubs-3.0.0.tgz#e8d2ba1fa9c90570303c030b6900f7d5f89abe5b"
   integrity sha1-6NK6H6nJBXAwPAMLaQD31fiavls=
 
-superfly-timeline@^8.1.0:
+superfly-timeline@^8.1.1:
   version "8.1.1"
   resolved "https://registry.yarnpkg.com/superfly-timeline/-/superfly-timeline-8.1.1.tgz#8b0896bba6fcf495cdc831b21f9ddd815009d5cb"
   integrity sha512-ahLJz2/udclXVXJllNJbirx/5f+/oMMwbvQCPcoMrUM55hS7bJBDg8k6Yik7+FO5GJCfes/ly/GL9dxSaQS5Gg==
@@ -6207,10 +6207,10 @@ timeline-state-resolver-types@^4.0.0:
   dependencies:
     tslib "^1.13.0"
 
-timeline-state-resolver@5.0.0-nightly-release24-20200909-082945-7086b22d.0:
-  version "5.0.0-nightly-release24-20200909-082945-7086b22d.0"
-  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-5.0.0-nightly-release24-20200909-082945-7086b22d.0.tgz#0aaeac0a9ab8ce3f74777dbf3ebf82db0d23a471"
-  integrity sha512-fiQMNv7hkB1L/h1QsTafE+Z0zGRpe/w+worc0ygLNnvUuN8QHaBmGc0RbGLl8U4/aQtibI8MhqKYNX64CcY6RA==
+timeline-state-resolver@5.0.0-nightly-release24-20200914-120931-3357b9dc.0:
+  version "5.0.0-nightly-release24-20200914-120931-3357b9dc.0"
+  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-5.0.0-nightly-release24-20200914-120931-3357b9dc.0.tgz#31afaeb661927ae2d8cb17ce1291f69d516f7d0e"
+  integrity sha512-PNH/vdGSvkKzHCwlGcB0u66P2zKlRYmJAFYkZocVGPFFb5YOdR2StsXKi9OjLHDlltq8OcKcMbFWgWt0nzfpQA==
   dependencies:
     atem-state "^0.10.0"
     bufferutil "^4.0.1"
@@ -6224,7 +6224,7 @@ timeline-state-resolver@5.0.0-nightly-release24-20200909-082945-7086b22d.0:
     p-timeout "^3.2.0"
     request "^2.88.0"
     sprintf-js "^1.1.2"
-    superfly-timeline "^8.1.0"
+    superfly-timeline "^8.1.1"
     threadedclass "^0.7.0"
     tslib "^1.10.0"
     tv-automation-quantel-gateway-client "^1.0.12"
