@@ -558,7 +558,8 @@ export class CoreTSRDeviceHandler {
 	}
 	/** Send the device status to Core */
 	sendStatus() {
-		console.error('sendStatus', this._deviceId)
+		if (!this.core) return // not initialized yet
+
 		this.core.setStatus(this._deviceStatus)
 		.catch(e => this._coreParentHandler.logger.error('Error when setting status: ', e, e.stack))
 	}
@@ -575,7 +576,7 @@ export class CoreTSRDeviceHandler {
 			errorMessage,
 			ref
 		])
-		.catch(e => this._coreParentHandler.logger.error('Error when setting status: ' + e, e.stack))
+		.catch(e => this._coreParentHandler.logger.error('Error when callMethodLowPrio: ', e, e.stack))
 	}
 
 	async dispose (): Promise<void> {
