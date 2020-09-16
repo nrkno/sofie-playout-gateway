@@ -146,6 +146,7 @@ export class TSRHandler {
 
 			coreHandler.onConnected(() => {
 				this.setupObservers()
+				this.resendStatuses()
 			})
 			this.setupObservers()
 
@@ -269,6 +270,11 @@ export class TSRHandler {
 		deviceObserver.removed = () => { this._triggerUpdateDevices() }
 		this._observers.push(deviceObserver)
 
+	}
+	resendStatuses () {
+		_.each(this._coreTsrHandlers, (tsrHandler) => {
+			tsrHandler.sendStatus()
+		})
 	}
 	destroy (): Promise<void> {
 		return this.tsr.destroy()
@@ -533,7 +539,7 @@ export class TSRHandler {
 			// Set up device status
 			const deviceType = device.deviceType
 
-			const onConnectionChanged = (connectedOrStatus: boolean | P.StatusObject) => {
+			const onDeviceStatusChanged = (connectedOrStatus: boolean | P.StatusObject) => {
 				let deviceStatus: P.StatusObject
 				if (_.isBoolean(connectedOrStatus)) { // for backwards compability, to be removed later
 					if (connectedOrStatus) {
@@ -549,7 +555,7 @@ export class TSRHandler {
 				} else {
 					deviceStatus = connectedOrStatus
 				}
-				coreTsrHandler.onConnectionChanged(deviceStatus)
+				coreTsrHandler.statusChanged(deviceStatus)
 				// hack to make sure atem has media after restart
 				if (
 					(deviceStatus.statusCode === P.StatusCode.GOOD || deviceStatus.statusCode === P.StatusCode.WARNING_MINOR || deviceStatus.statusCode === P.StatusCode.WARNING_MAJOR)
@@ -638,7 +644,7 @@ export class TSRHandler {
 				// Called if a child is closed / crashed
 				this.logger.warn(`Child of device ${deviceId} closed/crashed`)
 
-				onConnectionChanged({
+				onDeviceStatusChanged({
 					statusCode: P.StatusCode.BAD,
 					messages: ['Child process closed']
 				})
@@ -650,7 +656,7 @@ export class TSRHandler {
 					this._triggerUpdateDevices()
 				})
 			}
-			await device.device.on('connectionChanged', onConnectionChanged)
+			await device.device.on('connectionChanged', onDeviceStatusChanged)
 			await device.device.on('slowCommand', onSlowCommand)
 			await device.device.on('commandError', onCommandError)
 			await device.device.on('commandReport', onCommandReport)
@@ -661,7 +667,7 @@ export class TSRHandler {
 			await device.device.on('debug',	(e, ...args) => this.logger.debug(fixError(e), ...args))
 
 			// also ask for the status now, and update:
-			onConnectionChanged(await device.device.getStatus())
+			onDeviceStatusChanged(await device.device.getStatus())
 
 		} catch (e) {
 

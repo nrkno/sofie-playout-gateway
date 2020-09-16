@@ -480,6 +480,10 @@ export class CoreTSRDeviceHandler {
 	private _tsrHandler: TSRHandler
 	private _subscriptions: Array<string> = []
 	private _hasGottenStatusChange: boolean = false
+	private _deviceStatus: P.StatusObject = {
+		statusCode: P.StatusCode.BAD,
+		messages: ['Starting up...']
+	}
 
 	constructor (parent: CoreHandler, device: Promise<DeviceContainer>, deviceId: string, tsrHandler: TSRHandler) {
 		this._coreParentHandler = parent
@@ -509,13 +513,14 @@ export class CoreTSRDeviceHandler {
 		await this.core.init(this._coreParentHandler.core)
 
 		if (!this._hasGottenStatusChange) {
-			await this.core.setStatus({
+			this._deviceStatus = {
 				statusCode: (
 					await this._device.device.canConnect ?
 					(await this._device.device.connected ? P.StatusCode.GOOD : P.StatusCode.BAD) :
 					P.StatusCode.GOOD
 				)
-			})
+			}
+			await this.sendStatus()
 		}
 		await this.setupSubscriptionsAndObservers()
 		console.log('setupSubscriptionsAndObservers done')
@@ -545,11 +550,17 @@ export class CoreTSRDeviceHandler {
 		// setup observers
 		this._coreParentHandler.setupObserverForPeripheralDeviceCommands(this)
 	}
-	onConnectionChanged (deviceStatus: P.StatusObject) {
+	statusChanged (deviceStatus: P.StatusObject) {
 		this._hasGottenStatusChange = true
 
-		this.core.setStatus(deviceStatus)
-		.catch(e => this._coreParentHandler.logger.error('Error when setting status: ' + e, e.stack))
+		this._deviceStatus = deviceStatus
+		this.sendStatus()
+	}
+	/** Send the device status to Core */
+	sendStatus() {
+		console.error('sendStatus', this._deviceId)
+		this.core.setStatus(this._deviceStatus)
+		.catch(e => this._coreParentHandler.logger.error('Error when setting status: ', e, e.stack))
 	}
 	onCommandError (
 		errorMessage: string,
