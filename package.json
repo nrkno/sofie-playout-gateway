@@ -92,7 +92,7 @@
   "dependencies": {
     "atem-connection": "0.10.0",
     "fast-clone": "^1.5.13",
-    "timeline-state-resolver": "4.0.3",
+    "timeline-state-resolver": "4.0.4-nightly-hotfix-sync-cache-reset-20200921-071145-10631301.0",
     "tslib": "^1.13.0",
     "tv-automation-server-core-integration": "1.5.1",
     "tv-automation-sofie-blueprints-integration": "2.1.0",
