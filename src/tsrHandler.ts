@@ -868,14 +868,17 @@ export class TSRHandler {
 			}
 		}
 
-		this.logger.info('statObject found')
-
 		let statObjCount 	= (statObject.content || {}).objCount || 0
 		let statObjHash 	= (statObject.content || {}).objHash || ''
 
+		this.logger.info(`statObject found. ObjCount: ${statObjCount}, ObjHash: ${statObjHash}`)
+
 		// collect statistics
 		let objs = this.getTimeline(true)
-		if (!objs) return false
+		if (!objs) {
+			this.logger.error('No timeline found during statObj comparison')
+			return false
+		}
 
 		// Number of objects
 		let objCount = objs.length

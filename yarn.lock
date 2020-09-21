@@ -6241,10 +6241,10 @@ timeline-state-resolver-types@^4.0.0:
   dependencies:
     tslib "^1.13.0"
 
-timeline-state-resolver@4.0.3:
-  version "4.0.3"
-  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-4.0.3.tgz#e05294b064f286911d408c79077c13e619fb0f99"
-  integrity sha512-rE3gTHsimh1BGbwyYceAn21OBnS2WC7FpHRc3dGKRR54S03dMvrosx064Za4y61zY8gPvddZ3VKI02s/sf2rnQ==
+timeline-state-resolver@^4.0.4:
+  version "4.0.4"
+  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-4.0.4.tgz#038a368cf94e4497090ae8d5435855efbf44e20d"
+  integrity sha512-u/iJ3Ei/5Ds9/UQkUKp2zjfUFzqpfavOjbTY24zh4OP8QqrBsSO3WG8BMzlvxh5K5SmSUdECDoR35rsrPIzmng==
   dependencies:
     atem-connection "1.1.0"
     atem-state "^0.9.0"
