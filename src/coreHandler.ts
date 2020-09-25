@@ -254,7 +254,7 @@ export class CoreHandler {
 		return !!this.deviceSettings['debugLogging']
 	}
 
-	executeFunction (cmd: PeripheralDeviceCommand, fcnObject: any) {
+	executeFunction (cmd: PeripheralDeviceCommand, fcnObject: CoreHandler | CoreTSRDeviceHandler) {
 		if (cmd) {
 			if (this._executedFunctions[cmd._id]) return // prevent it from running multiple times
 			this.logger.debug(`Executing function "${cmd.functionName}", args: ${JSON.stringify(cmd.args)}`)
@@ -265,7 +265,7 @@ export class CoreHandler {
 				if (err) {
 					this.logger.error('executeFunction error', err, err.stack)
 				}
-				this.core.callMethod(P.methods.functionReply, [cmd._id, err, res])
+				fcnObject.core.callMethod(P.methods.functionReply, [cmd._id, err, res])
 				.then(() => {
 					// console.log('cb done')
 				})
@@ -557,7 +557,7 @@ export class CoreTSRDeviceHandler {
 		this.sendStatus()
 	}
 	/** Send the device status to Core */
-	sendStatus() {
+	sendStatus () {
 		if (!this.core) return // not initialized yet
 
 		this.core.setStatus(this._deviceStatus)
