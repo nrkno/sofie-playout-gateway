@@ -55,13 +55,13 @@ export class AtemUploadScript {
 		consoleLog('got a file')
 		if (this.connection.state && this.connection.state.media.stillPool[this.mediaPool]) {
 			consoleLog('has stills')
-			if (this.connection.state!.media.stillPool[this.mediaPool]!.isUsed) {
+			if (this.connection.state.media.stillPool[this.mediaPool].isUsed) {
 				consoleLog('still is used')
 				if (this.fileName.length === 63) {
 					consoleLog('filename is max length, change detection might fail')
 				}
 
-				if (this.connection.state!.media.stillPool[this.mediaPool]!.fileName === this.fileName) {
+				if (this.connection.state.media.stillPool[this.mediaPool].fileName === this.fileName) {
 					consoleLog('name equals')
 					return true
 				} else {

@@ -367,7 +367,7 @@ const PLAYOUT_SUBDEVICE_CONFIG: SubDeviceConfigManifest['config'] = {
 	[TSRDeviceType.SHOTOKU]: [
 		...PLAYOUT_SUBDEVICE_COMMON,
 		...PLAYOUT_SUBDEVICE_HOST_PORT
-	],
+	]
 }
 
 export const PLAYOUT_DEVICE_CONFIG: DeviceConfigManifest = {
