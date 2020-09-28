@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.10.1](https://github.com/nrkno/tv-automation-playout-gateway/compare/v1.10.0...v1.10.1) (2020-09-28)
+
+
+### Bug Fixes
+
+* minor types & linting issue ([cc0e705](https://github.com/nrkno/tv-automation-playout-gateway/commit/cc0e7053e70f87da0985e6ae9aa00c106ea65a92))
+
 ## [1.10.0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v1.9.3...v1.10.0) (2020-09-28)
 
 
