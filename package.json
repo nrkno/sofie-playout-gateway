@@ -94,7 +94,7 @@
     "timeline-state-resolver": "5.0.0",
     "tslib": "^1.13.0",
     "tv-automation-server-core-integration": "2.0.0",
-    "tv-automation-sofie-blueprints-integration": "2.2.0",
+    "tv-automation-sofie-blueprints-integration": "2.2.1",
     "underscore": "^1.9.1",
     "winston": "^2.4.2"
   },
