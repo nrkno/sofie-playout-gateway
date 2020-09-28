@@ -40,7 +40,7 @@ export class AtemUploadScript {
 
 	loadFile (url: string) {
 		return new Promise((resolve, reject) => {
-			this.fileName = url
+			this.fileName = url.substr(-63) // cannot be longer than 63 chars
 			fs.readFile(url, (e, data) => {
 				this.file = data
 				consoleLog('got file')
@@ -53,15 +53,15 @@ export class AtemUploadScript {
 	checkIfFileExistsOnAtem (): boolean {
 		if (!this.file) throw Error('Load a file locally before checking if it needs uploading')
 		consoleLog('got a file')
-		if (this.connection.state.media.stillPool[this.mediaPool]) {
+		if (this.connection.state && this.connection.state.media.stillPool[this.mediaPool]) {
 			consoleLog('has stills')
-			if (this.connection.state.media.stillPool[this.mediaPool].isUsed) {
+			if (this.connection.state!.media.stillPool[this.mediaPool]!.isUsed) {
 				consoleLog('still is used')
-				if (this.fileName.length > 63) {
-					consoleError('filename is too long, change detection will always fail')
+				if (this.fileName.length === 63) {
+					consoleLog('filename is max length, change detection might fail')
 				}
 
-				if (this.connection.state.media.stillPool[this.mediaPool].fileName === this.fileName) {
+				if (this.connection.state!.media.stillPool[this.mediaPool]!.fileName === this.fileName) {
 					consoleLog('name equals')
 					return true
 				} else {

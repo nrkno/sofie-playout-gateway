@@ -357,8 +357,17 @@ const PLAYOUT_SUBDEVICE_CONFIG: SubDeviceConfigManifest['config'] = {
 			id: 'options.initializeRundownOnLoadAll',
 			name: 'On preload-All elements, also initialize the rundown playlist again',
 			type: ConfigManifestEntryType.BOOLEAN
+		},
+		{
+			id: 'options.clearAllCommands',
+			name: 'Clear All Channels Commands',
+			type: ConfigManifestEntryType.MULTILINE_STRING
 		}
-	]
+	],
+	[TSRDeviceType.SHOTOKU]: [
+		...PLAYOUT_SUBDEVICE_COMMON,
+		...PLAYOUT_SUBDEVICE_HOST_PORT
+	],
 }
 
 export const PLAYOUT_DEVICE_CONFIG: DeviceConfigManifest = {
@@ -376,6 +385,11 @@ export const PLAYOUT_DEVICE_CONFIG: DeviceConfigManifest = {
 		{
 			id: 'multiThreadedResolver',
 			name: 'Activate Multi-Threaded Timeline Resolving',
+			type: ConfigManifestEntryType.BOOLEAN
+		},
+		{
+			id: 'useCacheWhenResolving',
+			name: 'Activate Partial resolving, when resolving the Timeline',
 			type: ConfigManifestEntryType.BOOLEAN
 		},
 		{

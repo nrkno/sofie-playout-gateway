@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.10.0-0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v1.9.0...v1.10.0-0) (2020-08-17)
+
+
+### Features
+
+* Viz clear command config manifest ([16640cf](https://github.com/nrkno/tv-automation-playout-gateway/commit/16640cf6c7dfff657c574787230ef939ed09a392))
+
+
 ### [1.9.3](https://github.com/nrkno/tv-automation-playout-gateway/compare/v1.9.2...v1.9.3) (2020-09-21)
 
 ### [1.9.2](https://github.com/nrkno/tv-automation-playout-gateway/compare/v1.9.1...v1.9.2) (2020-08-26)

@@ -21,7 +21,7 @@ import * as crypto from 'crypto'
 import * as cp from 'child_process'
 
 import * as _ from 'underscore'
-import { CoreConnection, PeripheralDeviceAPI as P, CollectionObj } from 'tv-automation-server-core-integration'
+import { CoreConnection, PeripheralDeviceAPI as P } from 'tv-automation-server-core-integration'
 import { TimelineObjectCoreExt } from 'tv-automation-sofie-blueprints-integration'
 import { LoggerInstance } from './index'
 import { disableAtemUpload } from './config'
@@ -37,6 +37,7 @@ export interface TSRSettings { // Runtime settings from Core
 	errorReporting?: boolean
 	multiThreading?: boolean
 	multiThreadedResolver?: boolean
+	useCacheWhenResolving?: boolean
 }
 export interface TSRDevice {
 	coreConnection: CoreConnection
@@ -81,6 +82,10 @@ export enum TimelineObjType {
 	/** "Magic object", used to calculate a hash of the timeline */
 	STAT = 'stat'
 }
+export interface TimelineComplete {
+	_id: string
+	timeline: Array<TimelineObjGeneric>
+}
 // ----------------------------------------------------------------------------
 
 export interface TimelineContentObjectTmp extends TSRTimelineObjBase {
@@ -96,8 +101,6 @@ export class TSRHandler {
 	tsr: Conductor
 	private _config: TSRConfig
 	private _coreHandler: CoreHandler
-	private _triggerupdateTimelineTimeout: any = null
-	private _triggerupdateMappingTimeout: any = null
 	private _triggerupdateDevicesTimeout: any = null
 	private _coreTsrHandlers: {[deviceId: string]: CoreTSRDeviceHandler} = {}
 	private _observers: Array<any> = []
@@ -135,14 +138,15 @@ export class TSRHandler {
 				},
 				initializeAsClear: (settings.initializeAsClear !== false),
 				multiThreadedResolver : settings.multiThreadedResolver === true,
+				useCacheWhenResolving : settings.useCacheWhenResolving === true,
 				proActiveResolve: true
 			}
 			this.tsr = new Conductor(c)
-			this._triggerupdateMapping()
-			this._triggerupdateTimeline()
+			this._triggerupdateTimelineAndMappings()
 
 			coreHandler.onConnected(() => {
 				this.setupObservers()
+				this.resendStatuses()
 			})
 			this.setupObservers()
 
@@ -230,8 +234,7 @@ export class TSRHandler {
 		})
 		.then(() => {
 			this._initialized = true
-			this._triggerupdateMapping()
-			this._triggerupdateTimeline()
+			this._triggerupdateTimelineAndMappings()
 			this.onSettingsChanged()
 			this._triggerUpdateDevices()
 			this.logger.debug('tsr init done')
@@ -249,16 +252,16 @@ export class TSRHandler {
 		}
 		this.logger.debug('Renewing observers')
 
-		let timelineObserver = this._coreHandler.core.observe('timeline')
-		timelineObserver.added = () => { this._triggerupdateTimeline() }
-		timelineObserver.changed = () => { this._triggerupdateTimeline() }
-		timelineObserver.removed = () => { this._triggerupdateTimeline() }
+		let timelineObserver = this._coreHandler.core.observe('studioTimeline')
+		timelineObserver.added = () => { this._triggerupdateTimelineAndMappings() }
+		timelineObserver.changed = () => { this._triggerupdateTimelineAndMappings() }
+		timelineObserver.removed = () => { this._triggerupdateTimelineAndMappings() }
 		this._observers.push(timelineObserver)
 
-		let mappingsObserver = this._coreHandler.core.observe('studio')
-		mappingsObserver.added = () => { this._triggerupdateMapping() }
-		mappingsObserver.changed = () => { this._triggerupdateMapping() }
-		mappingsObserver.removed = () => { this._triggerupdateMapping() }
+		let mappingsObserver = this._coreHandler.core.observe('studioMappings')
+		mappingsObserver.added = () => { this._triggerupdateTimelineAndMappings() }
+		mappingsObserver.changed = () => { this._triggerupdateTimelineAndMappings() }
+		mappingsObserver.removed = () => { this._triggerupdateTimelineAndMappings() }
 		this._observers.push(mappingsObserver)
 
 		let deviceObserver = this._coreHandler.core.observe('peripheralDevices')
@@ -268,31 +271,46 @@ export class TSRHandler {
 		this._observers.push(deviceObserver)
 
 	}
+	resendStatuses () {
+		_.each(this._coreTsrHandlers, (tsrHandler) => {
+			tsrHandler.sendStatus()
+		})
+	}
 	destroy (): Promise<void> {
 		return this.tsr.destroy()
 	}
-	getTimeline (excludeStatObj?: boolean): Array<CollectionObj> | null {
+	getTimeline (): {
+		// Copied from Core:
+		_id: string, // Studio id
+		mappingsHash: string,
+		timeline: TimelineObjGeneric[]
+	} | undefined {
 		let studioId = this._getStudioId()
 		if (!studioId) {
 			this.logger.warn('no studioId')
-			return null
+			return undefined
 		}
 
-		let objs = this._coreHandler.core.getCollection('timeline').find((o: TimelineObjGeneric) => {
-			if (excludeStatObj) {
-				if (o.objectType === TimelineObjType.STAT) return false
-			}
-			return o.studioId === studioId
+		let timeline = this._coreHandler.core.getCollection('studioTimeline').findOne((o: TimelineComplete) => {
+			return o._id === studioId
 		})
 
-		return objs
+		return timeline as any
 	}
-	getMapping () {
-		let studio = this._getStudio()
-		if (studio) {
-			return studio.mappings
+	getMappings (): {
+		_id: string, // Studio id
+		mappingsHash: string,
+		mappings: Mappings
+	} | undefined {
+		let studioId = this._getStudioId()
+		if (!studioId) {
+			// this.logger.warn('no studioId')
+			return undefined
 		}
-		return null
+		// Note: The studioMappings virtual collection contains a single object that contains all mappings
+		const mappingsObject = this._coreHandler.core.getCollection('studioMappings').findOne(studioId)
+
+		return mappingsObject as any
 	}
 	onSettingsChanged (): void {
 		if (!this._initialized) return
@@ -323,112 +341,34 @@ export class TSRHandler {
 		}
 
 	}
-	private _triggerupdateTimeline () {
+	private _triggerupdateTimelineAndMappings () {
 		if (!this._initialized) return
 
-		if (this._triggerupdateTimelineTimeout) {
-			clearTimeout(this._triggerupdateTimelineTimeout)
-		}
+		this._updateTimelineAndMappings()
 
-		let experimentalMessageWaiting = true
-		if (experimentalMessageWaiting) {
-			/**
-			 * In this mode, we're trying a more aggressive strategy to figure out if messages
-			 * are still arriving from Core (because we don't want to resolve a partial timeline).
-			 * Instead of just waiting a "safe" time, we hijack into the websocket parser to determine
-			 * if data is currently arriving.
-			 */
-
-			try {
-
-				// @ts-ignore
-				let socket: any = this._coreHandler.core._ddp.ddpClient.socket
-
-				if (!socket.setupFakeDriver) {
-					socket.setupFakeDriver = true
-					socket.receivingMessage = false
-					try {
-
-						// @ts-ignore
-						let driver = socket._driver
-
-						let orgParse = driver.parse
-						driver.parse = function (...args) {
-
-							// This is called when data starts arriving (?)
-							socket.receivingMessage = true
-							orgParse.call(driver, ...args)
-						}
-
-						socket.on('message', () => {
-
-							// The message has been recieved and emitted
-							socket.receivingMessage = false
-						})
-					} catch (e) {
-						this.logger.warn('Error in _triggerupdateTimeline (message parsing)', e)
-					}
-				}
-
-				let time = 0
-				let checkIfNotSending = () => {
-					if (!socket.receivingMessage) {
-						if (time > 2) {
-							this._updateTimeline()
-							return
-						}
-					}
-					// check again later
-					time++
-					this._triggerupdateTimelineTimeout = setTimeout(checkIfNotSending, 1)
-				}
-				this._triggerupdateTimelineTimeout = setTimeout(checkIfNotSending, 1)
-				time++
-			} catch (e) {
-				this.logger.warn(e)
-
-				// Fallback to old way:
-				this._triggerupdateTimelineTimeout = setTimeout(() => {
-					this._updateTimeline()
-				}, 20)
-			}
-		} else {
-
-			this._triggerupdateTimelineTimeout = setTimeout(() => {
-				this._updateTimeline()
-			}, 20)
-		}
 	}
-	private _updateTimeline () {
-		if (this._determineIfTimelineShouldUpdate()) {
-			let transformedTimeline = this._transformTimeline(
-				this.getTimeline(true) as Array<TimelineObjGeneric>
-			)
-			if (transformedTimeline) {
-				// @ts-ignore
-				this.tsr.timeline = transformedTimeline
-			} else {
-				this.logger.warn('Did NOT update Timeline due to an error')
-			}
-		} else {
-			this.logger.debug('_updateTimeline deferring update')
+	private _updateTimelineAndMappings () {
+		const timeline = this.getTimeline()
+		const mappingsObject = this.getMappings()
+
+		if (!timeline) {
+			this.logger.debug(`Cancel resolving: No timeline`)
+			return
 		}
-	}
-	private _triggerupdateMapping () {
-		if (!this._initialized) return
-		if (this._triggerupdateMappingTimeout) {
-			clearTimeout(this._triggerupdateMappingTimeout)
+		if (!mappingsObject) {
+			this.logger.debug(`Cancel resolving: No mappings`)
+			return
 		}
-		this._triggerupdateMappingTimeout = setTimeout(() => {
-			this._updateMapping()
-			.catch(e => this.logger.error('Error in _updateMapping', e))
-		}, 20)
-	}
-	private async _updateMapping () {
-		let mapping = this.getMapping()
-		if (mapping) {
-			await this.tsr.setMapping(mapping)
+		// Compare mappingsHash to ensure that the timeline we've received is in sync with the mappings:
+		if (timeline.mappingsHash !== mappingsObject.mappingsHash) {
+			this.logger.info(`Cancel resolving: mappingsHash differ: "${timeline.mappingsHash}" vs "${mappingsObject.mappingsHash}"`)
+			return
 		}
+
+		this.logger.debug(`Trigger new resolving`)
+
+		let transformedTimeline = this._transformTimeline(timeline.timeline)
+		this.tsr.setTimelineAndMappings(transformedTimeline, mappingsObject.mappings)
 	}
 	private _getPeripheralDevice () {
 		let peripheralDevices = this._coreHandler.core.getCollection('peripheralDevices')
@@ -599,7 +539,7 @@ export class TSRHandler {
 			// Set up device status
 			const deviceType = device.deviceType
 
-			const onConnectionChanged = (connectedOrStatus: boolean | P.StatusObject) => {
+			const onDeviceStatusChanged = (connectedOrStatus: boolean | P.StatusObject) => {
 				let deviceStatus: P.StatusObject
 				if (_.isBoolean(connectedOrStatus)) { // for backwards compability, to be removed later
 					if (connectedOrStatus) {
@@ -615,7 +555,7 @@ export class TSRHandler {
 				} else {
 					deviceStatus = connectedOrStatus
 				}
-				coreTsrHandler.onConnectionChanged(deviceStatus)
+				coreTsrHandler.statusChanged(deviceStatus)
 				// hack to make sure atem has media after restart
 				if (
 					(deviceStatus.statusCode === P.StatusCode.GOOD || deviceStatus.statusCode === P.StatusCode.WARNING_MINOR || deviceStatus.statusCode === P.StatusCode.WARNING_MAJOR)
@@ -704,7 +644,7 @@ export class TSRHandler {
 				// Called if a child is closed / crashed
 				this.logger.warn(`Child of device ${deviceId} closed/crashed`)
 
-				onConnectionChanged({
+				onDeviceStatusChanged({
 					statusCode: P.StatusCode.BAD,
 					messages: ['Child process closed']
 				})
@@ -716,7 +656,7 @@ export class TSRHandler {
 					this._triggerUpdateDevices()
 				})
 			}
-			await device.device.on('connectionChanged', onConnectionChanged)
+			await device.device.on('connectionChanged', onDeviceStatusChanged)
 			await device.device.on('slowCommand', onSlowCommand)
 			await device.device.on('commandError', onCommandError)
 			await device.device.on('commandReport', onCommandReport)
@@ -727,7 +667,7 @@ export class TSRHandler {
 			await device.device.on('debug',	(e, ...args) => this.logger.debug(fixError(e), ...args))
 
 			// also ask for the status now, and update:
-			onConnectionChanged(await device.device.getStatus())
+			onDeviceStatusChanged(await device.device.getStatus())
 
 		} catch (e) {
 
@@ -788,7 +728,7 @@ export class TSRHandler {
 	 * Go through and transform timeline and generalize the Core-specific things
 	 * @param timeline
 	 */
-	private _transformTimeline (timeline: Array<TimelineObjGeneric>): TSRTimeline | null {
+	private _transformTimeline (timeline: Array<TimelineObjGeneric>): TSRTimeline {
 		// _transformTimeline (timeline: Array<TimelineObj>): Array<TimelineContentObject> | null {
 
 		let transformObject = (obj: TimelineObjGeneric): TimelineContentObjectTmp => {
@@ -824,7 +764,7 @@ export class TSRHandler {
 					}
 				} else {
 					// referenced group not found
-					this.logger.warn('Referenced group "' + obj.inGroup + '" not found! Referenced by "' + obj.id + '"')
+					this.logger.error('Referenced group "' + obj.inGroup + '" not found! Referenced by "' + obj.id + '"')
 				}
 			} else {
 				// Add object to timeline
@@ -833,95 +773,6 @@ export class TSRHandler {
 			}
 		})
 		return transformedTimeline
-	}
-	private _determineIfTimelineShouldUpdate (): boolean {
-
-		let requireStatObject: boolean = true // set to false for backwards compability
-		let disableStatObject: boolean = false // set to true to disable the statobject check completely
-
-		let pd = this._getPeripheralDevice()
-		if (pd && (pd.settings || {}).enableBackwardsCompability) {
-			requireStatObject = false
-		}
-		if (pd && (pd.settings || {}).disableStatObj) {
-			disableStatObject = true
-		}
-
-		if (disableStatObject) return true
-
-		let studioId = this._getStudioId()
-		if (!studioId) {
-			this.logger.warn('no studioId')
-			return false
-		}
-
-		let statObjId = studioId + '_statObj'
-
-		let statObject = this._coreHandler.core.getCollection('timeline').find(statObjId)[0]
-
-		if (!statObject) {
-			if (requireStatObject) {
-				this.logger.info('no statObject')
-				return false
-			} else {
-				return true
-			}
-		}
-
-		let statObjCount 	= (statObject.content || {}).objCount || 0
-		let statObjHash 	= (statObject.content || {}).objHash || ''
-
-		this.logger.info(`statObject found. ObjCount: ${statObjCount}, ObjHash: ${statObjHash}`)
-
-		// collect statistics
-		let objs = this.getTimeline(true)
-		if (!objs) {
-			this.logger.error('No timeline found during statObj comparison')
-			return false
-		}
-
-		// Number of objects
-		let objCount = objs.length
-		// Hash of all objects
-		objs = objs.sort((a, b) => {
-			if (a._id < b._id) return 1
-			if (a._id > b._id) return -1
-			return 0
-		})
-		let objHash = getHash(stringifyObjects(objs))
-
-		if (objCount !== statObjCount) {
-			this.logger.info('Delaying timeline update, objcount differ (' + objCount + ',' + statObjCount + ') ')
-			return false
-		}
-		if (objHash !== statObjHash) {
-			this.logger.info('Delaying timeline update, hash differ (' + objHash + ',' + statObjHash + ') ')
-			return false
-		}
-		return true
-	}
-}
-function stringifyObjects (objs) {
-	if (_.isArray(objs)) {
-		return _.map(objs, (obj) => {
-			if (obj !== undefined) {
-				return stringifyObjects(obj)
-			}
-		}).join(',')
-	} else if (_.isFunction(objs)) {
-		return ''
-	} else if (_.isObject(objs)) {
-		let keys = _.sortBy(_.keys(objs), (k) => k)
-
-		return _.compact(_.map(keys, (key) => {
-			if (objs[key] !== undefined) {
-				return key + '=' + stringifyObjects(objs[key])
-			} else {
-				return null
-			}
-		})).join(',')
-	} else {
-		return objs + ''
 	}
 }
 
