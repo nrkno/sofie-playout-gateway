@@ -9,6 +9,24 @@ All notable changes to this project will be documented in this file. See [standa
 
 * Viz clear command config manifest ([16640cf](https://github.com/nrkno/tv-automation-playout-gateway/commit/16640cf6c7dfff657c574787230ef939ed09a392))
 
+
+### [1.9.3](https://github.com/nrkno/tv-automation-playout-gateway/compare/v1.9.2...v1.9.3) (2020-09-21)
+
+### [1.9.2](https://github.com/nrkno/tv-automation-playout-gateway/compare/v1.9.1...v1.9.2) (2020-08-26)
+
+
+### Bug Fixes
+
+* update TSR dep ([ef5879d](https://github.com/nrkno/tv-automation-playout-gateway/commit/ef5879d5fa7b1ea2d94452dde74ce0bc8fb79ad8))
+
+### [1.9.1](https://github.com/nrkno/tv-automation-playout-gateway/compare/v1.9.0...v1.9.1) (2020-08-25)
+
+
+### Bug Fixes
+
+* update TSR dep ([5790fbc](https://github.com/nrkno/tv-automation-playout-gateway/commit/5790fbc6cd5e8f3839c9a0bb653853f3168a6380))
+* update TSR dep ([2fa6bba](https://github.com/nrkno/tv-automation-playout-gateway/commit/2fa6bba1f8753833c2c4a9b63f6a67c19c3093f6))
+
 ## 1.9.0 (2020-08-17)
 
 
