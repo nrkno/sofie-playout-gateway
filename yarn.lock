@@ -6207,10 +6207,10 @@ timeline-state-resolver-types@^4.0.0:
   dependencies:
     tslib "^1.13.0"
 
-timeline-state-resolver@5.0.0-nightly-release24-20200914-120931-3357b9dc.0:
-  version "5.0.0-nightly-release24-20200914-120931-3357b9dc.0"
-  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-5.0.0-nightly-release24-20200914-120931-3357b9dc.0.tgz#31afaeb661927ae2d8cb17ce1291f69d516f7d0e"
-  integrity sha512-PNH/vdGSvkKzHCwlGcB0u66P2zKlRYmJAFYkZocVGPFFb5YOdR2StsXKi9OjLHDlltq8OcKcMbFWgWt0nzfpQA==
+timeline-state-resolver@5.0.0-nightly-hotfix-r24-sync-cache-reset-20200928-103001-f31ced0f.0:
+  version "5.0.0-nightly-hotfix-r24-sync-cache-reset-20200928-103001-f31ced0f.0"
+  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-5.0.0-nightly-hotfix-r24-sync-cache-reset-20200928-103001-f31ced0f.0.tgz#80aaac007ffb784c633410fca8b90fef7ea23c3a"
+  integrity sha512-wn7tlT4Z/IQ1fqKml78J4F2ceHbx85HgEVxRtbCnVep7ZtJGcoL4FHFIdZK8x91mUiVxLgMZKGNVRNZMBBLWJg==
   dependencies:
     atem-state "^0.10.0"
     bufferutil "^4.0.1"
