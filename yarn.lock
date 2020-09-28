@@ -6200,10 +6200,10 @@ through@2, "through@>=2.2.7 <3":
   resolved "https://registry.yarnpkg.com/through/-/through-2.3.8.tgz#0dd4c9ffaabc357960b1b724115d7e0e86a2e1f5"
   integrity sha1-DdTJ/6q8NXlgsbckEV1+Doai4fU=
 
-timeline-state-resolver-types@5.0.0-nightly-release24-20200914-120931-3357b9dc.0:
-  version "5.0.0-nightly-release24-20200914-120931-3357b9dc.0"
-  resolved "https://registry.yarnpkg.com/timeline-state-resolver-types/-/timeline-state-resolver-types-5.0.0-nightly-release24-20200914-120931-3357b9dc.0.tgz#4d1201c9915b3e4312c23f1b9f7bed83b13bd559"
-  integrity sha512-gOGcK+d2D0diBs2kLlOEJ3VyWN5eS42jwboGRlaMMvLLpAYs0uZ/I1Uv2dtxJAreQxFEACcGK3GXoOO6TkZuxw==
+timeline-state-resolver-types@5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/timeline-state-resolver-types/-/timeline-state-resolver-types-5.0.0.tgz#68f88b74ac2b5f85c3fd06fbc1ae335e540e8ee0"
+  integrity sha512-0R6ZStHXmjmHgPxuDpwi406uKk+VeGSFs6UwN0t4aNxX/Gz2SZdZGf19IMTr5v+ZJ43gH0E/eL7sfliu/WVcng==
   dependencies:
     tslib "^1.13.0"
 
@@ -6476,13 +6476,13 @@ tv-automation-server-core-integration@2.0.0:
     tslib "^1.13.0"
     underscore "^1.10.2"
 
-tv-automation-sofie-blueprints-integration@2.2.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/tv-automation-sofie-blueprints-integration/-/tv-automation-sofie-blueprints-integration-2.2.0.tgz#1e7e03aa0743fd824e3fdf10e83703fa4bf0fd3f"
-  integrity sha512-9H3LbzUxg0VO0uIG6XSOhAs8YyC+dOtFQmGr5SFcPPmkWQuenqD7JazW94kSo+KdtK4nqg+rK32VCB3H3DTKdQ==
+tv-automation-sofie-blueprints-integration@2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/tv-automation-sofie-blueprints-integration/-/tv-automation-sofie-blueprints-integration-2.2.1.tgz#a18f38537a9dfc7007d0751173461be064721d46"
+  integrity sha512-xZ+osiuD+Hv/WWkRj+7vPPEN2k9wefMu9tbz//kwRiPOR1Fews392e+xd+jCuRVwfqEDlr3aZlrL9pDfYIKRKQ==
   dependencies:
     moment "2.22.2"
-    timeline-state-resolver-types "5.0.0-nightly-release24-20200914-120931-3357b9dc.0"
+    timeline-state-resolver-types "5.0.0"
     tslib "^1.13.0"
     underscore "1.9.1"
 
