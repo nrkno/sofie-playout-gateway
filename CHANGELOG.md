@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.10.0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v1.9.3...v1.10.0) (2020-09-28)
+
+
+### Features
+
+* add Shotoku to config manifest (and update tsr) ([a50eae6](https://github.com/nrkno/tv-automation-playout-gateway/commit/a50eae6cb3d3e218f1205aa5882c0e49a11b11a4))
+* support for router-timeline together with single-object-timeline and .mappingHash ([57c0730](https://github.com/nrkno/tv-automation-playout-gateway/commit/57c07302d9ce5350b3298f9a99514ca8d890e530))
+* TSR R24.1 featuring partial resolving & dynamic mappings ([100be55](https://github.com/nrkno/tv-automation-playout-gateway/commit/100be5516c63bdd8a10caae49578e769bc94417e))
+* use the new Core-publications for the virtual timeline and mappings ([dbe04c9](https://github.com/nrkno/tv-automation-playout-gateway/commit/dbe04c9cbc427ca157ee5fae08bf5f14c863dfe9))
+* Viz clear command config manifest ([16640cf](https://github.com/nrkno/tv-automation-playout-gateway/commit/16640cf6c7dfff657c574787230ef939ed09a392))
+
+
+### Bug Fixes
+
+* atem media uploads under atem-conn v2 ([1ee71fd](https://github.com/nrkno/tv-automation-playout-gateway/commit/1ee71fd197aec3d0da62a716c123b5292967f37d))
+* be sure to send the executeFunction reply from the same device that received the command ([0753637](https://github.com/nrkno/tv-automation-playout-gateway/commit/0753637b2ad2069ad8f9ebe3cda594e5dbc30046))
+* guard against sending status before initialized (causing crash) ([99c7710](https://github.com/nrkno/tv-automation-playout-gateway/commit/99c7710f9926c5ccc285d6dcc1ae55deb0ad2b8f))
+* sub-devices should re-send their statuses on re-connection to Core. ([c337ce3](https://github.com/nrkno/tv-automation-playout-gateway/commit/c337ce3d870fd01466cdfee9297113bd5b851677))
+* subscribe to timeline._id ([0bb2b72](https://github.com/nrkno/tv-automation-playout-gateway/commit/0bb2b720e5f97956e616e4b437b646dad1f98d7c))
+* timeline bug fix ([5d3cb90](https://github.com/nrkno/tv-automation-playout-gateway/commit/5d3cb90acd86ccf20dba53167e29dc33543dfa02))
+* typo ([d0a95b8](https://github.com/nrkno/tv-automation-playout-gateway/commit/d0a95b8b810c356ea77f02ee19ab5473c579404a))
+* update release24 deps ([d29e33b](https://github.com/nrkno/tv-automation-playout-gateway/commit/d29e33b2f8cc9fff1fcf04803dbbd9265630edc2))
+* update TSR dep, release24 ([ef59014](https://github.com/nrkno/tv-automation-playout-gateway/commit/ef59014908831007bc7709c8cace89152e64a8ce))
+
 ## [1.10.0-0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v1.9.0...v1.10.0-0) (2020-08-17)
 
 
