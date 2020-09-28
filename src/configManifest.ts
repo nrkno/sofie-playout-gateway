@@ -363,6 +363,10 @@ const PLAYOUT_SUBDEVICE_CONFIG: SubDeviceConfigManifest['config'] = {
 			name: 'Clear All Channels Commands',
 			type: ConfigManifestEntryType.MULTILINE_STRING
 		}
+	],
+	[TSRDeviceType.SHOTOKU]: [
+		...PLAYOUT_SUBDEVICE_COMMON,
+		...PLAYOUT_SUBDEVICE_HOST_PORT
 	]
 }
 
