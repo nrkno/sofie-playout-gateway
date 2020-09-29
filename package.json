@@ -1,6 +1,6 @@
 {
   "name": "playout-gateway",
-  "version": "1.11.0-in-development-R25",
+  "version": "1.11.0-in-testing-R25",
   "private": true,
   "description": "Connect to Core, play stuff",
   "license": "MIT",
