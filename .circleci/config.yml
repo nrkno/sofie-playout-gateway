@@ -247,3 +247,4 @@ workflows:
                 - develop
                 - stage
                 - /release\d+/
+                - v.one.timeline.test4

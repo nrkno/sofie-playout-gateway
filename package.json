@@ -1,6 +1,6 @@
 {
   "name": "playout-gateway",
-  "version": "1.10.0-0",
+  "version": "1.10.1",
   "private": true,
   "description": "Connect to Core, play stuff",
   "license": "MIT",
@@ -90,7 +90,6 @@
     "production"
   ],
   "dependencies": {
-    "atem-connection": "0.10.0",
     "fast-clone": "^1.5.13",
     "timeline-state-resolver": "git+https://github.com/olzzon/tv-automation-state-timeline-resolver.git#dist20200922_1",
     "tslib": "^1.13.0",
