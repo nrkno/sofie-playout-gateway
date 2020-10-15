@@ -91,7 +91,7 @@
   ],
   "dependencies": {
     "fast-clone": "^1.5.13",
-    "timeline-state-resolver": "5.1.0",
+    "timeline-state-resolver": "5.1.1-nightly-release25-20201015-125120-bd16ffd2.0",
     "tslib": "^1.13.0",
     "tv-automation-server-core-integration": "2.0.0",
     "tv-automation-sofie-blueprints-integration": "2.3.1",
