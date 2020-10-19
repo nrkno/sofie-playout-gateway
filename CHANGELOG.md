@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.11.0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v1.10.1...v1.11.0) (2020-10-19)
+
+
+### Features
+
+* report back to Core when TSR resolving is done (used to track latency) ([39427fa](https://github.com/nrkno/tv-automation-playout-gateway/commit/39427fa8e2dd064fdd65fdabce80a9d1ed12fa44))
+
+
+### Bug Fixes
+
+* bug fix: device wasn't created if device.options was undefined ([93342bb](https://github.com/nrkno/tv-automation-playout-gateway/commit/93342bb5c8a696f5cf8a4059b176a4a3055afc42))
+* update reportResolveDone to work with new timeline publication ([e1a138f](https://github.com/nrkno/tv-automation-playout-gateway/commit/e1a138f67f2f55a91ba3a6d265fb52d511f177b9))
+* update TSR dep (bug fix in timeline) ([2ec9122](https://github.com/nrkno/tv-automation-playout-gateway/commit/2ec91229f6291c13600b8bd5f3952769e1c9bd9b))
+
 ### [1.10.1](https://github.com/nrkno/tv-automation-playout-gateway/compare/v1.10.0...v1.10.1) (2020-09-28)
 
 
