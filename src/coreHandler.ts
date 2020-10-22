@@ -500,8 +500,8 @@ export class CoreTSRDeviceHandler {
 	}
 	async init (): Promise<void> {
 		this._device = await this._devicePr
-		let deviceName = this._device.deviceName
 		let deviceId = this._device.deviceId
+		let deviceName = `${deviceId} (${this._device.deviceName})`
 
 		this.core = new CoreConnection(this._coreParentHandler.getCoreConnectionOptions(deviceName, 'Playout' + deviceId, this._device.deviceOptions.type))
 		this.core.onError((err) => {
