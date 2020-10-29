@@ -389,6 +389,30 @@ export class CoreHandler {
 		}
 		return devices
 	}
+	async getMemoryUsage () {
+		if (this._tsrHandler) {
+			const values = {
+				main: process.memoryUsage(),
+				threads: await this._tsrHandler.tsr.getThreadsMemoryUsage()
+			}
+			/** Convert all properties from bytes to MB */
+			const toMB = (o: any) => {
+				if (typeof o === 'object') {
+					const o2 = {}
+					for (const key of Object.keys(o)) {
+						o2[key] = toMB(o[key])
+					}
+					return o2
+				} else if (typeof o === 'number') {
+					return o / 1024 / 1024
+				}
+				return o
+			}
+			return toMB(values)
+		} else {
+			throw new Error('TSR not set up!')
+		}
+	}
 	restartCasparCG (deviceId: string): Promise<any> {
 		if (!this._tsrHandler) throw new Error('TSRHandler is not initialized')
 
