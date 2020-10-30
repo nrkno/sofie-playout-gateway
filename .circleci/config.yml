@@ -217,20 +217,24 @@ workflows:
       # - test
       - validate-all-dependencies:
           filters:
+            tags:
+              ignore: /.*/
             branches:
               only:
                 - master
-                - develop
+                - /release\d+/
       - validate-dependencies:
           filters:
+            tags:
+              ignore: /.*/
             branches:
               only:
                 - master
-                - develop
+                - /release\d+/
       - build:
-          requires:
+          # requires:
             # - test
-            - validate-dependencies
+            # - validate-dependencies
           filters:
             tags:
               only: /v.*/
@@ -261,7 +265,4 @@ workflows:
             branches:
               only: 
                 - master
-                - develop
-                - stage
                 - /release\d+/
-                - v.one.timeline.test4
