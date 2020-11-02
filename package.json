@@ -1,6 +1,6 @@
 {
   "name": "playout-gateway",
-  "version": "1.10.1",
+  "version": "1.11.0",
   "private": true,
   "description": "Connect to Core, play stuff",
   "license": "MIT",
@@ -100,6 +100,7 @@
   },
   "resolutions": {
     "yargs-parser": "^18.1.2",
-    "minimist": "^1.2.3"
+    "minimist": "^1.2.3",
+    "bl": "^4.0.3"
   }
 }

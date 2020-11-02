@@ -114,6 +114,7 @@ export class TSRHandler {
 	private _errorReporting: boolean | null = null
 
 	private _updateDevicesIsRunning: boolean = false
+	private _lastReportedObjHashes: string[] = []
 
 	constructor (logger: LoggerInstance) {
 		this.logger = logger
@@ -230,6 +231,20 @@ export class TSRHandler {
 				}
 
 			})
+			this.tsr.on('resolveDone', (timelineHash: string, resolveDuration: number) => {
+				// Make sure we only report back once, per update timeline
+				if (this._lastReportedObjHashes.includes(timelineHash)) return
+
+				this._lastReportedObjHashes.unshift(timelineHash)
+				if (this._lastReportedObjHashes.length > 10) {
+					this._lastReportedObjHashes.length = 10
+				}
+
+				this._coreHandler.core.callMethod('peripheralDevice.reportResolveDone', [timelineHash, resolveDuration])
+				.catch((e) => {
+					this.logger.error('Error in reportResolveDone', e)
+				})
+			})
 
 			this.logger.debug('tsr init')
 			return this.tsr.init()
@@ -291,6 +306,7 @@ export class TSRHandler {
 		// Copied from Core:
 		_id: string, // Studio id
 		mappingsHash: string,
+		timelineHash: string,
 		timeline: TimelineObjGeneric[]
 	} | undefined {
 		let studioId = this._getStudioId()
@@ -376,6 +392,7 @@ export class TSRHandler {
 		this.logger.debug(`Trigger new resolving`)
 
 		let transformedTimeline = this._transformTimeline(timeline.timeline)
+		this.tsr.timelineHash = timeline.timelineHash
 		this.tsr.setTimelineAndMappings(transformedTimeline, mappingsObject.mappings)
 	}
 	private _getPeripheralDevice () {

@@ -1192,10 +1192,10 @@ bitdepth@^7.0.2:
   resolved "https://registry.yarnpkg.com/bitdepth/-/bitdepth-7.0.2.tgz#d9290de0e4b44ce5fc0c29f813c8f49fbdfa2eeb"
   integrity sha512-Ed11TL4IIWyUEoQTfkbRBDCgDNurxYzFgmk30ZU6SgNCsysoEx7UMm+g7SDFHxA2lhLbWyjV8T1ab3z0BtYOAw==
 
-bl@^4.0.1:
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/bl/-/bl-4.0.2.tgz#52b71e9088515d0606d9dd9cc7aa48dc1f98e73a"
-  integrity sha512-j4OH8f6Qg2bGuWfRiltT2HYGx0e1QcBTrK9KAHNMwMZdQnDZFk0ZSYIpADjYCB3U12nicC5tVJwSIhwOWjb4RQ==
+bl@^4.0.1, bl@^4.0.3:
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/bl/-/bl-4.0.3.tgz#12d6287adc29080e22a705e5764b2a9522cdc489"
+  integrity sha512-fs4G6/Hu4/EE+F75J8DuN/0IpQqNjAdC7aEQv7Qt8MHGUH7Ckv2MwTEEeN9QehD0pfIDkMI1bkHYkKy7xHyKIg==
   dependencies:
     buffer "^5.5.0"
     inherits "^2.0.4"
@@ -1391,21 +1391,21 @@ caseless@~0.12.0:
   resolved "https://registry.yarnpkg.com/caseless/-/caseless-0.12.0.tgz#1b681c21ff84033c826543090689420d187151dc"
   integrity sha1-G2gcIf+EAzyCZUMJBolCDRhxUdw=
 
-casparcg-connection@^4.9.0:
-  version "4.9.0"
-  resolved "https://registry.yarnpkg.com/casparcg-connection/-/casparcg-connection-4.9.0.tgz#1fb19e091ff785d312f52ed065c4077dbe55196c"
-  integrity sha512-K2c38+6RB4Agb116q4WapmZQSDAz95nlijgndpG2sYEX9lxHRJmBrJ+uysxrgJT/dXYlPGrEx++pEqwRpXPtLA==
+casparcg-connection@^5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/casparcg-connection/-/casparcg-connection-5.0.1.tgz#5144f43664586ec2b73fc380f893b63704fc46e0"
+  integrity sha512-gurGsJozCeBVuW2rPnttBj3WS4HJxW3RXC4x2OINdcs+rwAJRKy5tBg2MilsRp2Hh+wQL/e/16ZTjpCkvvkG5A==
   dependencies:
     highland "^3.0.0-beta.6"
     xml2js "^0.4.19"
     xmlbuilder "^9.0.7"
 
-casparcg-state@^1.12.0:
-  version "1.12.0"
-  resolved "https://registry.yarnpkg.com/casparcg-state/-/casparcg-state-1.12.0.tgz#cdd1e449d097c01e824995379dc6c9cca3fffd38"
-  integrity sha512-sZv2NYmgw/NQJTDMdIOfs3FcZjLXNVXrdSsL4bhgU49J9YNrGGePOcgjiHNT83ZyOfVprssMjbDegNVfkepCBA==
+casparcg-state@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/casparcg-state/-/casparcg-state-2.0.0.tgz#1ce38ff1846a259de4bc4fe706a312849539b34e"
+  integrity sha512-eZ0f8PWkxk3t/xgUaE1i4wqpHFNEeMBPs8L4mCoTFg3MdfqPVUg/bW6XZPFcPFOruQ93UekaTUpKKDafsASYsg==
   dependencies:
-    casparcg-connection "^4.9.0"
+    casparcg-connection "^5.0.1"
     fast-clone "^1.5.13"
     underscore "^1.9.1"
 
@@ -6046,10 +6046,10 @@ stubs@^3.0.0:
   resolved "https://registry.yarnpkg.com/stubs/-/stubs-3.0.0.tgz#e8d2ba1fa9c90570303c030b6900f7d5f89abe5b"
   integrity sha1-6NK6H6nJBXAwPAMLaQD31fiavls=
 
-superfly-timeline@^8.1.1:
-  version "8.1.1"
-  resolved "https://registry.yarnpkg.com/superfly-timeline/-/superfly-timeline-8.1.1.tgz#8b0896bba6fcf495cdc831b21f9ddd815009d5cb"
-  integrity sha512-ahLJz2/udclXVXJllNJbirx/5f+/oMMwbvQCPcoMrUM55hS7bJBDg8k6Yik7+FO5GJCfes/ly/GL9dxSaQS5Gg==
+superfly-timeline@^8.1.2:
+  version "8.1.2"
+  resolved "https://registry.yarnpkg.com/superfly-timeline/-/superfly-timeline-8.1.2.tgz#42ad3cac49991e12621c1fb34b4d71b345651152"
+  integrity sha512-hjkrE85YHsCLtFdorjtEc4psrtDlWmYk8sTQJdaw/c/gveWSJ3jcABDMYolX2jB+VFNTQO5Sw7O4k6S3hV+g6g==
   dependencies:
     tslib "^1.13.0"
     underscore "^1.9.1"
@@ -6213,8 +6213,8 @@ through@2, "through@>=2.2.7 <3":
     atem-connection "1.1.0"
     atem-state "^0.9.0"
     bufferutil "^4.0.1"
-    casparcg-connection "^4.9.0"
-    casparcg-state "^1.12.0"
+    casparcg-connection "^5.0.1"
+    casparcg-state "^2.0.0"
     emberplus-connection "^0.0.3"
     hyperdeck-connection "^0.4.3"
     osc "^2.4.0"
@@ -6223,7 +6223,7 @@ through@2, "through@>=2.2.7 <3":
     p-timeout "^3.2.0"
     request "^2.88.0"
     sprintf-js "^1.1.2"
-    superfly-timeline "^8.1.1"
+    superfly-timeline "^8.1.2"
     threadedclass "^0.7.0"
     tslib "^1.10.0"
     tv-automation-quantel-gateway-client "^1.0.12"
