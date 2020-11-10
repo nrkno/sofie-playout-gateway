@@ -91,10 +91,10 @@
   ],
   "dependencies": {
     "fast-clone": "^1.5.13",
-    "timeline-state-resolver": "5.1.1",
+    "timeline-state-resolver": "5.1.2",
     "tslib": "^2.0.3",
-    "tv-automation-server-core-integration": "2.1.0-nightly-release26-20201019-125028-67fdd72.0",
-    "tv-automation-sofie-blueprints-integration": "2.4.0-nightly-release26-20201019-123634-206f00c9.0",
+    "tv-automation-server-core-integration": "2.1.0",
+    "tv-automation-sofie-blueprints-integration": "2.4.0",
     "underscore": "^1.11.0",
     "winston": "^2.4.2"
   },
