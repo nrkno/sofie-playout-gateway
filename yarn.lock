@@ -6099,17 +6099,17 @@ through@2, "through@>=2.2.7 <3":
   resolved "https://registry.yarnpkg.com/through/-/through-2.3.8.tgz#0dd4c9ffaabc357960b1b724115d7e0e86a2e1f5"
   integrity sha1-DdTJ/6q8NXlgsbckEV1+Doai4fU=
 
-timeline-state-resolver-types@5.1.1:
-  version "5.1.1"
-  resolved "https://registry.yarnpkg.com/timeline-state-resolver-types/-/timeline-state-resolver-types-5.1.1.tgz#9c5bd2ba19744ebf7470b5f665ec0039a2a2b6c7"
-  integrity sha512-xw5/JvbczBbvqZxHy6a4EAqrtI7GZ26q6RXLjvg+5z8YtCAcxVgQNB9qDAnuJJ2rgW8xMaJDsZ7StoppjNJEGg==
+timeline-state-resolver-types@5.1.2:
+  version "5.1.2"
+  resolved "https://registry.yarnpkg.com/timeline-state-resolver-types/-/timeline-state-resolver-types-5.1.2.tgz#83f5f96d88bea772b2381b1ade9de1a624f45f19"
+  integrity sha512-s6qxa5KfBKey2NlySH3HvOdo8LASdYJBiHGkCis/HpvhogU7NQhkJUGK7ltai60Aq5XD6fx53dDxcEGTF5O/KA==
   dependencies:
     tslib "^1.13.0"
 
-timeline-state-resolver@5.1.2-nightly-release26-20201102-125615-492901be.0:
-  version "5.1.2-nightly-release26-20201102-125615-492901be.0"
-  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-5.1.2-nightly-release26-20201102-125615-492901be.0.tgz#db13c25cd376df74ec874aaada5c8faeaeff106d"
-  integrity sha512-y07bcIT+9xv1K/vCANib4u6eBvfkrmPdD1ofRrAlIwBJRS/tpu+AA6KVqDWmsKt4ha7Hj1ghQgt0dCnc4RKPtQ==
+timeline-state-resolver@5.1.2:
+  version "5.1.2"
+  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-5.1.2.tgz#d99cabfed41a0691fadd233624f21e19e289a0c4"
+  integrity sha512-xY+dYdblq9W5AHth/OXh6CpEuHpEQtbw/qOz6RRHrlgRWFcTeiZOjKFb1KLYRJR2+JqhqVuV65a/fheu1dcvVA==
   dependencies:
     atem-state "^0.10.0"
     bufferutil "^4.0.1"
@@ -6362,10 +6362,10 @@ tv-automation-quantel-gateway-client@^1.0.12:
     got "^11.5.2"
     underscore "^1.9.1"
 
-tv-automation-server-core-integration@2.1.0-nightly-release26-20201019-125028-67fdd72.0:
-  version "2.1.0-nightly-release26-20201019-125028-67fdd72.0"
-  resolved "https://registry.yarnpkg.com/tv-automation-server-core-integration/-/tv-automation-server-core-integration-2.1.0-nightly-release26-20201019-125028-67fdd72.0.tgz#814677bb7133ff561d81fa3af9433334fb3c1717"
-  integrity sha512-4i7+odL8mjH4pZmDeO1XYA1PDMrOhsLLgBj5/7nG+gbQHZBlWEeQQPxVm9LpMk7PXk30Fi91CwlRHRcqmC+k/Q==
+tv-automation-server-core-integration@2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/tv-automation-server-core-integration/-/tv-automation-server-core-integration-2.1.0.tgz#d60c5e3a390c10c1897f255bcff0c6de2614a7c4"
+  integrity sha512-Y1pa6ED2Ua6TM0CE5q7pMIazo7c6/KAmjV0PgE6OIJ0mb1GCPKtN7rwsia2TgiU+MrEmP/ecVrPLQ42VMtSRXQ==
   dependencies:
     data-store "3.1.0"
     ejson "^2.2.0"
@@ -6374,13 +6374,13 @@ tv-automation-server-core-integration@2.1.0-nightly-release26-20201019-125028-67
     tslib "^2.0.3"
     underscore "^1.11.0"
 
-tv-automation-sofie-blueprints-integration@2.4.0-nightly-release26-20201019-123634-206f00c9.0:
-  version "2.4.0-nightly-release26-20201019-123634-206f00c9.0"
-  resolved "https://registry.yarnpkg.com/tv-automation-sofie-blueprints-integration/-/tv-automation-sofie-blueprints-integration-2.4.0-nightly-release26-20201019-123634-206f00c9.0.tgz#41ee99f189bc817fd0da3d79e558ceb2ee9ea15e"
-  integrity sha512-JRHR0EccGKTR9lHPz/9Vn+3/Y/6Eg/XgsEIMsfnPr/JUbIqjbgBVKl5klQm6WWy5y/5xoNbi43LrYlNRdYreWg==
+tv-automation-sofie-blueprints-integration@2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/tv-automation-sofie-blueprints-integration/-/tv-automation-sofie-blueprints-integration-2.4.0.tgz#47659da5a90a5c6007d9a4ba617521ab57c76ce3"
+  integrity sha512-6TvRvgzDVwkdGKiHry1YDIolqizT8LdVqEgjN7juTITs2hRLeLMo+dUai3X+ZK58OQFuvY6b+fo72l9hF6qnzg==
   dependencies:
     moment "2.29.1"
-    timeline-state-resolver-types "5.1.1"
+    timeline-state-resolver-types "5.1.2"
     tslib "^2.0.3"
     underscore "1.11.0"
 
