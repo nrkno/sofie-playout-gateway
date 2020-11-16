@@ -520,7 +520,7 @@ export class CoreTSRDeviceHandler {
 					P.StatusCode.GOOD
 				)
 			}
-			await this.sendStatus()
+			this.sendStatus()
 		}
 		await this.setupSubscriptionsAndObservers()
 		console.log('setupSubscriptionsAndObservers done')

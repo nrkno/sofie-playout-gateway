@@ -53,15 +53,17 @@ export class AtemUploadScript {
 	checkIfFileExistsOnAtem (): boolean {
 		if (!this.file) throw Error('Load a file locally before checking if it needs uploading')
 		consoleLog('got a file')
-		if (this.connection.state && this.connection.state.media.stillPool[this.mediaPool]) {
-			consoleLog('has stills')
-			if (this.connection.state!.media.stillPool[this.mediaPool]!.isUsed) {
+
+		const still = this.connection.state ? this.connection.state.media.stillPool[this.mediaPool] : undefined
+		if (still) {
+			consoleLog('has still')
+			if (still.isUsed) {
 				consoleLog('still is used')
 				if (this.fileName.length === 63) {
 					consoleLog('filename is max length, change detection might fail')
 				}
 
-				if (this.connection.state!.media.stillPool[this.mediaPool]!.fileName === this.fileName) {
+				if (still.fileName === this.fileName) {
 					consoleLog('name equals')
 					return true
 				} else {
@@ -71,8 +73,8 @@ export class AtemUploadScript {
 				return false
 			}
 		} else {
-			consoleLog('has no stills')
-			throw Error('Atem appears to not have any still pools')
+			consoleLog('has no still')
+			throw Error('Atem appears to be missing still')
 		}
 	}
 
