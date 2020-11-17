@@ -1,4 +1,4 @@
-import { DeviceConfigManifest, ConfigManifestEntryType, SubDeviceConfigManifest, SubDeviceConfigManifestEntry } from 'tv-automation-server-core-integration'
+import { DeviceConfigManifest, ConfigManifestEntryType, SubDeviceConfigManifest, SubDeviceConfigManifestEntry } from '@sofie-automation/server-core-integration'
 import { DeviceType as TSRDeviceType, AtemMediaPoolType, TimelineContentTypeHTTP, LawoDeviceMode } from 'timeline-state-resolver'
 
 const PLAYOUT_SUBDEVICE_COMMON: SubDeviceConfigManifestEntry[] = [

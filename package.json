@@ -38,7 +38,7 @@
     "ci": "yarn test",
     "inspect": "node --inspect dist/index.js",
     "start": "node dist/index.js",
-    "unlinkall": "yarn unlink tv-automation-server-core-integration timeline-state-resolver && yarn --check-files",
+    "unlinkall": "yarn unlink @sofie-automation/server-core-integration timeline-state-resolver && yarn --check-files",
     "validate:dependencies": "yarn audit --groups dependencies && yarn license-validate",
     "validate:dev-dependencies": "yarn audit --groups devDependencies",
     "license-validate": "node-license-validator -p -d --allow-licenses MIT 0BSD BSD BSD-2-Clause BSD-3-Clause ISC Apache Apache-2.0 Unlicense WTFPL --allow-packages cycle",
@@ -90,11 +90,11 @@
     "production"
   ],
   "dependencies": {
+    "@sofie-automation/blueprints-integration": "^1.16.0-nightly-release28-20201116-185552-39be4fd5.0",
+    "@sofie-automation/server-core-integration": "^1.16.0-nightly-release28-20201116-185552-39be4fd5.0",
     "fast-clone": "^1.5.13",
     "timeline-state-resolver": "5.2.0-nightly-release27-20201116-130832-ff186bba.0",
     "tslib": "^2.0.3",
-    "tv-automation-server-core-integration": "2.1.1-nightly-release27-20201116-132154-3cdc207.0",
-    "tv-automation-sofie-blueprints-integration": "2.5.0-nightly-release27-20201116-131834-4f100b09.0",
     "underscore": "^1.11.0",
     "winston": "^2.4.2"
   },

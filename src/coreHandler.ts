@@ -4,7 +4,7 @@ import { CoreConnection,
 	PeripheralDeviceAPI as P,
 	DDPConnectorOptions,
 	PeripheralDeviceAPI
-} from 'tv-automation-server-core-integration'
+} from '@sofie-automation/server-core-integration'
 
 import {
 	DeviceType,
@@ -463,7 +463,7 @@ export class CoreHandler {
 		}
 
 		let dirNames = [
-			'tv-automation-server-core-integration',
+			'@sofie-automation/server-core-integration',
 			'timeline-state-resolver',
 			'atem-connection',
 			'atem-state',

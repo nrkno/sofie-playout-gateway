@@ -575,6 +575,28 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
+"@sofie-automation/blueprints-integration@^1.16.0-nightly-release28-20201116-185552-39be4fd5.0":
+  version "1.16.0-nightly-release28-20201116-185552-39be4fd5.0"
+  resolved "https://registry.yarnpkg.com/@sofie-automation/blueprints-integration/-/blueprints-integration-1.16.0-nightly-release28-20201116-185552-39be4fd5.0.tgz#494b1a41551bdd1f20d3d972932d336a56b184c6"
+  integrity sha512-593Xbc+QvacZP4XbpIeQSc1NiA2odzHIoK5y5hMy9gdb4wG1WsVkn5a3+LIGvhC71bFpH1KuN5JH1jLnc1pueQ==
+  dependencies:
+    moment "2.29.1"
+    timeline-state-resolver-types "5.2.0-nightly-release27-20201116-130832-ff186bba.0"
+    tslib "^2.0.3"
+    underscore "1.11.0"
+
+"@sofie-automation/server-core-integration@^1.16.0-nightly-release28-20201116-185552-39be4fd5.0":
+  version "1.16.0-nightly-release28-20201116-185552-39be4fd5.0"
+  resolved "https://registry.yarnpkg.com/@sofie-automation/server-core-integration/-/server-core-integration-1.16.0-nightly-release28-20201116-185552-39be4fd5.0.tgz#99730a09530bbcd0dbabf93abdd0dd9e8141c459"
+  integrity sha512-xBVLM8UX7FzBwJQ6tqwrc9sQrcmhkwD/WENwRl6M6khDAUEDjRif0K9HVh6esq31Gc7oXH9d36XpLnpGjE6wuA==
+  dependencies:
+    data-store "3.1.0"
+    ejson "^2.2.0"
+    faye-websocket "^0.11.3"
+    got "^11.7.0"
+    tslib "^2.0.3"
+    underscore "^1.11.0"
+
 "@stroncium/procfs@^1.0.0":
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/@stroncium/procfs/-/procfs-1.2.1.tgz#6b9be6fd20fb0a4c20e99a8695e083c699bb2b45"
@@ -6363,28 +6385,6 @@ tv-automation-quantel-gateway-client@^1.0.12:
   dependencies:
     got "^11.5.2"
     underscore "^1.9.1"
-
-tv-automation-server-core-integration@2.1.1-nightly-release27-20201116-132154-3cdc207.0:
-  version "2.1.1-nightly-release27-20201116-132154-3cdc207.0"
-  resolved "https://registry.yarnpkg.com/tv-automation-server-core-integration/-/tv-automation-server-core-integration-2.1.1-nightly-release27-20201116-132154-3cdc207.0.tgz#76ac5f0a5588ede2b4480ba895c01985f05b3a07"
-  integrity sha512-cA6G357OLMWRvQZVuzZusPE69Bu/2XV2BCpmjFxvwuh45uys3zieU9TJkiVIlBG+gNaui5QR96pbleFhRlDtTg==
-  dependencies:
-    data-store "3.1.0"
-    ejson "^2.2.0"
-    faye-websocket "^0.11.3"
-    got "^11.7.0"
-    tslib "^2.0.3"
-    underscore "^1.11.0"
-
-tv-automation-sofie-blueprints-integration@2.5.0-nightly-release27-20201116-131834-4f100b09.0:
-  version "2.5.0-nightly-release27-20201116-131834-4f100b09.0"
-  resolved "https://registry.yarnpkg.com/tv-automation-sofie-blueprints-integration/-/tv-automation-sofie-blueprints-integration-2.5.0-nightly-release27-20201116-131834-4f100b09.0.tgz#8a5255bbfa116f87aa6f93d10da9f3b81b0ebc1e"
-  integrity sha512-fgD6dQMGug0Zc6xlPX7Fif6a+XJrO7XnUc2ozqX9pkpOAjIpT2RND3iPyHhAMdQB3Et7Agls1apNI4ZYK9STig==
-  dependencies:
-    moment "2.29.1"
-    timeline-state-resolver-types "5.2.0-nightly-release27-20201116-130832-ff186bba.0"
-    tslib "^2.0.3"
-    underscore "1.11.0"
 
 tweetnacl@^0.14.3, tweetnacl@~0.14.0:
   version "0.14.5"
