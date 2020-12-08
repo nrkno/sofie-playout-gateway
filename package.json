@@ -93,7 +93,7 @@
     "@sofie-automation/blueprints-integration": "^1.16.0-nightly-release28-20201116-185552-39be4fd5.0",
     "@sofie-automation/server-core-integration": "^1.16.0-nightly-release28-20201116-185552-39be4fd5.0",
     "fast-clone": "^1.5.13",
-    "timeline-state-resolver": "5.2.0-nightly-release27-20201116-130832-ff186bba.0",
+    "timeline-state-resolver": "^5.2.0",
     "tslib": "^2.0.3",
     "underscore": "^1.11.0",
     "winston": "^2.4.2"

@@ -6123,17 +6123,17 @@ through@2, "through@>=2.2.7 <3":
   resolved "https://registry.yarnpkg.com/through/-/through-2.3.8.tgz#0dd4c9ffaabc357960b1b724115d7e0e86a2e1f5"
   integrity sha1-DdTJ/6q8NXlgsbckEV1+Doai4fU=
 
-timeline-state-resolver-types@5.2.0-nightly-release27-20201116-130832-ff186bba.0:
-  version "5.2.0-nightly-release27-20201116-130832-ff186bba.0"
-  resolved "https://registry.yarnpkg.com/timeline-state-resolver-types/-/timeline-state-resolver-types-5.2.0-nightly-release27-20201116-130832-ff186bba.0.tgz#b6b2203ff61bef4a4762e9450de3044a6e6ad516"
-  integrity sha512-W8fhajEo7UOQegB37+EcPJ/p9U4FB6ks+MAjwlA4tWv96lBSx/kaJTThhAK5opqcnFbG1xtWdvvyBVY0woGF4g==
+timeline-state-resolver-types@5.2.0:
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/timeline-state-resolver-types/-/timeline-state-resolver-types-5.2.0.tgz#8f718960bbb834589bb942168fc35d0babfe5e08"
+  integrity sha512-UxzzaZpVls6Qef7GQS9raTHc4dcIhWHL8KFWkW45gBgfuA7xBhPr+aIP8bgGRA6pdE22BsPobZ+vfEjtVskgrw==
   dependencies:
     tslib "^1.13.0"
 
-timeline-state-resolver@5.2.0-nightly-release27-20201116-130832-ff186bba.0:
-  version "5.2.0-nightly-release27-20201116-130832-ff186bba.0"
-  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-5.2.0-nightly-release27-20201116-130832-ff186bba.0.tgz#33a62127f23a2135174513f8801d00911994364b"
-  integrity sha512-mw+9WOn8eK6tzE8qlTxD2gYI7l88C4FGGWnWH1+6EDPTKlTsbawRxszSOC4PDte1w3o1EZHnP15UuT7SqtPJ4A==
+timeline-state-resolver@^5.2.0:
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-5.2.0.tgz#4feb31a6a9a0f627cf6ea663757d1eb791d014d3"
+  integrity sha512-5NsbUjb56UdI9E/cZpF7I9o0J5fXO8HKYvQgFVbUtTedA75Q1QM90kNxxt42FVCzmmLYgTGB8FpBv+59oDuVGg==
   dependencies:
     atem-state "^0.10.0"
     bufferutil "^4.0.1"
