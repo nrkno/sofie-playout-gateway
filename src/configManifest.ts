@@ -44,6 +44,11 @@ const PLAYOUT_SUBDEVICE_CONFIG: SubDeviceConfigManifest['config'] = {
 			id: 'options.launcherPort',
 			name: 'Launcher Port',
 			type: ConfigManifestEntryType.NUMBER
+		},
+		{
+			id: 'options.fps',
+			name: 'Frame rate',
+			type: ConfigManifestEntryType.NUMBER
 		}
 	],
 	[TSRDeviceType.ATEM]: [

@@ -1,6 +1,6 @@
 {
   "name": "playout-gateway",
-  "version": "1.12.0",
+  "version": "1.13.0-release27.0",
   "private": true,
   "description": "Connect to Core, play stuff",
   "license": "MIT",
@@ -91,10 +91,10 @@
   ],
   "dependencies": {
     "fast-clone": "^1.5.13",
-    "timeline-state-resolver": "5.1.2",
+    "timeline-state-resolver": "^5.2.0",
     "tslib": "^2.0.3",
-    "tv-automation-server-core-integration": "2.1.0",
-    "tv-automation-sofie-blueprints-integration": "2.4.0",
+    "tv-automation-server-core-integration": "2.2.0",
+    "tv-automation-sofie-blueprints-integration": "2.5.0",
     "underscore": "^1.11.0",
     "winston": "^2.4.2"
   },
