@@ -6055,10 +6055,10 @@ text-hex@1.0.x:
   resolved "https://registry.yarnpkg.com/text-hex/-/text-hex-1.0.0.tgz#69dc9c1b17446ee79a92bf5b884bb4b9127506f5"
   integrity sha512-uuVGNWzgJ4yhRaNSiubPY7OjISw4sw4E5Uv0wbjp+OzcbmVU/rsT8ujgcXJhn9ypzsgr5vlzpPqP+MBBKcGvbg==
 
-threadedclass@0.8.3-nightly-fix-debug-logging-20201202-154829-7f00042.0:
-  version "0.8.3-nightly-fix-debug-logging-20201202-154829-7f00042.0"
-  resolved "https://registry.yarnpkg.com/threadedclass/-/threadedclass-0.8.3-nightly-fix-debug-logging-20201202-154829-7f00042.0.tgz#87dc0eff1da91a2c04887b32f2f7d3c274a1343a"
-  integrity sha512-IeFvIAPFw7hE4Pjk2HefkBvcFcXTkOusp0qHPSYzfXF8j5dASN0iht3yDYHMsCR/U4ot3jAT9/o3FJp7VO5epA==
+threadedclass@0.8.3:
+  version "0.8.3"
+  resolved "https://registry.yarnpkg.com/threadedclass/-/threadedclass-0.8.3.tgz#ee95a7d2c4fe6ca79e7265bba9baa7c6fff83309"
+  integrity sha512-cI6tVYRIIVYxFG7Nykt8NMVflrrdMvyvzAQfgAZdARdU/PaFSGd5Y7wChvJ3DXLsLiFb3datLhfn26K5DTKf+A==
   dependencies:
     callsites "^3.1.0"
     eventemitter3 "^4.0.4"
@@ -6108,10 +6108,10 @@ timeline-state-resolver-types@5.2.0:
   dependencies:
     tslib "^1.13.0"
 
-timeline-state-resolver@^5.2.0:
-  version "5.2.0"
-  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-5.2.0.tgz#4feb31a6a9a0f627cf6ea663757d1eb791d014d3"
-  integrity sha512-5NsbUjb56UdI9E/cZpF7I9o0J5fXO8HKYvQgFVbUtTedA75Q1QM90kNxxt42FVCzmmLYgTGB8FpBv+59oDuVGg==
+timeline-state-resolver@5.2.1-nightly-fix-threadedclass-debug-20201209-144831-754262a3.0:
+  version "5.2.1-nightly-fix-threadedclass-debug-20201209-144831-754262a3.0"
+  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-5.2.1-nightly-fix-threadedclass-debug-20201209-144831-754262a3.0.tgz#230c486360f56ab07bc4265e9ba95877b69c5047"
+  integrity sha512-i54Ws4eAMnSqj5Ij0UzCR9w73y3KtTn7R9v0fztP395+4ot6UDeSUfpmuGxZ/LYDivvJ/7OGr39OaROXkwaoNw==
   dependencies:
     atem-state "^0.10.0"
     bufferutil "^4.0.1"
@@ -6126,7 +6126,7 @@ timeline-state-resolver@^5.2.0:
     request "^2.88.0"
     sprintf-js "^1.1.2"
     superfly-timeline "^8.1.2"
-    threadedclass "0.8.3-nightly-fix-debug-logging-20201202-154829-7f00042.0"
+    threadedclass "0.8.3"
     tslib "^1.10.0"
     tv-automation-quantel-gateway-client "^1.0.12"
     underscore "^1.10.2"
