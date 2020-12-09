@@ -91,10 +91,10 @@
   ],
   "dependencies": {
     "fast-clone": "^1.5.13",
-    "timeline-state-resolver": "5.2.0-nightly-fix-threadedclass-debug-20201202-160129-45c2b884.0",
+    "timeline-state-resolver": "^5.2.0",
     "tslib": "^2.0.3",
-    "tv-automation-server-core-integration": "2.1.1-nightly-release27-20201116-132154-3cdc207.0",
-    "tv-automation-sofie-blueprints-integration": "2.5.0-nightly-release27-20201116-131834-4f100b09.0",
+    "tv-automation-server-core-integration": "2.2.0",
+    "tv-automation-sofie-blueprints-integration": "2.5.0",
     "underscore": "^1.11.0",
     "winston": "^2.4.2"
   },
