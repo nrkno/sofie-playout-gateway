@@ -6108,10 +6108,10 @@ timeline-state-resolver-types@5.2.0:
   dependencies:
     tslib "^1.13.0"
 
-timeline-state-resolver@5.2.1-nightly-fix-threadedclass-debug-20201209-144831-754262a3.0:
-  version "5.2.1-nightly-fix-threadedclass-debug-20201209-144831-754262a3.0"
-  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-5.2.1-nightly-fix-threadedclass-debug-20201209-144831-754262a3.0.tgz#230c486360f56ab07bc4265e9ba95877b69c5047"
-  integrity sha512-i54Ws4eAMnSqj5Ij0UzCR9w73y3KtTn7R9v0fztP395+4ot6UDeSUfpmuGxZ/LYDivvJ/7OGr39OaROXkwaoNw==
+timeline-state-resolver@5.2.1-nightly-fix-threadedclass-debug-20201213-200740-4d1bc544.0:
+  version "5.2.1-nightly-fix-threadedclass-debug-20201213-200740-4d1bc544.0"
+  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-5.2.1-nightly-fix-threadedclass-debug-20201213-200740-4d1bc544.0.tgz#a32ed3cdb93ecf39b8e6265a8dc742c6e762c3a4"
+  integrity sha512-unf5iIX/Urm86ysqsZIfEIKlaemJ4TQECU65CuvwIpl1ZziRa4+Y8CCo+oA6m2l1oUfcC4iV6jucVfRd3CEJCg==
   dependencies:
     atem-state "^0.10.0"
     bufferutil "^4.0.1"
