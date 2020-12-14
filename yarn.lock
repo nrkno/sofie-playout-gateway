@@ -571,27 +571,27 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@sofie-automation/blueprints-integration@1.16.0-in-testing-R28.1":
-  version "1.16.0-in-testing-R28.1"
-  resolved "https://registry.yarnpkg.com/@sofie-automation/blueprints-integration/-/blueprints-integration-1.16.0-in-testing-R28.1.tgz#64c1c527b653580b1aeb692f5a6c7eb28811deec"
-  integrity sha512-pcISGh97lpBeSqujl1v0I6ax2T3T+FlliZzIQwcrV3X6r8Sk3mYcjpZL1e5otDN1J58/cEw3HbDqfEze1ub5lQ==
+"@sofie-automation/blueprints-integration@1.17.0-nightly-release29-20201214-112856-14d38e17.0":
+  version "1.17.0-nightly-release29-20201214-112856-14d38e17.0"
+  resolved "https://registry.yarnpkg.com/@sofie-automation/blueprints-integration/-/blueprints-integration-1.17.0-nightly-release29-20201214-112856-14d38e17.0.tgz#10863c55762a36807db08bf96368d70a56f3760b"
+  integrity sha512-CET4YxZ/CuDsGci4s3FhplSolowfw/6/T1CRq27YTZzYWFchmvaQc3b+tQlLmewUcz+WgBPgPjM5+P+awRgs4Q==
   dependencies:
     moment "2.29.1"
     timeline-state-resolver-types "5.3.0-nightly-release28-20201214-110646-441c431f.0"
     tslib "^2.0.3"
-    underscore "1.11.0"
+    underscore "1.12.0"
 
-"@sofie-automation/server-core-integration@1.16.0-in-testing-R28.1":
-  version "1.16.0-in-testing-R28.1"
-  resolved "https://registry.yarnpkg.com/@sofie-automation/server-core-integration/-/server-core-integration-1.16.0-in-testing-R28.1.tgz#2926b2b46eb2814e34eb3e3aaeb3021277c77026"
-  integrity sha512-PmvJ8MRH63z6ipsmH6SNhWXSh+hvN0VdbwvYJ5OPAERkaw1Pwk4VzGgrB2wLTqHPrPpZ+EWq+j8eSvXJv1GO0Q==
+"@sofie-automation/server-core-integration@1.17.0-nightly-release29-20201214-112856-14d38e17.0":
+  version "1.17.0-nightly-release29-20201214-112856-14d38e17.0"
+  resolved "https://registry.yarnpkg.com/@sofie-automation/server-core-integration/-/server-core-integration-1.17.0-nightly-release29-20201214-112856-14d38e17.0.tgz#bfd119087b3126acb0648e7fc981339a19a40936"
+  integrity sha512-K5EESamFSIIfIkaSOPAWpIjn8w9f/in810+6s+PtZI2rYkzTdHfNFLLS1BaeGpwao8g5u7sr2KUMo0Iwlboxow==
   dependencies:
     data-store "3.1.0"
     ejson "^2.2.0"
     faye-websocket "^0.11.3"
-    got "^11.7.0"
+    got "^11.8.1"
     tslib "^2.0.3"
-    underscore "^1.11.0"
+    underscore "^1.12.0"
 
 "@stroncium/procfs@^1.2.1":
   version "1.2.1"
@@ -2743,7 +2743,7 @@ globby@^7.1.1:
     pify "^3.0.0"
     slash "^1.0.0"
 
-got@^11.5.2, got@^11.7.0:
+got@^11.5.2, got@^11.8.1:
   version "11.8.1"
   resolved "https://registry.yarnpkg.com/got/-/got-11.8.1.tgz#df04adfaf2e782babb3daabc79139feec2f7e85d"
   integrity sha512-9aYdZL+6nHmvJwHALLwKSUZ0hMwGaJGYv3hoPLPgnT8BoBXm1SjnZeky+91tfwJaDzun2s4RsBRy48IEYv2q2Q==
@@ -6457,12 +6457,7 @@ underscore-deep-extend@^1.1.5:
   resolved "https://registry.yarnpkg.com/underscore-deep-extend/-/underscore-deep-extend-1.1.5.tgz#962ba1f8b3bb2e2afd182ed86f2e5275543c52bd"
   integrity sha1-liuh+LO7Lir9GC7Yby5SdVQ8Ur0=
 
-underscore@1.11.0:
-  version "1.11.0"
-  resolved "https://registry.yarnpkg.com/underscore/-/underscore-1.11.0.tgz#dd7c23a195db34267186044649870ff1bab5929e"
-  integrity sha512-xY96SsN3NA461qIRKZ/+qox37YXPtSBswMGfiNptr+wrt6ds4HaMw23TP612fEyGekRE6LNRiLYr/aqbHXNedw==
-
-underscore@^1.10.2, underscore@^1.11.0, underscore@^1.12.0, underscore@^1.9.1:
+underscore@1.12.0, underscore@^1.10.2, underscore@^1.12.0, underscore@^1.9.1:
   version "1.12.0"
   resolved "https://registry.yarnpkg.com/underscore/-/underscore-1.12.0.tgz#4814940551fc80587cef7840d1ebb0f16453be97"
   integrity sha512-21rQzss/XPMjolTiIezSu3JAjgagXKROtNrYFEOWK109qY1Uv2tVjPTZ1ci2HgvQDA16gHYSthQIJfB+XId/rQ==
