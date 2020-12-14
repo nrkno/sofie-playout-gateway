@@ -7,10 +7,10 @@ import * as _ from 'underscore'
  * @todo: proper atem media management
  */
 
-function consoleLog (...args: any[]) {
+function consoleLog(...args: any[]) {
 	console.log('AtemUpload:', ...args)
 }
-function consoleError (...args: any[]) {
+function consoleError(...args: any[]) {
 	console.error('AtemUpload:', ...args)
 }
 export class AtemUploadScript {
@@ -19,26 +19,24 @@ export class AtemUploadScript {
 	file: Buffer
 	mediaPool = 0
 
-	constructor () {
+	constructor() {
 		this.connection = new Atem()
 
 		this.connection.on('error', consoleError)
 	}
 
-	connect (ip: string): Promise<null> {
+	connect(ip: string): Promise<null> {
 		return new Promise((resolve, reject) => {
 			this.connection.once('connected', () => {
 				resolve()
 			})
-			this.connection.connect(ip)
-			.catch((err) => {
+			this.connection.connect(ip).catch((err) => {
 				reject(err)
 			})
-
 		})
 	}
 
-	loadFile (url: string) {
+	loadFile(url: string) {
 		return new Promise((resolve, reject) => {
 			this.fileName = url.substr(-63) // cannot be longer than 63 chars
 			fs.readFile(url, (e, data) => {
@@ -50,7 +48,7 @@ export class AtemUploadScript {
 		})
 	}
 
-	checkIfFileExistsOnAtem (): boolean {
+	checkIfFileExistsOnAtem(): boolean {
 		if (!this.file) throw Error('Load a file locally before checking if it needs uploading')
 		consoleLog('got a file')
 
@@ -78,7 +76,7 @@ export class AtemUploadScript {
 		}
 	}
 
-	async uploadToAtem () {
+	async uploadToAtem() {
 		if (!this.checkIfFileExistsOnAtem()) {
 			consoleLog('does not exist on ATEM')
 			await this.connection.clearMediaPoolStill(this.mediaPool)
@@ -92,28 +90,34 @@ export class AtemUploadScript {
 
 console.log('Setup AtemUploader...')
 const singleton = new AtemUploadScript()
-singleton.connect(process.argv[2]).then(async () => {
-	consoleLog('ATEM upload connected')
-	await singleton.loadFile(process.argv[3]).catch((e) => {
-		consoleError(e)
-		console.error('Exiting process due to atemUpload error')
-		process.exit(-1)
-	})
-	let mediaPool: string | undefined
-	if (process.argv.length >= 5) {
-		mediaPool = process.argv[4]
-	}
-	if (mediaPool !== undefined) {
-		singleton.mediaPool = parseInt(mediaPool, 10)
-	}
+singleton.connect(process.argv[2]).then(
+	async () => {
+		consoleLog('ATEM upload connected')
+		await singleton.loadFile(process.argv[3]).catch((e) => {
+			consoleError(e)
+			console.error('Exiting process due to atemUpload error')
+			process.exit(-1)
+		})
+		let mediaPool: string | undefined
+		if (process.argv.length >= 5) {
+			mediaPool = process.argv[4]
+		}
+		if (mediaPool !== undefined) {
+			singleton.mediaPool = parseInt(mediaPool, 10)
+		}
 
-	if (isNaN(singleton.mediaPool) || !_.isNumber(singleton.mediaPool)) {
-		console.error('Exiting due to invalid mediaPool')
-		process.exit(-1)
-	}
+		if (isNaN(singleton.mediaPool) || !_.isNumber(singleton.mediaPool)) {
+			console.error('Exiting due to invalid mediaPool')
+			process.exit(-1)
+		}
 
-	singleton.uploadToAtem().then(() => {
-		consoleLog('uploaded ATEM media to pool ' + singleton.mediaPool)
-		process.exit(0)
-	}, () => process.exit(-1))
-}, () => process.exit(-1))
+		singleton.uploadToAtem().then(
+			() => {
+				consoleLog('uploaded ATEM media to pool ' + singleton.mediaPool)
+				process.exit(0)
+			},
+			() => process.exit(-1)
+		)
+	},
+	() => process.exit(-1)
+)
