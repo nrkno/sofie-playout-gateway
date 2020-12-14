@@ -90,8 +90,8 @@
     "production"
   ],
   "dependencies": {
-    "@sofie-automation/blueprints-integration": "^1.16.0-in-testing-R28.1",
-    "@sofie-automation/server-core-integration": "^1.16.0-in-testing-R28.1",
+    "@sofie-automation/blueprints-integration": "1.16.0-in-testing-R28.1",
+    "@sofie-automation/server-core-integration": "1.16.0-in-testing-R28.1",
     "fast-clone": "^1.5.13",
     "timeline-state-resolver": "5.3.0-nightly-release28-20201214-110646-441c431f.0",
     "tslib": "^2.0.3",
