@@ -9,6 +9,8 @@
 			"*": ["./node_modules/*"],
 			"tv-automation-playout-gateway": ["./src/index.ts"]
 		},
-		"types": ["node"]
+		"types": ["node"],
+		// TSR throws some typings issues
+		"skipLibCheck": true
 	}
 }

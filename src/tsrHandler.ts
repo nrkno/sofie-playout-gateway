@@ -16,7 +16,7 @@ import {
 	AtemMediaPoolType,
 } from 'timeline-state-resolver'
 import { CoreHandler, CoreTSRDeviceHandler } from './coreHandler'
-const clone = require('fast-clone')
+import clone = require('fast-clone')
 import * as crypto from 'crypto'
 import * as cp from 'child_process'
 
@@ -26,6 +26,7 @@ import { TimelineObjectCoreExt } from '@sofie-automation/blueprints-integration'
 import { LoggerInstance } from './index'
 import { disableAtemUpload } from './config'
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface TSRConfig {}
 export interface TSRSettings {
 	// Runtime settings from Core
@@ -98,9 +99,9 @@ const INIT_TIMEOUT = 10000
  */
 export class TSRHandler {
 	logger: LoggerInstance
-	tsr: Conductor
-	private _config: TSRConfig
-	private _coreHandler: CoreHandler
+	tsr!: Conductor
+	// private _config: TSRConfig
+	private _coreHandler!: CoreHandler
 	private _triggerupdateDevicesTimeout: any = null
 	private _coreTsrHandlers: { [deviceId: string]: CoreTSRDeviceHandler } = {}
 	private _observers: Array<any> = []
@@ -118,148 +119,145 @@ export class TSRHandler {
 		this.logger = logger
 	}
 
-	public init(config: TSRConfig, coreHandler: CoreHandler): Promise<any> {
-		this._config = config
+	public async init(_config: TSRConfig, coreHandler: CoreHandler): Promise<void> {
+		// this._config = config
 		this._coreHandler = coreHandler
 
 		this._coreHandler.setTSR(this)
 
-		this._config = this._config // ts-lint: not used fix
 		this.logger.info('TSRHandler init')
 
-		return coreHandler.core
-			.getPeripheralDevice()
-			.then((peripheralDevice) => {
-				const settings: TSRSettings = peripheralDevice.settings || {}
+		const peripheralDevice = await coreHandler.core.getPeripheralDevice()
+		const settings: TSRSettings = peripheralDevice.settings || {}
 
-				this.logger.info('Devices', settings.devices)
-				const c: ConductorOptions = {
-					getCurrentTime: (): number => {
-						return this._coreHandler.core.getCurrentTime()
-					},
-					initializeAsClear: settings.initializeAsClear !== false,
-					multiThreadedResolver: settings.multiThreadedResolver === true,
-					useCacheWhenResolving: settings.useCacheWhenResolving === true,
-					proActiveResolve: true,
+		this.logger.info('Devices', settings.devices)
+		const c: ConductorOptions = {
+			getCurrentTime: (): number => {
+				return this._coreHandler.core.getCurrentTime()
+			},
+			initializeAsClear: settings.initializeAsClear !== false,
+			multiThreadedResolver: settings.multiThreadedResolver === true,
+			useCacheWhenResolving: settings.useCacheWhenResolving === true,
+			proActiveResolve: true,
+		}
+		this.tsr = new Conductor(c)
+		this._triggerupdateTimelineAndMappings()
+
+		coreHandler.onConnected(() => {
+			this.setupObservers()
+			this.resendStatuses()
+		})
+		this.setupObservers()
+
+		this.tsr.on('error', (e, ...args) => {
+			// CasparCG play and load 404 errors should be warnings:
+			const msg: string = e + ''
+			// let cmdInfo: string = args[0] + ''
+			const cmdReply = args[0]
+
+			if (
+				msg.match(/casparcg/i) &&
+				(msg.match(/PlayCommand/i) || msg.match(/LoadbgCommand/i)) &&
+				cmdReply &&
+				_.isObject(cmdReply) &&
+				cmdReply.response &&
+				cmdReply.response.code === 404
+			) {
+				this.logger.warn('TSR', e, ...args)
+			} else {
+				this.logger.error('TSR', e, ...args)
+			}
+		})
+		this.tsr.on('info', (msg, ...args) => {
+			this.logger.info('TSR', msg, ...args)
+		})
+		this.tsr.on('warning', (msg, ...args) => {
+			this.logger.warn('TSR', msg, ...args)
+		})
+		this.tsr.on('debug', (...args: any[]) => {
+			if (this._coreHandler.logDebug) {
+				const msg: any = {
+					message: 'TSR debug message (' + args.length + ')',
+					data: [],
 				}
-				this.tsr = new Conductor(c)
-				this._triggerupdateTimelineAndMappings()
-
-				coreHandler.onConnected(() => {
-					this.setupObservers()
-					this.resendStatuses()
-				})
-				this.setupObservers()
-
-				this.tsr.on('error', (e, ...args) => {
-					// CasparCG play and load 404 errors should be warnings:
-					const msg: string = e + ''
-					// let cmdInfo: string = args[0] + ''
-					const cmdReply = args[0]
-
-					if (
-						msg.match(/casparcg/i) &&
-						(msg.match(/PlayCommand/i) || msg.match(/LoadbgCommand/i)) &&
-						cmdReply &&
-						_.isObject(cmdReply) &&
-						cmdReply.response &&
-						cmdReply.response.code === 404
-					) {
-						this.logger.warn('TSR', e, ...args)
-					} else {
-						this.logger.error('TSR', e, ...args)
-					}
-				})
-				this.tsr.on('info', (msg, ...args) => {
-					this.logger.info('TSR', msg, ...args)
-				})
-				this.tsr.on('warning', (msg, ...args) => {
-					this.logger.warn('TSR', msg, ...args)
-				})
-				this.tsr.on('debug', (...args: any[]) => {
-					if (this._coreHandler.logDebug) {
-						const msg: any = {
-							message: 'TSR debug message (' + args.length + ')',
-							data: [],
-						}
-						if (args.length) {
-							_.each(args, (arg) => {
-								if (_.isObject(arg)) {
-									msg.data.push(JSON.stringify(arg))
-								} else {
-									msg.data.push(arg)
-								}
-							})
+				if (args.length) {
+					_.each(args, (arg) => {
+						if (_.isObject(arg)) {
+							msg.data.push(JSON.stringify(arg))
 						} else {
-							msg.data.push('>empty message<')
+							msg.data.push(arg)
 						}
-
-						this.logger.debug(msg)
-					}
-				})
-
-				this.tsr.on('command', (id: string, cmd: any) => {
-					// This is an deprecated event emitter, to be removed soon
-					if (this._coreHandler.logDebug) {
-						this.logger.info('TSR: Command', {
-							device: id,
-							cmdName: cmd.constructor ? cmd.constructor.name : undefined,
-							cmd: JSON.parse(JSON.stringify(cmd)),
-						})
-					}
-				})
-
-				this.tsr.on('setTimelineTriggerTime', (r: TimelineTriggerTimeResult) => {
-					this.logger.debug('setTimelineTriggerTime')
-					this._coreHandler.core.callMethod(P.methods.timelineTriggerTime, [r]).catch((e) => {
-						this.logger.error('Error in setTimelineTriggerTime', e)
 					})
-				})
-				this.tsr.on('timelineCallback', (time, objId, callbackName, data) => {
-					const method = P.methods[callbackName]
-					if (method) {
-						this._coreHandler.core
-							.callMethod(method, [
-								Object.assign({}, data, {
-									objId: objId,
-									time: time,
-								}),
-							])
-							.catch((e) => {
-								this.logger.error('Error in timelineCallback', e)
-							})
-					} else {
-						this.logger.error(`Unknown callback method "${callbackName}"`)
-					}
-				})
-				this.tsr.on('resolveDone', (timelineHash: string, resolveDuration: number) => {
-					// Make sure we only report back once, per update timeline
-					if (this._lastReportedObjHashes.includes(timelineHash)) return
+				} else {
+					msg.data.push('>empty message<')
+				}
 
-					this._lastReportedObjHashes.unshift(timelineHash)
-					if (this._lastReportedObjHashes.length > 10) {
-						this._lastReportedObjHashes.length = 10
-					}
+				this.logger.debug(msg)
+			}
+		})
 
-					this._coreHandler.core
-						.callMethod('peripheralDevice.reportResolveDone', [timelineHash, resolveDuration])
-						.catch((e) => {
-							this.logger.error('Error in reportResolveDone', e)
-						})
+		this.tsr.on('command', (id: string, cmd: any) => {
+			// This is an deprecated event emitter, to be removed soon
+			if (this._coreHandler.logDebug) {
+				this.logger.info('TSR: Command', {
+					device: id,
+					cmdName: cmd.constructor ? cmd.constructor.name : undefined,
+					cmd: JSON.parse(JSON.stringify(cmd)),
 				})
+			}
+		})
 
-				this.logger.debug('tsr init')
-				return this.tsr.init()
+		this.tsr.on('setTimelineTriggerTime', (r: TimelineTriggerTimeResult) => {
+			this.logger.debug('setTimelineTriggerTime')
+			this._coreHandler.core.callMethod(P.methods.timelineTriggerTime, [r]).catch((e) => {
+				this.logger.error('Error in setTimelineTriggerTime', e)
 			})
-			.then(() => {
-				this._initialized = true
-				this._triggerupdateTimelineAndMappings()
-				this.onSettingsChanged()
-				this._triggerUpdateDevices()
-				this.logger.debug('tsr init done')
-			})
+		})
+		this.tsr.on('timelineCallback', (time, objId, callbackName, data) => {
+			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+			// @ts-ignore
+			const method = P.methods[callbackName]
+			if (method) {
+				this._coreHandler.core
+					.callMethod(method, [
+						Object.assign({}, data, {
+							objId: objId,
+							time: time,
+						}),
+					])
+					.catch((e) => {
+						this.logger.error('Error in timelineCallback', e)
+					})
+			} else {
+				this.logger.error(`Unknown callback method "${callbackName}"`)
+			}
+		})
+		this.tsr.on('resolveDone', (timelineHash: string, resolveDuration: number) => {
+			// Make sure we only report back once, per update timeline
+			if (this._lastReportedObjHashes.includes(timelineHash)) return
+
+			this._lastReportedObjHashes.unshift(timelineHash)
+			if (this._lastReportedObjHashes.length > 10) {
+				this._lastReportedObjHashes.length = 10
+			}
+
+			this._coreHandler.core
+				.callMethod('peripheralDevice.reportResolveDone', [timelineHash, resolveDuration])
+				.catch((e) => {
+					this.logger.error('Error in reportResolveDone', e)
+				})
+		})
+
+		this.logger.debug('tsr init')
+		await this.tsr.init()
+
+		this._initialized = true
+		this._triggerupdateTimelineAndMappings()
+		this.onSettingsChanged()
+		this._triggerUpdateDevices()
+		this.logger.debug('tsr init done')
 	}
-	setupObservers() {
+	private setupObservers(): void {
 		if (this._observers.length) {
 			this.logger.debug('Clearing observers..')
 			this._observers.forEach((obs) => {
@@ -305,7 +303,7 @@ export class TSRHandler {
 		}
 		this._observers.push(deviceObserver)
 	}
-	resendStatuses() {
+	private resendStatuses(): void {
 		_.each(this._coreTsrHandlers, (tsrHandler) => {
 			tsrHandler.sendStatus()
 		})
@@ -483,7 +481,6 @@ export class TSRHandler {
 			} = {}
 
 			_.each(settings.devices, (device, deviceId) => {
-				// @ts-ignore
 				if (!device.disable) {
 					devices[deviceId] = device
 				}
@@ -550,7 +547,7 @@ export class TSRHandler {
 
 		await Promise.race([
 			Promise.all(ps),
-			new Promise((resolve) =>
+			new Promise<void>((resolve) =>
 				setTimeout(() => {
 					const keys = _.keys(promiseOperations)
 					if (keys.length) {
@@ -671,14 +668,14 @@ export class TSRHandler {
 					})
 				}
 			}
-			const onCommandError = (error, context) => {
+			const onCommandError = (error: any, context: any) => {
 				// todo: handle this better
 				this.logger.error(error)
 				this.logger.debug(context)
 			}
 			let deviceName = device.deviceName
 			const deviceInstanceId = device.instanceId
-			const fixError = (e) => {
+			const fixError = (e: any) => {
 				const name = `Device "${deviceName || deviceId}" (${deviceInstanceId})`
 				if (e.reason) e.reason = name + ': ' + e.reason
 				if (e.message) e.message = name + ': ' + e.message
@@ -716,10 +713,10 @@ export class TSRHandler {
 			await device.device.on('commandError', onCommandError)
 			await device.device.on('commandReport', onCommandReport)
 
-			await device.device.on('info', (e, ...args) => this.logger.info(fixError(e), ...args))
-			await device.device.on('warning', (e, ...args) => this.logger.warn(fixError(e), ...args))
-			await device.device.on('error', (e, ...args) => this.logger.error(fixError(e), ...args))
-			await device.device.on('debug', (e, ...args) => this.logger.debug(fixError(e), ...args))
+			await device.device.on('info', (e: any, ...args: any[]) => this.logger.info(fixError(e), ...args))
+			await device.device.on('warning', (e: any, ...args: any[]) => this.logger.warn(fixError(e), ...args))
+			await device.device.on('error', (e: any, ...args: any[]) => this.logger.error(fixError(e), ...args))
+			await device.device.on('debug', (e: any, ...args: any[]) => this.logger.debug(fixError(e), ...args))
 
 			// also ask for the status now, and update:
 			onDeviceStatusChanged(await device.device.getStatus())
@@ -789,7 +786,7 @@ export class TSRHandler {
 		// _transformTimeline (timeline: Array<TimelineObj>): Array<TimelineContentObject> | null {
 
 		const transformObject = (obj: TimelineObjGeneric): TimelineContentObjectTmp => {
-			const transformedObj = clone(_.omit(obj, ['_id', 'studioId']))
+			const transformedObj: any = clone(_.omit(obj, ['_id', 'studioId']))
 			transformedObj.id = obj.id || obj._id
 
 			if (!transformedObj.content) transformedObj.content = {}
@@ -837,8 +834,5 @@ export class TSRHandler {
 
 export function getHash(str: string): string {
 	const hash = crypto.createHash('sha1')
-	return hash
-		.update(str)
-		.digest('base64')
-		.replace(/[\+\/\=]/g, '_') // remove +/= from strings, because they cause troubles
+	return hash.update(str).digest('base64').replace(/[+/=]/g, '_') // remove +/= from strings, because they cause troubles
 }
