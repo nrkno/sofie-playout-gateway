@@ -42,7 +42,7 @@
 		"unlinkall": "yarn unlink @sofie-automation/server-core-integration timeline-state-resolver && yarn --check-files",
 		"validate:dependencies": "yarn audit --groups dependencies && yarn license-validate",
 		"validate:dev-dependencies": "yarn audit --groups devDependencies",
-		"license-validate": "yarn sofie-licensecheck",
+		"license-validate": "yarn sofie-licensecheck --allowPackages cycle@1.0.3",
 		"prepareChangelog": "standard-version --prerelease"
 	},
 	"scripts-info": {
@@ -75,7 +75,7 @@
 		]
 	},
 	"devDependencies": {
-		"@sofie-automation/code-standard-preset": "^0.2.0",
+		"@sofie-automation/code-standard-preset": "^0.2.1",
 		"@types/jest": "^26.0.19",
 		"@types/node": "^12.19.9",
 		"@types/underscore": "^1.10.24",
