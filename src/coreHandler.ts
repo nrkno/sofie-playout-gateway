@@ -128,6 +128,8 @@ export class CoreHandler {
 				_id: this.core.deviceId
 			}),
 			this.core.autoSubscribe('studioOfDevice', this.core.deviceId),
+			this.core.autoSubscribe('mappingsForDevice', this.core.deviceId),
+			this.core.autoSubscribe('timelineForDevice', this.core.deviceId),
 			this.core.autoSubscribe('peripheralDeviceCommands', this.core.deviceId)
 		])
 		.then(() => {
@@ -305,16 +307,11 @@ export class CoreHandler {
 					this.logger.error(e)
 				})
 			}
-			let context = (
-				fcnObject._device && fcnObject._device._device ?
-				fcnObject._device._device : // fcnObject is a CoreTSRDeviceHandler
-				fcnObject
-			)
-			let fcn: Function = context[cmd.functionName]
+			let fcn: Function = fcnObject[cmd.functionName]
 			try {
 				if (!fcn) throw Error(`Function "${cmd.functionName}" not found on device "${cmd.deviceId}"!`)
 
-				Promise.resolve(fcn.apply(context, cmd.args))
+				Promise.resolve(fcn.apply(fcnObject, cmd.args))
 				.then((result) => {
 					cb(null, result)
 				})
@@ -394,12 +391,12 @@ export class CoreHandler {
 		this.logger.info('getSnapshot')
 		let timeline = (
 			this._tsrHandler ?
-			this._tsrHandler.getTimeline(false) :
+			this._tsrHandler.getTimeline() :
 			[]
 		)
 		let mappings = (
 			this._tsrHandler ?
-			this._tsrHandler.getMapping() :
+			this._tsrHandler.getMappings() :
 			[]
 		)
 		return {
@@ -516,6 +513,10 @@ export class CoreTSRDeviceHandler {
 	private _tsrHandler: TSRHandler
 	private _subscriptions: Array<string> = []
 	private _hasGottenStatusChange: boolean = false
+	private _deviceStatus: P.StatusObject = {
+		statusCode: P.StatusCode.BAD,
+		messages: ['Starting up...']
+	}
 
 	constructor (parent: CoreHandler, device: Promise<DeviceContainer>, deviceId: string, tsrHandler: TSRHandler) {
 		this._coreParentHandler = parent
@@ -545,13 +546,14 @@ export class CoreTSRDeviceHandler {
 		await this.core.init(this._coreParentHandler.core)
 
 		if (!this._hasGottenStatusChange) {
-			await this.core.setStatus({
+			this._deviceStatus = {
 				statusCode: (
 					await this._device.device.canConnect ?
 					(await this._device.device.connected ? P.StatusCode.GOOD : P.StatusCode.BAD) :
 					P.StatusCode.GOOD
 				)
-			})
+			}
+			this.sendStatus()
 		}
 		await this.setupSubscriptionsAndObservers()
 		console.log('setupSubscriptionsAndObservers done')
@@ -581,11 +583,11 @@ export class CoreTSRDeviceHandler {
 		// setup observers
 		this._coreParentHandler.setupObserverForPeripheralDeviceCommands(this)
 	}
-	onConnectionChanged (deviceStatus: P.StatusObject) {
+	statusChanged (deviceStatus: P.StatusObject) {
 		this._hasGottenStatusChange = true
 
-		this.core.setStatus(deviceStatus)
-		.catch(e => this._coreParentHandler.logger.error('Error when setting status: ' + e, e.stack))
+		this._deviceStatus = deviceStatus
+		this.sendStatus()
 	}
 	/** Send the device status to Core */
 	sendStatus () {
@@ -607,7 +609,7 @@ export class CoreTSRDeviceHandler {
 			errorMessage,
 			ref
 		])
-		.catch(e => this._coreParentHandler.logger.error('Error when setting status: ' + e, e.stack))
+		.catch(e => this._coreParentHandler.logger.error('Error when callMethodLowPrio: ', e, e.stack))
 	}
 	onUpdateMediaObject (collectionId: string, docId: string, doc: MediaObject | null) {
 		this.core.callMethodLowPrio(PeripheralDeviceAPI.methods.updateMediaObject, [
