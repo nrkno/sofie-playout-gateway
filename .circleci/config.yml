@@ -85,7 +85,7 @@ jobs:
 
   build:
     docker:
-      - image: circleci/node:12.16.1
+      - image: circleci/node:12.20.0
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASS
