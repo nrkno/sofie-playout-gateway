@@ -4,16 +4,11 @@ module.exports = {
 			tsconfig: 'tsconfig.json',
 		},
 	},
-	moduleFileExtensions: [
-		'js',
-		'ts',
-	],
+	moduleFileExtensions: ['js', 'ts'],
 	transform: {
 		'^.+\\.(ts|tsx)$': 'ts-jest',
 	},
-	testMatch: [
-		'**/integrationTests/**/*.spec.(ts|js)',
-	],
+	testMatch: ['**/integrationTests/**/*.spec.(ts|js)'],
 	testEnvironment: 'node',
 	coverageThreshold: {
 		global: {
