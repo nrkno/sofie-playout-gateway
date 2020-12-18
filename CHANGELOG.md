@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## [1.14.0-release28.0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v1.13.0...v1.14.0-release28.0) (2020-12-14)
 
+### [1.13.1](https://github.com/nrkno/tv-automation-playout-gateway/compare/v1.13.0...v1.13.1) (2020-12-18)
+
+
+### Bug Fixes
+
+* update node version to latest 12.x ([3195b6e](https://github.com/nrkno/tv-automation-playout-gateway/commit/3195b6e83edd7ab83b09440fd036e754b6a65a81))
+
 ## [1.13.0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v1.12.0...v1.13.0) (2020-12-08)
 
 
