@@ -6294,6 +6294,33 @@ through@2, "through@>=2.2.7 <3":
     ws "^7.1.1"
     xml-js "^1.6.11"
 
+"timeline-state-resolver@https://github.com/olzzon/tv-automation-state-timeline-resolver.git#dist20201221_1":
+  version "5.1.1"
+  resolved "https://github.com/olzzon/tv-automation-state-timeline-resolver.git#37219f39b0d661c39d24b74615295c42ce97c48d"
+  dependencies:
+    atem-state "^0.10.0"
+    bufferutil "^4.0.1"
+    casparcg-connection "^5.0.1"
+    casparcg-state "^2.0.0"
+    emberplus-connection "^0.0.3"
+    hyperdeck-connection "^0.4.3"
+    osc "^2.4.0"
+    p-all "^3.0.0"
+    p-queue "^6.4.0"
+    p-timeout "^3.2.0"
+    request "^2.88.0"
+    sprintf-js "^1.1.2"
+    superfly-timeline "^8.1.2"
+    threadedclass "^0.7.0"
+    tslib "^1.10.0"
+    tv-automation-quantel-gateway-client "^1.0.12"
+    underscore "^1.10.2"
+    underscore-deep-extend "^1.1.5"
+    utf-8-validate "^5.0.2"
+    v-connection "git+https://github.com/olzzon/v-connection#v20200515_1"
+    ws "^7.1.1"
+    xml-js "^1.6.11"
+
 tmpl@1.0.x:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/tmpl/-/tmpl-1.0.4.tgz#23640dd7b42d00433911140820e5cf440e521dd1"
