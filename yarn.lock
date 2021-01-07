@@ -6646,10 +6646,10 @@ timeline-state-resolver-types@5.3.0-nightly-release28-20201214-110646-441c431f.0
   dependencies:
     tslib "^1.13.0"
 
-timeline-state-resolver@5.3.0-nightly-fix-quantelSetAsNext-20210107-082458-b4f8dcadb.0:
-  version "5.3.0-nightly-fix-quantelSetAsNext-20210107-082458-b4f8dcadb.0"
-  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-5.3.0-nightly-fix-quantelSetAsNext-20210107-082458-b4f8dcadb.0.tgz#cab9572dd138879e985251716dd3097daf3a9098"
-  integrity sha512-xd+SETuX6avBC+NqLZz6x8P8Bb11Mjxk1R/MZ1qLd/12/nLEiGeW+eWVHsglZ9sWF2KC9u4jhNBxubb6QTvuFw==
+timeline-state-resolver@5.3.0-nightly-fix-quantelSetAsNext-20210107-105754-1e3002980.0:
+  version "5.3.0-nightly-fix-quantelSetAsNext-20210107-105754-1e3002980.0"
+  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-5.3.0-nightly-fix-quantelSetAsNext-20210107-105754-1e3002980.0.tgz#6bf97a8c448a15ccc1da03b0e3d8624626468b64"
+  integrity sha512-GSrdtwMzTgpJnJ1Op2DD1c6C0zSBmZXZbcBu/ELPZWa0OjEwFED3proekWPADD7muijW+sPGSLqwBcWuoi5CgQ==
   dependencies:
     atem-state "^0.10.0"
     bufferutil "^4.0.1"
