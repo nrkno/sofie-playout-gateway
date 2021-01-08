@@ -214,8 +214,6 @@ export class TSRHandler {
 			})
 		})
 		this.tsr.on('timelineCallback', (time, objId, callbackName, data) => {
-			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-			// @ts-ignore
 			const method = P.methods[callbackName]
 			if (method) {
 				this._coreHandler.core

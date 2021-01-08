@@ -27,8 +27,7 @@ if (logPath) {
 	console.log = function (...args: any[]) {
 		// orgConsoleLog('a')
 		if (args.length >= 1) {
-			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-			// @ts-ignore one or more arguments
+			// @ts-expect-error one or more arguments
 			logger.debug(...args)
 			orgConsoleLog(...args)
 		}
@@ -49,8 +48,7 @@ if (logPath) {
 	console.log = function (...args: any[]) {
 		// orgConsoleLog('a')
 		if (args.length >= 1) {
-			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-			// @ts-ignore one or more arguments
+			// @ts-expect-error one or more arguments
 			logger.debug(...args)
 		}
 	}

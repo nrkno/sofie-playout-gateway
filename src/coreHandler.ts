@@ -257,8 +257,6 @@ export class CoreHandler {
 						this.logger.error(e)
 					})
 			}
-			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-			// @ts-ignore
 			// eslint-disable-next-line @typescript-eslint/ban-types
 			const fcn: Function = fcnObject[cmd.functionName]
 			try {
