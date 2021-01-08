@@ -214,6 +214,7 @@ export class TSRHandler {
 			})
 		})
 		this.tsr.on('timelineCallback', (time, objId, callbackName, data) => {
+			// @ts-expect-error Untyped bunch of methods
 			const method = P.methods[callbackName]
 			if (method) {
 				this._coreHandler.core

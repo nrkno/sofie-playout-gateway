@@ -257,6 +257,7 @@ export class CoreHandler {
 						this.logger.error(e)
 					})
 			}
+			// @ts-expect-error Untyped bunch of functions
 			// eslint-disable-next-line @typescript-eslint/ban-types
 			const fcn: Function = fcnObject[cmd.functionName]
 			try {
