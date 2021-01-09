@@ -59,6 +59,12 @@ const PLAYOUT_SUBDEVICE_CONFIG: SubDeviceConfigManifest['config'] = {
 			name: 'Frame rate',
 			type: ConfigManifestEntryType.NUMBER,
 		},
+		{
+			id: 'location.folderPath', // For Package Manager to pick up
+			name: 'Media folder location',
+			type: ConfigManifestEntryType.STRING,
+			placeholder: 'Example: C:\\media',
+		},
 	],
 	[TSRDeviceType.ATEM]: [
 		...PLAYOUT_SUBDEVICE_COMMON,
