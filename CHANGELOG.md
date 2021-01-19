@@ -9,6 +9,8 @@ All notable changes to this project will be documented in this file. See [standa
 - don't set lockahead on a port that is playing ([0839003](https://github.com/nrkno/tv-automation-playout-gateway/commit/0839003a087af75f8eff54db6e560a256243ec9c))
 - TSR dep: quantel improvements ([2674523](https://github.com/nrkno/tv-automation-playout-gateway/commit/26745234d36eb721c0041516127a41302f33d9c5))
 
+## [1.14.0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v1.14.0-release28.0...v1.14.0) (2021-01-19)
+
 ## [1.14.0-release28.0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v1.13.0...v1.14.0-release28.0) (2020-12-14)
 
 ## [1.14.0-release28.0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v1.13.0...v1.14.0-release28.0) (2020-12-14)
