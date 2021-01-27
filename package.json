@@ -90,10 +90,10 @@
     "production"
   ],
   "dependencies": {
-    "@sofie-automation/blueprints-integration": "1.16.0",
-    "@sofie-automation/server-core-integration": "1.16.0",
+    "@sofie-automation/blueprints-integration": "https://github.com/olzzon/tv-automation-server-core.git#dist_blueprints_integration20210127_4",
+    "@sofie-automation/server-core-integration": "https://github.com/olzzon/tv-automation-server-core.git#dist_server_core_integration20210127_1",
     "fast-clone": "^1.5.13",
-    "timeline-state-resolver": "5.4.0-nightly-release28-20210127-102052-204312be5.0",
+    "timeline-state-resolver": "git+https://github.com/olzzon/tv-automation-state-timeline-resolver#dist20210127_1",
     "tslib": "^2.0.3",
     "underscore": "^1.12.0",
     "winston": "^2.4.2"

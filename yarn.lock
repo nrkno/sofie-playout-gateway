@@ -559,20 +559,18 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@sofie-automation/blueprints-integration@1.16.0":
-  version "1.16.0"
-  resolved "https://registry.yarnpkg.com/@sofie-automation/blueprints-integration/-/blueprints-integration-1.16.0.tgz#2fd8cbe1736590f2e3ce72582e0204a1267a0df0"
-  integrity sha512-gYjwxC68vEv9JeyVQm0AlJqRBtRCXEt32gU33Ywu0QsUV7t/GZ+NNkZGe93wuhHGYeyDN7uFI6hz0/9U6YMHEQ==
+"@sofie-automation/blueprints-integration@https://github.com/olzzon/tv-automation-server-core.git#dist_blueprints_integration20210127_4":
+  version "1.16.1"
+  resolved "https://github.com/olzzon/tv-automation-server-core.git#f8a0da87569679d1df6b9abc7c59f5f95e87baec"
   dependencies:
     moment "2.29.1"
-    timeline-state-resolver-types "^5.3.0"
+    timeline-state-resolver-types "git+https://github.com/olzzon/tv-automation-state-timeline-resolver#dist_types20210127_1"
     tslib "^2.0.3"
     underscore "1.11.0"
 
-"@sofie-automation/server-core-integration@1.16.0":
-  version "1.16.0"
-  resolved "https://registry.yarnpkg.com/@sofie-automation/server-core-integration/-/server-core-integration-1.16.0.tgz#78434f90ff62299f0e1fb8c0f22519983cc89ec7"
-  integrity sha512-xrYjl6tPJdGKT4DJBcI6j0yKP+0rUnd9y9QxxkRvlWqARP/murrxSUwCP8gF37iN5bwwl9qzqs0RHInvGHpQFA==
+"@sofie-automation/server-core-integration@https://github.com/olzzon/tv-automation-server-core.git#dist_server_core_integration20210127_1":
+  version "1.16.1"
+  resolved "https://github.com/olzzon/tv-automation-server-core.git#199147014ff705e509acc1020986a95c6af03162"
   dependencies:
     data-store "3.1.0"
     ejson "^2.2.0"
@@ -631,13 +629,6 @@
   dependencies:
     "@babel/types" "^7.3.0"
 
-"@types/babel__traverse@^7.0.4":
-  version "7.11.0"
-  resolved "https://registry.yarnpkg.com/@types/babel__traverse/-/babel__traverse-7.11.0.tgz#b9a1efa635201ba9bc850323a8793ee2d36c04a0"
-  integrity sha512-kSjgDMZONiIfSH1Nxcr5JIRMwUetDki63FSQfpTCz8ogF3Ulqm8+mr5f78dUYs6vMiB6gBusQqfQmBvHZj/lwg==
-  dependencies:
-    "@babel/types" "^7.3.0"
-
 "@types/cacheable-request@^6.0.1":
   version "6.0.1"
   resolved "https://registry.yarnpkg.com/@types/cacheable-request/-/cacheable-request-6.0.1.tgz#5d22f3dded1fd3a84c0bbeb5039a7419c2c91976"
@@ -685,14 +676,6 @@
     "@types/istanbul-lib-report" "*"
 
 "@types/jest@26.x", "@types/jest@^26.0.19":
-  version "26.0.19"
-  resolved "https://registry.yarnpkg.com/@types/jest/-/jest-26.0.19.tgz#e6fa1e3def5842ec85045bd5210e9bb8289de790"
-  integrity sha512-jqHoirTG61fee6v6rwbnEuKhpSKih0tuhqeFbCmMmErhtu3BYlOZaXWjffgOstMM4S/3iQD31lI5bGLTrs97yQ==
-  dependencies:
-    jest-diff "^26.0.0"
-    pretty-format "^26.0.0"
-
-"@types/jest@^26.0.14":
   version "26.0.19"
   resolved "https://registry.yarnpkg.com/@types/jest/-/jest-26.0.19.tgz#e6fa1e3def5842ec85045bd5210e9bb8289de790"
   integrity sha512-jqHoirTG61fee6v6rwbnEuKhpSKih0tuhqeFbCmMmErhtu3BYlOZaXWjffgOstMM4S/3iQD31lI5bGLTrs97yQ==
@@ -4993,11 +4976,6 @@ react-is@^17.0.1:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-17.0.1.tgz#5b3531bd76a645a4c9fb6e693ed36419e3301339"
   integrity sha512-NAnt2iGDXohE5LI7uBnLnqvLQMtzhkiAOLXTmv+qnF9Ky7xAPcX8Up/xWIhxvLVGJvuLiNc4xQLtuqDRzb4fSA==
 
-react-is@^17.0.1:
-  version "17.0.1"
-  resolved "https://registry.yarnpkg.com/react-is/-/react-is-17.0.1.tgz#5b3531bd76a645a4c9fb6e693ed36419e3301339"
-  integrity sha512-NAnt2iGDXohE5LI7uBnLnqvLQMtzhkiAOLXTmv+qnF9Ky7xAPcX8Up/xWIhxvLVGJvuLiNc4xQLtuqDRzb4fSA==
-
 read-installed@4.0.3:
   version "4.0.3"
   resolved "https://registry.yarnpkg.com/read-installed/-/read-installed-4.0.3.tgz#ff9b8b67f187d1e4c29b9feb31f6b223acd19067"
@@ -5248,14 +5226,6 @@ resolve-url@^0.2.1:
   integrity sha1-LGN/53yJOv0qZj/iGqkIAGjiBSo=
 
 resolve@^1.1.6, resolve@^1.10.0, resolve@^1.17.0, resolve@^1.18.1, resolve@^1.3.2:
-  version "1.19.0"
-  resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.19.0.tgz#1af5bf630409734a067cae29318aac7fa29a267c"
-  integrity sha512-rArEXAgsBG4UgRGcynxWIWKFvh/XZCcS8UJdHhwy91zwAvCZIbcs+vAbflgBnNjYMs/i/i+/Ux6IZhML1yPvxg==
-  dependencies:
-    is-core-module "^2.1.0"
-    path-parse "^1.0.6"
-
-resolve@^1.18.1:
   version "1.19.0"
   resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.19.0.tgz#1af5bf630409734a067cae29318aac7fa29a267c"
   integrity sha512-rArEXAgsBG4UgRGcynxWIWKFvh/XZCcS8UJdHhwy91zwAvCZIbcs+vAbflgBnNjYMs/i/i+/Ux6IZhML1yPvxg==
@@ -6022,17 +5992,15 @@ through@2, "through@>=2.2.7 <3":
   resolved "https://registry.yarnpkg.com/through/-/through-2.3.8.tgz#0dd4c9ffaabc357960b1b724115d7e0e86a2e1f5"
   integrity sha1-DdTJ/6q8NXlgsbckEV1+Doai4fU=
 
-timeline-state-resolver-types@^5.3.0:
-  version "5.3.0"
-  resolved "https://registry.yarnpkg.com/timeline-state-resolver-types/-/timeline-state-resolver-types-5.3.0.tgz#5369299b3e8d7e088c6dfda62ce51eb5967e42d4"
-  integrity sha512-kzJZojfcVeA9+57qH/C155DYW9/P30c7KnDVp1cIZYfpZwXQEztpYodPxNn59L782kwqc8iM6J/7pQFfuJeGaA==
+"timeline-state-resolver-types@git+https://github.com/olzzon/tv-automation-state-timeline-resolver#dist_types20210127_1":
+  version "1.3.0"
+  resolved "git+https://github.com/olzzon/tv-automation-state-timeline-resolver#d5d2ff5a6dd1970aae47cc5ead7fb3e719c7b069"
   dependencies:
     tslib "^1.13.0"
 
-timeline-state-resolver@5.4.0-nightly-release28-20210127-102052-204312be5.0:
-  version "5.4.0-nightly-release28-20210127-102052-204312be5.0"
-  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-5.4.0-nightly-release28-20210127-102052-204312be5.0.tgz#86e8151c048031626c5837cfe3f53a459062858c"
-  integrity sha512-x7eyzu9jinIS5tpGxeMljzF+jhI3EVJrZRzK+YF+/B0z11RxrMuoZZOnuq2egLqG909g47zaJsJoX4eJzMQT2w==
+"timeline-state-resolver@git+https://github.com/olzzon/tv-automation-state-timeline-resolver#dist20210127_1":
+  version "5.2.0"
+  resolved "git+https://github.com/olzzon/tv-automation-state-timeline-resolver#759bb96edb7aec87c13fab2bdc1e95c43e1d25fa"
   dependencies:
     atem-state "^0.10.0"
     bufferutil "^4.0.1"
@@ -6357,11 +6325,6 @@ underscore@1.11.0:
   integrity sha512-xY96SsN3NA461qIRKZ/+qox37YXPtSBswMGfiNptr+wrt6ds4HaMw23TP612fEyGekRE6LNRiLYr/aqbHXNedw==
 
 underscore@^1.10.2, underscore@^1.11.0, underscore@^1.12.0, underscore@^1.9.1:
-  version "1.12.0"
-  resolved "https://registry.yarnpkg.com/underscore/-/underscore-1.12.0.tgz#4814940551fc80587cef7840d1ebb0f16453be97"
-  integrity sha512-21rQzss/XPMjolTiIezSu3JAjgagXKROtNrYFEOWK109qY1Uv2tVjPTZ1ci2HgvQDA16gHYSthQIJfB+XId/rQ==
-
-underscore@^1.11.0:
   version "1.12.0"
   resolved "https://registry.yarnpkg.com/underscore/-/underscore-1.12.0.tgz#4814940551fc80587cef7840d1ebb0f16453be97"
   integrity sha512-21rQzss/XPMjolTiIezSu3JAjgagXKROtNrYFEOWK109qY1Uv2tVjPTZ1ci2HgvQDA16gHYSthQIJfB+XId/rQ==
@@ -6779,7 +6742,7 @@ yargs-parser@20.x, yargs-parser@^20.2.3:
   resolved "https://registry.yarnpkg.com/yargs-parser/-/yargs-parser-20.2.4.tgz#b42890f14566796f85ae8e3a25290d205f154a54"
   integrity sha512-WOkpgNhPTlE73h4VFAFsOnomJVaovO8VqLDzy5saChRBFQFBoMYirowyW+Q9HB4HFF4Z7VZTiG3iSzJJA29yRA==
 
-yargs-parser@^15.0.1:
+yargs-parser@^15.0.0:
   version "15.0.1"
   resolved "https://registry.yarnpkg.com/yargs-parser/-/yargs-parser-15.0.1.tgz#54786af40b820dcb2fb8025b11b4d659d76323b3"
   integrity sha512-0OAMV2mAZQrs3FkNpDQcBk1x5HXb8X4twADss4S0Iuk+2dGnLOE/fRHrsYm542GduMveyA77OF4wrNJuanRCWw==
