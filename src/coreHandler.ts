@@ -4,7 +4,7 @@ import { CoreConnection,
 	PeripheralDeviceAPI as P,
 	DDPConnectorOptions,
 	PeripheralDeviceAPI
-} from 'tv-automation-server-core-integration'
+} from '@sofie-automation/server-core-integration'
 
 import {
 	DeviceType,
@@ -422,6 +422,30 @@ export class CoreHandler {
 		}
 		return devices
 	}
+	async getMemoryUsage () {
+		if (this._tsrHandler) {
+			const values = {
+				main: process.memoryUsage(),
+				threads: await this._tsrHandler.tsr.getThreadsMemoryUsage()
+			}
+			/** Convert all properties from bytes to MB */
+			const toMB = (o: any) => {
+				if (typeof o === 'object') {
+					const o2 = {}
+					for (const key of Object.keys(o)) {
+						o2[key] = toMB(o[key])
+					}
+					return o2
+				} else if (typeof o === 'number') {
+					return o / 1024 / 1024
+				}
+				return o
+			}
+			return toMB(values)
+		} else {
+			throw new Error('TSR not set up!')
+		}
+	}
 	restartCasparCG (deviceId: string): Promise<any> {
 		if (!this._tsrHandler) throw new Error('TSRHandler is not initialized')
 
@@ -472,7 +496,7 @@ export class CoreHandler {
 		}
 
 		let dirNames = [
-			'tv-automation-server-core-integration',
+			'@sofie-automation/server-core-integration',
 			'timeline-state-resolver',
 			'atem-connection',
 			'atem-state',
@@ -533,8 +557,8 @@ export class CoreTSRDeviceHandler {
 	}
 	async init (): Promise<void> {
 		this._device = await this._devicePr
-		let deviceName = this._device.deviceName
 		let deviceId = this._device.deviceId
+		let deviceName = `${deviceId} (${this._device.deviceName})`
 
 		this.core = new CoreConnection(this._coreParentHandler.getCoreConnectionOptions(deviceName, 'Playout' + deviceId, this._device.deviceOptions.type))
 		this.core.onError((err) => {

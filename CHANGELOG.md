@@ -2,6 +2,54 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.14.0-release28.0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v1.13.0...v1.14.0-release28.0) (2020-12-14)
+
+### [1.13.1](https://github.com/nrkno/tv-automation-playout-gateway/compare/v1.13.0...v1.13.1) (2020-12-18)
+
+
+### Bug Fixes
+
+* update node version to latest 12.x ([3195b6e](https://github.com/nrkno/tv-automation-playout-gateway/commit/3195b6e83edd7ab83b09440fd036e754b6a65a81))
+
+## [1.13.0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v1.12.0...v1.13.0) (2020-12-08)
+
+
+### Features
+
+* add casparcg fps to config manifest ([45a2d25](https://github.com/nrkno/tv-automation-playout-gateway/commit/45a2d25d322204b9b4b2567c1b14a9f3a682299f))
+* update tsr ([63e3429](https://github.com/nrkno/tv-automation-playout-gateway/commit/63e3429d05f6fab13e5199d8927c72337149f3fe))
+
+
+### Bug Fixes
+
+* add callable method getMemoryUsage, to be used for troubleshooting memory issues ([aef928b](https://github.com/nrkno/tv-automation-playout-gateway/commit/aef928bf296457f34acae0dc0a19fe703ddf6a7d))
+* add deviceId to the device name as well ([36558f8](https://github.com/nrkno/tv-automation-playout-gateway/commit/36558f8ab9f1bf433efb8c18688a1aa1831ec60f))
+
+## [1.13.0-release27.0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v1.12.0...v1.13.0-release27.0) (2020-11-16)
+
+
+### Features
+
+* add casparcg fps to config manifest ([45a2d25](https://github.com/nrkno/tv-automation-playout-gateway/commit/45a2d25d322204b9b4b2567c1b14a9f3a682299f))
+* update tsr ([63e3429](https://github.com/nrkno/tv-automation-playout-gateway/commit/63e3429d05f6fab13e5199d8927c72337149f3fe))
+
+
+### Bug Fixes
+
+* add callable method getMemoryUsage, to be used for troubleshooting memory issues ([aef928b](https://github.com/nrkno/tv-automation-playout-gateway/commit/aef928bf296457f34acae0dc0a19fe703ddf6a7d))
+* add deviceId to the device name as well ([36558f8](https://github.com/nrkno/tv-automation-playout-gateway/commit/36558f8ab9f1bf433efb8c18688a1aa1831ec60f))
+
+## [1.12.0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v1.11.0...v1.12.0) (2020-11-10)
+
+
+### Bug Fixes
+
+* update tsr ([f42f9e2](https://github.com/nrkno/tv-automation-playout-gateway/commit/f42f9e22fe5da21f5747d4bd7ce2d8712d6e3a36))
+
+## [1.12.0-0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v1.11.1-0...v1.12.0-0) (2020-10-19)
+
+### [1.11.1-0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v1.11.0...v1.11.1-0) (2020-10-19)
+
 ## [1.11.0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v1.10.1...v1.11.0) (2020-10-19)
 
 
