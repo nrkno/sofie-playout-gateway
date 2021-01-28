@@ -217,8 +217,6 @@ workflows:
       # - test
       - validate-all-dependencies:
           filters:
-            tags:
-              ignore: /.*/
             branches:
               only:
                 - master
@@ -227,8 +225,6 @@ workflows:
               only: /v.*/
       - validate-dependencies:
           filters:
-            tags:
-              ignore: /.*/
             branches:
               only:
                 - master
