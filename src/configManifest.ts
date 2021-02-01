@@ -3,6 +3,7 @@ import {
 	ConfigManifestEntryType,
 	SubDeviceConfigManifest,
 	SubDeviceConfigManifestEntry,
+	MappingsManifest,
 } from '@sofie-automation/server-core-integration'
 import {
 	DeviceType as TSRDeviceType,
@@ -10,6 +11,12 @@ import {
 	TimelineContentTypeHTTP,
 	LawoDeviceMode,
 	OSCDeviceType,
+	MappingAtemType,
+	MappingHyperdeckType,
+	MappingLawoType,
+	MappingPanasonicPtzType,
+	MappingSisyfosType,
+	QuantelControlMode,
 } from 'timeline-state-resolver'
 
 const PLAYOUT_SUBDEVICE_COMMON: SubDeviceConfigManifestEntry[] = [
@@ -382,6 +389,129 @@ const PLAYOUT_SUBDEVICE_CONFIG: SubDeviceConfigManifest['config'] = {
 	[TSRDeviceType.SHOTOKU]: [...PLAYOUT_SUBDEVICE_COMMON, ...PLAYOUT_SUBDEVICE_HOST_PORT],
 }
 
+// TODO: should come from types
+enum EmberParameterType {
+	Null = 'NULL',
+	Integer = 'INTEGER',
+	Real = 'REAL',
+	String = 'STRING',
+	Boolean = 'BOOLEAN',
+	Trigger = 'TRIGGER',
+	Enum = 'ENUM',
+	Octets = 'OCTETS',
+}
+
+const MAPPING_MANIFEST: MappingsManifest = {
+	[TSRDeviceType.ATEM]: [
+		{ id: 'mappingType', type: ConfigManifestEntryType.ENUM, values: MappingAtemType, name: 'Mapping Type' },
+		{ id: 'index', type: ConfigManifestEntryType.INT, name: 'index' },
+	],
+	[TSRDeviceType.CASPARCG]: [
+		{
+			id: 'channel',
+			name: 'Channel',
+			type: ConfigManifestEntryType.INT,
+			hint: 'The CasparCG channel to use (1 is the first)',
+		},
+		{
+			id: 'layer',
+			name: 'Layer',
+			type: ConfigManifestEntryType.INT,
+			hint: 'The layer in a channel to use',
+		},
+		{
+			id: 'previewWhenNotOnAir',
+			name: 'Preview when not On-Air',
+			type: ConfigManifestEntryType.BOOLEAN,
+			optional: true,
+			hint: 'Whether to load to first frame',
+		},
+	],
+	[TSRDeviceType.HYPERDECK]: [
+		{
+			id: 'mappingType',
+			type: ConfigManifestEntryType.ENUM,
+			values: MappingHyperdeckType,
+			name: 'Mapping Type',
+		},
+	],
+	[TSRDeviceType.LAWO]: [
+		{
+			id: 'mappingType',
+			type: ConfigManifestEntryType.ENUM,
+			values: MappingLawoType,
+			name: 'Mapping Type',
+		},
+		{
+			id: 'identifier',
+			type: ConfigManifestEntryType.STRING,
+			name: 'Identifier',
+		},
+		{
+			id: 'emberType',
+			type: ConfigManifestEntryType.ENUM,
+			values: EmberParameterType,
+			name: 'Ember Type',
+		},
+		{
+			id: 'priority',
+			type: ConfigManifestEntryType.NUMBER,
+			name: 'Priority',
+		},
+	],
+	[TSRDeviceType.PANASONIC_PTZ]: [
+		{
+			id: 'mappingType',
+			type: ConfigManifestEntryType.ENUM,
+			values: MappingPanasonicPtzType,
+			name: 'Mapping Type',
+		},
+	],
+	[TSRDeviceType.QUANTEL]: [
+		{
+			id: 'portId',
+			type: ConfigManifestEntryType.STRING,
+			name: 'Port ID',
+			hint: "The name you'd like the port to have",
+		},
+		{
+			id: 'channelId',
+			type: ConfigManifestEntryType.INT,
+			name: 'Channel ID',
+			hint: 'The channel to use for output (0 is the first one)',
+		},
+		{
+			id: 'mode',
+			type: ConfigManifestEntryType.ENUM,
+			values: QuantelControlMode,
+			name: 'Mode',
+			optional: true,
+		},
+	],
+	[TSRDeviceType.SINGULAR_LIVE]: [
+		{
+			id: 'compositionName',
+			type: ConfigManifestEntryType.STRING,
+			name: 'Composition Name',
+		},
+	],
+	[TSRDeviceType.SISYFOS]: [
+		{
+			id: 'mappingType',
+			type: ConfigManifestEntryType.ENUM,
+			values: MappingSisyfosType,
+			name: 'Mapping Type',
+		},
+		{
+			id: 'channel',
+			type: ConfigManifestEntryType.INT,
+			name: 'Channel',
+			optional: true,
+		},
+	],
+	// TODO - add VMix?
+}
+
 export const PLAYOUT_DEVICE_CONFIG: DeviceConfigManifest = {
 	deviceConfig: [
 		{
@@ -419,4 +549,5 @@ export const PLAYOUT_DEVICE_CONFIG: DeviceConfigManifest = {
 			config: PLAYOUT_SUBDEVICE_CONFIG,
 		},
 	],
+	layerMappings: MAPPING_MANIFEST,
 }

@@ -596,10 +596,10 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@sofie-automation/blueprints-integration@1.17.0-in-testing-R29.1":
-  version "1.17.0-in-testing-R29.1"
-  resolved "https://registry.yarnpkg.com/@sofie-automation/blueprints-integration/-/blueprints-integration-1.17.0-in-testing-R29.1.tgz#0586ed8ca508cf832fe650a3e3f066bf40cea0b8"
-  integrity sha512-kx3tRRH+lBon+wm9w7DBGJSSLquLbIdbhpNDM8UAJPo2rs/bjvvhK6UYwFk++6wauChRgdF6SKn1JpyRIIQixA==
+"@sofie-automation/blueprints-integration@1.18.0-nightly-release30-20210115-175636-93146b56.0":
+  version "1.18.0-nightly-release30-20210115-175636-93146b56.0"
+  resolved "https://registry.yarnpkg.com/@sofie-automation/blueprints-integration/-/blueprints-integration-1.18.0-nightly-release30-20210115-175636-93146b56.0.tgz#b55bf53016917475590618e98f0427859ec25a52"
+  integrity sha512-neLb+5zfvkKrv+8QHdXzqaiHnqow2CfQl3MhKnBl9XZnASESyzdzApA2/TSX4y9Du5XL4brJ8ibKbMpZMeLzKA==
   dependencies:
     moment "2.29.1"
     timeline-state-resolver-types "5.3.0-nightly-release29-20210113-080756-7bae1d378.0"
@@ -625,10 +625,10 @@
     read-pkg-up "^7.0.1"
     shelljs "^0.8.4"
 
-"@sofie-automation/server-core-integration@1.17.0-in-testing-R29.1":
-  version "1.17.0-in-testing-R29.1"
-  resolved "https://registry.yarnpkg.com/@sofie-automation/server-core-integration/-/server-core-integration-1.17.0-in-testing-R29.1.tgz#e94675d3b309e80890c52eb679057b5099e2d8ef"
-  integrity sha512-0NQDZhGwMxdg+9X7BaYn8Cea28eg9IKRsBmEiNHJ2SMO2VVudMu3QTGOfirS9a+JKp/HpIHafX39nX8FSzxq/g==
+"@sofie-automation/server-core-integration@1.18.0-nightly-feat-layer-mappings-manifest-20210201-122053-74b93b9.0":
+  version "1.18.0-nightly-feat-layer-mappings-manifest-20210201-122053-74b93b9.0"
+  resolved "https://registry.yarnpkg.com/@sofie-automation/server-core-integration/-/server-core-integration-1.18.0-nightly-feat-layer-mappings-manifest-20210201-122053-74b93b9.0.tgz#ea017e4b7f4eb90504dba2efc6fd4d8f3ad6b31a"
+  integrity sha512-BRNacI7QXzHBPBmX6whf4PrTno7xDufWDOXIUxA7gMUsh1PlzXj7xOJO1bkKkRS8t8Z9HbL4NjtRM8VyINQ0bg==
   dependencies:
     data-store "3.1.0"
     ejson "^2.2.0"
