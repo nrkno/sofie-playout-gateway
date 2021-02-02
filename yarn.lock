@@ -625,10 +625,10 @@
     read-pkg-up "^7.0.1"
     shelljs "^0.8.4"
 
-"@sofie-automation/server-core-integration@1.18.0-nightly-feat-layer-mappings-manifest-20210201-122053-74b93b9.0":
-  version "1.18.0-nightly-feat-layer-mappings-manifest-20210201-122053-74b93b9.0"
-  resolved "https://registry.yarnpkg.com/@sofie-automation/server-core-integration/-/server-core-integration-1.18.0-nightly-feat-layer-mappings-manifest-20210201-122053-74b93b9.0.tgz#ea017e4b7f4eb90504dba2efc6fd4d8f3ad6b31a"
-  integrity sha512-BRNacI7QXzHBPBmX6whf4PrTno7xDufWDOXIUxA7gMUsh1PlzXj7xOJO1bkKkRS8t8Z9HbL4NjtRM8VyINQ0bg==
+"@sofie-automation/server-core-integration@1.18.0-nightly-feat-layer-mappings-manifest-20210202-141236-a466da1.0":
+  version "1.18.0-nightly-feat-layer-mappings-manifest-20210202-141236-a466da1.0"
+  resolved "https://registry.yarnpkg.com/@sofie-automation/server-core-integration/-/server-core-integration-1.18.0-nightly-feat-layer-mappings-manifest-20210202-141236-a466da1.0.tgz#5fc3b2e2246865c73f27657230e0de23119302f5"
+  integrity sha512-aRXbcufRRIvNMxN0hMJllZ3SCTuqzVT52a81lsKHlK7uwhyllYC/XKq3jYup7CtogFiA39phomikIhxEZ3TPRw==
   dependencies:
     data-store "3.1.0"
     ejson "^2.2.0"

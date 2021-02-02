@@ -403,8 +403,14 @@ enum EmberParameterType {
 
 const MAPPING_MANIFEST: MappingsManifest = {
 	[TSRDeviceType.ATEM]: [
-		{ id: 'mappingType', type: ConfigManifestEntryType.ENUM, values: MappingAtemType, name: 'Mapping Type' },
-		{ id: 'index', type: ConfigManifestEntryType.INT, name: 'index' },
+		{
+			id: 'mappingType',
+			type: ConfigManifestEntryType.ENUM,
+			values: MappingAtemType,
+			name: 'Mapping Type',
+			includeInSummary: true,
+		},
+		{ id: 'index', type: ConfigManifestEntryType.INT, name: 'index', includeInSummary: true },
 	],
 	[TSRDeviceType.CASPARCG]: [
 		{
@@ -412,12 +418,14 @@ const MAPPING_MANIFEST: MappingsManifest = {
 			name: 'Channel',
 			type: ConfigManifestEntryType.INT,
 			hint: 'The CasparCG channel to use (1 is the first)',
+			includeInSummary: true,
 		},
 		{
 			id: 'layer',
 			name: 'Layer',
 			type: ConfigManifestEntryType.INT,
 			hint: 'The layer in a channel to use',
+			includeInSummary: true,
 		},
 		{
 			id: 'previewWhenNotOnAir',
@@ -446,6 +454,7 @@ const MAPPING_MANIFEST: MappingsManifest = {
 			id: 'identifier',
 			type: ConfigManifestEntryType.STRING,
 			name: 'Identifier',
+			includeInSummary: true,
 		},
 		{
 			id: 'emberType',
@@ -465,6 +474,7 @@ const MAPPING_MANIFEST: MappingsManifest = {
 			type: ConfigManifestEntryType.ENUM,
 			values: MappingPanasonicPtzType,
 			name: 'Mapping Type',
+			includeInSummary: true,
 		},
 	],
 	[TSRDeviceType.QUANTEL]: [
@@ -473,12 +483,14 @@ const MAPPING_MANIFEST: MappingsManifest = {
 			type: ConfigManifestEntryType.STRING,
 			name: 'Port ID',
 			hint: "The name you'd like the port to have",
+			includeInSummary: true,
 		},
 		{
 			id: 'channelId',
 			type: ConfigManifestEntryType.INT,
 			name: 'Channel ID',
 			hint: 'The channel to use for output (0 is the first one)',
+			includeInSummary: true,
 		},
 		{
 			id: 'mode',
@@ -507,6 +519,7 @@ const MAPPING_MANIFEST: MappingsManifest = {
 			type: ConfigManifestEntryType.INT,
 			name: 'Channel',
 			optional: true,
+			includeInSummary: true,
 		},
 	],
 	// TODO - add VMix?
