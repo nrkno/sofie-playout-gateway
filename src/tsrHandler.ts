@@ -22,8 +22,8 @@ import * as crypto from 'crypto'
 import * as cp from 'child_process'
 
 import * as _ from 'underscore'
-import { CoreConnection, PeripheralDeviceAPI as P } from 'tv-automation-server-core-integration'
-import { TimelineObjectCoreExt } from 'tv-automation-sofie-blueprints-integration'
+import { CoreConnection, PeripheralDeviceAPI as P } from '@sofie-automation/server-core-integration'
+import { TimelineObjectCoreExt } from '@sofie-automation/blueprints-integration'
 import { LoggerInstance } from './index'
 import { disableAtemUpload } from './config'
 

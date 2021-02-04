@@ -1,5 +1,5 @@
-import { DeviceConfigManifest, ConfigManifestEntryType, SubDeviceConfigManifest, SubDeviceConfigManifestEntry } from 'tv-automation-server-core-integration'
-import { DeviceType as TSRDeviceType, AtemMediaPoolType, TimelineContentTypeHTTP, LawoDeviceMode } from 'timeline-state-resolver'
+import { DeviceConfigManifest, ConfigManifestEntryType, SubDeviceConfigManifest, SubDeviceConfigManifestEntry } from '@sofie-automation/server-core-integration'
+import { DeviceType as TSRDeviceType, AtemMediaPoolType, TimelineContentTypeHTTP, LawoDeviceMode, OSCDeviceType } from 'timeline-state-resolver'
 
 const PLAYOUT_SUBDEVICE_COMMON: SubDeviceConfigManifestEntry[] = [
 	{
@@ -43,6 +43,11 @@ const PLAYOUT_SUBDEVICE_CONFIG: SubDeviceConfigManifest['config'] = {
 		{
 			id: 'options.launcherPort',
 			name: 'Launcher Port',
+			type: ConfigManifestEntryType.NUMBER
+		},
+		{
+			id: 'options.fps',
+			name: 'Frame rate',
 			type: ConfigManifestEntryType.NUMBER
 		}
 	],
@@ -228,7 +233,14 @@ const PLAYOUT_SUBDEVICE_CONFIG: SubDeviceConfigManifest['config'] = {
 	],
 	[TSRDeviceType.OSC]: [
 		...PLAYOUT_SUBDEVICE_COMMON,
-		...PLAYOUT_SUBDEVICE_HOST_PORT
+		...PLAYOUT_SUBDEVICE_HOST_PORT,
+		{
+			id: 'options.type',
+			name: 'Type (TCP or UDP)',
+			type: ConfigManifestEntryType.ENUM,
+			values: OSCDeviceType,
+			defaultVal: OSCDeviceType.UDP
+		}
 	],
 	[TSRDeviceType.HTTPWATCHER]: [
 		...PLAYOUT_SUBDEVICE_COMMON,
