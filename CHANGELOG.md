@@ -2,12 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-## [1.15.0-release29.0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v1.13.1...v1.15.0-release29.0) (2021-01-15)
+## [1.15.0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v1.14.1...v1.15.0) (2021-02-08)
 
 ### Bug Fixes
 
 - don't set lockahead on a port that is playing ([0839003](https://github.com/nrkno/tv-automation-playout-gateway/commit/0839003a087af75f8eff54db6e560a256243ec9c))
 - TSR dep: quantel improvements ([2674523](https://github.com/nrkno/tv-automation-playout-gateway/commit/26745234d36eb721c0041516127a41302f33d9c5))
+
+### [1.14.1](https://github.com/nrkno/tv-automation-playout-gateway/compare/v1.14.0...v1.14.1) (2021-02-05)
+
+### Bug Fixes
+
+- TSR dep update (quantel fix) ([d30c85e](https://github.com/nrkno/tv-automation-playout-gateway/commit/d30c85e0ef524929389a0c892cad21662ccbb8d1))
+
+## 1.14.0 (2021-01-19)
+
+### Bug Fixes
+
+- don't set lockahead on a port that is playing ([0839003](https://github.com/nrkno/tv-automation-playout-gateway/commit/0839003a087af75f8eff54db6e560a256243ec9c))
+- TSR dep: quantel improvements ([2674523](https://github.com/nrkno/tv-automation-playout-gateway/commit/26745234d36eb721c0041516127a41302f33d9c5))
+
+## [1.14.0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v1.14.0-release28.0...v1.14.0) (2021-01-19)
 
 ## [1.14.0-release28.0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v1.13.0...v1.14.0-release28.0) (2020-12-14)
 

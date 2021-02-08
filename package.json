@@ -106,7 +106,7 @@
 		"@sofie-automation/blueprints-integration": "1.18.0-nightly-release30-20210115-175636-93146b56.0",
 		"@sofie-automation/server-core-integration": "1.18.0-nightly-feat-layer-mappings-manifest-20210202-141236-a466da1.0",
 		"fast-clone": "^1.5.13",
-		"timeline-state-resolver": "5.3.0-nightly-release29-20210113-080756-7bae1d378.0",
+		"timeline-state-resolver": "5.5.1",
 		"tslib": "^2.0.3",
 		"underscore": "^1.12.0",
 		"winston": "^2.4.2"
