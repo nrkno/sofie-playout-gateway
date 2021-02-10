@@ -596,14 +596,14 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@sofie-automation/blueprints-integration@1.18.0-nightly-release30-20210115-175636-93146b56.0":
-  version "1.18.0-nightly-release30-20210115-175636-93146b56.0"
-  resolved "https://registry.yarnpkg.com/@sofie-automation/blueprints-integration/-/blueprints-integration-1.18.0-nightly-release30-20210115-175636-93146b56.0.tgz#b55bf53016917475590618e98f0427859ec25a52"
-  integrity sha512-neLb+5zfvkKrv+8QHdXzqaiHnqow2CfQl3MhKnBl9XZnASESyzdzApA2/TSX4y9Du5XL4brJ8ibKbMpZMeLzKA==
+"@sofie-automation/blueprints-integration@1.18.0-0-in-testing-R30":
+  version "1.18.0-0-in-testing-R30"
+  resolved "https://registry.yarnpkg.com/@sofie-automation/blueprints-integration/-/blueprints-integration-1.18.0-0-in-testing-R30.tgz#7c2f1b98b9b626ccdc341e53ec2cc6ae79fe8449"
+  integrity sha512-oIlfizaKOiW6ZBCy4FAP8M7lZePgWFDyPwXazb2AlRYR1j5oCg/lkQdReErrbT/eiW/59dHB+UbcJLpKaGURqw==
   dependencies:
     moment "2.29.1"
-    timeline-state-resolver-types "5.3.0-nightly-release29-20210113-080756-7bae1d378.0"
-    tslib "^2.0.3"
+    timeline-state-resolver-types "5.5.2"
+    tslib "^2.1.0"
     underscore "1.12.0"
 
 "@sofie-automation/code-standard-preset@^0.2.1":
@@ -625,10 +625,10 @@
     read-pkg-up "^7.0.1"
     shelljs "^0.8.4"
 
-"@sofie-automation/server-core-integration@1.18.0-nightly-feat-layer-mappings-manifest-20210202-141236-a466da1.0":
-  version "1.18.0-nightly-feat-layer-mappings-manifest-20210202-141236-a466da1.0"
-  resolved "https://registry.yarnpkg.com/@sofie-automation/server-core-integration/-/server-core-integration-1.18.0-nightly-feat-layer-mappings-manifest-20210202-141236-a466da1.0.tgz#5fc3b2e2246865c73f27657230e0de23119302f5"
-  integrity sha512-aRXbcufRRIvNMxN0hMJllZ3SCTuqzVT52a81lsKHlK7uwhyllYC/XKq3jYup7CtogFiA39phomikIhxEZ3TPRw==
+"@sofie-automation/server-core-integration@1.18.0-0-in-testing-R30":
+  version "1.18.0-0-in-testing-R30"
+  resolved "https://registry.yarnpkg.com/@sofie-automation/server-core-integration/-/server-core-integration-1.18.0-0-in-testing-R30.tgz#788dc0f36da7efa816e772227e7279acbcc71335"
+  integrity sha512-wAqzgoyK5nq+jpyBY2GHEUd9Ay5rfFuyKvppVLhDBfvosKWoffSLPV70qBvo5aJcmJOwzsPsAAUyggcOiVcCLA==
   dependencies:
     data-store "3.1.0"
     ejson "^2.2.0"
@@ -6639,17 +6639,17 @@ through@2, "through@>=2.2.7 <3", through@^2.3.8:
   resolved "https://registry.yarnpkg.com/through/-/through-2.3.8.tgz#0dd4c9ffaabc357960b1b724115d7e0e86a2e1f5"
   integrity sha1-DdTJ/6q8NXlgsbckEV1+Doai4fU=
 
-timeline-state-resolver-types@5.5.1:
-  version "5.5.1"
-  resolved "https://registry.yarnpkg.com/timeline-state-resolver-types/-/timeline-state-resolver-types-5.5.1.tgz#c93e6bccc56e71f7247f33a86c6be6e5a3dfb275"
-  integrity sha512-UdFx8t5CYbXWzZxVsllW1+u2noKzh3hDN/EDf7avm/RU4x9Wni5u89hXGOjWShMEBwQOSM8ZHaSURtPWWo+ttg==
+timeline-state-resolver-types@5.5.2:
+  version "5.5.2"
+  resolved "https://registry.yarnpkg.com/timeline-state-resolver-types/-/timeline-state-resolver-types-5.5.2.tgz#c13b2cd84fd5deb57a37f41c4ecf2a1a6a014c46"
+  integrity sha512-kkIEVgvxk/W8DYPZx+iIleSg21BfChMO0kiaYEfOAYOS9nvcjrcXA/ghnT4W+2Y4SVzmJSywy4pA8E886VvgvA==
   dependencies:
     tslib "^1.13.0"
 
-timeline-state-resolver@5.5.1:
-  version "5.5.1"
-  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-5.5.1.tgz#424f7fe211dfd31356ad407e6950ec760a39452b"
-  integrity sha512-5gNlDFABhdJHDOXqDkjycOpLcBG/XFaTuIb45JV9gLiwUPWT4qz8o5745BZIT3t8DI6QXhbGgWM/eT2BEAjddQ==
+timeline-state-resolver@5.5.2:
+  version "5.5.2"
+  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-5.5.2.tgz#de31ee874f26a05d4f39505ed39883304197eddf"
+  integrity sha512-l52Su+QoORRkvw0FkQNFUmTkIELWvoRZ4RxPH3DvfnL8Y7xgM1PNGjFnjQbKFAI3vC9oS7xZ2gqDnEr3nV77NQ==
   dependencies:
     atem-state "^0.10.0"
     bufferutil "^4.0.1"
