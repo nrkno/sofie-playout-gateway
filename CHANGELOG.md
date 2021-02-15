@@ -8,6 +8,8 @@ All notable changes to this project will be documented in this file. See [standa
 
 - add layer mappings manifest ([32e951f](https://github.com/nrkno/tv-automation-playout-gateway/commit/32e951f4e9a0b4e395e9e6800004b0b13ead62fe))
 
+### [1.15.1](https://github.com/nrkno/tv-automation-playout-gateway/compare/v1.15.0...v1.15.1) (2021-02-15)
+
 ## [1.15.0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v1.14.1...v1.15.0) (2021-02-08)
 
 ### Bug Fixes
