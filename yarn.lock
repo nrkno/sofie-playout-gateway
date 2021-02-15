@@ -2077,7 +2077,7 @@ dateformat@^3.0.0:
   resolved "https://registry.yarnpkg.com/dateformat/-/dateformat-3.0.3.tgz#a6e37499a4d9a9cf85ef5872044d62901c9889ae"
   integrity sha512-jyCETtSl3VMZMWeRo7iY1FL19ges1t55hMo5yaam4Jrsm5EPL89UQkoQRyiI+Yf4k8r2ZpdngkV8hr1lIdjb3Q==
 
-debug@4, debug@^4.0.1, debug@^4.1.0, debug@^4.1.1, debug@^4.2.0:
+debug@4, debug@^4.0.1, debug@^4.1.0, debug@^4.1.1, debug@^4.2.0, debug@^4.3.1:
   version "4.3.1"
   resolved "https://registry.yarnpkg.com/debug/-/debug-4.3.1.tgz#f0d229c505e0c6d8c49ac553d1b13dc183f6b2ee"
   integrity sha512-doEwdvm4PCeK4K3RQN2ZC2BYUBaxwLARCqZmMjtF8a51J2Rb0xpVloFRnCODwqjpwnAoao4pelN8l3RJdv3gRQ==
@@ -6646,15 +6646,16 @@ timeline-state-resolver-types@5.5.1:
   dependencies:
     tslib "^1.13.0"
 
-timeline-state-resolver@5.5.1:
-  version "5.5.1"
-  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-5.5.1.tgz#424f7fe211dfd31356ad407e6950ec760a39452b"
-  integrity sha512-5gNlDFABhdJHDOXqDkjycOpLcBG/XFaTuIb45JV9gLiwUPWT4qz8o5745BZIT3t8DI6QXhbGgWM/eT2BEAjddQ==
+timeline-state-resolver@5.4.0-nightly-release29-20210215-124921-5bdd9b622.0:
+  version "5.4.0-nightly-release29-20210215-124921-5bdd9b622.0"
+  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-5.4.0-nightly-release29-20210215-124921-5bdd9b622.0.tgz#c934d901b9068ef18bf5607e7e4adfc066d8d461"
+  integrity sha512-a60LVm0B0e5uC5ST5r+Zz3T2fSK8kwj9D0NCx/cYlZajYSL0gycLETxJG6Jq7QrSHGISnJ5/zqgyCXEcnJfpIQ==
   dependencies:
     atem-state "^0.10.0"
     bufferutil "^4.0.1"
     casparcg-connection "^5.1.0"
     casparcg-state "^2.1.0"
+    debug "^4.3.1"
     emberplus-connection "^0.0.3"
     hyperdeck-connection "^0.4.3"
     osc "^2.4.0"
