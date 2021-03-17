@@ -4,9 +4,6 @@ import {
 	PeripheralDeviceAPI as P,
 	DDPConnectorOptions,
 	PeripheralDeviceAPI,
-} from '@sofie-automation/server-core-integration'
-
-import {
 	DeviceType,
 	CasparCGDevice,
 	DeviceContainer,
@@ -14,6 +11,7 @@ import {
 	QuantelDevice,
 	MediaObject,
 } from 'timeline-state-resolver'
+import { CollectionObj } from '@sofie-automation/server-core-integration'
 
 import * as _ from 'underscore'
 import { DeviceConfig } from './connector'
@@ -21,7 +19,7 @@ import { TSRHandler } from './tsrHandler'
 import * as fs from 'fs'
 import { LoggerInstance } from './index'
 // eslint-disable-next-line node/no-extraneous-import
-import { ThreadedClass } from 'threadedclass'
+import { ThreadedClass, MemUsageReport as ThreadMemUsageReport } from 'threadedclass'
 import { Process } from './process'
 import { PLAYOUT_DEVICE_CONFIG } from './configManifest'
 
@@ -43,11 +41,17 @@ export interface PeripheralDeviceCommand {
 
 	time: number // time
 }
+
+export interface MemoryUsageReport {
+	main: number
+	threads: { [childId: string]: ThreadMemUsageReport }
+}
+
 /**
  * Represents a connection between the Gateway and Core
  */
 export class CoreHandler {
-	core: CoreConnection
+	core!: CoreConnection
 	logger: LoggerInstance
 	public _observers: Array<any> = []
 	public deviceSettings: { [key: string]: any } = {}
@@ -63,7 +67,7 @@ export class CoreHandler {
 	private _coreConfig?: CoreConfig
 	private _process?: Process
 
-	private _studioId: string
+	private _studioId: string | undefined
 	private _timelineSubscription: string | null = null
 	private _expectedItemsSubscription: string | null = null
 
@@ -87,10 +91,10 @@ export class CoreHandler {
 
 		this.core.onConnected(() => {
 			this.logger.info('Core Connected!')
-			if (this._onConnected) this._onConnected()
 			this.setupObserversAndSubscriptions().catch((e) => {
 				this.logger.error('Core Error during setupObserversAndSubscriptions:', e)
 			})
+			if (this._onConnected) this._onConnected()
 		})
 		this.core.onDisconnected(() => {
 			this.logger.warn('Core Disconnected!')
@@ -112,8 +116,8 @@ export class CoreHandler {
 		await this.core.init(ddpConfig)
 
 		this.logger.info('Core id: ' + this.core.deviceId)
-		if (this._onConnected) this._onConnected()
 		await this.setupObserversAndSubscriptions()
+		if (this._onConnected) this._onConnected()
 
 		this._statusInitialized = true
 		await this.updateCoreStatus()
@@ -135,7 +139,6 @@ export class CoreHandler {
 		])
 
 		this.logger.info('Core: Subscriptions are set up!')
-
 		if (this._observers.length) {
 			this.logger.info('CoreMos: Clearing observers..')
 			this._observers.forEach((obs) => {
@@ -145,24 +148,14 @@ export class CoreHandler {
 		}
 		// setup observers
 		const observer = this.core.observe('peripheralDevices')
-		observer.added = (id: string) => {
-			this.onDeviceChanged(id)
-		}
-		observer.changed = (id: string) => {
-			this.onDeviceChanged(id)
-		}
-
+		observer.added = (id: string) => this.onDeviceChanged(id)
+		observer.changed = (id: string) => this.onDeviceChanged(id)
 		this.setupObserverForPeripheralDeviceCommands(this)
 	}
-	destroy(): Promise<void> {
+	async destroy(): Promise<void> {
 		this._statusDestroyed = true
-		return this.updateCoreStatus()
-			.then(() => {
-				return this.core.destroy()
-			})
-			.then(() => {
-				// nothing
-			})
+		await this.updateCoreStatus()
+		await this.core.destroy()
 	}
 	getCoreConnectionOptions(
 		name: string,
@@ -224,7 +217,7 @@ export class CoreHandler {
 
 				this.logger.info('Loglevel: ' + this.logger.level)
 
-				this.logger.debug('Test debug logging')
+				// this.logger.debug('Test debug logging')
 				// // @ts-ignore
 				// this.logger.debug({ msg: 'test msg' })
 				// // @ts-ignore
@@ -360,7 +353,8 @@ export class CoreHandler {
 		}
 		const cmds = functionObject.core.getCollection('peripheralDeviceCommands')
 		if (!cmds) throw Error('"peripheralDeviceCommands" collection not found!')
-		cmds.find({}).forEach((cmd: PeripheralDeviceCommand) => {
+		cmds.find({}).forEach((cmd0: CollectionObj) => {
+			const cmd = cmd0 as PeripheralDeviceCommand
 			if (cmd.deviceId === functionObject.core.deviceId) {
 				this.executeFunction(cmd, functionObject)
 			}
@@ -422,14 +416,10 @@ export class CoreHandler {
 	}
 	async getMemoryUsage(): Promise<MemoryUsageReport> {
 		if (this._tsrHandler) {
-			const values = {
-				main: process.memoryUsage(),
-				threads: await this._tsrHandler.tsr.getThreadsMemoryUsage(),
-			}
 			/** Convert all properties from bytes to MB */
 			const toMB = (o: any) => {
 				if (typeof o === 'object') {
-					const o2 = {}
+					const o2: any = {}
 					for (const key of Object.keys(o)) {
 						o2[key] = toMB(o[key])
 					}
@@ -439,6 +429,12 @@ export class CoreHandler {
 				}
 				return o
 			}
+
+			const values: MemoryUsageReport = {
+				main: toMB(process.memoryUsage()),
+				threads: toMB(await this._tsrHandler.tsr.getThreadsMemoryUsage()),
+			}
+
 			return toMB(values)
 		} else {
 			throw new Error('TSR not set up!')
@@ -525,11 +521,11 @@ export class CoreHandler {
 }
 
 export class CoreTSRDeviceHandler {
-	core: CoreConnection
+	core!: CoreConnection
 	public _observers: Array<any> = []
 	public _devicePr: Promise<DeviceContainer>
 	public _deviceId: string
-	public _device: DeviceContainer
+	public _device!: DeviceContainer
 	private _coreParentHandler: CoreHandler
 	private _tsrHandler: TSRHandler
 	private _subscriptions: Array<string> = []
