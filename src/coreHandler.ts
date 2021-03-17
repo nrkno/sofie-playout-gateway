@@ -4,6 +4,9 @@ import {
 	PeripheralDeviceAPI as P,
 	DDPConnectorOptions,
 	PeripheralDeviceAPI,
+} from '@sofie-automation/server-core-integration'
+
+import {
 	DeviceType,
 	CasparCGDevice,
 	DeviceContainer,

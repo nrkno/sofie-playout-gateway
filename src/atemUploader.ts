@@ -50,7 +50,6 @@ export class AtemUploadScript {
 	}
 
 	public checkIfFileExistsOnAtem(fileName: string, stillIndex: number): boolean {
-		if (!this.file) throw Error('Load a file locally before checking if it needs uploading')
 		consoleLog('got a file')
 
 		const still = this.connection.state ? this.connection.state.media.stillPool[stillIndex] : undefined
