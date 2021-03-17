@@ -21,18 +21,17 @@ export interface DeviceConfig {
 	deviceToken: string
 }
 export class Connector {
-
 	private tsrHandler: TSRHandler
 	private coreHandler: CoreHandler
 	private _config: Config
 	private _logger: LoggerInstance
 	private _process: Process
 
-	constructor (logger: LoggerInstance) {
+	constructor(logger: LoggerInstance) {
 		this._logger = logger
 	}
 
-	public async init (config: Config): Promise<void> {
+	public async init(config: Config): Promise<void> {
 		this._config = config
 
 		try {
@@ -49,12 +48,10 @@ export class Connector {
 
 			try {
 				if (this.coreHandler) {
-					this.coreHandler.destroy()
-						.catch(this._logger.error)
+					this.coreHandler.destroy().catch(this._logger.error)
 				}
 				if (this.tsrHandler) {
-					this.tsrHandler.destroy()
-						.catch(this._logger.error)
+					this.tsrHandler.destroy().catch(this._logger.error)
 				}
 			} catch (e) {
 				this._logger.error(e)
@@ -62,24 +59,25 @@ export class Connector {
 
 			this._logger.info('Shutting down in 10 seconds!')
 			setTimeout(() => {
+				// eslint-disable-next-line no-process-exit
 				process.exit(0)
 			}, 10 * 1000)
 			return
 		}
 	}
-	private async initProcess (): Promise<void> {
+	private async initProcess(): Promise<void> {
 		this._logger.info('Initializing Process...')
 		this._process = new Process(this._logger)
 		this._process.init(this._config.process)
 		this._logger.info('Process initialized')
 	}
-	private async initCore (): Promise<void> {
+	private async initCore(): Promise<void> {
 		this._logger.info('Initializing Core...')
 		this.coreHandler = new CoreHandler(this._logger, this._config.device)
 		await this.coreHandler.init(this._config.core, this._process)
 		this._logger.info('Core initialized')
 	}
-	private async initTSR (): Promise<void> {
+	private async initTSR(): Promise<void> {
 		this._logger.info('Initializing TSR...')
 		this.tsrHandler = new TSRHandler(this._logger)
 		await this.tsrHandler.init(this._config.tsr, this.coreHandler)
