@@ -78,14 +78,14 @@ export class AtemUploadScript {
 		}
 	}
 
-	async uploadToAtem() {
+	async uploadToAtem(): Promise<void> {
 		if (!this.checkIfFileExistsOnAtem()) {
 			consoleLog('does not exist on ATEM')
 			await this.connection.clearMediaPoolStill(this.mediaPool)
-			return this.connection.uploadStill(this.mediaPool, this.file, this.fileName, '')
+			await this.connection.uploadStill(this.mediaPool, this.file, this.fileName, '')
 		} else {
 			consoleLog('does exist on ATEM')
-			return {}
+			return
 		}
 	}
 }

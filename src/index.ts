@@ -6,7 +6,6 @@ export interface LoggerInstance extends Winston.LoggerInstance {
 }
 console.log('process started') // This is a message all Sofie processes log upon startup
 
-let c: Connector
 // Setup logging --------------------------------------
 const logger = new Winston.Logger({}) as LoggerInstance
 if (logPath) {
@@ -79,10 +78,10 @@ process.on('warning', (e: any) => {
 logger.info('------------------------------------------------------------------')
 logger.info('Starting Playout Gateway')
 if (disableWatchdog) logger.info('Watchdog is disabled!')
-c = new Connector(logger)
+const connector = new Connector(logger)
 
 logger.info('Core:          ' + config.core.host + ':' + config.core.port)
 logger.info('------------------------------------------------------------------')
-c.init(config).catch((e) => {
+connector.init(config).catch((e) => {
 	logger.error(e)
 })

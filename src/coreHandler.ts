@@ -124,7 +124,7 @@ export class CoreHandler {
 	async setupObserversAndSubscriptions(): Promise<void> {
 		this.logger.info('Core: Setting up subscriptions..')
 		this.logger.info('DeviceId: ' + this.core.deviceId)
-		return Promise.all([
+		await Promise.all([
 			this.core.autoSubscribe('peripheralDevices', {
 				_id: this.core.deviceId,
 			}),
@@ -132,29 +132,27 @@ export class CoreHandler {
 			this.core.autoSubscribe('mappingsForDevice', this.core.deviceId),
 			this.core.autoSubscribe('timelineForDevice', this.core.deviceId),
 			this.core.autoSubscribe('peripheralDeviceCommands', this.core.deviceId),
-		]).then(() => {
-			this.logger.info('Core: Subscriptions are set up!')
+		])
 
-			if (this._observers.length) {
-				this.logger.info('CoreMos: Clearing observers..')
-				this._observers.forEach((obs) => {
-					obs.stop()
-				})
-				this._observers = []
-			}
-			// setup observers
-			const observer = this.core.observe('peripheralDevices')
-			observer.added = (id: string) => {
-				this.onDeviceChanged(id)
-			}
-			observer.changed = (id: string) => {
-				this.onDeviceChanged(id)
-			}
+		this.logger.info('Core: Subscriptions are set up!')
 
-			this.setupObserverForPeripheralDeviceCommands(this)
+		if (this._observers.length) {
+			this.logger.info('CoreMos: Clearing observers..')
+			this._observers.forEach((obs) => {
+				obs.stop()
+			})
+			this._observers = []
+		}
+		// setup observers
+		const observer = this.core.observe('peripheralDevices')
+		observer.added = (id: string) => {
+			this.onDeviceChanged(id)
+		}
+		observer.changed = (id: string) => {
+			this.onDeviceChanged(id)
+		}
 
-			return
-		})
+		this.setupObserverForPeripheralDeviceCommands(this)
 	}
 	destroy(): Promise<void> {
 		this._statusDestroyed = true
@@ -227,14 +225,14 @@ export class CoreHandler {
 				this.logger.info('Loglevel: ' + this.logger.level)
 
 				this.logger.debug('Test debug logging')
-				// @ts-ignore
-				this.logger.debug({ msg: 'test msg' })
-				// @ts-ignore
-				this.logger.debug({ message: 'test message' })
-				// @ts-ignore
-				this.logger.debug({ command: 'test command', context: 'test context' })
+				// // @ts-ignore
+				// this.logger.debug({ msg: 'test msg' })
+				// // @ts-ignore
+				// this.logger.debug({ message: 'test message' })
+				// // @ts-ignore
+				// this.logger.debug({ command: 'test command', context: 'test context' })
 
-				this.logger.debug('End test debug logging')
+				// this.logger.debug('End test debug logging')
 			}
 
 			if (this.deviceSettings['errorReporting'] !== this.errorReporting) {
