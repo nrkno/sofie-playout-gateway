@@ -104,6 +104,7 @@ export class TSRHandler {
 	// private _config: TSRConfig
 	private _coreHandler!: CoreHandler
 	private _triggerupdateDevicesTimeout: any = null
+	private _triggerupdateExpectedPlayoutItemsTimeout: any = null
 	private _coreTsrHandlers: { [deviceId: string]: CoreTSRDeviceHandler } = {}
 	private _observers: Array<any> = []
 	private _cachedStudioId = ''
