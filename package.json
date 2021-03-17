@@ -1,104 +1,120 @@
 {
-  "name": "playout-gateway",
-  "version": "1.14.0",
-  "private": true,
-  "description": "Connect to Core, play stuff",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/nrkno/tv-automation-playout-gateway"
-  },
-  "bugs": {
-    "url": "https://github.com/nrkno/tv-automation-playout-gateway/issues"
-  },
-  "homepage": "https://github.com/nrkno/tv-automation-playout-gateway",
-  "author": {
-    "name": "Johan Nyman",
-    "email": "johan@superfly.tv",
-    "url": "http://superfly.tv"
-  },
-  "contributors": [],
-  "scripts": {
-    "info": "npm-scripts-info",
-    "build": "rimraf dist && yarn build:main",
-    "buildstart": "yarn build && yarn start",
-    "buildinspect": "yarn build && yarn inspect",
-    "build:main": "tsc -p tsconfig.build.json",
-    "lint": "tslint --project tsconfig.json --config tslint.json",
-    "unit": "jest",
-    "test": "yarn lint && yarn unit",
-    "test:integration": "yarn lint && jest --config=jest-integration.config.js",
-    "watch": "jest --watch",
-    "cov": "jest; open-cli coverage/lcov-report/index.html",
-    "cov-open": "open-cli coverage/lcov-report/index.html",
-    "send-coverage": "jest && codecov",
-    "changelog": "standard-version",
-    "release": "yarn reset && yarn test && yarn changelog",
-    "reset": "git clean -dfx && git reset --hard && yarn",
-    "ci": "yarn test",
-    "inspect": "node --inspect dist/index.js",
-    "start": "node dist/index.js",
-    "unlinkall": "yarn unlink @sofie-automation/server-core-integration timeline-state-resolver && yarn --check-files",
-    "validate:dependencies": "yarn audit --groups dependencies && yarn license-validate",
-    "validate:dev-dependencies": "yarn audit --groups devDependencies",
-    "license-validate": "node-license-validator -p -d --allow-licenses MIT 0BSD BSD BSD-2-Clause BSD-3-Clause ISC Apache Apache-2.0 Unlicense WTFPL --allow-packages cycle",
-    "prepareChangelog": "standard-version --prerelease"
-  },
-  "scripts-info": {
-    "info": "Display information about the scripts",
-    "build": "(Trash and re)build the library",
-    "lint": "Lint all typescript source files",
-    "unit": "Build the library and run unit tests",
-    "test": "Lint, build, and test the library",
-    "watch": "Watch source files, rebuild library on changes, rerun relevant tests",
-    "cov": "Run tests, generate the HTML coverage report, and open it in a browser",
-    "changelog": "Bump package.json version, update CHANGELOG.md, tag a release",
-    "reset": "Delete all untracked files and reset the repo to the last commit",
-    "release": "Clean, build, test, and prepare release (a one-step publish process)"
-  },
-  "engines": {
-    "node": ">=12"
-  },
-  "devDependencies": {
-    "@types/jest": "^26.0.19",
-    "@types/node": "^12.19.9",
-    "@types/underscore": "^1.10.24",
-    "@types/winston": "^2.3.9",
-    "codecov": "^3.8.1",
-    "jest": "^26.6.3",
-    "node-license-validator": "^1.3.0",
-    "npm-scripts-info": "^0.3.9",
-    "open-cli": "^6.0.1",
-    "rimraf": "^3.0.2",
-    "standard-version": "^9.0.0",
-    "ts-jest": "^26.4.4",
-    "tslint": "^6.1.2",
-    "tslint-config-standard": "^9.0.0",
-    "typescript": "~4.0.5"
-  },
-  "keywords": [
-    "broadcast",
-    "socket",
-    "typescript",
-    "javascript",
-    "open",
-    "source",
-    "automation",
-    "ncs",
-    "nrcs",
-    "rundown",
-    "production"
-  ],
-  "dependencies": {
-    "@sofie-automation/blueprints-integration": "https://github.com/olzzon/tv-automation-server-core.git#dist_blueprints_integration20210203_1",
-    "@sofie-automation/server-core-integration": "https://github.com/olzzon/tv-automation-server-core.git#dist_server_core_integration20210127_1",
-    "fast-clone": "^1.5.13",
-    "timeline-state-resolver": "git+https://github.com/olzzon/tv-automation-state-timeline-resolver#dist20210309_1",
-    "tslib": "^2.0.3",
-    "underscore": "^1.12.0",
-    "winston": "^2.4.2"
-  },
-  "resolutions": {
-    "node-license-validator/**/minimist": "^1.2.3"
-  }
+	"name": "playout-gateway",
+	"version": "1.14.0",
+	"private": true,
+	"description": "Connect to Core, play stuff",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/nrkno/tv-automation-playout-gateway"
+	},
+	"bugs": {
+		"url": "https://github.com/nrkno/tv-automation-playout-gateway/issues"
+	},
+	"homepage": "https://github.com/nrkno/tv-automation-playout-gateway",
+	"author": {
+		"name": "Johan Nyman",
+		"email": "johan@superfly.tv",
+		"url": "http://superfly.tv"
+	},
+	"contributors": [],
+	"scripts": {
+		"info": "npm-scripts-info",
+		"build": "rimraf dist && yarn build:main",
+		"buildstart": "yarn build && yarn start",
+		"buildinspect": "yarn build && yarn inspect",
+		"build:main": "tsc -p tsconfig.build.json",
+		"lint": "eslint . --ext .ts --ext .js --ignore-pattern dist",
+		"lint-fix": "yarn lint --fix",
+		"unit": "jest",
+		"test": "yarn lint && yarn unit",
+		"test:integration": "yarn lint && jest --config=jest-integration.config.js",
+		"watch": "jest --watch",
+		"cov": "jest; open-cli coverage/lcov-report/index.html",
+		"cov-open": "open-cli coverage/lcov-report/index.html",
+		"send-coverage": "jest && codecov",
+		"changelog": "standard-version",
+		"release": "yarn reset && yarn test && yarn changelog",
+		"reset": "git clean -dfx && git reset --hard && yarn",
+		"ci": "yarn test",
+		"inspect": "node --inspect dist/index.js",
+		"start": "node dist/index.js",
+		"unlinkall": "yarn unlink @sofie-automation/server-core-integration timeline-state-resolver && yarn --check-files",
+		"validate:dependencies": "yarn audit --groups dependencies && yarn license-validate",
+		"validate:dev-dependencies": "yarn audit --groups devDependencies",
+		"license-validate": "node-license-validator -p -d --allow-licenses MIT 0BSD BSD BSD-2-Clause BSD-3-Clause ISC Apache Apache-2.0 Unlicense WTFPL --allow-packages cycle",
+		"prepareChangelog": "standard-version --prerelease"
+	},
+	"scripts-info": {
+		"info": "Display information about the scripts",
+		"build": "(Trash and re)build the library",
+		"lint": "Lint all typescript source files",
+		"unit": "Build the library and run unit tests",
+		"test": "Lint, build, and test the library",
+		"watch": "Watch source files, rebuild library on changes, rerun relevant tests",
+		"cov": "Run tests, generate the HTML coverage report, and open it in a browser",
+		"changelog": "Bump package.json version, update CHANGELOG.md, tag a release",
+		"reset": "Delete all untracked files and reset the repo to the last commit",
+		"release": "Clean, build, test, and prepare release (a one-step publish process)"
+	},
+	"engines": {
+		"node": ">=12"
+	},
+	"prettier": "@sofie-automation/code-standard-preset/.prettierrc.json",
+	"husky": {
+		"hooks": {
+			"pre-commit": "lint-staged"
+		}
+	},
+	"lint-staged": {
+		"*.{js,css,json,md,scss}": [
+			"prettier --write"
+		],
+		"*.{ts,tsx}": [
+			"yarn lint-fix"
+		]
+	},
+	"devDependencies": {
+		"@sofie-automation/code-standard-preset": "^0.2.1",
+		"@types/jest": "^26.0.19",
+		"@types/node": "^12.19.9",
+		"@types/underscore": "^1.10.24",
+		"@types/winston": "^2.3.9",
+		"codecov": "^3.8.1",
+		"jest": "^26.6.3",
+		"node-license-validator": "^1.3.0",
+		"npm-scripts-info": "^0.3.9",
+		"open-cli": "^6.0.1",
+		"rimraf": "^3.0.2",
+		"standard-version": "^9.0.0",
+		"ts-jest": "^26.4.4",
+		"tslint": "^6.1.2",
+		"tslint-config-standard": "^9.0.0",
+		"typescript": "~4.0.5"
+	},
+	"keywords": [
+		"broadcast",
+		"socket",
+		"typescript",
+		"javascript",
+		"open",
+		"source",
+		"automation",
+		"ncs",
+		"nrcs",
+		"rundown",
+		"production"
+	],
+	"dependencies": {
+		"@sofie-automation/blueprints-integration": "https://github.com/olzzon/tv-automation-server-core.git#dist_blueprints_integration20210203_1",
+		"@sofie-automation/server-core-integration": "https://github.com/olzzon/tv-automation-server-core.git#dist_server_core_integration20210127_1",
+		"fast-clone": "^1.5.13",
+		"timeline-state-resolver": "git+https://github.com/olzzon/tv-automation-state-timeline-resolver#dist20210309_1",
+		"tslib": "^2.0.3",
+		"underscore": "^1.12.0",
+		"winston": "^2.4.2"
+	},
+	"resolutions": {
+		"node-license-validator/**/minimist": "^1.2.3"
+	}
 }
