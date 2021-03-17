@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.16.0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v1.15.1...v1.16.0) (2021-03-17)
+
+
+### Features
+
+* add layer mappings manifest ([32e951f](https://github.com/nrkno/tv-automation-playout-gateway/commit/32e951f4e9a0b4e395e9e6800004b0b13ead62fe))
+
 ## [1.16.0-release30.0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v1.15.0...v1.16.0-release30.0) (2021-02-10)
 
 ### Features
