@@ -6639,7 +6639,6 @@ through@2, "through@>=2.2.7 <3", through@^2.3.8:
   resolved "https://registry.yarnpkg.com/through/-/through-2.3.8.tgz#0dd4c9ffaabc357960b1b724115d7e0e86a2e1f5"
   integrity sha1-DdTJ/6q8NXlgsbckEV1+Doai4fU=
 
-<<<<<<< HEAD
 timeline-state-resolver-types@5.5.3-nightly-release31-20210226-151000-349e5e195.0:
   version "5.5.3-nightly-release31-20210226-151000-349e5e195.0"
   resolved "https://registry.yarnpkg.com/timeline-state-resolver-types/-/timeline-state-resolver-types-5.5.3-nightly-release31-20210226-151000-349e5e195.0.tgz#015032bd31eef26c3a968db5c2fbc145a5b63196"
@@ -6647,23 +6646,10 @@ timeline-state-resolver-types@5.5.3-nightly-release31-20210226-151000-349e5e195.
   dependencies:
     tslib "^1.13.0"
 
-timeline-state-resolver@5.5.3-nightly-release31-20210226-151000-349e5e195.0:
-  version "5.5.3-nightly-release31-20210226-151000-349e5e195.0"
-  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-5.5.3-nightly-release31-20210226-151000-349e5e195.0.tgz#39d9cedb947fb6f6e88082a6542fda785b72ecce"
-  integrity sha512-rgiiWRhtCTxCbcC44TlvbC5dTR1M9saDOKtMAY1fMSu85OtHpcV8QaHmHeZGmXeZU2zHI/XAkdeHHpboOLGj4Q==
-=======
-timeline-state-resolver-types@5.5.5:
-  version "5.5.5"
-  resolved "https://registry.yarnpkg.com/timeline-state-resolver-types/-/timeline-state-resolver-types-5.5.5.tgz#22b47caef4962f8890ddc7198a33888054e0cb9e"
-  integrity sha512-l80O+VDepj1SQVizjKGWum1735zbq5J/JQ7HYYwrpNDFWm0RC6QkUYeYP2YDXhBCKr49bhxTN5rS6u8ewIKLaQ==
-  dependencies:
-    tslib "^1.13.0"
-
-timeline-state-resolver@5.5.5:
-  version "5.5.5"
-  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-5.5.5.tgz#12617e5ec5be7c76ca29453be0fa7d6f988043e6"
-  integrity sha512-eYe6Xn7jp5yi/cqAkhmo26MWP1aLNqhxX30W75xuL0wF4YmOWmoIYkVZ3fm3PiOKAdMr85bk5wFkqOtVdO6n2A==
->>>>>>> master
+timeline-state-resolver@5.6.0-nightly-release31-20210322-163519-1a4031442.0:
+  version "5.6.0-nightly-release31-20210322-163519-1a4031442.0"
+  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-5.6.0-nightly-release31-20210322-163519-1a4031442.0.tgz#a3a74e1fe7b4500f3915a1257cd02435f34f4a40"
+  integrity sha512-bb+GRcmtfddjZPEH6ttrDk2Mh7IkcFY0Ea+Khp9S3jIeBv4KEJp2m03lLPUucxWNyDAQC4kye3kQS1biXYK4iQ==
   dependencies:
     atem-state "^0.10.1"
     bufferutil "^4.0.1"
