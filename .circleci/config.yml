@@ -217,20 +217,20 @@ workflows:
       # - test
       - validate-all-dependencies:
           filters:
+            tags:
+              ignore: /.*/
             branches:
               only:
                 - master
-                - develop
-            tags:
-              only: /v.*/
+                - /release\d+/
       - validate-dependencies:
           filters:
+            tags:
+              ignore: /.*/
             branches:
               only:
                 - master
-                - develop
-            tags:
-              only: /v.*/
+                - /release\d+/
       - build:
           # requires:
             # - test

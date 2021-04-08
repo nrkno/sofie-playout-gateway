@@ -4,7 +4,6 @@ import {
 	PeripheralDeviceAPI as P,
 	DDPConnectorOptions,
 	PeripheralDeviceAPI,
-	CollectionObj,
 } from '@sofie-automation/server-core-integration'
 
 import {
@@ -15,6 +14,7 @@ import {
 	QuantelDevice,
 	MediaObject,
 } from 'timeline-state-resolver'
+import { CollectionObj } from '@sofie-automation/server-core-integration'
 
 import * as _ from 'underscore'
 import { DeviceConfig } from './connector'
@@ -70,7 +70,7 @@ export class CoreHandler {
 	private _coreConfig?: CoreConfig
 	private _process?: Process
 
-	private _studioId = ''
+	private _studioId: string | undefined
 	private _timelineSubscription: string | null = null
 	private _expectedItemsSubscription: string | null = null
 
@@ -94,10 +94,10 @@ export class CoreHandler {
 
 		this.core.onConnected(() => {
 			this.logger.info('Core Connected!')
-			if (this._onConnected) this._onConnected()
 			this.setupObserversAndSubscriptions().catch((e) => {
 				this.logger.error('Core Error during setupObserversAndSubscriptions:', e)
 			})
+			if (this._onConnected) this._onConnected()
 		})
 		this.core.onDisconnected(() => {
 			this.logger.warn('Core Disconnected!')
@@ -119,8 +119,8 @@ export class CoreHandler {
 		await this.core.init(ddpConfig)
 
 		this.logger.info('Core id: ' + this.core.deviceId)
-		if (this._onConnected) this._onConnected()
 		await this.setupObserversAndSubscriptions()
+		if (this._onConnected) this._onConnected()
 
 		this._statusInitialized = true
 		await this.updateCoreStatus()
@@ -154,7 +154,6 @@ export class CoreHandler {
 		observer.added = (id: string) => this.onDeviceChanged(id)
 		observer.changed = (id: string) => this.onDeviceChanged(id)
 		this.setupObserverForPeripheralDeviceCommands(this)
-		return
 	}
 	async destroy(): Promise<void> {
 		this._statusDestroyed = true
@@ -644,12 +643,12 @@ export class CoreTSRDeviceHandler {
 			.callMethodLowPrio(PeripheralDeviceAPI.methods.reportCommandError, [errorMessage, ref])
 			.catch((e) => this._coreParentHandler.logger.error('Error when callMethodLowPrio: ', e, e.stack))
 	}
-	onUpdateMediaObject(collectionId: string, docId: string, doc: MediaObject | null) {
+	onUpdateMediaObject(collectionId: string, docId: string, doc: MediaObject | null): void {
 		this.core
 			.callMethodLowPrio(PeripheralDeviceAPI.methods.updateMediaObject, [collectionId, docId, doc])
 			.catch((e) => this._coreParentHandler.logger.error('Error when updating Media Object: ' + e, e.stack))
 	}
-	onClearMediaObjectCollection(collectionId: string) {
+	onClearMediaObjectCollection(collectionId: string): void {
 		this.core
 			.callMethodLowPrio(PeripheralDeviceAPI.methods.clearMediaObjectCollection, [collectionId])
 			.catch((e) =>
