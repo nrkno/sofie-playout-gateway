@@ -331,6 +331,11 @@ const PLAYOUT_SUBDEVICE_CONFIG: SubDeviceConfigManifest['config'] = {
 			type: ConfigManifestEntryType.NUMBER,
 		},
 		{
+			id: 'options.engineRestPort',
+			name: '(Optional) Viz Engines REST port',
+			type: ConfigManifestEntryType.INT,
+		},
+		{
 			id: 'options.showID',
 			name: 'Show ID',
 			type: ConfigManifestEntryType.STRING,
