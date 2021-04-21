@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.32.0-2](https://github.com/nrkno/tv-automation-playout-gateway/compare/v1.32.0-1...v1.32.0-2) (2021-04-21)
+
+
+### Bug Fixes
+
+* update tsr ([116f163](https://github.com/nrkno/tv-automation-playout-gateway/commit/116f163b70d6f3b05b6c4d9b80b4e2d107764a9a))
+
 ## [1.32.0-1](https://github.com/nrkno/tv-automation-playout-gateway/compare/v1.16.0...v1.32.0-1) (2021-03-23)
 
 ## [1.17.0-release31.0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v1.16.0-release30.2...v1.17.0-release31.0) (2021-03-01)
