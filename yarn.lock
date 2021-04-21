@@ -6646,10 +6646,10 @@ timeline-state-resolver-types@5.6.0-nightly-release31-20210322-163519-1a4031442.
   dependencies:
     tslib "^1.13.0"
 
-timeline-state-resolver@5.6.0-nightly-release31-20210322-163519-1a4031442.0:
-  version "5.6.0-nightly-release31-20210322-163519-1a4031442.0"
-  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-5.6.0-nightly-release31-20210322-163519-1a4031442.0.tgz#a3a74e1fe7b4500f3915a1257cd02435f34f4a40"
-  integrity sha512-bb+GRcmtfddjZPEH6ttrDk2Mh7IkcFY0Ea+Khp9S3jIeBv4KEJp2m03lLPUucxWNyDAQC4kye3kQS1biXYK4iQ==
+timeline-state-resolver@5.7.0-nightly-release32-20210421-105621-a4ec64300.0:
+  version "5.7.0-nightly-release32-20210421-105621-a4ec64300.0"
+  resolved "https://registry.yarnpkg.com/timeline-state-resolver/-/timeline-state-resolver-5.7.0-nightly-release32-20210421-105621-a4ec64300.0.tgz#8d00a2f86de832d06195d48405752e8d4a3f0c3e"
+  integrity sha512-PtnVLN4yGVEyZ+Q0hb6wXaBWEKKiJubMO6kjEZn7AryNbNX552n8aOBqgeBQcCvfnnxrJqU9IR7S4JzBNur2fA==
   dependencies:
     atem-state "^0.10.1"
     bufferutil "^4.0.1"
