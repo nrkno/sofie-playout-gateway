@@ -6507,9 +6507,9 @@ timeline-state-resolver-types@5.5.3-nightly-release31-20210226-151000-349e5e195.
   dependencies:
     tslib "^1.13.0"
 
-"timeline-state-resolver@git+https://github.com/olzzon/tv-automation-state-timeline-resolver#dist-test/vizFixes20210423_1":
+"timeline-state-resolver@git+https://github.com/olzzon/tv-automation-state-timeline-resolver#dist-test/vizFixes20210423_2":
   version "5.7.0-release32"
-  resolved "git+https://github.com/olzzon/tv-automation-state-timeline-resolver#1eaa2efbc8e9e8b4de48cb25e58b60862e413c75"
+  resolved "git+https://github.com/olzzon/tv-automation-state-timeline-resolver#bdee2bad20e2b5da5e3170e191314ff3ce92da3c"
   dependencies:
     atem-state "^0.10.1"
     bufferutil "^4.0.1"
