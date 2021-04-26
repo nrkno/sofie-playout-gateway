@@ -17,6 +17,7 @@ import {
 	MappingPanasonicPtzType,
 	MappingSisyfosType,
 	QuantelControlMode,
+	MappingVMixType,
 } from 'timeline-state-resolver'
 
 const PLAYOUT_SUBDEVICE_COMMON: SubDeviceConfigManifestEntry[] = [
@@ -387,6 +388,7 @@ const PLAYOUT_SUBDEVICE_CONFIG: SubDeviceConfigManifest['config'] = {
 		},
 	],
 	[TSRDeviceType.SHOTOKU]: [...PLAYOUT_SUBDEVICE_COMMON, ...PLAYOUT_SUBDEVICE_HOST_PORT],
+	[TSRDeviceType.VMIX]: [...PLAYOUT_SUBDEVICE_COMMON, ...PLAYOUT_SUBDEVICE_HOST_PORT],
 }
 
 // TODO: should come from types
@@ -522,7 +524,15 @@ const MAPPING_MANIFEST: MappingsManifest = {
 			includeInSummary: true,
 		},
 	],
-	// TODO - add VMix?
+	[TSRDeviceType.VMIX]: [
+		{
+			id: 'mappingType',
+			type: ConfigManifestEntryType.ENUM,
+			values: MappingVMixType,
+			name: 'Mapping Type',
+			includeInSummary: true,
+		},
+	],
 }
 
 export const PLAYOUT_DEVICE_CONFIG: DeviceConfigManifest = {
