@@ -114,6 +114,18 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### Bug Fixes
 
+<<<<<<< HEAD
+* update tsr ([116f163](https://github.com/nrkno/tv-automation-playout-gateway/commit/116f163b70d6f3b05b6c4d9b80b4e2d107764a9a))
+
+## [1.32.0-1](https://github.com/nrkno/tv-automation-playout-gateway/compare/v1.16.0...v1.32.0-1) (2021-03-23)
+
+## [1.17.0-release31.0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v1.16.0-release30.2...v1.17.0-release31.0) (2021-03-01)
+
+
+### Features
+
+* update TSR ([8037776](https://github.com/nrkno/tv-automation-playout-gateway/commit/8037776742d834d9d0cd0f514d065dcb45c95930))
+=======
 * (troubleshooting) reenabling mediaScanner, but with replication disabled ([752f86c](https://github.com/nrkno/tv-automation-playout-gateway/commit/752f86ce96d3e9f7bf1c392e42da47c5ce06ff10))
 * add callable method getMemoryUsage, to be used for troubleshooting memory issues ([aef928b](https://github.com/nrkno/tv-automation-playout-gateway/commit/aef928bf296457f34acae0dc0a19fe703ddf6a7d))
 * add deviceId to the device name as well ([36558f8](https://github.com/nrkno/tv-automation-playout-gateway/commit/36558f8ab9f1bf433efb8c18688a1aa1831ec60f))
@@ -329,6 +341,7 @@ All notable changes to this project will be documented in this file. See [standa
 * **media scanner:** catch http request errors ([9628e4a](https://github.com/nrkno/tv-automation-playout-gateway/commit/9628e4ae261367de2cc50a75baa6ede8383beb68))
 * **mediaScanner:** error trying to log warning when disk-usage not supported ([66e4324](https://github.com/nrkno/tv-automation-playout-gateway/commit/66e4324c53e648cbb110543c8b538ac8c3120f09))
 * **peripheralDevices:** creates more user-friendly names of devices and sub devices. Seen in combination with ongoing work in core and mos-gw to clean up the user interface. ([6b9efaa](https://github.com/nrkno/tv-automation-playout-gateway/commit/6b9efaa576e807f961fe1e78f7b6c5600b5c4670))
+>>>>>>> master
 
 ## [1.16.0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v1.15.1...v1.16.0) (2021-03-17)
 
