@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.32.0](https://github.com/nrkno/tv-automation-playout-gateway/compare/v1.17.0...v1.32.0) (2021-05-05)
+
+
+### Bug Fixes
+
+* update supertimeline. fixes issue with partial resolving ([23066d1](https://github.com/nrkno/tv-automation-playout-gateway/commit/23066d1528a14e7968eb9169c28ff90734e99b4b))
+* update tsr ([116f163](https://github.com/nrkno/tv-automation-playout-gateway/commit/116f163b70d6f3b05b6c4d9b80b4e2d107764a9a))
+
 ## 1.17.0 (2021-05-05)
 
 
