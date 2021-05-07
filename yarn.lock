@@ -6507,9 +6507,9 @@ timeline-state-resolver-types@5.5.3-nightly-release31-20210226-151000-349e5e195.
   dependencies:
     tslib "^1.13.0"
 
-"timeline-state-resolver@git+https://github.com/olzzon/tv-automation-state-timeline-resolver#dist-test/vizFixes20210423_1":
+"timeline-state-resolver@git+https://github.com/olzzon/tv-automation-state-timeline-resolver#dist-test/vizFixes20210507_1":
   version "5.7.0-release32"
-  resolved "git+https://github.com/olzzon/tv-automation-state-timeline-resolver#1eaa2efbc8e9e8b4de48cb25e58b60862e413c75"
+  resolved "git+https://github.com/olzzon/tv-automation-state-timeline-resolver#ce4f0a622a552ac5534d0766e974b6b16dd0f006"
   dependencies:
     atem-state "^0.10.1"
     bufferutil "^4.0.1"
@@ -6532,7 +6532,7 @@ timeline-state-resolver-types@5.5.3-nightly-release31-20210226-151000-349e5e195.
     underscore "^1.12.0"
     underscore-deep-extend "^1.1.5"
     utf-8-validate "^5.0.2"
-    v-connection "git+https://github.com/olzzon/v-connection#vtest20210423_1"
+    v-connection "git+https://github.com/olzzon/v-connection#vtest20210507_1"
     ws "^7.1.1"
     xml-js "^1.6.11"
 
@@ -6869,9 +6869,9 @@ uuid@^8.3.0, uuid@^8.3.2:
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-8.3.2.tgz#80d5b5ced271bb9af6c445f21a1a04c606cefbe2"
   integrity sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==
 
-"v-connection@git+https://github.com/olzzon/v-connection#vtest20210423_1":
+"v-connection@git+https://github.com/olzzon/v-connection#vtest20210507_1":
   version "0.0.1"
-  resolved "git+https://github.com/olzzon/v-connection#6110ddea256d01c7036caa20099779c9f56bb44c"
+  resolved "git+https://github.com/olzzon/v-connection#98fdf63ede69b75d1e91ea9b242a44d33d30c399"
   dependencies:
     request "^2.88.2"
     request-promise-native "^1.0.9"
@@ -7119,9 +7119,9 @@ ws@^7.1.1, ws@^7.2.3:
   integrity sha512-pTsP8UAfhy3sk1lSk/O/s4tjD0CRwvMnzvwr4OKGX7ZvqZtUyx4KIJB5JWbkykPoc55tixMGgTNoh3k4FkNGFQ==
 
 ws@^7.4.2:
-  version "7.4.4"
-  resolved "https://registry.yarnpkg.com/ws/-/ws-7.4.4.tgz#383bc9742cb202292c9077ceab6f6047b17f2d59"
-  integrity sha512-Qm8k8ojNQIMx7S+Zp8u/uHOx7Qazv3Yv4q68MiWWWOJhiwG5W3x7iqmRtJo8xxrciZUY4vRxUTJCKuRnF28ZZw==
+  version "7.4.5"
+  resolved "https://registry.yarnpkg.com/ws/-/ws-7.4.5.tgz#a484dd851e9beb6fdb420027e3885e8ce48986c1"
+  integrity sha512-xzyu3hFvomRfXKH8vOFMU3OguG6oOvhXMo3xsGy3xWExqaM2dxBbVxuD99O7m3ZUFMvvscsZDqxfgMaRr/Nr1g==
 
 xml-js@^1.6.11:
   version "1.6.11"
