@@ -1182,7 +1182,7 @@ atem-connection@^2.1.0:
     tslib "^1.13.0"
     wavefile "^8.4.4"
 
-atem-state@^0.10.1:
+atem-state@^0.10.0:
   version "0.10.1"
   resolved "https://registry.yarnpkg.com/atem-state/-/atem-state-0.10.1.tgz#8259d50bc2e0d55bce9a80ac8ec7016f1ced984d"
   integrity sha512-0d+eVmE4u9u24w/JVoUp6AUh/j6uXvKZK+64h4OABiHJRISgveU0YUeUfa0EnTaD5S2aSb8ucS6WVx1xhP2r9g==
@@ -2033,7 +2033,7 @@ dateformat@^3.0.0:
   resolved "https://registry.yarnpkg.com/dateformat/-/dateformat-3.0.3.tgz#a6e37499a4d9a9cf85ef5872044d62901c9889ae"
   integrity sha512-jyCETtSl3VMZMWeRo7iY1FL19ges1t55hMo5yaam4Jrsm5EPL89UQkoQRyiI+Yf4k8r2ZpdngkV8hr1lIdjb3Q==
 
-debug@4, debug@^4.0.1, debug@^4.1.0, debug@^4.1.1, debug@^4.2.0, debug@^4.3.1:
+debug@4, debug@^4.0.1, debug@^4.1.0, debug@^4.1.1, debug@^4.2.0:
   version "4.3.1"
   resolved "https://registry.yarnpkg.com/debug/-/debug-4.3.1.tgz#f0d229c505e0c6d8c49ac553d1b13dc183f6b2ee"
   integrity sha512-doEwdvm4PCeK4K3RQN2ZC2BYUBaxwLARCqZmMjtF8a51J2Rb0xpVloFRnCODwqjpwnAoao4pelN8l3RJdv3gRQ==
@@ -6340,13 +6340,13 @@ stubs@^3.0.0:
   resolved "https://registry.yarnpkg.com/stubs/-/stubs-3.0.0.tgz#e8d2ba1fa9c90570303c030b6900f7d5f89abe5b"
   integrity sha1-6NK6H6nJBXAwPAMLaQD31fiavls=
 
-superfly-timeline@^8.2.0:
-  version "8.2.0"
-  resolved "https://registry.yarnpkg.com/superfly-timeline/-/superfly-timeline-8.2.0.tgz#0821e99d31643a31643b72fffe40771b8a61bc89"
-  integrity sha512-fSqWubbUGhoefYDOCPnfBO6BuM61ZtrzMUSnrYStG8M6B4rTsD1Cf0WxsReBbGeqIMBfFcgcBDVm2p+hNS2/Jg==
+superfly-timeline@^8.1.2:
+  version "8.2.1"
+  resolved "https://registry.yarnpkg.com/superfly-timeline/-/superfly-timeline-8.2.1.tgz#07c0dfee351ae0597c9dcf0a33794ff53f90829e"
+  integrity sha512-cwd5mGL/2KP8JSBxdxU1bIG4zB3KtWUB/DwhyxBKtTQksAxgplZmWxSqkrE69LfmEQ/8nYBct2NFZ0fCTZzEnQ==
   dependencies:
-    tslib "^2.1.0"
-    underscore "^1.12.0"
+    tslib "^2.2.0"
+    underscore "^1.13.1"
 
 supports-color@^5.3.0:
   version "5.5.0"
@@ -6507,16 +6507,14 @@ timeline-state-resolver-types@5.5.3-nightly-release31-20210226-151000-349e5e195.
   dependencies:
     tslib "^1.13.0"
 
-"timeline-state-resolver@git+https://github.com/olzzon/tv-automation-state-timeline-resolver#dist-test/vizFixes20210604_1":
-  version "5.7.0-release32"
-  resolved "git+https://github.com/olzzon/tv-automation-state-timeline-resolver#5a134e96670e432b8011c0f1c09dc988cbfd4d43"
+"timeline-state-resolver@git+https://github.com/olzzon/tv-automation-state-timeline-resolver#v2021-06-17_01":
+  version "5.2.0"
+  resolved "git+https://github.com/olzzon/tv-automation-state-timeline-resolver#e854c0c65bb1c140a6de043b00503858529b2520"
   dependencies:
-    atem-state "^0.10.1"
+    atem-state "^0.10.0"
     bufferutil "^4.0.1"
     casparcg-connection "^5.1.0"
     casparcg-state "^2.1.0"
-    debug "^4.3.1"
-    deepmerge "^4.2.2"
     emberplus-connection "^0.0.3"
     hyperdeck-connection "^0.4.3"
     osc "^2.4.0"
@@ -6525,14 +6523,14 @@ timeline-state-resolver-types@5.5.3-nightly-release31-20210226-151000-349e5e195.
     p-timeout "^3.2.0"
     request "^2.88.0"
     sprintf-js "^1.1.2"
-    superfly-timeline "^8.2.0"
+    superfly-timeline "^8.1.2"
     threadedclass "0.8.3"
     tslib "^1.10.0"
     tv-automation-quantel-gateway-client "^1.0.12"
-    underscore "^1.12.0"
+    underscore "^1.10.2"
     underscore-deep-extend "^1.1.5"
     utf-8-validate "^5.0.2"
-    v-connection "git+https://github.com/olzzon/v-connection#vtest20210604_1"
+    v-connection "git+https://github.com/olzzon/v-connection#v20210604_1"
     ws "^7.1.1"
     xml-js "^1.6.11"
 
@@ -6672,6 +6670,11 @@ tslib@^2.1.0:
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.1.0.tgz#da60860f1c2ecaa5703ab7d39bc05b6bf988b97a"
   integrity sha512-hcVC3wYEziELGGmEEXue7D75zbwIIVUMWAVbHItGPx0ziyXxrOMQx4rQEVEV45Ut/1IotuEvwqPopzIOkDMf0A==
 
+tslib@^2.2.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.3.0.tgz#803b8cdab3e12ba581a4ca41c8839bbb0dacb09e"
+  integrity sha512-N82ooyxVNm6h1riLCoyS9e3fuJ3AMG2zIZs2Gd1ATcSFjSA23Q0fzjjZeh0jbJvWVDZ0cJT8yaNNaaXHzueNjg==
+
 tsutils@^3.17.1:
   version "3.21.0"
   resolved "https://registry.yarnpkg.com/tsutils/-/tsutils-3.21.0.tgz#b48717d394cea6c1e096983eed58e9d61715b623"
@@ -6792,6 +6795,11 @@ underscore@1.12.0, underscore@^1.12.0, underscore@^1.9.1:
   resolved "https://registry.yarnpkg.com/underscore/-/underscore-1.12.0.tgz#4814940551fc80587cef7840d1ebb0f16453be97"
   integrity sha512-21rQzss/XPMjolTiIezSu3JAjgagXKROtNrYFEOWK109qY1Uv2tVjPTZ1ci2HgvQDA16gHYSthQIJfB+XId/rQ==
 
+underscore@^1.10.2, underscore@^1.13.1:
+  version "1.13.1"
+  resolved "https://registry.yarnpkg.com/underscore/-/underscore-1.13.1.tgz#0c1c6bd2df54b6b69f2314066d65b6cde6fcf9d1"
+  integrity sha512-hzSoAVtJF+3ZtiFX0VgfFPHEDRm7Y/QPjGyNo4TVdnDTdft3tr8hEkD25a1jC+TjTuE7tkHGKkhwCgs9dgBB2g==
+
 union-value@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/union-value/-/union-value-1.0.1.tgz#0b6fe7b835aecda61c6ea4d4f02c14221e109847"
@@ -6869,14 +6877,14 @@ uuid@^8.3.0, uuid@^8.3.2:
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-8.3.2.tgz#80d5b5ced271bb9af6c445f21a1a04c606cefbe2"
   integrity sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==
 
-"v-connection@git+https://github.com/olzzon/v-connection#vtest20210604_1":
+"v-connection@git+https://github.com/olzzon/v-connection#v20210604_1":
   version "0.0.1"
-  resolved "git+https://github.com/olzzon/v-connection#423fb800abb0a7deabe140f927830fabf0893f6a"
+  resolved "git+https://github.com/olzzon/v-connection#fce072ef2e8df663cea64eefa85c3d4c5e27c329"
   dependencies:
     request "^2.88.2"
     request-promise-native "^1.0.9"
     uuid "^8.3.2"
-    ws "^7.4.2"
+    ws "^7.4.6"
     xml2js "^0.4.23"
 
 v8-compile-cache@^2.0.3:
@@ -7118,10 +7126,10 @@ ws@^7.1.1, ws@^7.2.3:
   resolved "https://registry.yarnpkg.com/ws/-/ws-7.4.1.tgz#a333be02696bd0e54cea0434e21dcc8a9ac294bb"
   integrity sha512-pTsP8UAfhy3sk1lSk/O/s4tjD0CRwvMnzvwr4OKGX7ZvqZtUyx4KIJB5JWbkykPoc55tixMGgTNoh3k4FkNGFQ==
 
-ws@^7.4.2:
-  version "7.4.5"
-  resolved "https://registry.yarnpkg.com/ws/-/ws-7.4.5.tgz#a484dd851e9beb6fdb420027e3885e8ce48986c1"
-  integrity sha512-xzyu3hFvomRfXKH8vOFMU3OguG6oOvhXMo3xsGy3xWExqaM2dxBbVxuD99O7m3ZUFMvvscsZDqxfgMaRr/Nr1g==
+ws@^7.4.6:
+  version "7.5.0"
+  resolved "https://registry.yarnpkg.com/ws/-/ws-7.5.0.tgz#0033bafea031fb9df041b2026fc72a571ca44691"
+  integrity sha512-6ezXvzOZupqKj4jUqbQ9tXuJNo+BR2gU8fFRk3XCP3e0G6WT414u5ELe6Y0vtp7kmSJ3F7YWObSNr1ESsgi4vw==
 
 xml-js@^1.6.11:
   version "1.6.11"
